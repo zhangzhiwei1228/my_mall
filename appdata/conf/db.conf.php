@@ -8,7 +8,7 @@ return array(
 		'host' => '127.0.0.1',
 		'port' => '3306',
 		'user' => 'root',
-		'pass' => '123456',
+		'pass' => 'boc2009!@#',
 		'name' => 'sdb_123mf',
 		'charset' => 'utf8'
 	)
