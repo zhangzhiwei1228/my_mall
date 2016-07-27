@@ -11,6 +11,8 @@
     <span class="JS_Dmenu form-inline">
         <input type="hidden" name="area_id" value="<?=$this->_request->area_id?>" />
         <input type="hidden" name="cid" id="cid" value="<?=$this->_request->cid?>" />
+        <input type="hidden" name="sbt" id="sbt" value="<?=$this->_request->sbt?>" />
+        <input type="hidden" name="q" id="q" value="<?=$this->_request->q?>" />
         <select class="tpl-pro option"></select>
         <select class="tpl-pro1 option"></select>
         <select class="tpl-pro2 option"></select>
@@ -79,6 +81,8 @@ echo static_file('web/js/main.js');
 <script type="text/javascript" src="/assets/js/seajs/sea.js"></script>
 <script type="text/javascript">
     var cid = $('#cid').val();
+    var q = $('#q').val();
+    var sbt = $('#sbt').val();
     $.getJSON('/shop/getJson/').done(function(rs){
         var html1=''
         html1+='<option class="option" value="-1">请选择省</option>'
@@ -97,7 +101,7 @@ echo static_file('web/js/main.js');
         $('.tpl-pro').on('change',function(){
             var id=$(this).find('option:selected').val();
             $('.shop-list-box').html('');
-            $('.shop-list-box').load('/shop/getshoplist/?area_id='+id+'&cid='+cid);
+            $('.shop-list-box').load('/shop/getshoplist/?area_id='+id+'&cid='+cid+'&sbt='+sbt+'&q='+q);
             $('.tpl-pro2').html('<option class="option" value="-1">请先选择城市</option>')
             if(id!=-1){
                 $.getJSON('/shop/getJsonCity/',{pro_id:id}).done(function(rs){
@@ -117,7 +121,7 @@ echo static_file('web/js/main.js');
         $('.tpl-pro1').on('change',function(){
             var id=$(this).find('option:selected').val()
             $('.shop-list-box').html('');
-            $('.shop-list-box').load('/shop/getshoplist/?area_id='+id+'&cid='+cid);
+            $('.shop-list-box').load('/shop/getshoplist/?area_id='+id+'&cid='+cid+'&sbt='+sbt+'&q='+q);
             if(id!=-1){
                 $.getJSON('/shop/getJsonRegion/',{city_id:id}).done(function(rs){
                     var html1=''
@@ -136,7 +140,7 @@ echo static_file('web/js/main.js');
         $('.tpl-pro2').on('change',function(){
             var id=$(this).find('option:selected').val()
             $('.shop-list-box').html('');
-            $('.shop-list-box').load('/shop/getshoplist/?area_id='+id);
+            $('.shop-list-box').load('/shop/getshoplist/?area_id='+id+'&cid='+cid+'&sbt='+sbt+'&q='+q);
         })
     }
 </script>
