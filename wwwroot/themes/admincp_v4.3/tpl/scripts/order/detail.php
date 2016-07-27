@@ -238,7 +238,7 @@ $this->head()->setTitle($this->title);
 				<div class="panel-body">
 					<div class="express-tracking"><p class="loading">正在查询,请稍后...</p></div>
 					<script type="text/javascript">
-						$('.express-tracking').loadExpress('sf', '<?=$this->data->delivery['code']?>');
+						$('.express-tracking').loadExpress('sf', '407807515397');
 					</script>
 				</div>
 			</div>
