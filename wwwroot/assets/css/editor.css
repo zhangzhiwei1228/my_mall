@@ -1,0 +1,41 @@
+
+.ke-content {
+	font-family: 'Lucida Grande', 'Microsoft Yahei';
+	font-size: 14px;
+	line-height: 1.8em;
+	padding: 10px;
+}
+
+.ke-content h1,.ke-content h2,.ke-content h3,
+.ke-content h4,.ke-content h5,.ke-content h6 {
+	margin: 10px 0;
+	font-weight: normal;
+}
+
+.ke-content h1 {
+	font-size: 36px;
+}
+
+.ke-content h2 {
+	font-size: 24px;
+}
+
+.ke-content h3 {
+	font-size: 18px;
+}
+
+.ke-content h4 {
+	font-size: 14px;
+}
+
+.ke-content h5 {
+	font-size: 12px;
+}
+
+.ke-content p {
+	margin: 0 0 25px 0;
+}
+
+.ke-content strong {
+	font-weight: bold;
+}

@@ -1,0 +1,1 @@
+<title>找回密码</title><body><p>亲爱的{$nickname}：</p><p>您通过邮件找回密码，请点击以下链接重置您的密码!若无法点击,请将链接复制到浏览器找开。</p><p>此链接将在24小时后失效。<br /></p><p><a href="{$url}" target="_blank">{$url}</a><br /></p></body>

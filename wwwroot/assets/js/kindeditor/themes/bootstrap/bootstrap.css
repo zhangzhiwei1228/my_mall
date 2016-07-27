@@ -1,0 +1,124 @@
+/* container */
+.ke-container-bootstrap {
+	display: block;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	background: inherit;
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+
+.ke-container-bootstrap .ke-edit {
+	/*border-radius: 0 0 3px 3px;*/
+	background: #fff;
+}
+
+/* toolbar */
+
+.ke-container-bootstrap .ke-toolbar-icon-url {
+	background-image: url('icon.png');
+}
+.ke-container-bootstrap .ke-toolbar {
+	border-bottom: solid 1px #ddd;
+	border-radius: 3px 3px 0 0;
+	background: inherit;
+	padding: 5px;
+	overflow: hidden;
+	background: #f9f9f9;
+	/*background: -webkit-linear-gradient(#fff, #f0f0f0);*/
+}
+.ke-container-bootstrap .ke-toolbar .ke-outline {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	background-color: #fff;
+	margin-right: 2px;
+	margin-bottom: 2px;
+	padding: 2px 4px;
+	font-size: 0;
+	line-height: 0;
+	overflow: hidden;
+	cursor: pointer;
+}
+.ke-container-bootstrap .ke-toolbar .ke-separator {
+	visibility: hidden;
+}
+
+.ke-container-bootstrap .ke-toolbar .ke-on {
+	border: 1px solid #5690D2;
+}
+.ke-container-bootstrap .ke-toolbar .ke-selected {
+	border: 1px solid #5690D2;
+	background-color: #E9EFF6;
+}
+.ke-container-bootstrap .ke-toolbar  .ke-disabled {
+	cursor: default;
+}
+/* statusbar */
+.ke-container-bootstrap .ke-statusbar {
+	position: relative;
+	background-color: inherit;
+	border: none;
+	font-size: 0;
+	line-height: 0;
+	*height: 12px;
+	overflow: hidden;
+	text-align: center;
+	cursor: s-resize;
+	background: #f0f0f0;
+	border-radius: 0 0 3px 3px;
+	border-top: solid 1px #ddd;
+}
+/* menu */
+.ke-menu-bootstrap {
+	border: 1px solid #A0A0A0;
+	background-color: #FFF;
+	color: #222222;
+	padding: 2px;
+	font-family: "sans serif",tahoma,verdana,helvetica;
+	font-size: 12px;
+	text-align: left;
+	overflow: hidden;
+}
+.ke-menu-bootstrap .ke-menu-item {
+	border: 1px solid #FFF;
+	background-color: #FFF;
+	color: #222222;
+	height: 24px;
+	overflow: hidden;
+	cursor: pointer;
+}
+.ke-menu-bootstrap .ke-menu-item-on {
+	border: 1px solid #5690D2;
+	background-color: #FFF;
+}
+/* colorpicker */
+.ke-colorpicker-bootstrap {
+	border: 1px solid #A0A0A0;
+	background-color: #FEFEFE;
+	color: #222222;
+	padding: 2px;
+}
+.ke-colorpicker-bootstrap .ke-colorpicker-cell {
+	font-size: 0;
+	line-height: 0;
+	border: 1px solid #FEFEFE;
+	cursor: pointer;
+	margin:3px;
+	padding:0;
+}
+.ke-colorpicker-bootstrap .ke-colorpicker-cell-top {
+	font-family: "sans serif",tahoma,verdana,helvetica;
+	font-size: 12px;
+	line-height: 24px;
+	border: 1px solid #FEFEFE;
+	cursor: pointer;
+	margin:0;
+	padding:0;
+	text-align: center;
+}
+.ke-colorpicker-bootstrap .ke-colorpicker-cell-on {
+	border: 1px solid #5690D2;
+}
+.ke-colorpicker-bootstrap .ke-colorpicker-cell-selected {
+	border: 1px solid #2446AB;
+}

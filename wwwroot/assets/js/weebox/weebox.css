@@ -1,0 +1,50 @@
+.dialog-loading {background:url(img/loading.gif) no-repeat center; width:100%; height:100%}
+.dialog-mask{border:0px; background:#90928a; margin:0px; padding:0px; position:absolute; top:0px; left:0px;opacity:.5;FILTER:alpha(opacity=50)}
+
+.dialog-button{clear: both;}
+.dialog-button input{overflow:visible; overflow-y:hidden;}
+.dialog-btn1,.dialog-ok{border:1px solid #33621D; background:url(img/common_btn_ok.gif) top #88B674; height:24px; line-height:24px; color:#fff;cursor:pointer; padding:0px;padding-left:5px; padding-right:5px; margin:0px;}
+.dialog-btn2,.dialog-cancel{border:1px solid #999; background:url(img/common_btn_cancel.gif) top;height:24px; line-height:24px; color:#666;cursor:pointer;padding:0px;padding-left:5px; padding-right:5px; margin:0px;}
+.dialog-btn1,.dialog-btn2{margin-right:10px}
+.dialog-content{text-align:left; clear:both; overflow:auto;}
+
+.weedialog{}
+.weedialog .dialog-header{height:36px; line-height:36px; font-size:14px; width:100%; clear:both; text-align:left; position:relative; top:0; left:0;background:#3B5998; cursor:move; }
+.weedialog .dialog-title{color:#fff; float:left; margin-left:10px; font-weight:bold;}
+
+.weedialog .dialog-top{height:8px;position:relative; overflow:hidden;}
+.weedialog .dialog-tl{position:absolute; left:0px; top:0px;width:8px; height:8px;background:url(img/lb_left_top.png) no-repeat; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale", src="img/lb_left_top.png"); _background:none;}
+.weedialog .dialog-tc{margin-left:8px; margin-right:8px; width:auto; height:8px;background:url(img/lb_border.png) repeat-x; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale", src="img/lb_border.png"); _background:none; overflow:hidden;}
+.weedialog .dialog-tr{position:absolute; right:0px;top:0px;width:8px; height:8px;background:url(img/lb_right_top.png) no-repeat; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale", src="img/lb_right_top.png"); _background:none;}
+.weedialog .dialog-close{position:relative;background:url(img/light_box_close_btn.png) no-repeat; height:17px; width:17px; overflow: hidden; float:right; margin:10px 10px 0 0;_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale", src="img/light_box_close_btn.png"); _background:none; cursor:pointer;}
+.weedialog .dialog-close:hover{background-image:url(img/light_box_close_btn_h.png);_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale", src="img/light_box_close_btn_h.png"); _background:none;}
+.weedialog .dialog-content{clear:both; overflow-y:auto; overflow-x:hidden;font-size:12px; background-color:#fff;}
+.weedialog .dialog-button{clear:both; background:#fff; padding:8px 0;}
+.weedialog .dialog-cl{width:8px;background:url(img/lb_border.png); _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale", src="img/lb_border.png"); _background:none;}
+.weedialog .dialog-cr{width:8px;background:url(img/lb_border.png); _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale", src="img/lb_border.png"); _background:none;}
+.weedialog .dialog-button{text-align:right; font-size:12px; padding-right:6px; _padding-right:2px;}
+.weedialog .dialog-ok{border:1px solid #33621D; background:url(img/btn_ok.gif) top #88B674; height:24px; line-height:24px; color:#fff;cursor:pointer; padding:0 5px; margin:0px; margin-right:3px;}
+.weedialog .dialog-cancel{border:1px solid #999; background:url(img/btn_cancel.gif) top; height:24px; line-height:24px; color:#666;cursor:pointer; padding:0 5px; margin:0px;}
+.weedialog .dialog-button-disabled{overflow:visible; overflow-y:hidden; border:1px solid #999; background:url(img/btn_cancel.gif) top; height:24px; line-height:24px; color:#666;cursor:pointer; padding:0 5px; margin:0px;}
+.weedialog .dialog-bot{clear:both; height:8px; position:relative; font-size:0px;}
+.weedialog .dialog-bl{position:absolute; left:0px; top:0px; width:8px; height:8px; background:url(img/lb_left_bottom.png) no-repeat; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale", src="img/lb_left_bottom.png"); _background:none;}
+.weedialog .dialog-bc{margin-left:8px; margin-right:8px; width:auto; height:8px; background:url(img/lb_border.png) repeat-x; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale", src="img/lb_border.png"); _background:none;}
+.weedialog .dialog-br{position:absolute; right:0px; top:0px; width:8px; height:8px; background:url(img/lb_right_bottom.png) no-repeat; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale", src="img/lb_right_bottom.png"); _background:none;}
+
+.weealert .dialog-cancel{display:none;}
+.weealert .dialog-content{padding: 10px;}
+
+.weeselect li{float:left; width:120px;}
+.weeselect .wsearch{width:100%;text-align:right;}
+
+.weesuggest{width:160px;background:#ccc;}
+.weesuggest .dialog-content{padding:5px;}
+.weesuggest li{padding:0px;margin:0px;line-height:20px;cursor:pointer;border-bottom:1px dotted #bbb;}
+
+.weedialog .dialog-button { padding-top:10px; }
+.weedialog .dialog-cancel { border:solid 1px #b0b0b0; text-align: center; padding:0 12px; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); font-weight:normal; font-size:12px; background:#e0e0e0; background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e0e0e0)); background-repeat: repeat-x; line-height:1.8em; height:24px; }
+.weedialog .dialog-cancel:active { box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05); }
+.weedialog .dialog-cancel:hover { background-image:none; background-position: 0 -5px; }
+.weedialog .dialog-ok { border:solid 1px #b0b0b0; text-align: center; padding:0 12px; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); font-weight:normal; font-size:12px; background:#e0e0e0; background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e0e0e0)); background-repeat: repeat-x; line-height:1.8em; height:24px; background:#0055cc; background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0055cc)); border-color:#0055cc #0055cc #003580; color:#fff; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); }
+.weedialog .dialog-ok:active { box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05); }
+.weedialog .dialog-ok:hover { background-image:none; background-position: 0 -5px; }
