@@ -111,10 +111,12 @@ echo static_file('web/js/main.js');
         //$(".shop-list-box").load(url)
         $.getJSON('/misc.php?act=area').done(function(rs){
                 var html=''
-                cosnole.log(rs)
+                console.log(rs)
                 for(var i in rs){
                     var datas=rs[i]
+                    if(datas.parent_id==0){
                     html+='<option vaule='+datas.id+'>'+datas.name+'</option>'
+                }
                 }
                 $('.tpl-sheng').append(html)
         })
