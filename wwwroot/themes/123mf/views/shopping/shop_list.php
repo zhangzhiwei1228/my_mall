@@ -11,7 +11,7 @@
         <span class="JS_Dmenu form-inline">
             <input type="hidden" name="area_id" value="<?=$this->_request->area_id?>" />
         </span>
-    <select  class="option">
+    <select  class="option tpl-sheng">
           <option value ="">省份</option>
           <!-- <option value ="">xxx</option> -->
     </select>
@@ -107,10 +107,15 @@ echo static_file('web/js/main.js');
 
     $(function(){
 
-        var url = <?php echo "'".site_url('ajax/g-js')."'"; ?> ;
+        //var url = <?php echo "'".site_url('ajax/g-js')."'"; ?> ;
         //$(".shop-list-box").load(url)
         $.getJSON('/misc.php?act=area').done(function(rs){
-            
+                var html=''
+                for(var i in rs){
+                    var datas=rs[i]
+                    html+='<option vaule='+datas.id+'>'+datas.name+'</option>'
+                }
+                $('.tpl-sheng').append(html)
         })
 
         $(".form-inline option").on('change',function(){
