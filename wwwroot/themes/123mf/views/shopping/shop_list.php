@@ -11,9 +11,9 @@
         <span class="JS_Dmenu form-inline">
             <input type="hidden" name="area_id" value="<?=$this->_request->area_id?>" />
         </span>
-    <!-- <select  class="option">
+    <select  class="option tpl-sheng">
           <option value ="">省份</option>
-          <option value ="">xxx</option>
+          <!-- <option value ="">xxx</option> -->
     </select>
     <select  class="option">
           <option value ="">城市</option>
@@ -22,7 +22,7 @@
     <select  class="option">
           <option value ="">区县</option>
           <option value ="">xxx</option>
-    </select> -->
+    </select>
 </form>
 <dl class="drop-down">
     <dt class="bgcolor">全部分类</dt>
@@ -84,41 +84,55 @@ echo static_file('web/js/main.js');
         z-index: 999;
     }
 </style>
-<script type="text/javascript" src="/assets/js/seajs/sea.js"></script>
+<!-- <script type="text/javascript" src="/assets/js/seajs/sea.js"></script> -->
 <script type="text/javascript">
-    seajs.use('/assets/js/dmenu/dmenu.sea.js', function(dmenu) {
-        dmenu.init('.JS_Dmenu', {
-            rootId: 1,
-            script: '/misc.php?act=area',
-            htmlTpl: '<select class="option"></select>',
-            firstText: '请选择所在地',
-            defaultText: '请选择',
-            selected: $('input[name=area_id]').val(),
-            callback: function(el, data) {
-                var location = $('.JS_Dmenu>select>option:selected').text();
-                $('input[name=area_id]').val(data.id > 0 ? data.id : 0);
-                $('.option').bind('change', function(){
-                    $('form.shop-select').submit();
-                });
-            }
-        });
+    // seajs.use('/assets/js/dmenu/dmenu.sea.js', function(dmenu) {
+    //     dmenu.init('.JS_Dmenu', {
+    //         rootId: 1,
+    //         script: '/misc.php?act=area',
+    //         htmlTpl: '<select class="option"></select>',
+    //         firstText: '请选择所在地',
+    //         defaultText: '请选择',
+    //         selected: $('input[name=area_id]').val(),
+    //         callback: function(el, data) {
+    //             var location = $('.JS_Dmenu>select>option:selected').text();
+    //             $('input[name=area_id]').val(data.id > 0 ? data.id : 0);
+    //             // $('.option').bind('change', function(){
+    //             //     $('form.shop-select').submit();
+    //             // });
+    //         }
+    //     });
 
-    });
+    // });
 
     $(function(){
 
-        var url = <?php echo "'".site_url('ajax/g-js')."'"; ?> ;
-        $(".shop-list-box").load(url)
+        //var url = <?php echo "'".site_url('ajax/g-js')."'"; ?> ;
+        //$(".shop-list-box").load(url)
+        $.getJSON('/misc.php?act=area').done(function(rs){
+                var html=''
+                for(var i in rs){
+                    var datas=rs[i]
+                    html+='<option vaule='+datas.id+'>'+datas.name+'</option>'
+                }
+                $('.tpl-sheng').append(html)
+        })
 
+        $(".form-inline option").on('change',function(){
 
-        $(".form-inline option").click(function(){
             var Html = $.ajax({
                 url   : '<?php echo site_url('ajax/g-js'); ?> ',
                 async : false
+            }).done(function(rs){
+                
             })
-            $(".shop-list-box").html(Html.responseText)
+
+            $(".shop-list-box").html()
 
         })
+
+
+
     })
 
 
