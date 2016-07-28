@@ -418,6 +418,28 @@
 </body>
 <script>
 	$(function(){
+        // $(".n-pro").each(function(){
+        //     var NewUrl = "<?php echo site_url('ajax/wel_ajax');?>"
+        //     var k = $(this).height() * 0.5
+
+        //     if($(window).scrollTop() >= $(this).offset().top + k) {
+        //         $.ajax({
+        //             url: NewUrl
+        //             success:function(e){
+        //                 if(!e) {
+        //                     flag = false ;
+        //                     $('.n-pro').append('<p style="text-align: center">已加载完毕<p>');
+        //                     return false;
+        //                 }
+        //                 $('.n-pro').append(e);
+        //                 n++;
+        //                 setTimeout(function(){
+        //                     flag=true;
+        //                 },300)
+        //             }
+        //         })  
+        //     }
+        // }); 
 
         // $(".vv-bd-l span").click(function(){
         // var url =$(this).data("url")        
