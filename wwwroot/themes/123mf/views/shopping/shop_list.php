@@ -8,21 +8,16 @@
 <div class="positre-bg"></div>
 <form class="shop-select bgwhite" method="get">
     <span class="click-down option"><?=$this->category->exists()?$this->category['name']:'商家分类'?></span>
-        <span class="JS_Dmenu form-inline">
-            <input type="hidden" name="area_id" value="<?=$this->_request->area_id?>" />
-        </span>
-    <select  class="option tpl-sheng">
-          <option value ="">省份</option>
-          <!-- <option value ="">xxx</option> -->
-    </select>
-    <select  class="option">
-          <option value ="">城市</option>
-          <option value ="">xxx</option>
-    </select>
-    <select  class="option">
-          <option value ="">区县</option>
-          <option value ="">xxx</option>
-    </select>
+    <span class="JS_Dmenu form-inline">
+        <input type="hidden" name="area_id" value="<?=$this->_request->area_id?>" />
+        <input type="hidden" name="cid" id="cid" value="<?=$this->_request->cid?>" />
+        <input type="hidden" name="sbt" id="sbt" value="<?=$this->_request->sbt?>" />
+        <input type="hidden" name="q" id="q" value="<?=$this->_request->q?>" />
+        <input type="hidden" name="is_special" id="is_special" value="<?=$this->_request->is_special?>" />
+        <select class="tpl-pro option"></select>
+        <select class="tpl-pro1 option"></select>
+        <select class="tpl-pro2 option"></select>
+    </span>
 </form>
 <dl class="drop-down">
     <dt class="bgcolor">全部分类</dt>
@@ -84,61 +79,72 @@ echo static_file('web/js/main.js');
         z-index: 999;
     }
 </style>
-<!-- <script type="text/javascript" src="/assets/js/seajs/sea.js"></script> -->
+<script type="text/javascript" src="/assets/js/seajs/sea.js"></script>
 <script type="text/javascript">
-    // seajs.use('/assets/js/dmenu/dmenu.sea.js', function(dmenu) {
-    //     dmenu.init('.JS_Dmenu', {
-    //         rootId: 1,
-    //         script: '/misc.php?act=area',
-    //         htmlTpl: '<select class="option"></select>',
-    //         firstText: '请选择所在地',
-    //         defaultText: '请选择',
-    //         selected: $('input[name=area_id]').val(),
-    //         callback: function(el, data) {
-    //             var location = $('.JS_Dmenu>select>option:selected').text();
-    //             $('input[name=area_id]').val(data.id > 0 ? data.id : 0);
-    //             // $('.option').bind('change', function(){
-    //             //     $('form.shop-select').submit();
-    //             // });
-    //         }
-    //     });
+    var cid = $('#cid').val();
+    var q = $('#q').val();
+    var sbt = $('#sbt').val();
+    var is_special = $('#is_special').val();
+    $.getJSON('/shop/getJson/').done(function(rs){
+        var html1=''
+        html1+='<option class="option" value="-1">请选择省</option>'
+        for(var i in rs.pro){
+            var datas=rs.pro[i]
+            html1+='<option class="option" value="'+datas.id[0]+'">'+datas.name[0]+'</option>'
+        }
+        $('.tpl-pro').html(html1)
+        $('.tpl-pro1').html('<option class="option" value="-1">请先选择省份</option>')
+        $('.tpl-pro2').html('<option class="option" value="-1">请先选择省份</option>')
+        pro_change()
 
-    // });
+    });
 
-    $(function(){
-
-        //var url = <?php echo "'".site_url('ajax/g-js')."'"; ?> ;
-        //$(".shop-list-box").load(url)
-        $.getJSON('/misc.php?act=area').done(function(rs){
-                var html=''
-                console.log(rs)
-                for(var i in rs){
-                    var datas=rs[i]
-                    if(datas.parent_id==0){
-                    html+='<option vaule='+datas.id+'>'+datas.name+'</option>'
-                }
-                }
-                $('.tpl-sheng').append(html)
+    function pro_change(){
+        $('.tpl-pro').on('change',function(){
+            var id=$(this).find('option:selected').val();
+            $('.shop-list-box').html('');
+            $('.shop-list-box').load('/shop/getshoplist/?area_id='+id+'&cid='+cid+'&sbt='+sbt+'&q='+q+'&is_special='+is_special);
+            $('.tpl-pro2').html('<option class="option" value="-1">请先选择城市</option>')
+            if(id!=-1){
+                $.getJSON('/shop/getJsonCity/',{pro_id:id}).done(function(rs){
+                    var html1=''
+                    html1+='<option class="option" value="-1">请选择城市</option>'
+                    for(var i in rs.city){
+                        var datas=rs.city[i]
+                        html1+='<option class="option" value="'+datas.id[0]+'">'+datas.name[0]+'</option>'
+                    }
+                    $('.tpl-pro1').html(html1)
+                    pro_change1();
+                })
+            }
         })
-
-        $(".form-inline option").on('change',function(){
-
-            var Html = $.ajax({
-                url   : '<?php echo site_url('ajax/g-js'); ?> ',
-                async : false
-            }).done(function(rs){
-                
-            })
-
-            $(".shop-list-box").html()
-
+    }
+    function pro_change1(){
+        $('.tpl-pro1').on('change',function(){
+            var id=$(this).find('option:selected').val()
+            $('.shop-list-box').html('');
+            $('.shop-list-box').load('/shop/getshoplist/?area_id='+id+'&cid='+cid+'&sbt='+sbt+'&q='+q+'&is_special='+is_special);
+            if(id!=-1){
+                $.getJSON('/shop/getJsonRegion/',{city_id:id}).done(function(rs){
+                    var html1=''
+                    html1+='<option class="option" value="-1">请选择地区</option>'
+                    for(var i in rs.region){
+                        var datas=rs.region[i]
+                        html1+='<option class="option" value="'+datas.id[0]+'">'+datas.name[0]+'</option>'
+                    }
+                    $('.tpl-pro2').html(html1)
+                    pro_change2();
+                })
+            }
         })
-
-
-
-    })
-
-
+    }
+    function pro_change2(){
+        $('.tpl-pro2').on('change',function(){
+            var id=$(this).find('option:selected').val()
+            $('.shop-list-box').html('');
+            $('.shop-list-box').load('/shop/getshoplist/?area_id='+id+'&cid='+cid+'&sbt='+sbt+'&q='+q+'&is_special='+is_special);
+        })
+    }
 </script>
 </body>
 </html>
