@@ -88,7 +88,7 @@ class ShopController extends Controller_Action
 			$select->where('s.area_id IN ('.($ids ? $ids : $this->_request->area_id).')');
 		}
 		//按照特殊性查找
-		if(!$this->_request->area_id && !$this->_request->cid && !$this->_request->q) {
+		if($this->_request->is_special) {
 			$is_special = !$this->_request->is_special ? 's.is_special = 0 OR s.is_special = 1' : ($this->_request->is_special == 1 ? 's.is_special = 1' : 's.is_special = 0');
 			$select->where($is_special);
 		}
