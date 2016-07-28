@@ -29,4 +29,31 @@ class CallbackController extends Controller_Action
 		$express = M('Express')->factory($this->_request->t);
 		echo $express->tracking($_REQUEST['code'])->toJson();
 	}
+	public function doKuaidi100() {
+		$com = $this->_request->com;
+		$nu = $this->_request->nu;
+		$AppKey='0aae9b18c0359331';
+		$url ='http://api.kuaidi100.com/api?id='.$AppKey.'&com='.$com.'&nu='.$nu.'&show=2&muti=1&order=asc';
+
+		$powered = '查询数据由：<a href="http://kuaidi100.com" target="_blank">KuaiDi100.Com （快递100）</a> 网站提供 ';
+
+		//优先使用curl模式发送数据
+		if (function_exists('curl_init') == 1){
+			$curl = curl_init();
+			curl_setopt ($curl, CURLOPT_URL, $url);
+			curl_setopt ($curl, CURLOPT_HEADER,0);
+			curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt ($curl, CURLOPT_USERAGENT,$_SERVER['HTTP_USER_AGENT']);
+			curl_setopt ($curl, CURLOPT_TIMEOUT,5);
+			$get_content = curl_exec($curl);
+			curl_close ($curl);
+		} else {
+			include(MOD_DIR."Snoopy.php");
+			$snoopy = new snoopy();
+			$snoopy->referer = 'http://www.google.com/';//伪装来源
+			$snoopy->fetch($url);
+			$get_content = $snoopy->results;
+		}
+		echo $get_content . '<br/>' . $powered;
+	}
 }

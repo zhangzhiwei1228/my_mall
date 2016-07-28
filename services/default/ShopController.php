@@ -29,9 +29,6 @@ class ShopController extends Controller_Action
 	public function doList()
 	{
 		$category = M('Shop_Category')->getById((int)$this->_request->cid);
-
-
-
 		$pageSize = 20;
 		$currentPage = isset($this->_request->page) ? $this->_request->page : $this->_request->page;
 		$select = M('Shop')->alias('s')
@@ -55,13 +52,50 @@ class ShopController extends Controller_Action
 			$select->where('s.area_id IN ('.($ids ? $ids : $this->_request->area_id).')');
 		}
 		//按照特殊性查找
-		$is_special = !$this->_request->is_special ? 's.is_special = 0 OR s.is_special = 1' : ($this->_request->is_special == 1 ? 's.is_special = 1' : 's.is_special = 0');
-		$select->where($is_special);
+		if(!$this->_request->area_id && !$this->_request->cid && !$this->_request->q) {
+			$is_special = !$this->_request->is_special ? 's.is_special = 0 OR s.is_special = 1' : ($this->_request->is_special == 1 ? 's.is_special = 1' : 's.is_special = 0');
+			$select->where($is_special);
+		}
 
 		$view = $this->_initView();
 		$view->category = $category;
 		$view->datalist = $select->fetchRows();
 		$view->render('views/shopping/shop_list.php');
+	}
+
+	public function doGetshoplist() {
+		$category = M('Shop_Category')->getById((int)$this->_request->cid);
+		$pageSize = 20;
+		$currentPage = isset($this->_request->page) ? $this->_request->page : $this->_request->page;
+		$select = M('Shop')->alias('s')
+			->leftJoin(M('Shop_Category')->getTableName().' AS sc', 's.category_id = sc.id')
+			->columns('sc.name AS cate_name, s.*')
+			->order('s.is_rec DESC, s.id DESC')
+			->paginator($pageSize, $currentPage);
+
+		//按分类查找
+		if ($this->_request->cid) {
+			$ids = M('Shop_Category')->getChildIds((int)$this->_request->cid);
+			$select->where('s.category_id IN ('.($ids ? $ids : $this->_request->cid).')');
+		}
+		//按关键词查找
+		if ($this->_request->q) {
+			$select->where('s.name LIKE ?', '%'.$this->_request->q.'%');
+		}
+		//按关键词查找
+		if ($this->_request->area_id) {
+			$ids = M('Region')->getChildIds((int)$this->_request->area_id);
+			$select->where('s.area_id IN ('.($ids ? $ids : $this->_request->area_id).')');
+		}
+		//按照特殊性查找
+		if($this->_request->is_special) {
+			$is_special = !$this->_request->is_special ? 's.is_special = 0 OR s.is_special = 1' : ($this->_request->is_special == 1 ? 's.is_special = 1' : 's.is_special = 0');
+			$select->where($is_special);
+		}
+		$view = $this->_initView();
+		$view->category = $category;
+		$view->datalist = $select->fetchRows();
+		$view->render('views/shopping/shop_list1.php');
 	}
 
 	public function doDetail()

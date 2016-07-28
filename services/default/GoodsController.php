@@ -108,9 +108,9 @@ class GoodsController extends Controller_Action
 			->columns('g.id, g.title, g.thumb, g.sup, g.min_price, g.max_price, 
 				g.thumb, g.ref_img, g.comments_num, g.follows_num,g.is_selling,g.is_checked')
 			->where('g.is_selling = 1 AND g.is_checked = 2 AND (g.expiry_time = 0 OR g.expiry_time > ?)', time())
-			->paginator(100, $this->_request->page);
+			->paginator(6, $this->_request->page);
 
-		//按关键词搜索
+		/*//按关键词搜索
 		if ($this->_request->q) {
 			//搜索分类
 			$cate = M('Goods_Category')->select()
@@ -118,12 +118,8 @@ class GoodsController extends Controller_Action
 				->fetchRow();
 			if ($cate->exists()) {
 				$ids = $cate->getChildIds();
-				//$select->where('g.category_id IN ('.($ids ? $ids : 0).') OR g.title LIKE '. '"%'.$this->_request->q.'%"'.' OR g.tags like '. '"%'.$this->_request->q.'%"');
-				//$select->where('g.category_id IN ('.($ids ? $ids : 0).') OR locate ('.'"'.$this->_request->q.'"'.', g.title) > 0 OR locate ('.'"'.$this->_request->q.'"'.', g.tags) > 0 ');
-				$select->where('g.category_id IN ('.($ids ? $ids : 0).') OR reverse(g.title) LIKE '. 'reverse("%'.$this->_request->q.'%")'.' OR reverse(g.tags) like '. 'reverse("%'.$this->_request->q.'%")');
+				$select->where('(g.category_id IN ('.($ids ? $ids : 0).') OR reverse(g.title) LIKE '. 'reverse("%'.$this->_request->q.'%")'.' OR reverse(g.tags) like '. 'reverse("%'.$this->_request->q.'%"))');
 			} else {
-				//$select->where('g.title LIKE '. '"%'.$this->_request->q.'%"');
-				//$select->where('locate ('.'"'.$this->_request->q.'"'.', g.title) > 0');
 				$select->where('reverse(g.title) LIKE '. 'reverse("%'.$this->_request->q.'%")');
 			}
 		}
@@ -156,12 +152,12 @@ class GoodsController extends Controller_Action
 				$gIds = M('Goods_Attribute')->select('goods_id')
 					->where('attr_key = ?'.($ftIds ? ' AND goods_id IN ('.implode(',', $ftIds).')' : ''), $key)
 					->fetchCols('goods_id');
-				
+
 				$ftIds = @array_merge($ftIds, $gIds);
 				$attribute[] = $gIds;
 				$filter = 1;
 			}
-			
+
 			$ids = array();
 			foreach ((array)$attribute as $item) { if (!$item) { $ids = 0; break; }
 				$ids = $ids ? array_intersect($ids, $item) : $item;
@@ -178,7 +174,7 @@ class GoodsController extends Controller_Action
 			case 'comment': $select->order('g.comments_num DESC'); break;
 			case 'date_added': $select->order('g.create_time DESC'); break;
 			case 'transaction': $select->order('g.sales_num DESC'); break;
-		}
+		}*/
 		$select->order('g.update_time DESC');
 
 		//查找可筛选属性
@@ -214,9 +210,9 @@ class GoodsController extends Controller_Action
 
 
 		$view = $this->_initView();
-		$view->datalist = $select->fetchRows()
+		/*$view->datalist = $select->fetchRows()
 			->hasmanySku()
-			->hasmanyPromotions();
+			->hasmanyPromotions();*/
 
 		$view->category = $category;
 		$view->relateCates = $relateCates;
@@ -224,6 +220,131 @@ class GoodsController extends Controller_Action
 		$view->relateGoods = $relateGoods;
 
 		$view->render('views/shopping/product_list.php');
+	}
+
+	public function doGetgoodlist()
+	{
+		//载入分类
+		$category = M('Goods_Category')->getById((int)$this->_request->cid);
+//		$relateCates = $category->getRoot()->getChilds()->toTree();
+		$relateAttrs = $category->getSearchItems($this->_request->ft);
+
+		$select = M('Goods')->alias('g')
+			->columns('g.id, g.title, g.thumb, g.sup, g.min_price, g.max_price,
+				g.thumb, g.ref_img, g.comments_num, g.follows_num,g.is_selling,g.is_checked')
+			->where('g.is_selling = 1 AND g.is_checked = 2 AND (g.expiry_time = 0 OR g.expiry_time > ?)', time())
+			->paginator(6, $this->_request->page);
+
+		//按关键词搜索
+		if ($this->_request->q) {
+			//搜索分类
+			$cate = M('Goods_Category')->select()
+				->where('name = ?', $this->_request->q)
+				->fetchRow();
+			if ($cate->exists()) {
+				$ids = $cate->getChildIds();
+				$select->where('(g.category_id IN ('.($ids ? $ids : 0).') OR reverse(g.title) LIKE '. 'reverse("%'.$this->_request->q.'%")'.' OR reverse(g.tags) like '. 'reverse("%'.$this->_request->q.'%"))');
+			} else {
+				$select->where('reverse(g.title) LIKE '. 'reverse("%'.$this->_request->q.'%")');
+			}
+		}
+
+		//按分类搜索
+		if ($this->_request->cid) {
+			$ids = M('Goods_Category')->getChildIds((int)$this->_request->cid);
+			$select->where('g.category_id IN ('.($ids ? $ids : 0).')');
+		}
+
+		//按价格搜索
+		if ($this->_request->min_price) {
+			$select->where('g.min_price >= ?', $this->_request->min_price);
+		}
+
+		if ($this->_request->max_price) {
+			$select->where('g.max_price <= ?', $this->_request->max_price);
+		}
+
+		//按属性筛选
+		if ($this->_request->ft) {
+			$ft = explode('_', $this->_request->ft);
+			$ids = array();
+			foreach($ft as $k1 => $k2) {
+				if (!$k2) { continue; }
+				$str = trim($relateAttrs['selected'][$k1]['name']);
+				$str.= trim($relateAttrs['selected'][$k1]['value']);
+				$key = md5($str);
+
+				$gIds = M('Goods_Attribute')->select('goods_id')
+					->where('attr_key = ?'.($ftIds ? ' AND goods_id IN ('.implode(',', $ftIds).')' : ''), $key)
+					->fetchCols('goods_id');
+
+				$ftIds = @array_merge($ftIds, $gIds);
+				$attribute[] = $gIds;
+				$filter = 1;
+			}
+
+			$ids = array();
+			foreach ((array)$attribute as $item) { if (!$item) { $ids = 0; break; }
+				$ids = $ids ? array_intersect($ids, $item) : $item;
+			}
+			if ($filter) {
+				$select->where('g.id IN ('.($ids ? implode(',',$ids) : 0).')');
+			}
+		}
+
+		//排序方式
+		switch ($this->_request->sortby) {
+			case 'price_lowest': $select->order('g.min_price ASC'); break;
+			case 'price_highest': $select->order('g.max_price DESC'); break;
+			case 'comment': $select->order('g.comments_num DESC'); break;
+			case 'date_added': $select->order('g.create_time DESC'); break;
+			case 'transaction': $select->order('g.sales_num DESC'); break;
+		}
+		$select->order('g.update_time DESC');
+
+		//查找可筛选属性
+		$c1 = clone($select);
+		$attrs = $c1->reset(array('columns','paginator','limit','order'))
+			->columns('ga.*, COUNT(*) AS num')
+			->rightJoin(M('Goods_Attribute')->getTableName().' AS ga', 'ga.goods_id = g.id')
+			->group('ga.attr_key')
+			->fetchOnKey('ga.attr_key')
+			->toArray();
+
+		foreach($relateAttrs['items'] as $k1 => $row) {
+			foreach($row['values'] as $k2 => $item) {
+				$key = $item['key'];
+				$relateAttrs['items'][$k1]['values'][$k2]['num'] = $attrs[$key]['num'];
+			}
+		}
+
+		/*if (!count($relateCates)) {
+			$relateCates = M('Goods_Category')->getChilds(0, 3)->toTree();
+		}*/
+
+		/*$cp = $category->getParent();
+		if ($cp->exists()) {
+			$ids = $cp->getChildIds();
+			$relateGoods = M('Goods')->select()
+				->where('category_id IN('.($ids ? $ids : 0).') and category_id <> '.(int)$this->_request->cid.' and is_checked = 2')//去掉已选择的，并去掉限制
+				->limit(50)
+				->fetchRows()
+				->hasmanySku()
+				->hasmanyPromotions();
+		}*/
+
+
+		$view = $this->_initView();
+		$view->datalist = $select->fetchRows()
+			->hasmanySku()
+			->hasmanyPromotions();
+
+		/*$view->category = $category;
+		$view->relateCates = $relateCates;
+		$view->relateAttrs = $relateAttrs;
+		$view->relateGoods = $relateGoods;*/
+
+		$view->render('views/shopping/goods_ajax_list.php');
 	}
 
 	public function doDetail()
