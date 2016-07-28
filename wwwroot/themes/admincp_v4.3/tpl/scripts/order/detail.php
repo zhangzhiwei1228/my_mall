@@ -237,8 +237,11 @@ $this->head()->setTitle($this->title);
 				<div class="panel-heading"><h4 class="panel-title">物流信息</h4></div>
 				<div class="panel-body">
 					<div class="express-tracking"><p class="loading">正在查询,请稍后...</p></div>
+					<a href="//www.kuaidi100.com/all/yt.shtml" target="_blank">圆通快递查询单号</a>
 					<script type="text/javascript">
-						$('.express-tracking').loadExpress('sf', '<?=$this->data->delivery['code']?>');
+						$.get('/callback/kuaidi100/', {com:'ems',un:'9753404307401'}, function(data){
+							$('.express-tracking').html(data);
+						});
 					</script>
 				</div>
 			</div>
