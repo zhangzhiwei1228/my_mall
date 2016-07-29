@@ -303,7 +303,7 @@
 	overflow: hidden;
 }
 .n-banner3{
-	width: -webkit-calc(50% - 1px);
+	width: 50%;
 	float: left;
 	position: relative;
 	overflow: hidden;
@@ -549,13 +549,12 @@
 	width: 100%;
 	text-align: center;
 	display: block;
-	height: 182px;
-
+	/*height: 182px;*/
 }
 .n-pro-l-tit{
 	display: block;
-	font-size: 14px;
-	font-weight: bold;
+	font-size: 13px;
+	/*font-weight: bold;*/
 	text-align: center;
 }
 .n-pro-l-te{
@@ -599,6 +598,9 @@
 	bottom: 2%;
 	z-index: 1;
 	width: 100%;
+}
+.time167{
+	padding: 5px 5%;
 }
 .n-banner9 .hd9 span{
 	margin: 0 2px;
