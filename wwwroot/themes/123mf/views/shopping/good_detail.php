@@ -140,6 +140,10 @@
 		<?php } ?>
 	</form>
 	<div class="product-details-box bgwhite">
+		<p class="product-headline"><em class="fl"></em>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cn">产品详情</span>&nbsp;&nbsp;<span class="en"></span>Introduction&nbsp; details</span></p>.
+		<div class="time167">
+			<p>测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字</p>
+		</div>
 		<p class="product-headline"><em class="fl"></em>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cn">产品详情</span>&nbsp;&nbsp;<span class="en"></span>Product&nbsp; details</span></p>.
 		<p class="pic"><?=$this->data['description']?></p>
 	</div>
