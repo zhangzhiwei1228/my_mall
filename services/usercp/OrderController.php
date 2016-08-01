@@ -4,7 +4,7 @@ class Usercp_OrderController extends Usercp_Controller_Action
 {
 	public function init()
 	{
-		$this->user = $this->_auth();
+		//$this->user = $this->_auth();
 	}
 
 	public function doDefault()
@@ -143,6 +143,10 @@ class Usercp_OrderController extends Usercp_Controller_Action
 		// $view = $this->_initView();
 		// $view->data = $order;
 		// $view->render('usercp/order/confirm.php');
+	}
+	public function doExpress() {
+		$view = $this->_initView();
+		$view->render('views/shopping/order_express.php');
 	}
 
 	public function doComment()
