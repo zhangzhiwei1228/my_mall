@@ -69,7 +69,7 @@
 		</div>
 	</div>
 	<div class="n-all-m">
-		<input value="查看物流" type="button" onclick="window.location = 'http://m.kuaidi100.com'">
+		<input value="快递查询" type="button" onclick="window.location = 'http://m.kuaidi100.com'">
 		<input value="确认收货" type="button" onclick="window.location = '<?=$this->url('./confirm/?id='.$row['id'])?>'">
 	</div>
 </body>
