@@ -24,7 +24,9 @@
             $('.express-tracking').html(data);
         });
     </script>
+
 </div>
+<div><a href="http://m.kuaidi100.com">快递查询</a> </div>
 </body>
 <script>
     <?php
