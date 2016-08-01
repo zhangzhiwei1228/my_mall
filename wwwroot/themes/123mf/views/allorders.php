@@ -52,11 +52,7 @@
 						</div>
 					<?php } ?>
 					<?php if ($row['status'] == 3) {?>
-					<div class="n-all-m">
 
-						<input value="快递查询" type="button" onclick="window.location = 'http://m.kuaidi100.com'">
-						<input value="确认收货" type="button" onclick="window.location = '<?=$this->url('./confirm/?id='.$row['id'])?>'">
-					</div>
 					<?php } elseif ($row['status'] == 4 && $row['total_earn_points']) { ?>
 					<div class="n-all-m">
 						<input value="领取红包" type="button" onclick="window.location = '<?=$this->url('./receive/?id='.$row['id'])?>'">
@@ -71,6 +67,10 @@
 			</div> -->
 			<?php } ?>
 		</div>
+	</div>
+	<div class="n-all-m">
+		<input value="查看物流" type="button" onclick="window.location = 'http://m.kuaidi100.com'">
+		<input value="确认收货" type="button" onclick="window.location = '<?=$this->url('./confirm/?id='.$row['id'])?>'">
 	</div>
 </body>
 <script>
