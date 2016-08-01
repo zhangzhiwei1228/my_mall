@@ -40,12 +40,12 @@
 				<a href="<?=$this->url('/default/index')?>"><p>首页</p></a>
 			</li>
 			<li>
-				<a href="<?=$this->url('/default/cart')?>"><img width="17" height="17" src="<?php echo static_file('mobile/img/img-04.png'); ?> " alt=""></a>
-				<a href="<?=$this->url('/default/cart')?>"><p>购物车</p></a>
+				<a href="<?=$this->url('/default/cart/default')?>"><img width="17" height="17" src="<?php echo static_file('mobile/img/img-04.png'); ?> " alt=""></a>
+				<a href="<?=$this->url('/default/cart/default')?>"><p>购物车</p></a>
 			</li>
 			<li>
-				<a href="<?=$this->url('/usercp/index')?>"><img width="13" height="17" src="<?php echo static_file('mobile/img/img-06.png'); ?> " alt=""></a>
-				<a href="<?=$this->url('/usercp/index')?>"><p>会员中心</p></a>
+				<a href="http://m.kuaidi100.com"><img width="13" height="17" src="<?php echo static_file('mobile/img/img-06.png'); ?> " alt=""></a>
+				<a href="http://m.kuaidi100.com"><p>快递查询</p></a>
 			</li>
 			<li>
 				<a href="<?=$this->url('/default/news/list?cid=14')?>"><img width="19" height="17" src="<?php echo static_file('mobile/img/ws-01.png'); ?> " alt=""></a>
