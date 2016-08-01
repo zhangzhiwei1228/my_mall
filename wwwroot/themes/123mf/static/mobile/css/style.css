@@ -554,8 +554,10 @@
 .n-pro-l-tit{
 	display: block;
 	font-size: 13px;
-	/*font-weight: bold;*/
+	/* font-weight: bold; */
 	text-align: center;
+	letter-spacing: 0px;
+
 }
 .n-pro-l-te{
 	width: 100%;
@@ -2205,7 +2207,7 @@
 	display: inline-block;
 }
 .n-banner11{
-	width: -webkit-calc(50% - 1px);
+	width: 50%;
 	float: left;
 	position: relative;
 	overflow: hidden;
