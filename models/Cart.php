@@ -22,21 +22,23 @@ class Cart
 		//$this->_status = (array)$data['status'];
 		
 		//读取会员购物车
-		// $uid = M('User')->getCurUser()->id;
-		// if ($uid && !$this->_items) {
-		// 	$items = M('User_Cart')->select()
-		// 		->where('user_id = ?', $uid)
-		// 		->fetchRows();
-		// 	foreach ($items as $item) {
-		// 		$k = $item['goods_id'].'.'.$item['sku_id'];
-		// 		$this->_items[$k] = array(
-		// 			'id'=> $item['goods_id'], 
-		// 			'qty'=> $item['qty'], 
-		// 			'skuId'=> $item['sku_id'],
-		// 			'priceType' => $item['price_type']
-		// 		);
-		// 	}
-		// }
+		 $uid = M('User')->getCurUser()->id;
+		 if ($uid && !$this->_items) {
+		 	$items = M('User_Cart')->select()
+		 		->where('user_id = ?', $uid)
+		 		->fetchRows();
+		 	foreach ($items as $item) {
+		 		$k = $item['goods_id'].'.'.$item['sku_id'];
+		 		$this->_items[$k] = array(
+		 			'id'=> $item['goods_id'],
+		 			'qty'=> $item['qty'],
+		 			'skuId'=> $item['sku_id'],
+					'shipping_id' => $item['shipping_id'],
+		 			'priceType' => $item['price_type'],
+		 			'checkout' => $item['checkout'],
+		 		);
+		 	}
+		 }
 	}
 
 	/**
@@ -101,6 +103,11 @@ class Cart
 	 */
 	public function delItem($code)
 	{
+		$cart_code = explode('.',$code);
+		$uid = M('User')->getCurUser()->id;
+		if($uid) {
+			M('User_Cart')->delete('user_id ='. $uid . ' and goods_id ='.$cart_code[0].' and sku_id ='.$cart_code[1]);
+		}
 		unset($this->_items[$code]);
 		$this->save();
 	}
@@ -213,19 +220,24 @@ class Cart
 		)), 3600*24*30);
 
 		//保存会员购物车
-		// $uid = M('User')->getCurUser()->id;
-		// if ($uid) {
-		// 	M('User_Cart')->delete('user_id = ?', $uid);
-		// 	foreach($this->_items as $k => $item) {
-		// 		M('User_Cart')->insert(array(
-		// 			'user_id' => $uid,
-		// 			'goods_id' => $item['id'],
-		// 			'sku_id' => $item['skuId'],
-		// 			'qty' => $item['qty'],
-		// 			'checkout' => $item['checkout']
-		// 		));
-		// 	}
-		// }
+		 $uid = M('User')->getCurUser()->id;
+		 if ($uid) {
+		 	foreach($this->_items as $k => $item) {
+				$items = M('User_Cart')->select()
+					->where('user_id ='. $uid . ' and goods_id ='.$item['id'].' and sku_id ='.$item['skuId'].' and shipping_id ='.$item['shipping_id'].' and price_type='.$item['priceType'])
+					->fetchRows()->toArray();
+				if($items) continue;
+		 		M('User_Cart')->insert(array(
+		 			'user_id' => $uid,
+		 			'goods_id' => $item['id'],
+		 			'sku_id' => $item['skuId'],
+		 			'shipping_id' => $item['shipping_id'],
+		 			'price_type' => $item['priceType'],
+		 			'checkout' => $item['checkout'],
+		 			'qty' => $item['qty'],
+		 		));
+		 	}
+		 }
 	}
 
 	/**
