@@ -78,7 +78,7 @@ class CartController extends Controller_Action
 	public function doPlaceOrder()
 	{
 		$buyer = M('User')->getCurUser();
-
+		$shippings = array();
 		//初化始购物车
 		$cart = M('Cart');
 		$cart->setStatus('freight_id', $_POST['freight_id']);
@@ -107,7 +107,7 @@ class CartController extends Controller_Action
 		M('Order')->getAdapter()->beginTrans();
 		try {
 			//减库存
-			foreach ($items as $item) {
+			foreach ($items as $key =>$item) {
 				//处理规格库存
 				if ($item['skuId']) {
 					$sku = M('Goods_Sku')->select()
@@ -129,6 +129,7 @@ class CartController extends Controller_Action
 					trans_num = trans_num + 1,
 					quantity =	quantity - '.(int)$item['qty']
 				, (int)$item['goods']['id']);
+				$shippings[$key] = $item['shipping_id'];
 			}
 
 			$oid = M('Order')->insert(array_merge($_POST, $status, array(
@@ -139,7 +140,6 @@ class CartController extends Controller_Action
 				'is_virtual' => 0,
 				'expiry_time' => time() + (int)M('Setting')->timeout_pay,
 			)));
-
 			foreach($items as $k => $row) {
 				if (!$row['checkout']) continue;
 				unset($row['goods']['id']);
@@ -190,36 +190,28 @@ class CartController extends Controller_Action
 
 		$this->user = $this->_auth();
 		$order = M('Order')->getById((int)$this->_request->id);
-		//计算邮费
-		$total_weight = round($order['total_weight'],2);//总重量
-		$total_quantity = round($order['total_quantity'],2);//总数量
-		$user_adder_area_id = (int)$order['area_id'];
-		$shipping_id = (int)$order['shipping_id'];
-		$region = M('Region')->getById($user_adder_area_id);
-		//$region_parent_id = (int)$region['parent_id'];
 
-		$region_path_ids = $region['path_ids'];
-		$region_path_ids = explode(',',$region_path_ids);
-		$region_province = $region_path_ids[2];//获取省
-		$region_city = $region_path_ids[3];//获取市
-		//在存运费的时候，如果存的是全省中的，那destination的值是省id，如果是某些市，那会是市id
-		$shipping_freight = M('Shipping_Freight')->select()
-			->where('shipping_id = '. $shipping_id.' and (destination like '.'"%'.$region_province.'%" or destination like '.'"%'.$region_city.'%")')->fetchRow();
+		$order_json = json_decode($order['order_json']);
+		$order_postage = 0;
+		//将分好的商品的邮费计算出来
+		foreach($order_json as $key =>$val) {
+			if(strpos($val->skus_id,',')) {
+				$sku_ids = explode(',',$val->skus_id);
+				foreach($sku_ids as $sku_id) {
+					$sku = M('Goods_Sku')->select()->where('id = ?', (int)$sku_id)->fetchRow();
+					$good = M('Goods')->select()->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+					$val->goods[$sku_id] = $good;
+				}
 
-		$first_weight = (int)$shipping_freight['first_weight'];//首重
-		$first_freight = round($shipping_freight['first_freight'],2);//一千克首重价格
-		$second_weight = (int)$shipping_freight['second_weight'];//继重
-		$second_freight = round($shipping_freight['second_freight'],2);//一千克继重价格
-//		$one_weight = round($total_weight/$total_quantity,3);
-		$one_weight = ceil($total_weight/$total_quantity);//向上取正
-
-		if($one_weight > $first_weight) {
-			$total_postage = $first_weight*$first_freight+($one_weight-$first_weight)*$second_weight*$second_freight;
-		} else {
-			$total_postage = $first_weight*$first_freight;
+			} else {
+				$sku = M('Goods_Sku')->select()->where('id = ?', (int)$val->skus_id)->fetchRow();
+				$good = M('Goods')->select()->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+				$val->goods[$val->skus_id] = $good;
+			}
+			$val->order_postage = $this->doPostAge($order, $val->total, $val->weight);
+			$order_postage += $this->doPostAge($order, $val->total, $val->weight);
 		}
-		$total_postage = round($total_quantity*$total_postage,2);
-
+		$total_postage = $order['order_json'] ? $order_postage : $this->doPostAge($order);//计算邮费
 
 		if ($order['status'] >= 2) {
 			$url = H('url', 'module=usercp&controller=order&action=detail&id='.$order['id']);
@@ -285,6 +277,7 @@ class CartController extends Controller_Action
 		if ($order['total_amount'] > 0 || $total_postage > 0) {
 			$view = $this->_initView();
 			$view->order = $order;
+			$view->orders_json = $order_json;
 			$view->total_postage = $total_postage;
 			$view->payments = M('Payment')->select()
 				->where('is_enabled = 1')
@@ -662,5 +655,43 @@ class CartController extends Controller_Action
 	{
 		M('Cart')->setItems($_POST['cart'])
 			->save();
+	}
+
+	/**
+	 * @param $order
+	 * @param int $total
+	 * @param int $weight
+	 * @return float
+	 */
+	public function doPostAge($order, $total=0, $weight=0) {
+		//计算邮费
+		$total_weight = $total ? $total : round($order['total_weight'],2);
+		$total_quantity = $weight ? $weight : round($order['total_quantity'],2);
+		$user_adder_area_id = (int)$order['area_id'];
+		$shipping_id = (int)$order['shipping_id'];
+		$region = M('Region')->getById($user_adder_area_id);
+		//$region_parent_id = (int)$region['parent_id'];
+
+		$region_path_ids = $region['path_ids'];
+		$region_path_ids = explode(',',$region_path_ids);
+		$region_province = $region_path_ids[2];//获取省
+		$region_city = $region_path_ids[3];//获取市
+		//在存运费的时候，如果存的是全省中的，那destination的值是省id，如果是某些市，那会是市id
+		$shipping_freight = M('Shipping_Freight')->select()
+			->where('shipping_id = '. $shipping_id.' and (destination like '.'"%'.$region_province.'%" or destination like '.'"%'.$region_city.'%")')->fetchRow();
+
+		$first_weight = (int)$shipping_freight['first_weight'];//首重
+		$first_freight = round($shipping_freight['first_freight'],2);//一千克首重价格
+		$second_weight = (int)$shipping_freight['second_weight'];//继重
+		$second_freight = round($shipping_freight['second_freight'],2);//一千克继重价格
+//		$one_weight = round($total_weight/$total_quantity,3);
+		$one_weight = ceil($total_weight/$total_quantity);//向上取正
+
+		if($one_weight > $first_weight) {
+			$total_postage = $first_weight*$first_freight+($one_weight-$first_weight)*$second_weight*$second_freight;
+		} else {
+			$total_postage = $first_weight*$first_freight;
+		}
+		return round($total_quantity*$total_postage,2);
 	}
 }
