@@ -153,7 +153,14 @@ class Admincp_Controller_Action extends Suco_Controller_Action
 	public function doAdd()
 	{
 		if ($this->_request->isPost()) {
-			M($this->_formatModelName())->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
+			$skus = $this->_request->getPosts();
+			if(count($skus['skus']) > 1) {
+				foreach($skus['skus'] as $key => &$exts) {
+					if($key == 0) continue;
+					$exts['exts'] = $skus['skus'][0]['exts'];
+				}
+			}
+			M($this->_formatModelName())->insert(array_merge($skus, $this->_request->getFiles()));
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
 		}
 
@@ -172,7 +179,15 @@ class Admincp_Controller_Action extends Suco_Controller_Action
 		}
 
 		if ($this->_request->isPost()) {
-			M($this->_formatModelName())->updateById(array_merge($this->_request->getPosts(), $this->_request->getFiles()), (int)$this->_request->id);
+			$skus = $this->_request->getPosts();
+			if(count($skus['skus']) > 1) {
+				foreach($skus['skus'] as $key => &$exts) {
+					if($key == 0) continue;
+					$exts['exts'] = $skus['skus'][0]['exts'];
+				}
+			}
+
+			M($this->_formatModelName())->updateById(array_merge($skus, $this->_request->getFiles()), (int)$this->_request->id);
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
 		}
 
