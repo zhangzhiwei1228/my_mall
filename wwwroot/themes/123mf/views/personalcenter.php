@@ -6,7 +6,8 @@
 <body>
 <div class="n-personal-center">
 	<div style="position:fixed;top:0px;left:0px;" class="n-personal-center-tit">
-		<a href="javascript:(history.back());"><img width="11" height="21" src="<?php echo static_file('mobile/img/img-22.png')?> " alt=""></a>
+		<!--javascript:(history.back());-->
+		<a href="<?php echo $this->url('default')?>"><img width="11" height="21" src="<?php echo static_file('mobile/img/img-22.png')?> " alt=""></a>
 		个人中心
 	</div>
 	<div style="height:57px;" class="w-57"></div>
@@ -108,6 +109,11 @@
 				<img src="<?php echo static_file('mobile/img/img-35.png')?> " alt="">
 				<span><a href="<?=$this->url('order')?> ">我的订单</a></span>
 				<a class="n-list-end" href="<?=$this->url('order')?> "></a>
+			</li>
+			<li>
+				<img src="<?php echo static_file('mobile/img/img-04.png'); ?>" alt="" style="background-color: red">
+				<span><a href="<?=$this->url('default/cart/default')?> ">我的购物车</a></span>
+				<a class="n-list-end" href="<?=$this->url('default/cart/default')?> "></a>
 			</li>
 			<li>
 				<img src="<?php echo static_file('mobile/img/img-37.png')?> " alt="">
