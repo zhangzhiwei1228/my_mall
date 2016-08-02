@@ -171,9 +171,9 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 	{
 		$select = M('Goods')->alias('g')
 			->rightJoin(M('Goods_Sku')->getTableName().' AS gs', 'g.id = gs.goods_id')
-			->columns('gs.*, gs.thumb, g.code AS goods_code, g.thumb AS goods_thumb, g.title, g.package_unit, g.package_lot_unit, g.package_quantity')
+			->columns('gs.*, gs.thumb, (gs.quantity-gs.quantity_warning) as diff_quantify, g.code AS goods_code, g.thumb AS goods_thumb, g.title, g.package_unit, g.package_lot_unit, g.package_quantity')
+			->order('(gs.quantity-gs.quantity_warning) asc')
 			->paginator(20, $this->_request->page);
-
 		if ($this->_request->q) {
 			$select->where('(gs.code LIKE ? OR g.code LIKE ? OR g.title LIKE ?)', '%'.$this->_request->q.'%');
 		}

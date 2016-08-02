@@ -41,6 +41,7 @@ $this->head()->setTitle('SKU 管理');
 					<?php } ?>
 					<!-- <th width="160">销售价</th> -->
 					<th width="120">当前库存</th>
+					<th width="120">警告库存量</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -57,9 +58,9 @@ $this->head()->setTitle('SKU 管理');
 						<a href="<?=$this->url('action=edit&id='.$row['goods_id'].'&ref='.$this->_request->url)?>">
 							<img src="<?=$this->img($row['thumb']?$row['thumb']:$row['goods_thumb'], '160x160')?>" class="img-thumbnail"></a>
 					</td>
-					<td><a href="<?=$this->url('action=edit&id='.$row['goods_id'])?>">
+					<td><a href="<?=$this->url('action=edit&id='.$row['goods_id'])?>" style="<?php if($row['diff_quantify'] <= 0) {?> color:red<?php }?>">
 						<?=$row['title']?></a>
-						<div style="margin-top:8px">
+						<div style="margin-top:8px;<?php if($row['diff_quantify'] <= 0) {?> color:red<?php }?>">
 							货号：<?=$row['goods_code']?><br />
 							规格：<?=$row['spec']?$row['spec']:'N/A'?>
 						</div>
@@ -75,12 +76,22 @@ $this->head()->setTitle('SKU 管理');
 							<input name="data[<?=$row['id']?>][selling_price]" value="<?=$row['selling_price']?>" class="form-control" />
 							<span class="input-group-addon">元</span>
 						</div></td> -->
-					<td><div class="input-group input-group-sm">
+					<td>
+						<div class="input-group input-group-sm">
 						<input name="data[<?=$row['id']?>][quantity]" value="<?=$row['quantity']?>" class="form-control" />
 						<span class="input-group-addon">
 							<?=$row['package_quantity'] > 0 ? $row['package_lot_unit'] : $row['unit']?>
 						</span>
-						</div></td>
+						</div>
+					</td>
+					<td>
+						<div class="input-group input-group-sm">
+							<input name="data[<?=$row['id']?>][quantity_warning]" value="<?=$row['quantity_warning']?>" class="form-control" />
+						<span class="input-group-addon">
+							<?=$row['package_quantity'] > 0 ? $row['package_lot_unit'] : $row['unit']?>
+						</span>
+						</div>
+					</td>
 				</tr>
 				<?php } } ?>
 			</tbody>
