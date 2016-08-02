@@ -4,7 +4,7 @@ class Usercp_OrderController extends Usercp_Controller_Action
 {
 	public function init()
 	{
-		//$this->user = $this->_auth();
+		$this->user = $this->_auth();
 	}
 
 	public function doDefault()
