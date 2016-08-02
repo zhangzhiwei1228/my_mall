@@ -5,6 +5,45 @@
 
 <body class="bgcolor">
     <?php include_once VIEWS.'inc/header_jifen.php'; ?>
+    <?php if($this->orders_json) {?>
+        <?php foreach($this->orders_json as $key => $val) {?>
+            <div class="n-shopping-box" style="<?php if($key == 0) { ?>padding-top: 15px;<?php }?>">
+                <?php if(count($val->goods)) {?>
+                    <?php foreach($val->goods as $key=>$good) {?>
+                        <div class="n-shopping-box-down" style="border-bottom: 1px solid #868686">
+                            <div class="n-shopping-down-img">
+                                <img src="<?php echo $good['thumb']?>" alt="<?php echo $good['title']?>">
+                            </div>
+                            <div class="n-shopping-down-te">
+                                <a href="<?=$this->url("item/").$good['id'].'.html'?>"><p class="n-shopping-down-te1"><?=$good['title']?></p></a>
+                            </div>
+                        </div>
+                    <?php }?>
+                <?php }?>
+
+                <hr/>
+                <div class="n-shopping-box-top">
+                    <div style="float: left">
+                        <span>价格：<?php echo $val->points?>元</span>
+                        <?php if(!empty($val->subtotal_credit)) {?>
+                            <span>积分：<?php echo $val->subtotal_credit?></span>
+                        <?php }?>
+                        <?php if(!empty($val->subtotal_credit_happy)) {?>
+                            <span>快乐积分：<?php echo $val->subtotal_credit_happy?></span>
+                        <?php }?>
+                        <?php if(!empty($val->subtotal_credit_coin)) {?>
+                            <span>积分币：<?php echo $val->subtotal_credit_coin?></span>
+                        <?php }?>
+                        <span>邮费：<?php echo $val->order_postage?>元</span>
+                    </div>
+                    <div style="float: right">
+                        <span>件数：<?php echo $val->total?>件</span>
+                        <span>重量：<?php echo $val->weight?>KG</span>
+                    </div>
+                </div>
+            </div>
+        <?php }?>
+    <?php }?>
     <div class="pay-cash bgwhite">
     	<p class="cash w90">支付金额 :</p>
         <?php if(!empty($this->order['total_credit'])) {?>
@@ -49,7 +88,7 @@
     </div>
     <?php if ($this->order['total_amount']) { ?>
 
-    <div class="jifen-step06 ">
+    <div class="jifen-step06 " style="margin-bottom: 10px;">
     	<p class="you-method w90">选择支付方式 :</p>
     	<div class="method bgwhite">
 	    	<a class="ali bgwhite" href="javascript:;" data-code="alipay"></a>
