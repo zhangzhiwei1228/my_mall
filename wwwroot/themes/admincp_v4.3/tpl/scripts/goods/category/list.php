@@ -73,11 +73,11 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 						<?php } ?></td>
 					<td><?=$row['update_time'] ? date(DATETIME_FORMAT, $row['update_time']) : 'N/A'?></td>
 					<td><a href="<?=$this->url('action=add&pid=' . $row['id'])?>">加子类</a> | 
-						<a href="<?=$this->url('action=edit&id=' . $row['id'])?>">编辑</a> | 
+						<a href="<?=$this->url('action=edit&id=' . $row['id'])?>">编辑</a>
 						<?php if ($row['is_locked']) { ?>
-						<span style="color:#888">锁定</span>
+						 | <span style="color:#888">锁定</span>
 						<?php } else { ?>
-						<a href="<?=$this->url('action=delete&id=' . $row['id'])?>" onclick="return confirm('确定要删除这条记录吗?')">删除</a>
+						<?php /*<a href="<?=$this->url('action=delete&id=' . $row['id'])?>" onclick="return confirm('确定要删除这条记录吗?')">删除</a>*/?>
 						<?php } ?>
 					</td>
 				</tr>
