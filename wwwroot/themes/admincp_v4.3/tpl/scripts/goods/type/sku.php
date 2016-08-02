@@ -130,9 +130,9 @@ $specs = cd(0);
 				<?php foreach ($thead as $v) { ?>
 				<td class="text-center"><?=$v?></td>
 				<?php } ?>
-				<!-- <td class="text-center" width="150">SKU编号</td> -->
-				<!-- <td align="text-center" width="100">市场价 (<span class="package-unit"></span>)</td>
-				<td class="text-center" width="100">销售价 (<span class="package-unit"></span>)</td> -->
+				<!--<td class="text-center" width="150">SKU编号</td>
+				<td align="text-center" width="100">市场价 (<span class="package-unit"></span>)</td>
+				<td class="text-center" width="100">销售价 (<span class="package-unit"></span>)</td>-->
 				<td class="text-center" width="100">库存 (<span class="package-unit"></span>)</td>
 			</tr>
 		</thead>
@@ -159,9 +159,9 @@ $specs = cd(0);
 					<?=$t?>
 				<?php } else { echo $v; } ?></td>
 				<?php } ?>
-				<!-- <td class="text-center"><input type="text" name="skus[<?=$k?>][code]" value="<?=$this->skus[$k]['code']?>" class="form-control input-sm" /></td> -->
-				<!-- <td align="center"><input type="text" name="skus[<?=$k?>][market_price]" value="<?=isset($this->skus[$k]['selling_price']) ? $this->skus[$k]['market_price'] : 0?>" style="width:80px;" class="form-control input-sm JS_MP" /></td>
-				<td class="text-center"><input type="text" name="skus[<?=$k?>][selling_price]" value="<?=isset($this->skus[$k]['selling_price']) ? $this->skus[$k]['selling_price'] : 0?>" class="form-control input-sm JS_SP" /></td> -->
+				<!--<td class="text-center"><input type="text" name="skus[<?/*=$k*/?>][code]" value="<?/*=$this->skus[$k]['code']*/?>" class="form-control input-sm" /></td>
+				<td align="center"><input type="text" name="skus[<?/*=$k*/?>][market_price]" value="<?/*=isset($this->skus[$k]['selling_price']) ? $this->skus[$k]['market_price'] : 0*/?>" style="width:80px;" class="form-control input-sm JS_MP" /></td>
+				<td class="text-center"><input type="text" name="skus[<?/*=$k*/?>][selling_price]" value="<?/*=isset($this->skus[$k]['selling_price']) ? $this->skus[$k]['selling_price'] : 0*/?>" class="form-control input-sm JS_SP" /></td>-->
 				<td class="text-center"><input type="text" name="skus[<?=$k?>][quantity]" class="buychoose-quantity form-control input-sm" onchange="$.processQuantity()" value="<?=isset($this->skus[$k]['quantity']) ? $this->skus[$k]['quantity'] : 1?>" /></td>
 			</tr>
 			<?php $i++; } ?>
@@ -175,7 +175,9 @@ $specs = cd(0);
 		<div class="input-group" style="width:400px">
 			<input type="text" name="skus[<?=$k?>][quantity]" value="<?=$sku['quantity'] ? $this->skus[$k]['quantity'] : 1?>" class="form-control" />
 			<span class="input-group-addon">库存警告</span>
-			<input type="text" name="skus[<?=$k?>][quantity_warning]" value="<?=$this->skus[$k]['quantity_warning']?>" class="form-control" />
+			<input type="text" name="skus[<?=$k?>][quantity_warning]" id="sku-quantity-warning" value="<?=$this->skus[$k]['quantity_warning']?>" class="form-control" />
+			<input type="hidden" name="quantity_warning" id="good-quantity-warning" value="<?=$this->skus[$k]['quantity_warning']?>" class="form-control" />
+
 			<span class="input-group-addon"><span class="package-unit"></span></span>
 		</div>
 		<div class="help-block">库存为零时将停止销售. 当商品库存低于警告数值时,系统将会提示</div>
@@ -187,7 +189,9 @@ $specs = cd(0);
 <script>
 var thumb = $('.JS_ImgItem:first img').prop('src');
 $('.sku-thumb-init').prop('src', thumb);
-
+$("#sku-quantity-warning").blur(function(){
+	$('#good-quantity-warning').val($(this).val());
+});
 $.changeUnit();
 
 $('.JS_SP').change(function(){
