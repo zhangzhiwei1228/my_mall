@@ -37,6 +37,15 @@ if (!isset($this->data['author'])) {
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="control-label col-sm-2">推送地区:</label>
+					<div class="col-sm-7">
+						<div class="JS_Dmenu form-inline">
+							<input type="hidden" name="area_text" value="<?=$this->data['area_text']?>" />
+							<input type="hidden" name="area_id" value="<?=$this->data['area_id']?>" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="control-label col-sm-2">正文:</label>
 					<div class="col-sm-9"><div class="input-group">
 						<textarea name="content" class="form-control" rows="20" data-plugin="editor" data-token="<?=$this->admin->getToken()?>"><?=stripcslashes($this->data['content'])?></textarea>
@@ -134,3 +143,22 @@ if (!isset($this->data['author'])) {
 		</div>
 	</form>
 </div>
+<script type="text/javascript">
+	seajs.use('/assets/js/dmenu/dmenu.sea.js', function(dmenu) {
+		dmenu.init('.JS_Dmenu', {
+			rootId: 1,
+			script: '/misc.php?act=area',
+			htmlTpl: '<select class="form-control" style="width:auto; margin-right:6px"></select>',
+			firstText: '请选择所在地',
+			defaultText: '请选择',
+			selected: $('input[name=area_id]').val(),
+			callback: function(el, data) {
+				var location = $('.JS_Dmenu>select>option:selected').text();
+				$('input[name=area_id]').val(data.id > 0 ? data.id : 0);
+				$('input[name=area_text]').val(location);
+				$('input[name=zipcode]').val(data.zipcode > 0 ? data.zipcode : '');
+			}
+		});
+
+	});
+</script>

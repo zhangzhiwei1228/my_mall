@@ -81,7 +81,20 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 	public function doAdd()
 	{
 		if ($this->_request->isPost()) {
-			M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
+			$data = $this->_request->getPosts();
+			if($data['area_id']) {
+				$users = M('User')->select('id')->where('area='.$data['area_id'].' or city='.$data['area_id'].' or province='.$data['area_id'])->fetchRows()->toArray();
+				foreach($users as $user) {
+					M('Message')->insert( array(
+						'recipient_uid' => $user['id'],
+						'sender_uid' => $this->admin['id'],
+						'content' => strip_tags($data['content']),
+						'create_time' => time()
+					));
+				}
+			} else {
+				M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
+			}
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list&cid=' . $_POST['cid']);
 		}
 

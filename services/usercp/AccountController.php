@@ -11,6 +11,7 @@ class Usercp_AccountController extends Usercp_Controller_Action
 	public function doProfile()
 	{
 		if ($this->_request->isPost()) {
+
 			M('User_Extend')->delete('user_id = ?', $this->user['id']);
 			foreach($_POST['ext'] as $k => $v) {
 				M('User_Extend')->insert(array(
@@ -19,6 +20,26 @@ class Usercp_AccountController extends Usercp_Controller_Action
 					'field_name' => $v['name'],
 					'field_value' => $v['value']
 				));
+			}
+			if($_POST['areas']) {
+				$region = M('Region')->select()->where('id='.(int)$_POST['areas'])->fetchRow()->toArray();
+				$path_ids = $region['path_ids'];
+				$path_ids = explode(',',$path_ids);
+				$count = count($path_ids);
+				if($count == 4) {
+					$_POST['province'] = $path_ids[2];
+					$_POST['city'] = $path_ids[3];
+					$_POST['area'] = $_POST['areas'];
+				} elseif($count == 3) {
+					$_POST['province'] = $path_ids[2];
+					$_POST['city'] = $_POST['areas'];
+					$_POST['area'] = '';
+				} elseif($count == 2) {
+					$_POST['province'] = $_POST['areas'];
+					$_POST['city'] = '';
+					$_POST['area'] = '';
+				}
+				unset($_POST['areas']);
 			}
 
 			$this->user->save($_POST);

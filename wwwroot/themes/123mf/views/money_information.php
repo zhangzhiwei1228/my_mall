@@ -75,24 +75,29 @@
 				</span>
 				<script type="text/javascript" src="/assets/js/seajs/sea.js"></script>
 				<script>
-				seajs.use('/assets/js/dmenu/dmenu.sea.js', function(dmenu) {
-					dmenu.init('.JS_Dmenu', {
-						rootId: 1,
-						script: '/misc.php?act=area',
-						htmlTpl: '<select class="g-select"></select>',
-						firstText: '请选择所在地',
-						defaultText: '请选择',
-						selected: $('input[name="ext[<?=$name?>][value]"]').val(),
-						callback: function(el, data) { 
-							var location = $('.JS_Dmenu>select>option:selected').text();
-							$('input[name="ext[<?=$name?>][value]"]').val(location);
-						}
+					var avId = new Array();
+					var str_avId;
+					var k;
+					seajs.use('/assets/js/dmenu/dmenu.sea.js', function(dmenu) {
+						dmenu.init('.JS_Dmenu', {
+							rootId: 1,
+							script: '/misc.php?act=area',
+							htmlTpl: '<select class="g-select"></select>',
+							firstText: '请选择所在地',
+							defaultText: '请选择',
+							selected: $('input[name="ext[<?=$name?>][value]"]').val(),
+							callback: function(el, data) {
+								var location = $('.JS_Dmenu>select>option:selected').text();
+								$('input[name="ext[<?=$name?>][value]"]').val(location);
+								$('#area_val').val(data.id);
+							}
+						});
 					});
-				});
 				</script>
 				<?php } ?>
 			</li>
 			<?php } ?>
+			<input name="areas" id="area_val" type="hidden" />
 		</ul>
 	</div>
 	<div style="height:50px;width:100%;overflow: hidden;" class="h-50"></div>
