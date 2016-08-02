@@ -48,7 +48,7 @@
 
     </ul>
     <div style="display:none;" class="mn">
-        <img src="<?php echo static_file('img/loading.gif'); ?>" style="display: block;margin:0 auto;"/>
+        <img src="<?php echo static_file('img/loading1.gif'); ?>" style="display: block;margin:0 auto;"/>
     </div>
     <div class="clear"></div>
     <?php if ($this->_request->action != 'search') { ?>
