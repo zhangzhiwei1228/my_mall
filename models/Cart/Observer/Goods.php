@@ -32,7 +32,13 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 		}
 		$cart->setItems($items);
 		$cart->save();
+		foreach($items as $key => $val) {
+			$shippings[$key] = $val['shipping_id'];
+		}
 
+		$shippings = $this->getFuseShipping($shippings);
+
+		$fuseGoods = $this->getFuseGoods($shippings, $items, $goods);
 		$qty = 0; $total = 0; $weight = 0;
 		foreach($items as $i => $item) {
 
@@ -128,7 +134,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 		}
 
 		$cart->setItems($items);
-		$cart->setStatus('total_amount', $total)
+		$cart->setStatus('total_amount', round($total,2))
 			->setStatus('total_credit', $credit)
 			->setStatus('total_credit_happy', $credit_happy)
 			->setStatus('total_credit_coin', $credit_coin)
@@ -136,9 +142,156 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 			->setStatus('total_save', $save)
 			->setStatus('total_quantity', $qty)
 			->setStatus('total_weight', $weight)
-			->setStatus('total_pay_amount', $total-$save)
+			->setStatus('total_pay_amount', round($total-$save,2))
+			->setStatus('order_json', $fuseGoods)
 			->setStatus('total_earn_points', $points);
 
 		return $cart;
+	}
+
+	/**
+	 * @param $shippings array
+	 * @return mixed array
+	 * 将所选商品的 shipping_id 重新分类（同一发货点在一个数组中）
+	 */
+	public function getFuseShipping($shippings) {
+		if(count($shippings) > 1 ) {
+			// 获取去掉重复数据的数组
+			$uniques = array_unique ( $shippings );
+			// 获取重复数据的数组
+			$repeats = array_diff_assoc ( $shippings, $uniques );
+			$i = 0;
+			foreach($uniques as $key =>$repeat) {
+				if(in_array($repeat,$repeats)) {
+					$shipping[$i][$key] = $repeat;
+					foreach($repeats as $ke => $val) {
+						if($repeat == $val) {
+							$shipping[$i][$ke] = $repeat;
+						}
+					}
+				} else {
+					//$arr[$i] = array_diff($uniques,$repeats);
+					$shipping[$key] = $repeat;
+				}
+				$i++;
+			}
+		}
+		return $shipping ? $shipping : $shippings;
+	}
+
+	/**
+	 * @param $shippings
+	 * @param $items
+	 * @param $goods
+	 * @return string
+	 * 将同一发货点的商品打包
+	 */
+	public function getFuseGoods($shippings,$items,$goods) {
+		$keys = 0;
+		$ids = array();
+		foreach($shippings as $i =>$shipping) {
+			if(is_array($shipping)) {
+				foreach($shipping as $key => $val) {
+					$item = $items[$key];
+					$g = $goods[$item['skuId']];
+					$qty = $item['qty'] > $g['quantity'] ? $g['quantity'] : $item['qty'];
+					$g['thumb'] = $g['thumb'] ? $g['thumb'] : $g['thumb1'];
+					switch($item['priceType']) {
+						case 1:
+							$g['price_text'] = $g['point1'].'快乐积分';
+							$g['final_credit_happy'] = $g['point1'];
+							break;
+						case 2:
+							$g['price_text'] = $g['point2'].'免费积分';
+							$g['final_credit'] = $g['point2'];
+							break;
+						case 3:
+							$g['price_text'] = $g['exts']['ext1']['cash'].'元+'.$g['exts']['ext1']['point'].'免费积分';
+							$g['final_credit'] = $g['exts']['ext1']['point'];
+							$g['final_cash'] = $g['exts']['ext1']['cash'];
+							break;
+						case 4:
+							$g['price_text'] = $g['exts']['ext2']['cash'].'元+'.$g['exts']['ext2']['point'].'积分币';
+							$g['final_credit_coin'] = $g['exts']['ext2']['point'];
+							$g['final_cash'] = $g['exts']['ext2']['cash'];
+							break;
+					}
+					$g['final_price'] = $g['final_cash'];
+					$subtotal_credit = $qty * $g['final_credit'];
+					$subtotal_credit_happy = $qty * $g['final_credit_happy'];
+					$subtotal_credit_coin = $qty * $g['final_credit_coin'];
+					$subtotal_weight = $qty * $g['package_weight'];
+					if ($g['earn_points'] == -1) {
+						$ratio = M('Setting')->get('credit_expend');
+						$subtotal_earn_points= $qty * ($g['final_price'] * $ratio);
+					} else {
+						$subtotal_earn_points = $qty * $g['earn_points'];
+					}
+
+					if ($item['checkout']) {
+						$ids[$keys]['total'] += $qty;
+						$ids[$keys]['weight'] += $subtotal_weight;
+						$ids[$keys]['thumb'] = $g['thumb'];
+						$ids[$keys]['points'] += $subtotal_earn_points;
+						$ids[$keys]['subtotal_credit'] += $subtotal_credit;
+						$ids[$keys]['subtotal_credit_happy'] += $subtotal_credit_happy;
+						$ids[$keys]['subtotal_credit_coin'] += $subtotal_credit_coin;
+					}
+					$key1 = explode('.',$key);
+					$shipping[$key1[1]] = $val;
+					unset($shipping[$key]);
+				}
+				$ids[$keys]['skus_id'] = implode(',',array_keys($shipping));
+			} else {
+				$ids[$keys]['skus_id'] = explode('.',$i)[1];
+				$item = $items[$i];
+				$g = $goods[$item['skuId']];
+				$qty = $item['qty'] > $g['quantity'] ? $g['quantity'] : $item['qty'];
+				$g['thumb'] = $g['thumb'] ? $g['thumb'] : $g['thumb1'];
+				switch($item['priceType']) {
+					case 1:
+						$g['price_text'] = $g['point1'].'快乐积分';
+						$g['final_credit_happy'] = $g['point1'];
+						break;
+					case 2:
+						$g['price_text'] = $g['point2'].'免费积分';
+						$g['final_credit'] = $g['point2'];
+						break;
+					case 3:
+						$g['price_text'] = $g['exts']['ext1']['cash'].'元+'.$g['exts']['ext1']['point'].'免费积分';
+						$g['final_credit'] = $g['exts']['ext1']['point'];
+						$g['final_cash'] = $g['exts']['ext1']['cash'];
+						break;
+					case 4:
+						$g['price_text'] = $g['exts']['ext2']['cash'].'元+'.$g['exts']['ext2']['point'].'积分币';
+						$g['final_credit_coin'] = $g['exts']['ext2']['point'];
+						$g['final_cash'] = $g['exts']['ext2']['cash'];
+						break;
+				}
+				$g['final_price'] = $g['final_cash'];
+				$subtotal_credit = $qty * $g['final_credit'];
+				$subtotal_credit_happy = $qty * $g['final_credit_happy'];
+				$subtotal_credit_coin = $qty * $g['final_credit_coin'];
+				$subtotal_weight = $qty * $g['package_weight'];
+				if ($g['earn_points'] == -1) {
+					$ratio = M('Setting')->get('credit_expend');
+					$subtotal_earn_points= $qty * ($g['final_price'] * $ratio);
+				} else {
+					$subtotal_earn_points = $qty * $g['earn_points'];
+				}
+
+				if ($item['checkout']) {
+					$ids[$keys]['total'] += $qty;
+					$ids[$keys]['weight'] += $subtotal_weight;
+					$ids[$keys]['thumb'] = $g['thumb'];
+					$ids[$keys]['points'] += $subtotal_earn_points;
+					$ids[$keys]['subtotal_credit'] += $subtotal_credit;
+					$ids[$keys]['subtotal_credit_happy'] += $subtotal_credit_happy;
+					$ids[$keys]['subtotal_credit_coin'] += $subtotal_credit_coin;
+				}
+			}
+			$keys++;
+		}
+		return json_encode($ids);
 	}
 }
