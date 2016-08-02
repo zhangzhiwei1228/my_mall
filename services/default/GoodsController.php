@@ -477,4 +477,25 @@ class GoodsController extends Controller_Action
 				'goods'
 			))->fetchCols('ref_id'));
 	}
+
+	/**
+	 * 判断规格的库存量
+	 */
+	public function doGetgoodsku() {
+		$param = $this->_request->param;
+		$good_id = (int)$this->_request->good_id;
+		$quantity = $sku_id = 0;
+		$arrs = M('Goods_Sku')->select()
+			->where('goods_id = '.$good_id.' and reverse(spec) LIKE '. 'reverse("%'.$param.'%")')
+			->fetchRows()->toArray();
+		if(count($arrs)) {
+			foreach ($arrs as $arr) {
+				$quantity += $arr['quantity'];
+				$sku_id = $arr['id'];
+			}
+		} else {
+			$quantity = 'error';
+		}
+		echo json_encode(array('quantity'=>$quantity,'sku_id'=>$sku_id));
+	}
 }
