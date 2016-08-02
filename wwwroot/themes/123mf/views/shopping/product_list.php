@@ -47,7 +47,9 @@
     <ul class="good-list product-list good-ajax-list" style="margin-bottom: 60px;">
 
     </ul>
-    <div style="display:none;" class="mn">12123</div>
+    <div style="display:none;" class="mn">
+        <img src="<?php echo static_file('img/loading.gif'); ?>" style="display: block;margin:0 auto;"/>
+    </div>
     <div class="clear"></div>
     <?php if ($this->_request->action != 'search') { ?>
     <h3>同类商品推荐</h3>
