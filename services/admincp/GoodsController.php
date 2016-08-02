@@ -40,7 +40,7 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 
 		switch ($this->_request->t) {
 			case 'quantity_warning':
-				$select->where('g.is_selling = 1 AND g.quantity != -1 AND (g.quantity = 0)')->order('g.quantity ASC');
+				$select->where('g.is_selling = 1 AND (g.quantity = 0 or (g.quantity - g.quantity_warning <= 0))')->order('g.update_time desc, g.quantity ASC');
 				break;
 			case 'approval_pending':
 				$select->where('g.is_checked = 0');
