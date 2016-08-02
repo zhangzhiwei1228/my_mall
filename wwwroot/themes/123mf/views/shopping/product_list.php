@@ -44,9 +44,10 @@
 <body class="bgcolor">
     <?php include_once VIEWS.'inc/header_shop02.php'; ?>
     <!-- <p class="ibuy bgwhite"><em></em>我能购买</p> -->
-    <ul class="good-list product-list good-ajax-list" style="<?php if(count($this->datalist)>0) {?>margin-bottom: 60px;<?php }?>">
+    <ul class="good-list product-list good-ajax-list" style="margin-bottom: 60px;">
 
     </ul>
+    <div style="display:none;" class="mn">12123</div>
     <div class="clear"></div>
     <?php if ($this->_request->action != 'search') { ?>
     <h3>同类商品推荐</h3>
@@ -114,6 +115,7 @@
             var t=$('body').scrollTop();
             if(t>=H-h*1.1 && flag==true){
                 flag=false;
+                $(".mn").show()
                 $.ajax({
                     url:"/goods/getgoodlist/?page="+n+'&sbt='+sbt+'&q='+q+'&cid='+cid,
                     success:function(e){
@@ -124,10 +126,13 @@
                         }
                         $('.good-ajax-list').append(e);
                         n++;
+
                         setTimeout(function(){
                             flag=true;
-                        },300)
+                            $(".mn").hide();
+                        },100)
                     }
+
                 })
             }
         });
