@@ -32,8 +32,14 @@
 			<li>
 				<span class="sp1">经营类别</span>
 				<select name="type" id="">
-					<option value="酒店">酒店</option>
-					<option value="酒店">酒店</option>
+					<?php
+					$cates = M('Shop_Category')->select()
+						->where('parent_id = 0')
+						->order('rank ASC, id ASC')
+						->fetchRows();
+					foreach($cates as $row) { ?>
+						<option value="<?=$row['id']?>"><?=$row['name']?></option>
+					<?php } ?>
 				</select>
 			</li>
 			<li>
