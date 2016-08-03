@@ -11,6 +11,7 @@
 <head>
     <?php include_once VIEWS.'inc/head.php'; ?>
 </head>
+
 <body style="background:#ebebeb">
 <div class="n-allorders">
     <div class="n-personal-center-tit">
@@ -18,13 +19,11 @@
         物流信息
     </div>
     <div class="express-tracking"><p class="loading">正在查询,请稍后...</p></div>
-    <a href="//www.kuaidi100.com/all/yt.shtml" target="_blank">圆通快递查询单号</a>
     <script type="text/javascript">
-        $.post('/callback/kuaidi100/', {com:'huitongkuaidi',un:'70087400502939'}, function(data){
+        $.get('/callback/kuaidi100/', {com:'huitongkuaidi',nu:'70087400502939'}, function(data){
             $('.express-tracking').html(data);
         });
     </script>
-
 </div>
 <div><a href="http://m.kuaidi100.com">快递查询</a> </div>
 </body>
