@@ -33,7 +33,7 @@ class CallbackController extends Controller_Action
 		$com = $this->_request->com;
 		$nu = $this->_request->nu;
 		$AppKey='25af9838acf0cfd4';
-		$url ='http://api.kuaidi100.com/api?id='.$AppKey.'&com='.$com.'&nu='.$nu.'&show=2&muti=1&order=asc';
+		$url ='http://api.kuaidi100.com/api?id='.$AppKey.'&com='.$com.'&nu='.$nu.'&show=0&muti=1&order=desc';
 
 		$powered = '查询数据由：<a href="http://kuaidi100.com" target="_blank">KuaiDi100.Com （快递100）</a> 网站提供 ';
 

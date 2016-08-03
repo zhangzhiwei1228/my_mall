@@ -75,4 +75,12 @@ class Admincp_RegionController extends Admincp_Controller_Action
 			->fetchOnKey('id')
 			->toTree());
 	}
+	public function doGetMtreeArea()
+	{
+		echo json_encode(M('Region')->select('id, parent_id, name, zipcode, level')
+			->where('parent_id ='.(int)$this->_request->area_id)
+			->order('id ASC, rank ASC')
+			->fetchOnKey('id')
+			->toTree());
+	}
 }
