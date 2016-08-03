@@ -55,6 +55,6 @@ class CallbackController extends Controller_Action
 			$get_content = $snoopy->results;
 		}
 
-		echo $get_content . '<br/>' . $powered;
+		echo $get_content;
 	}
 }

@@ -3474,4 +3474,72 @@ iframe{width: 100% !important}
 	border-radius: 3px;
 }
 
+/************kuaidi100***************/
+.add{
+	background: #fff;
+	position: relative;
+}
+.add .top{
+	width: 94%;
+	padding: 0px 3%;
+	overflow: hidden;
+	border-bottom: 1px solid #cdcdcd;
+}
+.add .cen{
+	line-height: 30px;
+	font-size: 14px;
+	padding: 0px 3%;
+}
+.add .top span{
+	font-size: 14px;
+	line-height: 40px;
+	display: block;
+}
+.add .bot .jkk{
+	width: -webkit-calc(100% - 30px);
+}
+.add .bot{
 
+	width: 94%;
+	padding: 0px 3%;
+	min-height: 300px;
+	background-size: 10px 100%;
+}
+.add .bot.cur{
+	background: url(../../img/kl-02.png) no-repeat 3% 0px;
+	background-size: 10px 100%;
+}
+.add .bot ul{
+	width: 100%;
+	float: none;
+	overflow: hidden;
+}
+.add .bot li{
+	width: 100%;
+	margin-bottom: 5px;
+}
+.add .bot li span{
+	display: block;
+	float: left;
+	font-size: 13px;
+	color: #afa9a9;
+}
+.add .bot li span.img{
+	margin-right:15px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: #cdcdcd;
+	margin-top: 6px;
+}
+.add .bot li span.img.cur{
+	background: #0CF7C8;
+}
+.add-boxab{
+	position: absolute;
+	left: 2%;
+	height: 6px;
+	width: 12px;
+	top: 71px;
+	background: #fff;
+}
