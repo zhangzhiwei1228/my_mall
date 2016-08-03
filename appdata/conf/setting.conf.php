@@ -35,6 +35,7 @@ return array (
   'invite_earn_points' => '50',
   'credit_reg' => '20',
   'credit_rate' => '8',
+  'credit_rate_agent' => '5',
   'credit_happy_rate' => '10',
   'credit_coin_rate' => '1',
 );

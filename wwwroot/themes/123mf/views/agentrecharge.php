@@ -72,7 +72,7 @@
 	<?php } elseif ($this->_request->t == 'credit') { ?>
 	<div class="n-recharge-pic-te">
 		<p style="color:#b40000;font-size:14px;">免费积分充值说明：</p>
-		<p style="color:#555;">1元=<?=$this->setting['credit_rate']?>免费积分（免费积分只能在兑购商品时使用的）</p>
+		<p style="color:#555;">1元=<?=$this->setting['credit_rate_agent']?>免费积分（免费积分只能在兑购商品时使用的）</p>
 	</div>
 	<div class="n-h5"></div>
 	<div class="n-recharge-sp">
@@ -86,7 +86,7 @@
 		<span>RMB</span>
 	</div>
 	<script type="text/javascript">
-		var rate = <?=$this->setting['credit_rate']?>;
+		var rate = <?=$this->setting['credit_rate_agent']?>;
 		$('[name=point]').on('change', function(){
 			var num = parseFloat($(this).val());
 			//console.log(num/rate);

@@ -190,7 +190,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 								'pay', $q['total_fee'], $voucher, '购买免费积分#'.$voucher
 							)->commit();
 
-							$point = $setting['credit_rate']*$q['total_fee'];
+							$point = ($user['role'] == 'seller') ? $setting['credit_rate_agent']*$q['total_fee'] : $setting['credit_rate']*$q['total_fee'];
 							$user->credit($point, '购买免费积分');
 							die('success');
 						}
