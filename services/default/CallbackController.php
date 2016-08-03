@@ -32,7 +32,7 @@ class CallbackController extends Controller_Action
 	public function doKuaidi100() {
 		$com = $this->_request->com;
 		$nu = $this->_request->nu;
-		$AppKey='0aae9b18c0359331';
+		$AppKey='25af9838acf0cfd4';
 		$url ='http://api.kuaidi100.com/api?id='.$AppKey.'&com='.$com.'&nu='.$nu.'&show=2&muti=1&order=asc';
 
 		$powered = '查询数据由：<a href="http://kuaidi100.com" target="_blank">KuaiDi100.Com （快递100）</a> 网站提供 ';
@@ -54,6 +54,7 @@ class CallbackController extends Controller_Action
 			$snoopy->fetch($url);
 			$get_content = $snoopy->results;
 		}
+
 		echo $get_content . '<br/>' . $powered;
 	}
 }
