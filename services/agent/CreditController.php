@@ -81,4 +81,58 @@ class Agent_CreditController extends Agent_Controller_Action
 			return true;
 		}
 	}
+	//商家充值免费积分
+	public function doRecharge() {
+		if ($this->_request->isPost()) {
+			$view = $this->_initView();
+			$view->payments = M('Payment')->select()
+				->where('is_enabled = 1')
+				->order('rank ASC, id ASC')
+				->fetchRows();
+			$view->render('views/agentpayway.php');
+			die;
+		}
+
+		$view = $this->_initView();
+		$view->render('views/agentrecharge.php');
+	}
+	//选择充值
+	public function doPayRecharge()
+	{
+		if ($this->_request->isPost()) {
+			switch ($_POST['type']) {
+				case 'credit':
+					$prefix = 'RCA-';
+					break;
+				case 'credit_happy':
+					$prefix = 'RCB-';
+					break;
+				case 'credit_coin':
+					$prefix = 'RCC-';
+					break;
+				case 'vip0_active':
+					$prefix = 'VIP-';
+					break;
+				case 'vip1_active':
+					$prefix = 'VIP1-';
+					break;
+				case 'vip2_active':
+					$prefix = 'VIP2-';
+					break;
+				case 'vip3_active':
+					$prefix = 'VIP3-';
+					break;
+				case 'vip4_active':
+					$prefix = 'VIP4-';
+					break;
+			}
+			$payment = M('Payment')->factory($_POST['payment']);
+			$payment->pay($_POST['amount'], http_build_query(array(
+				'user_id' => $this->user->id,
+				'trade_no' => $prefix.$this->user->id.'-'.time(),
+				'subject' => '帐户充值',
+			)), $_POST['return_url'],$_POST['type']);
+			die;
+		}
+	}
 }

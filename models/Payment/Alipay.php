@@ -49,7 +49,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 		parse_str($params);
 		$show_url = (string)new Suco_Helper_Url($show_url1);
 		$notifyUrl = (string)new Suco_Helper_Url('module=default&controller=callback&action=payment&t=alipay').'/';
-		$returnUrl = $show_url;
+		$returnUrl = $return_url ? $return_url :$show_url;
 		//$returnUrl = $notifyUrl;
 
 		$parameter = array(
