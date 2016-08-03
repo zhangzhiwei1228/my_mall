@@ -126,6 +126,19 @@ class Agent_CreditController extends Agent_Controller_Action
 					$prefix = 'VIP4-';
 					break;
 			}
+			if($_POST['payment'] == 'wxpay') {
+				$this->redirect('/cart/payjsapi/?amount='.$_POST['amount'].'&params='.base64_encode(
+						http_build_query(
+							array(
+								'user_id' => $this->user->id,
+								'trade_no' => $prefix.$this->user->id.'-'.time(),
+								'subject' => '帐户充值',
+							)
+						)
+					).'&return_url='.$_POST['return_url'].'&type='.$_POST['type']
+				);
+				return false;
+			}
 			$payment = M('Payment')->factory($_POST['payment']);
 			$payment->pay($_POST['amount'], http_build_query(array(
 				'user_id' => $this->user->id,

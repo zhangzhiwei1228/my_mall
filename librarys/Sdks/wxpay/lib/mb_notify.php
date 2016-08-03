@@ -70,8 +70,8 @@ class PayNotifyCallBack extends WxPayNotify
 							$user->expend(
 								'pay', $result['cash_fee']/100, $voucher, '购买免费积分#'.$voucher
 							)->commit();
-
-							$point = $setting['credit_rate']*($result['cash_fee']/100);
+							$point = ($user['role'] == 'seller') ? $setting['credit_rate_agent']*($result['cash_fee']/100) : $setting['credit_rate']*($result['cash_fee']/100);
+							/*$point = $setting['credit_rate']*($result['cash_fee']/100);*/
 							$user->credit($point, '购买免费积分');
 							die('success');
 						}

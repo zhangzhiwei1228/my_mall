@@ -312,6 +312,7 @@ class CartController extends Controller_Action
 		$view = $this->_initView();
 		$view->amount = $amount;
 		$view->params = $params;
+		$view->return_url = $this->_request->return_url;
 		$view->render('views/shopping/jsapi.php');
 	}
 	/**
