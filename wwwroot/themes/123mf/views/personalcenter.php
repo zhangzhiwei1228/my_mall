@@ -29,11 +29,11 @@
 				<span><a href="<?=$this->url('money/recharge?t=balance')?> ">在线充值</a></span>
 				<a class="n-list-end" href="<?=$this->url('money/recharge?t=1')?>"></a>
 			</li> -->
-			<li>
-				<img src="<?php echo static_file('mobile/img/img-26.png')?> " alt="">
-				<span><a href="<?=$this->url('money/recharge?t=credit_happy')?> ">快乐积分充值</a></span>
-				<a class="n-list-end" href="<?=$this->url('money/recharge?t=credit_happy')?>"></a>
-			</li>
+			<!--<li>
+				<img src="<?php /*echo static_file('mobile/img/img-26.png')*/?> " alt="">
+				<span><a href="<?/*=$this->url('money/recharge?t=credit_happy')*/?> ">快乐积分充值</a></span>
+				<a class="n-list-end" href="<?/*=$this->url('money/recharge?t=credit_happy')*/?>"></a>
+			</li>-->
 			<li>
 				<img src="<?php echo static_file('mobile/img/img-26.png'); ?> " alt="">
 				<span><a href="<?=$this->url('money/recharge?t=credit')?>">免费积分充值</a></span>

@@ -30,18 +30,18 @@
 				<a class="n-list-end1" href="">币</a>
 				<p><?=$this->user['credit_coin']?></p>
 			</li>
-			<li>
-				<img src="<?php echo static_file('mobile/img/img-50.png'); ?> " alt="">
+			<!--<li>
+				<img src="<?php /*echo static_file('mobile/img/img-50.png'); */?> " alt="">
 				<span><a href="">我的抵用券：</a></span>
 				<a class="n-list-end1" href="">券</a>
 				<p>0</p>
 			</li>
 			<li>
-				<img src="<?php echo static_file('mobile/img/img-51.png'); ?> " alt="">
+				<img src="<?php /*echo static_file('mobile/img/img-51.png'); */?> " alt="">
 				<span><a href="">我的商城现金：</a></span>
 				<a class="n-list-end1" href="">元</a>
-				<p><?=$this->user['balance']?></p>
-			</li>
+				<p><?/*=$this->user['balance']*/?></p>
+			</li>-->
 		</ul>
 		<div class="n-h5"></div>
 		<ul class="clear">
