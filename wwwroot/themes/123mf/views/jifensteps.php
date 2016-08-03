@@ -37,7 +37,7 @@
 	    	</div>
 	    </div>
 	    <div class="jifen-recharge bgwhite">
-	    	<a href="#">立即充值免费积分</a>
+	    	<a href="<?php echo $this->url('agent/credit/recharge/?t=credit')?>">立即充值免费积分</a>
 	    </div>
 	</div>
 	<div class="n-h60"></div>
