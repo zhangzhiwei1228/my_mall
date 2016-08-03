@@ -10,8 +10,8 @@
 <html>
 <head>
     <?php include_once VIEWS.'inc/head.php'; ?>
-    <style>
-        table{width: 100%!important;}
+    <style type="text/css">
+        table{width: 100% !important;}
     </style>
 </head>
 
