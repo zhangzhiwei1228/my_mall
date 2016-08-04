@@ -115,7 +115,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 						http_build_query(
 							array(
 								'user_id' => $this->user->id,
-								'trade_no' => $prefix.$this->user->id.'-'.time(),
+								'trade_no' => $prefix.$this->user->id,
 								'subject' => '帐户充值',
 								)
 						)
