@@ -27,7 +27,9 @@ class PayNotifyCallBack extends WxPayNotify
 			try {
 				list($type, $code) = explode('-', trim($result['out_trade_no']));
 				$voucher = 'ALI-'.$result['trade_no'];
-
+                if(isset($_SESSION['awaiting_payment'])) {
+                    unset($_SESSION['awaiting_payment']);
+                }
 				//滤重
 				$recharge = M('User_Recharge')->select()
 					->where('voucher = ? AND payment_id = ?', array($voucher, 2))

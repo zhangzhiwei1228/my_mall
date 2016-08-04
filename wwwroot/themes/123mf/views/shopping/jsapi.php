@@ -19,7 +19,7 @@ $input->SetTotal_fee($amount);
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetGoods_tag($subject.'【'.M('Setting')->sitename.'】');
-$input->SetNotify_url('http://zzw.hzboc.com/cart/wxnotify/');
+$input->SetNotify_url('http://www.123bbw.com/index.php/cart/wxnotify/');
 $input->SetTrade_type("JSAPI");
 $input->SetOpenid($openId);
 $order = WxPayApi::unifiedOrder($input);

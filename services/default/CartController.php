@@ -267,6 +267,7 @@ class CartController extends Controller_Action
 				throw new App_Exception("支付失败，您的积分币不足", 103);
 			}
 		} catch(App_Exception $e) {
+			$_SESSION['awaiting_payment'] = 'awaiting_payment';
 			$view = $this->_initView();
 			$view->message = $e->getMessage();
 			$view->code = $e->getCode();
