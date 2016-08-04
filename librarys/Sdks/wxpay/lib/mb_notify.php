@@ -120,6 +120,7 @@ class PayNotifyCallBack extends WxPayNotify
 							)->commit();
 							$user->is_vip = 1;
 							$user->save();
+							M('User')->activateAddCredit((int)$code);
 							die('success');
 						}
 						break;

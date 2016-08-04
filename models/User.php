@@ -780,4 +780,22 @@ class User extends Abstract_User
 
 		return $rows;
 	}
+	public function activateAddCredit($uid) {
+		$rec = M('User')->select()
+			->where('id='.$uid)
+			->fetchRow();
+
+		if ($rec->exists() && $rec['parent_id']) {
+			$inviter = M('User')->select()
+				->where('id='.(int)$rec['parent_id'])
+				->fetchRow();
+			$credit = 20;
+			$this->credit($rec,$credit,'您已成功激活，奖励积分'.$credit.'点');
+			$this->credit($inviter,$credit, '成功推荐用户 '.$rec['username'].' 注册并成功激活，奖励积分'.$credit.'点');
+		} else {
+			$credit = 10;
+			$this->credit($rec,$credit, '您已成功激活，奖励积分'.$credit.'点');
+		}
+		return true;
+	}
 }

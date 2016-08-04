@@ -54,7 +54,7 @@ class Usercp_PassportController extends Usercp_Controller_Action
 			$user = M('User')->getById($uid);
 			M('User')->setCurUser($user);
 
-			$rec = M('User')->select()
+			/*$rec = M('User')->select()
 				->where('(username = ? OR mobile = ?)', $_POST['invite_mobile'])
 				->fetchRow();
 
@@ -68,7 +68,7 @@ class Usercp_PassportController extends Usercp_Controller_Action
 				$credit = 30;
 			}
 
-			$user->credit($credit, '注册成功，赠送积分'.$credit.'点');
+			$user->credit($credit, '注册成功，赠送积分'.$credit.'点');*/
 
 			//自动通过手机验证
 			$user->setAuth('mobile', 1);

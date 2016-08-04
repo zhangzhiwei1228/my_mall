@@ -239,6 +239,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 							)->commit();
 							$user->is_vip = 1;
 							$user->save();
+							M('User')->activateAddCredit((int)$code);
 							die('success');
 						}
 						break;
