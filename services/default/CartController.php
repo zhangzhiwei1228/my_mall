@@ -308,8 +308,7 @@ class CartController extends Controller_Action
 	{
 		$amount = $this->_request->amount;
 		$params = base64_decode($this->_request->params);
-		var_dump($params);
-		die();
+
 		$view = $this->_initView();
 		$view->amount = $amount;
 		$view->params = $params;
