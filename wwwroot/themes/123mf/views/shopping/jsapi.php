@@ -22,9 +22,10 @@ $input->SetNotify_url('http://zzw.hzboc.com/cart/wxnotify/');
 $input->SetTrade_type("JSAPI");
 $input->SetOpenid($openId);
 $order = WxPayApi::unifiedOrder($input);
-
+var_dump($order);
 $jsApiParameters = $tools->GetJsApiParameters($order);
-
+var_dump($jsApiParameters);
+die();
 $editAddress = $tools->GetEditAddressParameters();
 ?>
 <html>
