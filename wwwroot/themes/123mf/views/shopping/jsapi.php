@@ -6,13 +6,12 @@ $notify_url = (string)new Suco_Helper_Url('module=default&controller=cart&action
 $win_url = (string)new Suco_Helper_Url('module=usercp&controller=order&action=list').'/?t=shiped';
 $win_url = !empty($this->return_url) ? $this->return_url : $win_url;
 parse_str($this->params);
-var_dump($trade_no);
-die();
+
 $amount = $this->amount*100;
 $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
 $input = new WxPayUnifiedOrder();
-var_dump($trade_no);
+
 $input->SetBody($subject.'【'.M('Setting')->sitename.'】');
 $input->SetAttach($subject.'【'.M('Setting')->sitename.'】');
 $input->SetOut_trade_no($trade_no);
@@ -24,11 +23,9 @@ $input->SetNotify_url('http://zzw.hzboc.com/cart/wxnotify/');
 $input->SetTrade_type("JSAPI");
 $input->SetOpenid($openId);
 $order = WxPayApi::unifiedOrder($input);
-var_dump($input);
-var_dump($order);
+
 $jsApiParameters = $tools->GetJsApiParameters($order);
-var_dump($jsApiParameters);
-die();
+
 $editAddress = $tools->GetEditAddressParameters();
 ?>
 <html>
