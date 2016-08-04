@@ -111,16 +111,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 					break;
 			}
 			if($_POST['payment'] == 'wxpay') {
-				$this->redirect('/cart/payjsapi/?amount='.$_POST['amount'].'&params='.base64_encode(
-						http_build_query(
-							array(
-								'user_id' => $this->user->id,
-								'trade_no' => $prefix.$this->user->id.'-'.time(),
-								'subject' => '帐户充值',
-								)
-						)
-					).'&return_url='.$_POST['return_url'].'&type='.$_POST['type']
-				);
+				$this->redirect('action=payjsapi&amount='.$_POST['amount'].'&params='.base64_encode(http_build_query(array('user_id' => $this->user->id, 'trade_no' => $prefix.$this->user->id.'-'.time(), 'subject' => '帐户充值','return_url'=>$_POST['return_url']))));
 				return false;
 			}
 			$payment = M('Payment')->factory($_POST['payment']);
@@ -132,7 +123,16 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			die;
 		}
 	}
+	public function doPayjsapi()
+	{
+		$amount = $this->_request->amount;
+		$params = base64_decode($this->_request->params);
 
+		$view = $this->_initView();
+		$view->amount = $amount;
+		$view->params = $params;
+		$view->render('views/shopping/jsapi.php');
+	}
 	public function doCredit()
 	{
 		$select = M('User_Credit')->select()

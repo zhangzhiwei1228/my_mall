@@ -2,10 +2,10 @@
 require_once "Sdks/wxpay/lib/WxPay.Api.php";
 require_once "Sdks/wxpay/lib/WxPay.JsApiPay.php";
 require_once 'Sdks/wxpay/lib/log.php';
+parse_str($this->params);
 $notify_url = (string)new Suco_Helper_Url('module=default&controller=cart&action=wxnotify').'/';
 $win_url = (string)new Suco_Helper_Url('module=usercp&controller=order&action=list').'/?t=shiped';
-$win_url = !empty($this->return_url) ? $this->return_url : $win_url;
-parse_str($this->params);
+$win_url = !empty($return_url) ? $return_url : $win_url;
 
 $amount = $this->amount*100;
 $tools = new JsApiPay();
