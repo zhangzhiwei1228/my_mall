@@ -10,7 +10,7 @@ $amount = $this->amount*100;
 $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
 $input = new WxPayUnifiedOrder();
-
+var_dump($trade_no);
 $input->SetBody($subject.'【'.M('Setting')->sitename.'】');
 $input->SetAttach($subject.'【'.M('Setting')->sitename.'】');
 $input->SetOut_trade_no($trade_no);
