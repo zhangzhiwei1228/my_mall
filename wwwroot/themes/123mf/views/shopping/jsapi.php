@@ -6,6 +6,8 @@ $notify_url = (string)new Suco_Helper_Url('module=default&controller=cart&action
 $win_url = (string)new Suco_Helper_Url('module=usercp&controller=order&action=list').'/?t=shiped';
 $win_url = !empty($this->return_url) ? $this->return_url : $win_url;
 parse_str($this->params);
+var_dump($trade_no);
+die();
 $amount = $this->amount*100;
 $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
