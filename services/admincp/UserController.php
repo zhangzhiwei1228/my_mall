@@ -190,4 +190,41 @@ class Admincp_UserController extends Admincp_Controller_Action
 		M('User_Blacklist')->delete('user_id = ?', $this->_request->id);
 		$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');		
 	}
+
+	public function doEdit()
+	{
+		$data = M('User')->getById((int)$this->_request->id);
+		if (!$data->exists()) {
+			throw new Suco_Controller_Dispatcher_Exception('Not found.');
+		}
+		if ($this->_request->isPost()) {
+			$agent = $this->_request->getPosts();
+			M('User')->updateById(array_merge($agent, $this->_request->getFiles()), (int)$this->_request->id);
+			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
+		}
+		$area_ids=false;
+		if(strpos($data['agent_aid'],',')) {
+			$area_ids = explode(',',$data['agent_aid']);
+			$id = $area_ids[0];
+		} else {
+			$id = $data['agent_aid'];
+		}
+		$region = M('Region')->select()->where('id='.(int)$id)->fetchRow()->toArray();
+		$region_ids = M('Region')->select('id')->where('parent_id='.(int)$region['parent_id'])->fetchRows()->toArray();
+		$ids = '';
+		foreach($region_ids as $region_id) {
+			if($area_ids) {
+				if(in_array($region_id,$area_ids)) continue;
+			} else {
+				if($region_id['id'] == $data['agent_aid']) continue;
+			}
+			$ids .= $region_id['id'].',';
+		}
+		$ids = substr($ids,0,strlen($ids)-1);
+
+		$view = $this->_initView();
+		$view->$ids;
+		$view->data = $data;
+		$view->render('user/input.php');
+	}
 }

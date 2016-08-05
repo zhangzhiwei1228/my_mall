@@ -30,8 +30,8 @@
 <div class="add">
     <div class="add-boxab"></div>
     <div class="top">
-        <span class="fl">快递公司：<label id="com"></label></span>
-        <span class="fr">快递单号：<label id="nu"></label></span>
+        <span class="fl">快递公司：<label><?php echo $this->kuaidi100[$this->delivery['com']]?></label></span>
+        <span class="fr">快递单号：<label><?php echo $this->delivery['code']?></label></span>
     </div>
     <div class="cen">物流信息</div>
     <div class="bot">
@@ -44,20 +44,21 @@
 </body>
 <script>
     $(function(){
-
-        $.getJSON('/callback/kuaidi100/',{com:'huitongkuaidi',nu:'70087400502939'}).done(function(data){
+        var com = '<?php echo $this->delivery['com']?>';
+        var nu = '<?php echo $this->delivery['code']?>';
+        $.getJSON('/callback/kuaidi100/',{com:com,nu:nu}).done(function(data){
             $('#com').html(data.com);
             $('#nu').html(data.nu);
             var html = '';
             for(var i in data.data){
-                var datas=data.data[i]
-                html+=  '<li>'
-                html+=  '<span class="img fl"></span>'
-                html+=  '<span class="jkk fl">'
-                html+=  '<p class="pa"> '+ datas.context +' </p>'
-                html+=  '<p class="pb"> '+ datas.time +' </p>'
-                html+=  '</span>'
-                html+=  '</li>'
+                var datas=data.data[i];
+                html+=  '<li>';
+                html+=  '<span class="img fl"></span>';
+                html+=  '<span class="jkk fl">';
+                html+=  '<p class="pa"> '+ datas.context +' </p>';
+                html+=  '<p class="pb"> '+ datas.time +' </p>';
+                html+=  '</span>';
+                html+=  '</li>';
             }
             $('.express').html(html);
             $(".add .bot").addClass("cur");

@@ -15,7 +15,78 @@ $this->head()->setTitle($this->title);
 		查看下一笔 &gt;&gt;</a>
 	<?php } ?>
 </div> -->
+<style type="text/css">
+	/************kuaidi100***************/
+	.add{
+		background: #fff;
+		position: relative;
+	}
+	.add .top{
+		width: 94%;
+		padding: 0px 3%;
+		overflow: hidden;
+		border-bottom: 1px solid #cdcdcd;
+	}
+	.add .cen{
+		line-height: 30px;
+		font-size: 14px;
+		padding: 0px 3%;
+	}
+	.add .top span{
+		font-size: 14px;
+		line-height: 40px;
+		display: block;
+	}
+	.add .bot .jkk{
+		width: -webkit-calc(100% - 30px);
+	}
+	.add .bot{
 
+		width: 94%;
+		padding: 0px 3%;
+		min-height: 300px;
+		background-size: 10px 100%;
+	}
+	.add .bot.cur{
+		background: url(../../img/kl-02.png) no-repeat 3% 0px;
+		background-size: 10px 100%;
+	}
+	.add .bot ul{
+		width: 100%;
+		float: none;
+		overflow: hidden;
+	}
+	.add .bot li{
+		width: 100%;
+		margin-bottom: 5px;
+	}
+	.add .bot li span{
+		display: block;
+		float: left;
+		font-size: 13px;
+		color: #afa9a9;
+	}
+	.add .bot li span.img{
+		margin-right:15px;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: #cdcdcd;
+		margin-top: 6px;
+	}
+	.add .bot li span.img.cur{
+		background: #0CF7C8;
+	}
+	.add-boxab{
+		position: absolute;
+		left: 2%;
+		height: 6px;
+		width: 12px;
+		top: 71px;
+		background: #fff;
+	}
+	li {list-style:none;}
+</style>
 <div class="sui-box">
 	<ul class="nav nav-justified nav-wizard" style="margin-bottom:15px">
 		<li class="done"><a href="#"><i>1</i> 提交订单 
@@ -236,11 +307,39 @@ $this->head()->setTitle($this->title);
 			<div class="panel panel-default">
 				<div class="panel-heading"><h4 class="panel-title">物流信息</h4></div>
 				<div class="panel-body">
-					<div class="express-tracking"><p class="loading">正在查询,请稍后...</p></div>
-					<a href="//www.kuaidi100.com/all/yt.shtml" target="_blank">圆通快递查询单号</a>
+					<div class="add">
+						<div class="add-boxab"></div>
+						<div class="top">
+							<span class="fl">快递公司：<label><?php echo $this->kuaidi100[$this->delivery['com']]?></label></span>
+							<span class="fr">快递单号：<label><?php echo $this->delivery['code']?></label></span>
+						</div>
+						<div class="cen">物流信息</div>
+						<div class="bot">
+							<ul class="express">
+								<li><p class="loading">正在查询,请稍后...</p></li>
+							</ul>
+						</div>
+					</div>
 					<script type="text/javascript">
-						$.get('/callback/kuaidi100/', {com:'ems',un:'9753404307401'}, function(data){
-							$('.express-tracking').html(data);
+						var com = '<?php echo $this->delivery['com']?>';
+						var nu = '<?php echo $this->delivery['code']?>';
+						$.getJSON('/callback/kuaidi100/',{com:com,nu:nu}).done(function(data){
+							var html = '';
+							for(var i in data.data){
+								var datas=data.data[i]
+								html+=  '<li>'
+								html+=  '<span class="img fl"></span>'
+								html+=  '<span class="jkk fl">'
+								html+=  '<p class="pa"> '+ datas.context +' </p>'
+								html+=  '<p class="pb"> '+ datas.time +' </p>'
+								html+=  '</span>'
+								html+=  '</li>'
+							}
+							$('.express').html(html);
+							$(".add .bot").addClass("cur");
+							$(".add .bot li").eq(0).find("span.img").css("background","#009933");
+							$(".add .bot li").eq(0).find(".pa").css("color","#fc0000");
+							$(".add .bot li").eq(0).find(".pb").css("color","#fc0000");
 						});
 					</script>
 				</div>

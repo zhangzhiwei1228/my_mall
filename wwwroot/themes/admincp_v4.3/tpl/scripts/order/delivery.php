@@ -37,6 +37,20 @@ $this->head()->setTitle($this->title);
 			<div class="col-sm-5"><input type="text" name="code" class="form-control" /></div>
 		</div>
 		<div class="form-group">
+			<label class="control-label col-sm-2">物流公司:</label>
+			<div class="col-sm-5" id="have_com">
+				<select name="com" class="form-control">
+					<option value="0">请选择</option>
+					<?php foreach($this->kuaidi100 as $key=>$kuaidi) {?>
+						<option value="<?php echo $key?>"><?php echo $kuaidi?></option>
+					<?php }?>
+				</select>
+			</div>
+			<div class="col-sm-5" id="other_com" style="display: none"><input type="text" name="com1" class="form-control" /></div>
+			<a href="javascript:;" id="other">其他物流(必须按照文档中的代码)</a>
+			<a href="javascript:;" id="have" style="display: none">现有物流</a>
+		</div>
+		<div class="form-group">
 			<label class="control-label col-sm-2">操作备注:</label>
 			<div class="col-sm-5"><textarea name="remark" rows="3" class="form-control"></textarea></div>
 		</div>
@@ -58,6 +72,19 @@ $(document).ready(function() { if ($(".countdown").length) {
 <script type="text/javascript">
 $.fn.ready(function() {
 	$('#ucp-transaction').addClass('current');
+	$('#other').click(function() {
+		$('#have_com').hide();
+		$('#other_com').show();
+		$('#have').show();
+		$(this).hide();
+	});
+	$('#have').click(function() {
+		$('#other_com').hide();
+		$('#have_com').show();
+		$('#other').show();
+		$(this).hide();
+	});
 });
+
 </script>
 <?php $this->head()->captureEnd()?>

@@ -145,7 +145,10 @@ class Usercp_OrderController extends Usercp_Controller_Action
 		// $view->render('usercp/order/confirm.php');
 	}
 	public function doExpress() {
+		$delivery = M('Order_Delivery')->select()->where('order_id='.(int)$this->_request->id)->fetchRow()->toArray();
 		$view = $this->_initView();
+		$view->delivery = $delivery;
+		$view->kuaidi100 = M('Kuaidi100')->toArray();
 		$view->render('views/shopping/order_express.php');
 	}
 

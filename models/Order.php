@@ -180,12 +180,13 @@ class Order extends Abstract_Model
 		}
 	}
 
-	public function delivery($order, $code, $remark)
+	public function delivery($order, $code, $remark, $com)
 	{
 		$this->getAdapter()->beginTrans();
 		try {
 			M('Order_Delivery')->insert(array(
 				'code' => $code,
+				'com' => $com,
 				'remark' => $remark,
 				'order_id' => $order->id,
 				'shipping_id' => $order->shipping_id,

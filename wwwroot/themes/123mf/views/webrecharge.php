@@ -89,8 +89,8 @@
 		$('[name=point]').on('change', function(){
 			var num = parseFloat($(this).val());
 			//console.log(num/rate);
-			$('[name=amount]').val(num/rate);
-			$('.amount-text').text(num/rate);
+			$('[name=amount]').val((num/rate).toFixed(2));
+			$('.amount-text').text((num/rate).toFixed(2));
 		});
 	</script>
 	<?php } else { ?>

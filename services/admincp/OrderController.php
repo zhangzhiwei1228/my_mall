@@ -58,9 +58,12 @@ class Admincp_OrderController extends Admincp_Controller_Action
 		if (!$order->exists()) {
 			throw new Suco_Controller_Dispatcher_Exception('Not found.');
 		}
+		$delivery = M('Order_Delivery')->select()->where('order_id='.(int)$this->_request->id)->fetchRow()->toArray();
 
 		$view = $this->_initView();
 		$view->data = $order;
+		$view->delivery = $delivery;
+		$view->kuaidi100 = M('Kuaidi100')->toArray();
 		$view->render('order/detail.php');
 	}
 
@@ -162,13 +165,15 @@ class Admincp_OrderController extends Admincp_Controller_Action
 			//throw new App_Exception('交易超时');
 		}
 		if ($this->_request->isPost()) {
+			$_POST['com'] = $_POST['com1'] ? $_POST['com1'] : $_POST['com'];
 			$order->logs .= "\n".M('Admin')->getCurUser()->username." : {发货} -- ".date('y/m/d H:i:s');
-			$order->delivery($_POST['code'], $_POST['remark']);
+			$order->delivery($_POST['code'], $_POST['remark'],$_POST['com']);
 			$this->redirect('&success=1&pst=order');
 		}
 
 		$view = $this->_initView();
 		$view->data = $order;
+		$view->kuaidi100 = M('Kuaidi100')->toArray();
 		$view->shipping = M('Shipping')->select()->fetchRows();
 		$view->render('order/delivery.php');
 	}
