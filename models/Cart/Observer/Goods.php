@@ -243,7 +243,8 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 				}
 				$ids[$keys]['skus_id'] = implode(',',array_keys($shipping));
 			} else {
-				$ids[$keys]['skus_id'] = explode('.',$i)[1];
+				$param = explode('.',$i);
+				$ids[$keys]['skus_id'] = $param[1];
 				$item = $items[$i];
 				$g = $goods[$item['skuId']];
 				$qty = $item['qty'] > $g['quantity'] ? $g['quantity'] : $item['qty'];
