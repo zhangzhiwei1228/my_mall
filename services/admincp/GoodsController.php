@@ -274,4 +274,29 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 		}
 		$this->redirect($_SERVER['HTTP_REFERER']);
 	}
+	//商品销售明显
+	public function doSales() {
+		$goods_id = $this->_request->id;
+		$sd = $this->_request->sd;
+		$status = $this->_request->status;
+		$order_good = M('Order_Goods')->alias('og')
+			->columns("sum(o.total_quantity) as o_total_quantity,sum(o.total_amount) as o_total_amount,  FROM_UNIXTIME(og.create_time,'%Y%m') as otime")
+			->leftJoin(M('Order')->getTableName().' AS o', 'og.order_id = o.id')
+			->where('og.goods_id='.(int)$goods_id)
+			->group('otime');
+		$time_where = '';
+		if(!empty($sd)) {
+			$time_where .= 'og.create_time >= '.$sd.' and ';
+		}
+		if(!empty($status)) {
+			$time_where .= $status == 5 ? 'o.status < '.$status : 'o.status='.$status;
+		}
+		if(!empty($time_where)){
+			$order_good->where($time_where);
+		}
+		var_dump($order_good->fetchRows()->toArray());
+		die();
+		$view = $this->_initView();
+		$view->render('goods/sales.php');
+	}
 }

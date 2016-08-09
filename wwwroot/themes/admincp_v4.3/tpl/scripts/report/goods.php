@@ -3,10 +3,37 @@ if(!defined('APP_KEY')) { exit('Access Denied'); }
 $this->head()->setTitle($this->_request->g ? $this->_request->g : '商品销售报告');
 $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this->url('action=list');
 ?>
-
+<style type="text/css">
+	.sui-page-header .sui-searchbox {
+		left: 140px;
+	}
+</style>
 <div class="sui-box">
 	<div class="sui-page-header">
 		<h1> <?=$this->head()->getTitle()?></h1>
+		<form method="get" class="sui-searchbox form-inline">
+			<div class="form-group">
+				<div class="input-group">
+					<input type="text" name="sd" value="<?=$this->_request->sd?>" placeholder="起始时间" data-plugin="date-picker" class="form-control input-sm" style="width: 110px">
+					<span class="input-group-addon">~</span>
+					<input type="text" name="ed" value="<?=$this->_request->ed?>" placeholder="结束时间" data-plugin="date-picker" class="form-control input-sm" style="width: 110px">
+				</div>
+			</div>
+			<button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></button>
+		</form>
+	</div>
+
+	<div style="margin-top: 20px;">
+		<div class="panel panel-default">
+			<div class="panel-heading">商品销售统计</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-7">
+
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div style="margin-top: 20px;">

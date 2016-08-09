@@ -141,7 +141,9 @@ $this->head()->setTitle($this->title);
 						<?php if ($row['expiry_time']) { echo '<p>剩余:'.$this->countdown($row['expiry_time']).'</p>'; } ?></td>
 					<td valign="top"><a href="<?=$this->url('action=edit&id=' . $row['id'].'&ref='.$this->_request->url)?>">编辑</a> <a href="<?=$this->url('action=delete&id=' . $row['id'].'&ref='.$this->_request->url)?>" onclick="return confirm('确定要删除这条记录吗?')">删除</a><br />
 						<a href="<?=$this->url('module=default&controller=goods&action=detail&id='.$row['id'])?>" target="_blank">预览</a>
-						<a href="<?=$this->url('action=copy&id='.$row['id'])?>">复制</a></td>
+						<a href="<?=$this->url('action=copy&id='.$row['id'])?>">复制</a>
+						<a href="<?=$this->url('action=sales&id='.$row['id'])?>">销售明细</a>
+					</td>
 				</tr>
 				<?php } } ?>
 			</tbody>
