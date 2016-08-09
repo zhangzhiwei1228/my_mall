@@ -103,19 +103,19 @@
 			</div>
 			<!-- JiaThis Button BEGIN -->
 			<div class="jiathis_style_32x32 f-cb">
-				<a class="jiathis_button_cqq" onmouseover="setShare('让我们一块分享赚钱', '<?php echo 'http://'.$_SERVER['HTTP_HOST']."/index.php/?invite_id=".$_SESSION['login_user_id'];?>');">
+				<a class="jiathis_button_cqq" onmouseover="setShare('让我们一块分享赚钱', '<?php echo 'http://'.$_SERVER['HTTP_HOST']."/index.php/?invite_id=".$this->user['id'];?>');">
 					<p>QQ</p>
 				</a>
-				<a class="jiathis_button_qzone" onmouseover="setShare('让我们一块分享赚钱', '<?php echo 'http://'.$_SERVER['HTTP_HOST']."/index.php/?invite_id=".$_SESSION['login_user_id'];?>');">
+				<a class="jiathis_button_qzone" onmouseover="setShare('让我们一块分享赚钱', '<?php echo 'http://'.$_SERVER['HTTP_HOST']."/index.php/?invite_id=".$this->user['id'];?>');">
 					<p>QQ空间</p>
 				</a>
-				<a class="jiathis_button_weixin" onmouseover="setShare('让我们一块分享赚钱', '<?php echo 'http://'.$_SERVER['HTTP_HOST']."/index.php/?invite_id=".$_SESSION['login_user_id'];?>');">
+				<a class="jiathis_button_weixin" onmouseover="setShare('让我们一块分享赚钱', '<?php echo 'http://'.$_SERVER['HTTP_HOST']."/index.php/?invite_id=".$this->user['id'];?>');">
 					<p>微信</p>
 				</a>
-				<a class="jiathis_button_tsina" onmouseover="setShare('让我们一块分享赚钱', '<?php echo 'http://'.$_SERVER['HTTP_HOST']."/index.php/?invite_id=".$_SESSION['login_user_id'];?>');">
+				<a class="jiathis_button_tsina" onmouseover="setShare('让我们一块分享赚钱', '<?php echo 'http://'.$_SERVER['HTTP_HOST']."/index.php/?invite_id=".$this->user['id'];?>');">
 					<p>新浪微博</p>
 				</a>
-				<a class="jiathis_button_tqq" onmouseover="setShare('让我们一块分享赚钱', '<?php echo 'http://'.$_SERVER['HTTP_HOST']."/index.php/?invite_id=".$_SESSION['login_user_id'];?>');">
+				<a class="jiathis_button_tqq" onmouseover="setShare('让我们一块分享赚钱', '<?php echo 'http://'.$_SERVER['HTTP_HOST']."/index.php/?invite_id=".$this->user['id'];?>');">
 					<p>腾讯微博</p>
 				</a>
 			</div>

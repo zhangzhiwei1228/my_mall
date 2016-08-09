@@ -92,8 +92,8 @@
 				<input class="fl" type="text" name="contact">
 			</li>
 			<li>
-				<span class="sp1">联系电话</span>
-				<input class="fl" type="text" name="phone">
+				<span class="sp1 ">联系电话</span>
+				<input class="fl ijk" type="text" name="phone" maxlength="11">
 			</li>
 			<li>
 				<span class="sp1">客户留言</span>
@@ -117,7 +117,7 @@
 			</li>
 			<li>
 				<span class="sp1">联系电话</span>
-				<input class="fl ijk" type="text" name="phone">
+				<input class="fl ijk" type="text" name="phone" maxlength="11">
 			</li>
 			<li>
 				<span class="sp1">客户留言</span>
@@ -154,8 +154,7 @@
 				alert("请输入姓名")
 				return false;
 			}
-			var myreg = /^((1[3-8][0-9]{1})+\d{8})$/;
-			if(!myreg.test($(".ijk").val()))
+			if(!($(".ijk").val()).match( /^1[3-9]{1}[0-9]{9}$/ ))
 			{
 				alert('请输入有效的手机号码！');
 				return false;

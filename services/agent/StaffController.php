@@ -26,11 +26,13 @@ class Agent_StaffController extends Agent_Controller_Action
 		if ($parent['role'] == 'agent') {
 			$view = $this->_initView();
 			$view->data = $data;
+			$view->parent_role = $parent['role'];
 			$view->bonus = $data->getBonus();
 			$view->render('views/infolist.php');
 		} else {
 			$view = $this->_initView();
 			$view->data = $data;
+			$view->parent_role = $parent['role'];
 			$view->bonus = $data->getBonus();
 			$view->render('views/infolist.php');
 		}

@@ -74,6 +74,7 @@
 				<span class="n-dealer-span3">币</span>	
 				<span class="n-dealer-span2"><?=(float)$this->bonus['coin2']['credit_coin']['total']?></span>
 			</li>
+			<?php if($this->parent_role != 'seller') {?>
 			<li>
 				<span class="n-dealer-span1">
 				<p style="line-height:25px;">发展的商家的一级会员本月</p>
@@ -95,6 +96,7 @@
 				<span class="n-dealer-span3">币</span>	
 				<span class="n-dealer-span2"><?=(float)$this->bonus['seller']['credit']['total']?></span>
 			</li>
+			<?php }?>
 		</ul>
 	</div>
 	<!-- <div class="n-h5"></div> -->
