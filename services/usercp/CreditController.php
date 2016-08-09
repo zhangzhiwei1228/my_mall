@@ -32,6 +32,8 @@ class Usercp_CreditController extends Usercp_Controller_Action
 					credit = credit - '.(int)$credit.',
 					credit_coin = credit_coin + '.$credit_coin
 			, (int)$this->user['id']);
+		$user = M('User')->getById((int)$this->user['id']);
+		$user->creditCoin($credit_coin,'积分转换成积分币');
 		echo json_encode(array('status'=>1,'msg'=>'转换成功'));
 		return ;
 	}

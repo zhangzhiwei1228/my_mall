@@ -193,7 +193,8 @@ class User extends Abstract_User
 			->toArray();
 
 		//本月激活会员
-		$ct['amount'] = $ct['last1']['vip']+$ct['last2']['vip']*5;
+//		$ct['amount'] = $ct['last1']['vip']+$ct['last2']['vip']*5;
+		$ct['amount'] = $ct['last1']['vip']*5;
 		$ct['amount'] += ($ct['coin1']['credit_coin']['total']*0.1)+($ct['coin2']['credit_coin']['total']*0.05);
 		$ct['amount'] += ($ct['coin3']['credit_coin']['total']*0.02)+($ct['coin4']['credit_coin']['total']*0.02);
 		$ct['amount'] += ($ct['seller']['credit']['total']*0.03);
@@ -797,5 +798,36 @@ class User extends Abstract_User
 			$this->credit($rec,$credit, '您已成功激活，奖励积分'.$credit.'点');
 		}
 		return true;
+	}
+	//用户角色
+	public function getUserRole($user) {
+		$role = $user['role'];
+		$resale_grade = $user['resale_grade'];
+		$str = $role.'-'.$resale_grade;
+		switch($str) {
+			case $str == 'resale-1' :
+				return '一星分销商';
+			case $str == 'resale-2' :
+				return '二星分销商';
+			case $str == 'resale-3' :
+				return '三星分销商';
+			case $str == 'resale-4' :
+				return '四星分销商管理员';
+			case $str == 'staff-0' :
+				$parent = $this->getById((int)$user['parent_id']);
+				$par_str ='';
+				if ($parent['role'] == 'agent') {
+					$par_str = '代理商员工';
+				} elseif ($parent['role'] == 'seller') {
+					$par_str = '商家员工';
+				} elseif ($parent['role'] == 'resale') {
+					$par_str = '四星分销商员工';
+				}
+				return $par_str;
+			case $str == 'agent-0':
+				return '代理商管理员';
+			case $str == 'seller-0':
+				return '商家管理员';
+		}
 	}
 }

@@ -76,7 +76,7 @@ class Usercp_PassportController extends Usercp_Controller_Action
 			$this->redirect('module=usercp');
 		}
 		$view = $this->_initView();
-		$view->invite_user_mobile = $invite_user['mobile'] ? $invite_user['mobile'] : $invite_user['username'];
+		$view->invite_user_mobile = $invite_user['role'] == 'member' ? $invite_user['mobile'] : $invite_user['username'];
 
 		$view->render('views/shopping/register.php');
 	}

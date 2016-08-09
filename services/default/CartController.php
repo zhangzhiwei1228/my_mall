@@ -290,10 +290,10 @@ class CartController extends Controller_Action
 				$this->user->credit($order['total_credit']*-1, '支付订单【TS-'.$order['id'].'】');
 			}
 			if ($order['total_credit_happy']) {
-				$this->user->credit($order['total_credit_happy']*-1, '支付订单【TS-'.$order['id'].'】');
+				$this->user->creditHappy($order['total_credit_happy']*-1, '支付订单【TS-'.$order['id'].'】');
 			}
 			if ($order['total_credit_coin']) {
-				$this->user->credit($order['total_credit_coin']*-1, '支付订单【TS-'.$order['id'].'】');
+				$this->user->creditCoin($order['total_credit_coin']*-1, '支付订单【TS-'.$order['id'].'】');
 			}
 			$order->status = 2;
 			$order->save();

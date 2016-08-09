@@ -43,21 +43,20 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
                 <table width="100%" class="table table-striped" data-plugin="chk-group">
                     <thead>
                     <tr>
-                        <th>会员总数</th>
-                        <th>激活数</th>
-                        <th>订单总数</th>
-                        <th>购买率</th>
-                        <th>会员购物总额</th>
+                        <th>日期</th>
+                        <th>销售总量</th>
+                        <th>销售总额</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><?php echo $this->udata['u_total']?></td>
-                        <td><?php echo $this->udata['u_vip']?></td>
-                        <td><?php echo $this->order['o_total']?></td>
-                        <td><?php echo round($this->order['o_total_quantity']/$this->goods['g_total'],5)*100?>%</td>
-                        <td><?php echo empty($this->order['o_total_amount']) ? 0 : $this->order['o_total_amount']?>元</td>
-                    </tr>
+                    <?php foreach($this->order_goods as $val) {?>
+                        <tr>
+                            <td><?php echo $val['otime']?></td>
+                            <td><?php echo $val['o_total_quantity']?></td>
+                            <td><?php echo $val['o_total_amount']?></td>
+                        </tr>
+                    <?php }?>
+
                     </tbody>
                 </table>
             </div>
