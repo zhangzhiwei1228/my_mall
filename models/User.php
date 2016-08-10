@@ -195,7 +195,7 @@ class User extends Abstract_User
 		//本月激活会员
 //		$ct['amount'] = $ct['last1']['vip']+$ct['last2']['vip']*5;
 		$ct['amount'] = $ct['last1']['vip']*5;
-		$ct['amount'] += ($ct['coin1']['credit_coin']['total']*0.05)+($ct['coin2']['credit_coin']['total']*0.05);
+		$ct['amount'] += ($ct['coin1']['credit_coin']['total']*0.1)+($ct['coin2']['credit_coin']['total']*0.05);
 		$ct['amount'] += ($ct['coin3']['credit_coin']['total']*0.02)+($ct['coin4']['credit_coin']['total']*0.02);
 		$ct['amount'] += ($ct['seller']['credit']['total']*0.03);
 
