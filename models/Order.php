@@ -264,4 +264,19 @@ class Order extends Abstract_Model
 			$this->getAdapter()->rollback();
 		}
 	}
+	/**
+	 * 第一次购买之后给用户设置所属区域
+	 */
+	public function adduserarea($order) {
+		$user_id = $order->buyer_id;
+		$area_id = $order->area_id;
+		$user_area = M('User_Area')->select('id')->where('user_id='.(int)$user_id)->fetchRow()->toArray();
+		if(!$user_area) {
+			M('User_Area')->insert(array(
+				'user_id' => (int)$user_id,
+				'area_id' => $area_id,
+				'create_time' => time()
+			));
+		}
+	}
 }

@@ -48,6 +48,7 @@ class PayNotifyCallBack extends WxPayNotify
 								$result['cash_fee']/100, 0, $voucher, '微信充值', 2
 							)->commit();
 							$order->pay();
+							$order->adduserarea();
 							die('success');
 						}
 						break;

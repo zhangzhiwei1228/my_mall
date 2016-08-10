@@ -203,6 +203,38 @@ class User extends Abstract_User
 
 		return $ct;
 	}
+	//代理商管理员按地区计算
+	public function agentearnings($user) {
+		$destination = $user['destination'];
+		$month = strtotime(date('Y-m-1'));
+		//商家管理员
+		$seller = M('User')->select('id, username, is_vip, create_time')
+			->where('role =\'seller\' AND area_id IN ('.$destination.')')
+			->fetchRows();
+		foreach($seller as $row) {
+			$ids1[] = $row['id'];
+		}
+		$ids = $ids1 ? implode(',', $ids1) : 0;
+		$ct['seller'] = M('User_Credit')->select('type, ABS(SUM(credit)) AS total')
+			->where('credit < 0 AND user_id IN ('.$ids.')AND type='.'"credit"'.' and create_time >='.$month )
+			->fetchOnKey('type')
+			->toArray();
+		//多地区会员本月消费
+		$user_areas =  M('User_Area')->select('id, user_id,area_id')
+			->where('area_id IN ('.$destination.')')
+			->fetchRows();
+		foreach($user_areas as $row) {
+			$ids2[] = $row['user_id'];
+		}
+		$ids3 = $ids2 ? implode(',', $ids2) : 0;
+		$ct['userarea'] = M('User_Credit')->select('type, ABS(SUM(credit)) AS total')
+			->where('credit < 0 AND user_id IN ('.$ids3.') AND type='.'"credit_coin"'.' and create_time >='.$month )
+			->fetchOnKey('type')
+			->toArray();
+		$ct['amount'] = $ct['seller']['credit']['total']*0.005;
+		$ct['amount'] += $ct['userarea']['credit_coin']['total']*0.05;
+		return $ct;
+	}
 
 	/**
 	 * 输入验证

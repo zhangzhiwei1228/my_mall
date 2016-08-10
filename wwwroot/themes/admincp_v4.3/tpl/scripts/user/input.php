@@ -71,7 +71,9 @@ $role = $this->data['role'] ? $this->data['role'] : $this->_request->role;
 					<input type="hidden" name="agent_atext" value="<?=$this->data['agent_atext']?>" />
 					<input type="hidden" name="agent_aid" value="<?=$this->data['agent_aid']?>" />
 				</div>
+				<div class="JS_Mtree" style="width:600px;display: none"></div>
 				<div class="help-block">代理商或四星分销商所代理区域</div>
+				<input type="hidden" name="destination" value="<?php echo $this->data['destination'] ? $this->data['destination'] : $this->data['agent_aid'];?>" />
 			</div>
 		</div>
 		<?php } ?>
@@ -134,7 +136,7 @@ seajs.use('/assets/js/dmenu/dmenu.sea.js', function(dmenu) {
 		firstText: '请选择所在地',
 		defaultText: '请选择',
 		selected: $('input[name=area_id]').val(),
-		callback: function(el, data) { 
+		callback: function(el, data) {
 			var location = $('.JS_Dmenu>select>option:selected').text();
 			$('input[name=area_id]').val(data.id > 0 ? data.id : 0); 
 			$('input[name=area_text]').val(location);
@@ -142,15 +144,29 @@ seajs.use('/assets/js/dmenu/dmenu.sea.js', function(dmenu) {
 	});
 	dmenu.init('.JS_Dmenu2', {
 		rootId: 1,
-		limit: 3,
+		limit: 2,
 		script: '/misc.php?act=area',
 		htmlTpl: '<select class="form-control" style="width:auto; margin-right:6px"></select>',
 		firstText: '请选择所在地',
 		defaultText: '请选择',
 		selected: $('input[name=agent_aid]').val(),
-		callback: function(el, data) { 
+		callback: function(el, data) {
+			var agent_aid = '<?=$this->data['agent_aid']?>';
+			if(agent_aid && agent_aid != data.id) {
+				$('.JS_Mtree').hide();
+			}
+			if(data.level == 3) {
+				seajs.use('/assets/js/mtree/mtree.sea.js', function(mtree) {
+					mtree.init($('.JS_Mtree'), {
+						script:'<?=$this->url('controller=region&action=getMtreeArea')?>'+'?area_id='+data.id,
+						input:$('input[name=destination]'),
+						disableIds:[<?=$this->ids?>]
+					});
+				});
+				$('.JS_Mtree').show();
+			}
 			var location = $('.JS_Dmenu>select>option:selected').text();
-			$('input[name=agent_aid]').val(data.id > 0 ? data.id : 0); 
+			$('input[name=agent_aid]').val(data.id > 0 ? data.id : 0);
 			$('input[name=agent_atext]').val(location);
 		}
 	});

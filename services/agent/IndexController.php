@@ -30,10 +30,14 @@ class Agent_IndexController extends Agent_Controller_Action
 				}
 				break;
 			case 'seller':
-			case 'agent':
 				$view = $this->_initView();
 				$view->bonus = $this->user->getStaffBonus();
 				$view->render('views/merchants.php');
+				break;
+			case 'agent':
+				$view = $this->_initView();
+				$view->bonus = $this->user->agentearnings();
+				$view->render('views/agentearnings.php');
 				break;
 		}
 	}

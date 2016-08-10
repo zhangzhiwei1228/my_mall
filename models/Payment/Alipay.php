@@ -168,6 +168,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 								$q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
 							)->commit();
 							$order->pay();
+							$order->adduserarea();
 							die('success');
 						}
 						break;
