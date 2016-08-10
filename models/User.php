@@ -45,7 +45,8 @@ class User extends Abstract_User
 			$ct['coin1']['credit_coin']['total'] += $bonus['coin1']['credit_coin']['total'];
 			$ct['coin2']['credit_coin']['total'] += $bonus['coin2']['credit_coin']['total'];
 
-			$ct['amount'] += $bonus['amount'];
+//			$ct['amount'] += $bonus['amount'];
+			$ct['amount'] += $bonus['amount_seller'];
 		}
 
 		//我代理地区会员本月消费积分币
@@ -196,6 +197,7 @@ class User extends Abstract_User
 //		$ct['amount'] = $ct['last1']['vip']+$ct['last2']['vip']*5;
 		$ct['amount'] = $ct['last1']['vip']*5;
 		$ct['amount'] += ($ct['coin1']['credit_coin']['total']*0.1)+($ct['coin2']['credit_coin']['total']*0.05);
+		$ct['amount_seller'] += ($ct['coin1']['credit_coin']['total']*0.05)+($ct['coin2']['credit_coin']['total']*0.05);
 		$ct['amount'] += ($ct['coin3']['credit_coin']['total']*0.02)+($ct['coin4']['credit_coin']['total']*0.02);
 		$ct['amount'] += ($ct['seller']['credit']['total']*0.03);
 
