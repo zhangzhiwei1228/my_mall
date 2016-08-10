@@ -108,7 +108,7 @@
 				<a href="<?=$this->url('/index/shoplist')?>" style="display:block;">
 					<span class="n-dealer-span1">发展的商家本月使用免费积分(点击查看)：</span>
 					<span class="n-dealer-span3">分</span>	
-					<span class="n-dealer-span2"><?=(float)$this->bonus['coin5']['credit']['total']?></span>
+					<span class="n-dealer-span2"><?=(float)$this->bonus['seller']['credit']['total']?></span>
 				</a>
 			</li>
 			<?php } ?>

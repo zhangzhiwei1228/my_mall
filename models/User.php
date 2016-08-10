@@ -199,7 +199,7 @@ class User extends Abstract_User
 		$ct['amount'] += ($ct['coin1']['credit_coin']['total']*0.1)+($ct['coin2']['credit_coin']['total']*0.05);
 		$ct['amount_seller'] += ($ct['coin1']['credit_coin']['total']*0.05)+($ct['coin2']['credit_coin']['total']*0.05);
 		$ct['amount'] += ($ct['coin3']['credit_coin']['total']*0.02)+($ct['coin4']['credit_coin']['total']*0.02);
-		$ct['amount'] += ($ct['seller']['credit']['total']*0.03);
+		$ct['amount'] += ($ct['seller']['credit']['total']*0.003);
 
 		return $ct;
 	}
