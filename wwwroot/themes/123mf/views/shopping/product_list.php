@@ -117,12 +117,13 @@
             var t=$('body').scrollTop();
             if(t>=H-h*1.1 && flag==true){
                 flag=false;
-                $(".mn").show()
+                $(".mn").show();
                 $.ajax({
                     url:"/goods/getgoodlist/?page="+n+'&sbt='+sbt+'&q='+q+'&cid='+cid,
                     success:function(e){
                         if(!e) {
                             flag = false ;
+                            $(".mn").hide();
                             $('.good-ajax-list').append('<p style="text-align: center">已加载完毕<p>');
                             return false;
                         }

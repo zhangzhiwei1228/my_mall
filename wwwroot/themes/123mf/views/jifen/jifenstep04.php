@@ -11,7 +11,7 @@
 	    <p class="prompt-info">余额不足，赠送失败 !</p>
 	</div>
 	<div class="jifen-step02">
-	    <a href="#" class=" btn sure">立即充值免费积分</a>
+	    <a href="<?php echo $this->url('agent/credit/recharge/?t=credit')?>" class=" btn sure">立即充值免费积分</a>
     </div>
     <div class="n-h56"></div>
      <?php include_once VIEWS.'inc/footer_merchantsw.php'; ?>
