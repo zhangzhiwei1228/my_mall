@@ -175,6 +175,8 @@ class Order extends Abstract_Model
 			}
 
 		} catch (App_Exception $e) {
+			$logFile = 'order'.'_'.date('Ymd').'.log';
+			Suco_File::write(LOG_DIR.$logFile, $e, 'a+');
 			echo $e->dump();
 			$this->getAdapter()->rollback();
 		}
