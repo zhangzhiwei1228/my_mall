@@ -58,7 +58,12 @@
 					</div>
 					<?php } elseif ($row['status'] == 4 && $row['total_earn_points']) { ?>
 					<div class="n-all-m">
-						<input value="领取红包" type="button" onclick="window.location = '<?=$this->url('./receive/?id='.$row['id'])?>'">
+						<?php if($row['is_receive'] == 1) {?>
+							<input value="已领取" type="button" style="background-color: #c7bcb5">
+						<?php } else {?>
+							<input value="领取红包" type="button" onclick="window.location = '<?=$this->url('./receive/?id='.$row['id'])?>'">
+						<?php }?>
+
 					</div>
 					<?php } ?>
 					
