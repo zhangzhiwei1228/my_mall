@@ -132,6 +132,9 @@ class Usercp_PassportController extends Usercp_Controller_Action
 
 			$_SESSION['login_user_id'] = (int)$user['id'];
 			//$this->redirect($this->_request->ref ? base64_decode($this->_request->ref) : 'module=usercp');
+			if(isset($this->_request->ref)) {
+				$this->redirect(base64_decode($this->_request->ref));
+			}
 			if(isset($_SESSION['pay_confirm_login'])) {
 				$this->redirect('/cart/default/');
 			}
@@ -268,6 +271,7 @@ class Usercp_PassportController extends Usercp_Controller_Action
 	{
 		M('User')->logout();
 		unset($_SESSION['login_user_id']);
+		unset($_SESSION['pay_confirm_login']);
 		$this->redirect($this->_request->ref ? base64_decode($this->_request->ref) : 'module=default');
 	}
 	

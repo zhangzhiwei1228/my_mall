@@ -26,7 +26,7 @@ class PayNotifyCallBack extends WxPayNotify
 			$setting = M('Setting');
 			try {
 				list($type, $code ,$trade_no) = explode('-', trim($result['out_trade_no']));
-				$voucher = 'ALI-'.$code;
+				$voucher = 'ALI-'.$trade_no;
                 if(isset($_SESSION['awaiting_payment'])) {
                     unset($_SESSION['awaiting_payment']);
                 }
