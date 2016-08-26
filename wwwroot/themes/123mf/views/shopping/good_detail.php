@@ -1,3 +1,6 @@
+<?php
+$ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : base64_encode($this->url('action=detail&id='.$this->data['id']));
+?>
 <!DOCTYPE html>
 <head>
 	<?php include_once VIEWS.'inc/head.php'; ?>
@@ -245,7 +248,7 @@ echo static_file('m/js/main.js');
 			flag = 0;
 			$(".end163").show().text('您还没有登录，请先登录');
 			setTimeout(function(){
-				window.location.href='<?php echo site_url('usercp/passport/login/');?>';
+				window.location.href='<?php echo site_url('usercp/passport/login/?ref='.$ref);?>';
 			},3000);
 			return false;
 		}

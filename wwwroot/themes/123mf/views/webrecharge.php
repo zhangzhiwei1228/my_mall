@@ -118,6 +118,7 @@
 	</script>
 	<?php } ?>
 	<div class="n-recharge-sub">
+		<input type="hidden" name="return_url" value="<?php echo $this->url('/usercp/')?>">
 		<input class="n-recharge-end-sub" value="确认" type="submit">
 	</div>
 </form>
