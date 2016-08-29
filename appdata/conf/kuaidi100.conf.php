@@ -15,4 +15,5 @@ return array (
     'wanjiawuliu'=>'万家物流',
     'yuntongkuaidi'=>'运通快递',
     'youshuwuliu'=>'优速物流',
+    'huitongkuaidi'=>'百世汇通',
 );

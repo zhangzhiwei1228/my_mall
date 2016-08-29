@@ -101,7 +101,10 @@ class GoodsController extends Controller_Action
 	{
 		//载入分类
 		$category = M('Goods_Category')->getById((int)$this->_request->cid);
+
+
 		$relateCates = $category->getRoot()->getChilds()->toTree();
+
 		$relateAttrs = $category->getSearchItems($this->_request->ft);
 
 		$select = M('Goods')->alias('g')
@@ -200,6 +203,13 @@ class GoodsController extends Controller_Action
 		$cp = $category->getParent();
 		if ($cp->exists()) {
 			$ids = $cp->getChildIds();
+			$ids = explode(',',$ids);
+			foreach($ids as $id) {
+				$gcategory = M('Goods_Category')->select()->where('is_enabled = 1 and id='.(int)$id)->fetchRow()->toArray();
+				if(!$gcategory) continue;
+				$ids1[] = $gcategory['id'];
+			}
+			$ids = implode(',',$ids1);
 			$relateGoods = M('Goods')->select()
 				->where('category_id IN('.($ids ? $ids : 0).') and category_id <> '.(int)$this->_request->cid.' and is_checked = 2')//去掉已选择的，并去掉限制
 				->limit(50)
