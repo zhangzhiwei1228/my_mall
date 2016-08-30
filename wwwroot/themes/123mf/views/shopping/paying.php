@@ -86,7 +86,7 @@
             RMB
         </p>
     </div>
-    <?php if ($this->order['total_amount']) { ?>
+    <?php if ($this->total_postage + $this->order['total_amount']) { ?>
 
     <div class="jifen-step06 " style="margin-bottom: 10px;">
     	<p class="you-method w90">选择支付方式 :</p>
@@ -98,7 +98,13 @@
 	    </div>
 	</div>
 
-    <?php } ?>
+    <?php } else { ?>
+        <div class="jifen-step06 " style="margin-bottom: 10px;">
+            <div class="method n-all-m">
+                <input value="立即支付" class="bgwhite" type="button" id="pay_free" data-code="free">
+            </div>
+        </div>
+    <?php }?>
     <?php //include_once VIEWS.'inc/footer.php'; ?>
 
     <form method="post" class="pay-form">
@@ -112,6 +118,12 @@
 
 <script type="text/javascript">
 $('.method a').on('click', function(){
+    var code = $(this).data('code');
+    $('[name=payment]').val(code);
+    console.log(code);
+    $('form.pay-form').submit();
+});
+$('#pay_free').on('click', function(){
     var code = $(this).data('code');
     $('[name=payment]').val(code);
     console.log(code);

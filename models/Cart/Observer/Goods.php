@@ -230,6 +230,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 
 					if ($item['checkout']) {
 						$ids[$keys]['total'] += $qty;
+						$ids[$keys]['shipping_id'] = $val;
 						$ids[$keys]['weight'] += $subtotal_weight;
 						$ids[$keys]['thumb'] = $g['thumb'];
 						$ids[$keys]['points'] += $subtotal_earn_points;
@@ -283,6 +284,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 
 				if ($item['checkout']) {
 					$ids[$keys]['total'] += $qty;
+					$ids[$keys]['shipping_id'] = $shipping;
 					$ids[$keys]['weight'] += $subtotal_weight;
 					$ids[$keys]['thumb'] = $g['thumb'];
 					$ids[$keys]['points'] += $subtotal_earn_points;

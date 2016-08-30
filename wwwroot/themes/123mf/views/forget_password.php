@@ -121,7 +121,7 @@ echo static_file('web/js/main.js');
 <script>
 	$('.send').on('click', function(){
 		var el = $(this);
-		var i = 30;
+		var i = 60;
 		var m = $('[name=mobile]').val();
 		if (!m) {
 			alert('请输入手机号码');

@@ -59,7 +59,7 @@ seajs.use('/assets/js/validator/validator.sea.js', function(validator){
 
 $('.send').on('click', function(){
 	var el = $(this);
-	var i = 30;
+	var i = 60;
 	var m = $('[name=mobile]').val();
 	if (!m) {
 		alert('请输入手机号码');

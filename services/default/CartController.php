@@ -208,8 +208,11 @@ class CartController extends Controller_Action
 				$good = M('Goods')->select()->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
 				$val->goods[$val->skus_id] = $good;
 			}
-			$val->order_postage = $this->doPostAge($order, $val->total, $val->weight);
-			$order_postage += $this->doPostAge($order, $val->total, $val->weight);
+
+			$order['shipping_id'] = $val->shipping_id;
+			$postage = $this->doPostAge($order, $val->total, $val->weight);
+			$val->order_postage = $postage;
+			$order_postage += $postage;
 		}
 		$total_postage = $order['order_json'] ? $order_postage : $this->doPostAge($order);//计算邮费
 
@@ -239,6 +242,21 @@ class CartController extends Controller_Action
 				if($_POST['payment'] == 'wxpay') {
 					$this->redirect('action=payjsapi&amount='.$order['total_amount'].'&params='.base64_encode(http_build_query(array('user_id' => $this->user->id, 'trade_no' => 'TS-'.$order->code, 'subject' => '支付订单', 'use_balance' => $_POST['use_balance'], 'bankcode' => $_POST['bankcode']))));
 					return false;
+				}
+				if($_POST['payment'] == 'free') {
+					if ($order['total_credit']) {
+						$this->user->credit($order['total_credit']*-1, '支付订单【TS-'.$order['id'].'】');
+					}
+					if ($order['total_credit_happy']) {
+						$this->user->creditHappy($order['total_credit_happy']*-1, '支付订单【TS-'.$order['id'].'】');
+					}
+					if ($order['total_credit_coin']) {
+						$this->user->creditCoin($order['total_credit_coin']*-1, '支付订单【TS-'.$order['id'].'】');
+					}
+					$order->status = 2;
+					$order->save();
+
+					$this->redirect('&');
 				}
 				$payment = M('Payment')->factory($_POST['payment']);
 				$payment->pay($order['total_amount'], http_build_query(array(
@@ -275,31 +293,16 @@ class CartController extends Controller_Action
 			return;
 		}
 
-		if ($order['total_amount'] > 0 || $total_postage > 0) {
-			$view = $this->_initView();
-			$view->order = $order;
-			$view->orders_json = $order_json;
-			$view->total_postage = $total_postage;
-			$view->payments = M('Payment')->select()
-				->where('is_enabled = 1')
-				->order('rank ASC, id ASC')
-				->fetchRows();
-			$view->render('views/shopping/paying.php');
-		} else {
-			if ($order['total_credit']) {
-				$this->user->credit($order['total_credit']*-1, '支付订单【TS-'.$order['id'].'】');
-			}
-			if ($order['total_credit_happy']) {
-				$this->user->creditHappy($order['total_credit_happy']*-1, '支付订单【TS-'.$order['id'].'】');
-			}
-			if ($order['total_credit_coin']) {
-				$this->user->creditCoin($order['total_credit_coin']*-1, '支付订单【TS-'.$order['id'].'】');
-			}
-			$order->status = 2;
-			$order->save();
+		$view = $this->_initView();
+		$view->order = $order;
+		$view->orders_json = $order_json;
+		$view->total_postage = $total_postage;
+		$view->payments = M('Payment')->select()
+			->where('is_enabled = 1')
+			->order('rank ASC, id ASC')
+			->fetchRows();
+		$view->render('views/shopping/paying.php');
 
-			$this->redirect('&');
-		}
 	}
 
 	/**
@@ -667,8 +670,8 @@ class CartController extends Controller_Action
 	 */
 	public function doPostAge($order, $total=0, $weight=0) {
 		//计算邮费
-		$total_weight = $total ? $total : round($order['total_weight'],2);
-		$total_quantity = $weight ? $weight : round($order['total_quantity'],2);
+		$total_quantity = $total ? $total : round($order['total_weight'],2);
+		$total_weight = $weight ? $weight : round($order['total_quantity'],2);
 		$user_adder_area_id = (int)$order['area_id'];
 		$shipping_id = (int)$order['shipping_id'];
 		$region = M('Region')->getById($user_adder_area_id);
