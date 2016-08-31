@@ -43,7 +43,7 @@
         <ul>
             <?php foreach($this->msglist as $row ) { ?>
                 <li>
-                    <a href="<?=$this->url('./detail?mid='.$row['id'])?>"><span class="welcomew2-sp1">私信</span></a>
+                    <a href="<?=$this->url('./detail?mid='.$row['id'])?>"><span class="welcomew2-sp1"><?= $row['title'] ?  $row['title'] : '私信' ?></span></a>
                     <a href="<?=$this->url('./detail?mid='.$row['id'])?>"><span class="welcomew2-sp2"><?=$this->cutstr($row['content'], 150)?></span></a>
                     <a href="<?=$this->url('./detail?mid='.$row['id'])?>"><span class="welcomew2-sp3"><?=date(DATE_FORMAT,$row['create_time'])?></span></a>
                 </li>

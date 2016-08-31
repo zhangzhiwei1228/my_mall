@@ -3,6 +3,9 @@
 <head>
 <?php include_once VIEWS.'inc/head.php'; ?>
 </head>
+<style>
+    .nn-input{display: none}
+</style>
 <body>
    	<!-- <div class="nn-header">
         <div class="nn-logo"><a href="<?php echo site_url(''); ?> "><img src="<?php echo static_file('mobile/img/img-02.png'); ?> " alt=""></a></div>
@@ -28,10 +31,11 @@
 <?php include_once VIEWS.'inc/header_shop02.php'; ?>
 	<div class="welcomew2" style="margin-bottom: 70px">
 		<div class="info">
-			<h2><?= isset($this->_request->mid) ? '私信' : $this->data['title']?></h2>
+			<h2><?= $this->data['title'] ?  $this->data['title'] : '私信' ?></h2>
 			<div class="info-te"><?=$this->data['content']?></div>
 		</div>
 	</div>
 	<?php include_once VIEWS.'inc/footer01.php'; ?>
 </body>
+
 </html>
