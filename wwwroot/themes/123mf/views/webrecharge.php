@@ -47,7 +47,7 @@
 	<div class="n-recharge-pic-te">
 		<p style="color:#b40000;font-size:14px;">积分币充值说明：</p>
 		<p style="color:#555;">1元=<?=$this->setting['credit_coin_rate']?>积分币（积分币只能在兑购商品时使用的）</p>
-		<p style="color:#555;">各位会员：因阿里支付宝与腾讯微信支付在相关的支付方面有着相互抵制，在打开平台的入口不一样，支付的工具不一样，所以当你用其中的一个无法支付时，请你用另外一个支付，让你带来不便，敬请凉解。</p>
+
 	</div>
 	<div class="n-h5"></div>
 	<div class="n-recharge-sp">

@@ -21,7 +21,9 @@
 		在线支付
 	</div>
 	<div class="n-payway-tit">
-		<p>选择支付方式 :</p>
+
+		<p style="margin-top:10px;">各位会员：因阿里支付宝与腾讯微信支付在相关的支付方面有着相互抵制，在打开平台的入口不一样，支付的工具不一样，所以当你用其中的一个无法支付时，请你用另外一个支付，让你带来不便，敬请凉解。</p>
+		<p style="padding: 5px 0px;margin-top:10px;">选择支付方式 :</p>
 	</div>
 	<div class="n-payway-list" style="border-bottom: 2px #ebebeb solid">
 		<ul>
