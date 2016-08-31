@@ -255,7 +255,16 @@ class CartController extends Controller_Action
 					}
 					$order->status = 2;
 					$order->save();
-
+					$user_id = $order->buyer_id;
+					$area_id = $order->area_id;
+					$user_area = M('User_Area')->select('id')->where('user_id='.(int)$user_id)->fetchRow()->toArray();
+					if(!$user_area) {
+						M('User_Area')->insert(array(
+							'user_id' => (int)$user_id,
+							'area_id' => $area_id,
+							'create_time' => time()
+						));
+					}
 					$this->redirect('&');
 				}
 				$payment = M('Payment')->factory($_POST['payment']);
