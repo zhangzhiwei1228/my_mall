@@ -82,29 +82,32 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 	{
 		if ($this->_request->isPost()) {
 			$data = $this->_request->getPosts();
+
 			if($data['area_id'] && $data['category_id'] == 15 ) {
+
 				$ids = M('Region')->getChildIds((int)$data['area_id']);
 				$user_areas = M('User_Area')->select('user_id')->where('area_id IN (' . ($ids ? $ids : (int)$data['area_id']) . ')')->fetchRows()->toArray();
 				$user_ids = M('User_Area')->select('user_id')->fetchCols('user_id');
 				$user_ids = implode(',', $user_ids);
 				$users = M('User')->select('id')->where('id NOT IN (' . ($user_ids ? $user_ids : 0) . ')')->fetchRows()->toArray();
-				foreach ($users as $user) {
+				foreach ($users as $user1) {
 					M('Message')->insert(array(
-						'recipient_uid' => $user['user_id'],
+						'recipient_uid' => $user1['id'],
 						'sender_uid' => $this->admin['id'],
 						'content' => strip_tags($data['content']),
 						'create_time' => time()
 					));
 				}
-				foreach ($user_areas as $user) {
+
+				foreach ($user_areas as $user2) {
 					M('Message')->insert(array(
-						'recipient_uid' => $user['user_id'],
+						'recipient_uid' => $user2['user_id'],
 						'sender_uid' => $this->admin['id'],
 						'content' => strip_tags($data['content']),
 						'create_time' => time()
 					));
 				}
-			} else {
+
 				M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
 			}
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list&cid=' . $_POST['cid']);

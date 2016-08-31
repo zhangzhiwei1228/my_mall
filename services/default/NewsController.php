@@ -27,7 +27,7 @@ class NewsController extends Controller_Action
 
 		if ($this->_request->cid) {
 			$ids = M('Article_Category')->getChildIds((int)$this->_request->cid);
-			$select->where('category_id IN ('.($ids ? $ids : 0).')');
+			$select->where('category_id IN ('.($ids ? $ids : 0).') and category_id <> 15');
 		}
 		$select->order('id DESC');
 
