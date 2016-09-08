@@ -699,13 +699,15 @@ class CartController extends Controller_Action
 		$second_weight = (int)$shipping_freight['second_weight'];//继重
 		$second_freight = round($shipping_freight['second_freight'],2);//一千克继重价格
 //		$one_weight = round($total_weight/$total_quantity,3);
-		$one_weight = ceil($total_weight/$total_quantity);//向上取正
+//		$one_weight = ceil($total_weight/$total_quantity);//向上取正
+		$one_weight = ceil($total_weight);//向上取正
 
 		if($one_weight > $first_weight) {
 			$total_postage = $first_weight*$first_freight+($one_weight-$first_weight)*$second_weight*$second_freight;
 		} else {
 			$total_postage = $first_weight*$first_freight;
 		}
-		return round($total_quantity*$total_postage,2);
+//		return round($total_quantity*$total_postage,2);
+		return round($total_postage,2);
 	}
 }
