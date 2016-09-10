@@ -168,7 +168,7 @@ $specs = cd(0);
 		</tbody>
 	</table>
 </div></div>
-<?php } else { ?>
+<?php /*} else { */?>
 <div class="form-group">
 	<label class="control-label col-sm-2">商品库存:</label>
 	<div class="col-sm-9">

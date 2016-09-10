@@ -36,6 +36,7 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 		}
 		$sarrid = substr($sarrid,0,strlen($sarrid)-1);
 		$select = M('Goods')->alias('g')
+			->columns('g.*, (g.quantity-g.quantity_warning) as diff_quantify')
 			->paginator(20, $this->_request->page);
 
 		switch ($this->_request->t) {

@@ -75,8 +75,8 @@ $this->head()->setTitle($this->title);
 						<a href="<?=$this->url('action=edit&id='.$row['id'].'&ref='.$this->_request->url)?>">
 							<img src="<?=$this->img($row['thumb'], '160x160')?>" class="img-thumbnail"></a>
 					</td>
-					<td>
-						<a href="<?=$this->url('action=edit&id=' . $row['id'].'&ref='.$this->_request->url)?>">
+					<td style="<?php if($row['diff_quantify'] <= 0) {?> color:red<?php }?>">
+						<a href="<?=$this->url('action=edit&id=' . $row['id'].'&ref='.$this->_request->url)?>" style="<?php if($row['diff_quantify'] <= 0) {?> color:red<?php }?>">
 							<?=$this->highlight($row['title'], $this->_request->q)?></a><br />
 
 						货号：<?=$row['code'] ? $this->highlight($row['code'], $this->_request->q) : 'N/A'?> [#ID: <?=$row['id']?>]<br />
@@ -107,7 +107,8 @@ $this->head()->setTitle($this->title);
 					<td>
 						库存：<?=$row['quantity'] == 0 || $row['quantity'] <= $row['quantity_warning'] ? '<font class="highlight">'.(int)$row['quantity'].'</font>' : (int)$row['quantity']?> <?=$row['unit']?><br />
 						销量：<?=(int)$row['sales_num']?> <?=$row['unit']?><br />
-						成交：<?=(int)$row['trans_num']?> 笔
+						成交：<?=(int)$row['trans_num']?> 笔<br/>
+						警告量：<?=(int)$row['quantity_warning']?> 件
 					</td>
 					<td class="text-center">
 						<a href="<?=$this->url('action=toggle_status&t=is_rec&id='.$row['id'].'&v='.$row['is_rec'].'&ref='.$this->_request->url)?>">

@@ -94,8 +94,8 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 					M('Message')->insert(array(
 						'recipient_uid' => $user1['id'],
 						'sender_uid' => $this->admin['id'],
-//						'content' => strip_tags($data['content']),
-						'content' => $data['content'],
+						'content' => strip_tags($data['content']),
+						//'content' => $data['content'],
 						'title' => $data['title'],
 						'create_time' => time()
 					));
@@ -105,8 +105,8 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 					M('Message')->insert(array(
 						'recipient_uid' => $user2['user_id'],
 						'sender_uid' => $this->admin['id'],
-//						'content' => strip_tags($data['content']),
-						'content' => $data['content'],
+						'content' => strip_tags($data['content']),
+						//'content' => $data['content'],
 						'title' => $data['title'],
 						'create_time' => time()
 					));

@@ -18,12 +18,15 @@ class NewsController extends Controller_Action
 		$select = M('Article')->select()
 			->where('is_checked = 2')
 			->paginator(20, $this->_request->page);
-		$messages = M('Message')->alias('m')
-			->leftJoin(M('User')->getTableName().' AS u', 'u.id = m.sender_uid')
-			->columns('m.*, u.username AS sender_name, u.avatar AS sender_avatar')
-			->where('m.recipient_uid = ?', $this->user['id'])
-			->order('m.is_read ASC, m.id DESC')
-			->paginator(20, $this->_request->page);
+		if ($this->_request->cid == 15) {
+			$messages = M('Message')->alias('m')
+				->leftJoin(M('User')->getTableName().' AS u', 'u.id = m.sender_uid')
+				->columns('m.*, u.username AS sender_name, u.avatar AS sender_avatar')
+				->where('m.recipient_uid = ?', $this->user['id'])
+				->order('m.is_read ASC, m.id DESC')
+				->paginator(20, $this->_request->page);
+		}
+
 
 		if ($this->_request->cid) {
 			$ids = M('Article_Category')->getChildIds((int)$this->_request->cid);
@@ -33,7 +36,9 @@ class NewsController extends Controller_Action
 
 		$view = $this->_initView();
 		$view->category = M('Article_Category')->getById((int)$this->_request->cid);
-		$view->msglist = $messages->fetchRows();
+		if ($this->_request->cid == 15) {
+			$view->msglist = $messages->fetchRows();
+		}
 		$view->datalist = $select->fetchRows();
 		$view->render('views/welcomew2.php');
 	}
