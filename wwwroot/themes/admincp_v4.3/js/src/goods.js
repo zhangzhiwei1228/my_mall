@@ -117,6 +117,7 @@ $.processQuantity = function() {
 		if (qty == -1) { quantity = -1; return false; }
 		quantity += parseInt($(this).val());
 	});
+	$('.goods-quantity').val(quantity);
 	$('.buychoose-quantity').change(function() {
 		$('#sku_change').val(3);
 	});

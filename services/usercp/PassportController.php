@@ -147,7 +147,7 @@ class Usercp_PassportController extends Usercp_Controller_Action
 			$this->redirect($this->_request->ref ? base64_decode($this->_request->ref) : 'module=usercp');
 		}
 
-		if (M('User')->getCurUser()->exists()) {
+		if (M('User')->getCurUser()->exists() || $_SESSION['login_user_id']) {
 			$this->redirect('controller=index');
 		}
 		$view = $this->_initView();
