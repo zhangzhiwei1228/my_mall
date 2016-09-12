@@ -106,6 +106,7 @@
         </div>
     <?php }?>
     <?php //include_once VIEWS.'inc/footer.php'; ?>
+    <p style="margin-top:10px;">各位会员：因阿里支付宝与腾讯微信支付在相关的支付方面有着相互抵制，在打开平台的入口不一样，支付的工具不一样，所以当你用其中的一个无法支付时，请你用另外一个支付，让你带来不便，敬请凉解。</p>
 
     <form method="post" class="pay-form">
         <input type="hidden" name="id" value="<?=$this->_request->id?>">
