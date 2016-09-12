@@ -124,7 +124,7 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 
 		if ($this->_request->isPost()) {
 			$skus = $this->_request->getPosts();
-			/*if(count($skus['skus']) > 1) {
+			if(count($skus['skus']) > 1) {
 				foreach($skus['skus'] as $key => &$exts) {
 					if($key == 0) continue;
 					$exts['market_price'] = $skus['skus'][0]['market_price'];
@@ -132,7 +132,7 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 					$exts['point2'] = $skus['skus'][0]['point2'];
 					$exts['exts'] = $skus['skus'][0]['exts'];
 				}
-			}*/
+			}
 
 			M($this->_formatModelName())->updateById(array_merge($skus, $this->_request->getFiles()), (int)$this->_request->id);
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
