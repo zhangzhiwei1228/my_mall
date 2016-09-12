@@ -487,7 +487,7 @@
         paginationClickable: true,
         spaceBetween: 30,
         centeredSlides: true,
-        autoplay: 2500,
+        autoplay: 8000,
         autoplayDisableOnInteraction: false
     	});
 
@@ -496,13 +496,15 @@
         paginationClickable: true,
         spaceBetween: 30,
         centeredSlides: true,
-        autoplay: 2500,
+        autoplay: 8000,
         autoplayDisableOnInteraction: false
-    	});Swiper
+    	});
 
     	var swiper = new Swiper('.n-banner5', {
         slidesPerView: 4,
         paginationClickable: true,
+        autoplay: 8000,
+
     	});
 
 
