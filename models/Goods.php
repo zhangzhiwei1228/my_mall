@@ -74,16 +74,116 @@ class Goods extends Abstract_Model
 	protected function _updateByIdAfter($data, $id)
 	{
 		if (is_array($data)) {
-			//清空商品SKU
-			if (isset($data['skus'])){
-				M('Goods_Sku')->delete('goods_id = '.(int)$id);
-			}
-			//清空商品属性
-			if (isset($data['attributes'])) {
-				M('Goods_Attribute')->delete('goods_id = '.(int)$id);
-			}
 
-			$this->_insertAfter($data, $id);
+			if(isset($data['sku_change']) && $data['sku_change'] == 1) {
+				if (isset($data['skus']) && $data['skus']) {
+					foreach ((array)$data['skus'] as $item) {
+						$item['goods_id'] = $id;
+						M('Goods_Sku')->update($item,"spec like '%".$item['spec']."%' and goods_id = ".(int)$id);
+					}
+				}
+				if (isset($data['attributes'])) {
+					foreach ((array)$data['attributes'] as $item) {
+						if (!($item['attr_name'] && $item['attr_value'])) continue;
+						$item['goods_id'] = $id;
+						$item['category_id'] = $data['category_id'];
+						$values = (array)$item['attr_value'];
+						$colour = (array)$item['attr_color'];
+
+						foreach($values as $k => $val) {
+							$item['attr_value'] = $val;
+							$item['attr_color'] = $colour[$k];
+							if(strpos($val,',')) {
+								$attr1 = M('Goods_Attribute')->select('id')->where("goods_id = ".(int)$id." and attr_name like '%".$item['attr_name']."%'")->fetchRow()->toArray();
+							} else {
+								$attr1 = M('Goods_Attribute')->select('id')->where("goods_id = ".(int)$id." and attr_value like '%".$val."%'")->fetchRow()->toArray();
+							}
+							if($attr1) {
+								M('Goods_Attribute')->updateById($item,(int)$attr1['id']);
+							} else {
+								M('Goods_Attribute')->insert($item);
+							}
+						}
+					}
+				}
+			} elseif(isset($data['sku_change']) && $data['sku_change'] == 3) {
+				$sku_total = M('Goods_Sku')->select('count(*) as total')->where('goods_id = '.(int)$id)->fetchRow()->toArray();
+				$attr_total = M('Goods_Attribute')->select('count(*) as total')->where('goods_id = '.(int)$id)->fetchRow()->toArray();
+
+				if(count($data['skus']) > (int)$sku_total['total']) {
+
+					foreach($data['skus'] as $sku) {
+						$sku_spec = M('Goods_Sku')->select('spec')->where("spec like '%".$sku['spec']."%' and goods_id = ".(int)$id)->fetchRow()->toArray();
+						if(!$sku_spec) {
+							$sku['goods_id'] = $id;
+							M('Goods_Sku')->insert($sku);
+						}
+					}
+					foreach ((array)$data['attributes'] as $item) {
+						if (!($item['attr_name'] && $item['attr_value'])) continue;
+						$item['goods_id'] = $id;
+						$item['category_id'] = $data['category_id'];
+						$values = (array)$item['attr_value'];
+						$colour = (array)$item['attr_color'];
+
+						foreach($values as $k => $val) {
+							$item['attr_value'] = $val;
+							$item['attr_color'] = $colour[$k];
+							$attribute = M('Goods_Attribute')->select('attr_name,id,attr_type,attr_value')->where("attr_value like '%".$val."%' and goods_id = ".(int)$id)->fetchRow()->toArray();
+							if(!$attribute) {
+								M('Goods_Attribute')->insert($item);
+							}
+						}
+					}
+				} elseif(count($data['skus']) < (int)$sku_total['total']) {
+					$skus = M('Goods_Sku')->select('spec,id')->where('goods_id = '.(int)$id)->fetchRows()->toArray();
+					foreach($data['skus'] as $dsku) {
+						$dskus1[] = $dsku['spec'];
+					}
+					foreach($skus as $key=> $sku) {
+						$dskus[$sku['id']] = $sku['spec'];
+					}
+
+					// 获取重复数据的数组
+					$repeats = array_diff ( $dskus, $dskus1 );
+					foreach($repeats as $key=>$repeat) {
+						M('Goods_Sku')->delete('goods_id = '.(int)$id." and id =".$key);
+					}
+
+					$attr_value = '';
+					foreach ((array)$data['attributes'] as $item) {
+						if (!($item['attr_name'] && $item['attr_value'])) continue;
+						$item['goods_id'] = $id;
+						$item['category_id'] = $data['category_id'];
+						$values = (array)$item['attr_value'];
+						$colour = (array)$item['attr_color'];
+
+						foreach($values as $k => $val) {
+							$attr_value .= "'".$val."',";
+							$item['attr_value'] = $val;
+							$item['attr_color'] = $colour[$k];
+						}
+					}
+					$attr_value = substr($attr_value,0,strlen($attr_value)-1);
+					M('Goods_Attribute')->delete('goods_id = '.(int)$id." and attr_value not in (".$attr_value.")");
+				} else {
+					foreach ((array)$data['skus'] as $item) {
+						$item['goods_id'] = $id;
+						M('Goods_Sku')->update($item,"spec like '%".$item['spec']."%' and goods_id = ".(int)$id);
+					}
+				}
+
+			} else {
+				//清空商品SKU
+				if (isset($data['skus'])){
+					M('Goods_Sku')->delete('goods_id = '.(int)$id);
+				}
+				//清空商品属性
+				if (isset($data['attributes'])) {
+					M('Goods_Attribute')->delete('goods_id = '.(int)$id);
+				}
+				$this->_insertAfter($data, $id);
+			}
 		}
 	}
 

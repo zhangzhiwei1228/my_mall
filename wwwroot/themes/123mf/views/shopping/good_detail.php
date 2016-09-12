@@ -260,14 +260,7 @@ echo static_file('m/js/main.js');
 			},3000);
 			return false;
 		}
-		if(quantity == 0) {
-			flag = 0;
-			$(".end163").show().text('当前规格已售空');
-			setTimeout(function(){
-				$(".end163").hide();
-			},3000);
-			return false;
-		}
+
 		if(val==null){
 			$("html,body").stop().animate({scrollTop:$(".bgwhite .boline").eq(0).offset().top - 90});
 			$(".bgwhite .boline").eq(0).css("border","2px solid #fc0000");
@@ -295,7 +288,14 @@ echo static_file('m/js/main.js');
 				flag = 0;
 			}
 		});
-
+		if(quantity == 0 && flag) {
+			flag = 0;
+			$(".end163").show().text('当前规格已售空');
+			setTimeout(function(){
+				$(".end163").hide();
+			},3000);
+			return false;
+		}
 		if (flag) {
 			$('[name=buynow]').val(1);
 			<?php
@@ -367,14 +367,7 @@ echo static_file('m/js/main.js');
 			},3000);
 			return false;
 		}
-		if(quantity == 0) {
-			flag = 0;
-			$(".end163").show().text('当前规格已售空');
-			setTimeout(function(){
-				$(".end163").hide();
-			},3000);
-			return false;
-		}
+
 		if(val==null){
 			$("html,body").stop().animate({scrollTop:$(".bgwhite .boline").eq(0).offset().top - 90});
 			$(".bgwhite .boline").eq(0).css("border","2px solid #fc0000");
@@ -393,14 +386,21 @@ echo static_file('m/js/main.js');
 					$(this).css("border","0px none");
 				},3000);
 				flag = 0;
-				$(".end163").show();
+				$(".end163").show().text('请选择分类');
 				setTimeout(function(){
 					$(".end163").hide();
 				},3000);
 				flag = 0;
 			}
 		});
-
+		if(quantity == 0 && flag) {
+			flag = 0;
+			$(".end163").show().text('当前规格已售空');
+			setTimeout(function(){
+				$(".end163").hide();
+			},3000);
+			return false;
+		}
 		if (flag) {
 			$('[name=buynow]').val(0);
 			$('.buyform').submit();

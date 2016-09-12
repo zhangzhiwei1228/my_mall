@@ -44,6 +44,8 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 
 			$g = $goods[$item['skuId']];
 
+			$sku = M('Goods_Sku')->select('*')->where('goods_id = '.(int)$g['goods_id'])->fetchRow()->toArray();
+
 			// 超出库存
 			$item['qty'] = $item['qty']>$g['quantity'] ? $g['quantity'] : $item['qty'];
 
@@ -52,22 +54,22 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 
 			switch($item['priceType']) {
 				case 1:
-					$g['price_text'] = $g['point1'].'快乐积分';
-					$g['final_credit_happy'] = $g['point1'];
+					$g['price_text'] = ($g['point1']?$g['point1'] : $sku['point1']).'快乐积分';
+					$g['final_credit_happy'] = $g['point1']?$g['point1'] : $sku['point1'];
 					break;
 				case 2:
-					$g['price_text'] = $g['point2'].'免费积分';
-					$g['final_credit'] = $g['point2'];
+					$g['price_text'] = ($g['point2']?$g['point2'] : $sku['point2']).'免费积分';
+					$g['final_credit'] = $g['point2']?$g['point2'] : $sku['point2'];
 					break;
 				case 3:
-					$g['price_text'] = $g['exts']['ext1']['cash'].'元+'.$g['exts']['ext1']['point'].'免费积分';
-					$g['final_credit'] = $g['exts']['ext1']['point'];
-					$g['final_cash'] = $g['exts']['ext1']['cash'];
+					$g['price_text'] = ($g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash']).'元+'.($g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point']).'免费积分';
+					$g['final_credit'] = $g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point'];
+					$g['final_cash'] = $g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash'];
 					break;
 				case 4:
-					$g['price_text'] = $g['exts']['ext2']['cash'].'元+'.$g['exts']['ext2']['point'].'积分币';
-					$g['final_credit_coin'] = $g['exts']['ext2']['point'];
-					$g['final_cash'] = $g['exts']['ext2']['cash'];
+					$g['price_text'] = ($g['exts']['ext2']['cash']?$g['exts']['ext2']['cash'] : $sku['exts']['ext2']['cash']).'元+'. ($g['exts']['ext2']['point']?$g['exts']['ext2']['point'] : $sku['exts']['ext2']['point']).'积分币';
+					$g['final_credit_coin'] =  $g['exts']['ext2']['point']?$g['exts']['ext2']['point'] : $sku['exts']['ext2']['point'];
+					$g['final_cash'] = $g['exts']['ext2']['cash']?$g['exts']['ext2']['cash'] : $sku['exts']['ext2']['cash'];
 					break;
 			}
 			$g['final_price'] = $g['final_cash'];
@@ -194,26 +196,28 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 				foreach($shipping as $key => $val) {
 					$item = $items[$key];
 					$g = $goods[$item['skuId']];
+					$sku = M('Goods_Sku')->select('*')->where('goods_id = '.(int)$g['goods_id'])->fetchRow()->toArray();
 					$qty = $item['qty'] > $g['quantity'] ? $g['quantity'] : $item['qty'];
 					$g['thumb'] = $g['thumb'] ? $g['thumb'] : $g['thumb1'];
+
 					switch($item['priceType']) {
 						case 1:
-							$g['price_text'] = $g['point1'].'快乐积分';
-							$g['final_credit_happy'] = $g['point1'];
+							$g['price_text'] = ($g['point1']?$g['point1'] : $sku['point1']).'快乐积分';
+							$g['final_credit_happy'] = $g['point1']?$g['point1'] : $sku['point1'];
 							break;
 						case 2:
-							$g['price_text'] = $g['point2'].'免费积分';
-							$g['final_credit'] = $g['point2'];
+							$g['price_text'] = ($g['point2']?$g['point2'] : $sku['point2']).'免费积分';
+							$g['final_credit'] = $g['point2']?$g['point2'] : $sku['point2'];
 							break;
 						case 3:
-							$g['price_text'] = $g['exts']['ext1']['cash'].'元+'.$g['exts']['ext1']['point'].'免费积分';
-							$g['final_credit'] = $g['exts']['ext1']['point'];
-							$g['final_cash'] = $g['exts']['ext1']['cash'];
+							$g['price_text'] = ($g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash']).'元+'.($g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point']).'免费积分';
+							$g['final_credit'] = $g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point'];
+							$g['final_cash'] = $g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash'];
 							break;
 						case 4:
-							$g['price_text'] = $g['exts']['ext2']['cash'].'元+'.$g['exts']['ext2']['point'].'积分币';
-							$g['final_credit_coin'] = $g['exts']['ext2']['point'];
-							$g['final_cash'] = $g['exts']['ext2']['cash'];
+							$g['price_text'] = ($g['exts']['ext2']['cash']?$g['exts']['ext2']['cash'] : $sku['exts']['ext2']['cash']).'元+'. ($g['exts']['ext2']['point']?$g['exts']['ext2']['point'] : $sku['exts']['ext2']['point']).'积分币';
+							$g['final_credit_coin'] =  $g['exts']['ext2']['point']?$g['exts']['ext2']['point'] : $sku['exts']['ext2']['point'];
+							$g['final_cash'] = $g['exts']['ext2']['cash']?$g['exts']['ext2']['cash'] : $sku['exts']['ext2']['cash'];
 							break;
 					}
 					$g['final_price'] = $g['final_cash'];
@@ -248,26 +252,27 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 				$ids[$keys]['skus_id'] = $param[1];
 				$item = $items[$i];
 				$g = $goods[$item['skuId']];
+				$sku = M('Goods_Sku')->select('*')->where('goods_id = '.(int)$g['goods_id'])->fetchRow()->toArray();
 				$qty = $item['qty'] > $g['quantity'] ? $g['quantity'] : $item['qty'];
 				$g['thumb'] = $g['thumb'] ? $g['thumb'] : $g['thumb1'];
 				switch($item['priceType']) {
 					case 1:
-						$g['price_text'] = $g['point1'].'快乐积分';
-						$g['final_credit_happy'] = $g['point1'];
+						$g['price_text'] = ($g['point1']?$g['point1'] : $sku['point1']).'快乐积分';
+						$g['final_credit_happy'] = $g['point1']?$g['point1'] : $sku['point1'];
 						break;
 					case 2:
-						$g['price_text'] = $g['point2'].'免费积分';
-						$g['final_credit'] = $g['point2'];
+						$g['price_text'] = ($g['point2']?$g['point2'] : $sku['point2']).'免费积分';
+						$g['final_credit'] = $g['point2']?$g['point2'] : $sku['point2'];
 						break;
 					case 3:
-						$g['price_text'] = $g['exts']['ext1']['cash'].'元+'.$g['exts']['ext1']['point'].'免费积分';
-						$g['final_credit'] = $g['exts']['ext1']['point'];
-						$g['final_cash'] = $g['exts']['ext1']['cash'];
+						$g['price_text'] = ($g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash']).'元+'.($g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point']).'免费积分';
+						$g['final_credit'] = $g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point'];
+						$g['final_cash'] = $g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash'];
 						break;
 					case 4:
-						$g['price_text'] = $g['exts']['ext2']['cash'].'元+'.$g['exts']['ext2']['point'].'积分币';
-						$g['final_credit_coin'] = $g['exts']['ext2']['point'];
-						$g['final_cash'] = $g['exts']['ext2']['cash'];
+						$g['price_text'] = ($g['exts']['ext2']['cash']?$g['exts']['ext2']['cash'] : $sku['exts']['ext2']['cash']).'元+'. ($g['exts']['ext2']['point']?$g['exts']['ext2']['point'] : $sku['exts']['ext2']['point']).'积分币';
+						$g['final_credit_coin'] =  $g['exts']['ext2']['point']?$g['exts']['ext2']['point'] : $sku['exts']['ext2']['point'];
+						$g['final_cash'] = $g['exts']['ext2']['cash']?$g['exts']['ext2']['cash'] : $sku['exts']['ext2']['cash'];
 						break;
 				}
 				$g['final_price'] = $g['final_cash'];

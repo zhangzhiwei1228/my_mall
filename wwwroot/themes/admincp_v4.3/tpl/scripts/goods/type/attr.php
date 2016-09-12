@@ -127,8 +127,8 @@ var cusnum = <?=$this->customs ? (int)count($this->customs) : 0?>;
 		<a class="btn btn-danger" onclick="$.removeCustomItem('c@id')">移除</a>
 		</span>
 	</div>
-	</div>
-</div>
+	</dd>
+</dl>
 <script type="text/javascript">
 $.makeSkuTable();
 seajs.use('/assets/js/dragsort/jquery.dragsort-0.5.2.js', function(dragsort){
@@ -137,4 +137,5 @@ seajs.use('/assets/js/dragsort/jquery.dragsort-0.5.2.js', function(dragsort){
 		dragSelector:'dd', 
 	});
 });
+
 </script>

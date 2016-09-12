@@ -111,7 +111,37 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 
 		$view->render('goods/list.php');
 	}
+	/**
+	 * 编辑
+	 * sku_change 1表示不改变，2表示先清空再重新录入，3表示单个改变
+	 */
+	public function doEdit()
+	{
+		$data = M($this->_formatModelName())->getById((int)$this->_request->id);
+		if (!$data->exists()) {
+			throw new Suco_Controller_Dispatcher_Exception('Not found.');
+		}
 
+		if ($this->_request->isPost()) {
+			$skus = $this->_request->getPosts();
+			/*if(count($skus['skus']) > 1) {
+				foreach($skus['skus'] as $key => &$exts) {
+					if($key == 0) continue;
+					$exts['market_price'] = $skus['skus'][0]['market_price'];
+					$exts['point1'] = $skus['skus'][0]['point1'];
+					$exts['point2'] = $skus['skus'][0]['point2'];
+					$exts['exts'] = $skus['skus'][0]['exts'];
+				}
+			}*/
+
+			M($this->_formatModelName())->updateById(array_merge($skus, $this->_request->getFiles()), (int)$this->_request->id);
+			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
+		}
+
+		$view = $this->_initView();
+		$view->data = $data;
+		$view->render('goods/input.php');
+	}
 	public function doSum($id=0){
 		$category=M("Goods_Category")->select()->where("parent_id = ".$id)->fetchRows();
 		$arr=array();

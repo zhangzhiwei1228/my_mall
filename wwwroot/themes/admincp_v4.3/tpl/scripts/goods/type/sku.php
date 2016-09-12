@@ -55,9 +55,9 @@ $specs = cd(0);
 	<div class="col-sm-9">
 		<div class="input-group" style="width:260px">
 			<span class="input-group-addon">#</span>
-			<input type="hidden" name="skus[<?=$k?>][spec]" value="" />
-			<input type="hidden" name="skus[<?=$k?>][key]" value="<?=$k?>" />
-			<input type="text" name="skus[<?=$k?>][code]" value="<?=$sku['code']?>" class="form-control" />
+			<!--<input type="hidden" name="skus[<?/*=$k*/?>][spec]" value="" />
+			<input type="hidden" name="skus[<?/*=$k*/?>][key]" value="<?/*=$k*/?>" />
+			<input type="text" name="skus[<?/*=$k*/?>][code]" value="<?/*=$sku['code']*/?>" class="form-control" />-->
 		</div>
 	</div>
 </div>

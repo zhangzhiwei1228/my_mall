@@ -77,9 +77,9 @@ $this->head()->setTitle($this->title);
 					</td>
 					<td style="<?php if($row['diff_quantify'] <= 0) {?> color:red<?php }?>">
 						<a href="<?=$this->url('action=edit&id=' . $row['id'].'&ref='.$this->_request->url)?>" style="<?php if($row['diff_quantify'] <= 0) {?> color:red<?php }?>">
-							<?=$this->highlight($row['title'], $this->_request->q)?></a><br />
+							<?=$this->highlight($row['title'], str_replace(' ','', $this->_request->q))?></a><br />
 
-						货号：<?=$row['code'] ? $this->highlight($row['code'], $this->_request->q) : 'N/A'?> [#ID: <?=$row['id']?>]<br />
+						货号：<?=$row['code'] ? $this->highlight($row['code'], str_replace(' ','', $this->_request->q)) : 'N/A'?> [#ID: <?=$row['id']?>]<br />
 						类目：<?=$row['category_name'] ? $row['category_name'] : 'N/A'?>
 					</td>
 					<!-- <td>

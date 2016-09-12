@@ -24,13 +24,13 @@ $this->head()->setTitle(($this->_request->getActionName() == 'add' ? '添加' : 
 				<div class="form-group">
 					<label class="control-label col-sm-2"><span class="required">*</span>商品标题:</label>
 					<div class="col-sm-7">
-						<input type="text" name="title" value="<?=$this->data['title']?>" class="form-control" />
+						<input type="text" name="title" id="title" value="<?=$this->data['title']?>" class="form-control" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-sm-2">商品货号:</label>
 					<div class="col-sm-7">
-						<input type="text" name="code" value="<?=$this->data['code']?>" class="form-control" />
+						<input type="text" name="code" id="code" value="<?=$this->data['code']?>" class="form-control" />
 						<div class="help-block">用于您对商品的管理，不会对买家展示。如果不输入，系统将自动生成。</div>
 					</div>
 				</div>
@@ -232,10 +232,10 @@ $this->head()->setTitle(($this->_request->getActionName() == 'add' ? '添加' : 
 			</div>
 			<!-- /.modal-dialog -->
 		</div>
-		
+		<input type="hidden" name="sku_change" value="1" id="sku_change" />
 	</form>
 </div>
-<script type="text/javascript" src="./js/goods.js"></script> 
+<script type="text/javascript" src="./js/src/goods.js"></script>
 <script type="text/javascript">
 
 $('input[name=set_end_date]').click(function(){
@@ -244,9 +244,12 @@ $('input[name=set_end_date]').click(function(){
 });
 
 $('[name=package_unit], [name=package_method], [name=package_lot_unit], [name=shipping_id]').on('change', function(){
+	$('#sku_change').val(2);
 	$.changeUnit();
 });
-
+$('[name=package_weight], [name=package_length], [name=package_width], [name=package_height]').on('change', function(){
+	$('#sku_change').val(2);
+});
 //初始化开始
 $.changeUnit();
 $.loadAttribute(<?=(int)$this->data['category_id']?>, <?=(int)$this->data['id']?>);
@@ -278,4 +281,13 @@ seajs.use('/assets/js/validator/validator.sea.js', function(validator){
 		}
 	});
 });
+</script>
+
+<script>
+	$("#title").change(function(){
+		$('#sku_change').val(2);
+	});
+	$("#code").change(function(){
+		$('#sku_change').val(2);
+	});
 </script>

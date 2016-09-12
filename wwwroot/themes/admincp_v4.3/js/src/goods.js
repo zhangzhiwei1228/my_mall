@@ -42,6 +42,9 @@ $.removeCustomItem = function(id) {
 }
 
 $.buychoose = function (id, k) {
+	$('#chk_'+id+'_'+k).change(function(){
+		$('#sku_change').val(3);
+	});
 	$('.ipt_'+id+'_'+k).attr('disabled', !$('#chk_'+id+'_'+k+':checked').attr('id'));
 }
 
@@ -113,7 +116,10 @@ $.processQuantity = function() {
 		var qty = parseInt($(this).val());
 		if (qty == -1) { quantity = -1; return false; }
 		quantity += parseInt($(this).val());
-	})
+	});
+	$('.buychoose-quantity').change(function() {
+		$('#sku_change').val(3);
+	});
 	$('input[name=quantity]').val(quantity).attr('readonly', quantity ? true : false);
 }
 
