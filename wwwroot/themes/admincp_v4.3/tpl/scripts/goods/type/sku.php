@@ -181,7 +181,7 @@ $specs = cd(0);
 			<span class="input-group-addon"><span class="package-unit"></span></span>
 		</div>
 		<div class="help-block">库存为零时将停止销售. 当商品库存低于警告数值时,系统将会提示</div>
-	</div>
+	</div> 
 </div>
 <?php } ?>
 
