@@ -133,7 +133,9 @@ class Usercp_PassportController extends Usercp_Controller_Action
 			$_SESSION['login_user_id'] = (int)$user['id'];
 			//$this->redirect($this->_request->ref ? base64_decode($this->_request->ref) : 'module=usercp');
 			if(isset($this->_request->ref)) {
-				$this->redirect(base64_decode($this->_request->ref));
+				$url = new Suco_Helper_Url('module=usercp&controller=index');
+
+				$this->redirect(base64_decode($this->_request->ref).'/?ref='.$url);
 			}
 			if(isset($_SESSION['pay_confirm_login'])) {
 				$this->redirect('/cart/default/');

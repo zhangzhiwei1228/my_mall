@@ -27,7 +27,7 @@
 <div class="ik">
     <?php if ($_SERVER['HTTP_REFERER']) { ?>
 	<span class="ikoj">
-    <a href="javascript:window.history.back(-1);" target="_blank" ><img src="<?php echo static_file('mobile/img/olk.png'); ?> " alt=""></a><!-- 返回 -->
+    <a href="<?php if(isset($this->_request->ref)) { echo $this->_request->ref;} else {echo 'javascript:window.history.back(-1);';}?>" target="_blank" ><img src="<?php echo static_file('mobile/img/olk.png'); ?> " alt=""></a><!-- 返回 -->
     </span>
     <?php } ?>
     帮帮网：一个免费、特惠和创业的网站！
