@@ -140,9 +140,11 @@ class CartController extends Controller_Action
 				'is_virtual' => 0,
 				'expiry_time' => time() + (int)M('Setting')->timeout_pay,
 			)));
+
 			foreach($items as $k => $row) {
 				if (!$row['checkout']) continue;
 				unset($row['goods']['id']);
+				unset($row['goods']['exts']);
 				M('Order_Goods')->insert(array_merge($row['goods'], array(
 					'order_id' => $oid,
 					'buyer_id' => $buyer->id,

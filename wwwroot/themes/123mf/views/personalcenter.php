@@ -21,7 +21,7 @@
 			<li onmouseover="this.style.cursor='pointer'" onclick="document.location='<?=$this->url('default/news/list?cid=15')?>';">
 				<img src="<?php echo static_file('mobile/img/img-24.png')?> " alt="">
 				<span style="width:50px;"><a href="<?=$this->url('default/news/list?cid=15')?>">通知</a></span>
-				<div class="per-sonnum">1</div>
+				<div class="per-sonnum"><?php echo $this->news?></div>
 				<a class="n-list-end" href=""></a>
 			</li>
 			<!-- <li>

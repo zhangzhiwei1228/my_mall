@@ -105,7 +105,7 @@ class Cart
 	{
 		$cart_code = explode('.',$code);
 		$uid = M('User')->getCurUser()->id;
-		if($uid) {
+		if($uid && isset($cart_code[0]) && isset($cart_code[1])) {
 			M('User_Cart')->delete('user_id ='. $uid . ' and goods_id ='.$cart_code[0].' and sku_id ='.$cart_code[1]);
 		}
 		unset($this->_items[$code]);

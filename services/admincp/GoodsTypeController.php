@@ -110,6 +110,9 @@ class Admincp_GoodsTypeController extends Admincp_Controller_Action
 		$view->skus = M('Goods_Sku')->select()
 			->where('goods_id = ?', (int)$this->_request->id)
 			->fetchOnKey('key');
+		$view->good = M('Goods')->select('quantity,quantity_warning')
+			->where('id = ?', (int)$this->_request->id)
+			->fetchRow()->toArray();
 
 		$view->render('goods/type/sku.php');
 	}

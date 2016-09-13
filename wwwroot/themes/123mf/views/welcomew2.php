@@ -26,7 +26,7 @@
         <div class="nn-big-right"><img src="<?php echo static_file('mobile/img/nimg-03.png'); ?> " alt=""></div>
     </div> -->
     <div style="position:fixed;top:0px;left:0px;" class="n-personal-center-tit">
-        <a href="<?=$this->url('default')?>"><img width="11" height="21" src="<?php echo static_file('mobile/img/img-22.png')?> " alt=""></a>
+        <a href="javascript:history.back(-1)"><img width="11" height="21" src="<?php echo static_file('mobile/img/img-22.png')?> " alt=""></a>
         <?php echo $this->_request->cid == 14 ? '消息' : '通知';?>
     </div>
     <div style="height:57px;"></div>
@@ -43,7 +43,7 @@
         <ul>
             <?php foreach($this->msglist as $row ) { ?>
                 <li>
-                    <a href="<?=$this->url('./detail?mid='.$row['id'])?>"><span class="welcomew2-sp1"><?= $row['title'] ?  $row['title'] : '私信' ?></span></a>
+                    <a href="<?=$this->url('./detail?mid='.$row['id'])?>"><span class="welcomew2-sp1"><?= $row['title'] ?  $row['title'] : '私信' ?><?php echo $row['is_read'] ? '（已读）':'（未读）'?></span></a>
                     <a href="<?=$this->url('./detail?mid='.$row['id'])?>"><span class="welcomew2-sp2"><?=$this->cutstr($row['content'], 150)?></span></a>
                     <a href="<?=$this->url('./detail?mid='.$row['id'])?>"><span class="welcomew2-sp3"><?=date(DATE_FORMAT,$row['create_time'])?></span></a>
                 </li>

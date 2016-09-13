@@ -23,11 +23,10 @@ class Usercp_IndexController extends Usercp_Controller_Action
 				SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) as s3
 			')->where('buyer_id = ? AND `status` IN (1,2,3)', $this->user['id'])
 			->fetchRow();
-		$ids = M('Article_Category')->getChildIds(15);
-		//$count = M('Article')->count('is_checked = 2 and is_looked = 0 and category_id IN ('.($ids ? $ids : 0).')');
+		$count = M('Message')->count('recipient_uid='.$this->user['id'].' and is_read=0');
 
 		$view = $this->_initView();
-		$view->news = 0;
+		$view->news = $count;
 		$view->order = $order;
 		$view->orderSummary = $orderSummary;
 		$view->render('views/personalcenter.php');

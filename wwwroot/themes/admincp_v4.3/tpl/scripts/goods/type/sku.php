@@ -173,10 +173,10 @@ $specs = cd(0);
 	<label class="control-label col-sm-2">商品库存:</label>
 	<div class="col-sm-9">
 		<div class="input-group" style="width:400px">
-			<input type="text" name="skus[<?=$k?>][quantity]" value="<?=$sku['quantity'] ? $this->skus[$k]['quantity'] : 1?>" class="form-control goods-quantity" />
+			<input type="text" name="quantity" value="<?=$good['quantity'] ? $this->good['quantity'] : 1?>" class="form-control goods-quantity" />
 			<span class="input-group-addon">库存警告</span>
-			<input type="text" name="skus[<?=$k?>][quantity_warning]" id="sku-quantity-warning" value="<?=$this->skus[$k]['quantity_warning']?>" class="form-control" />
-			<input type="hidden" name="quantity_warning" id="good-quantity-warning" value="<?=$this->skus[$k]['quantity_warning']?>" class="form-control" />
+			<input type="text" name="quantity_warning" id="sku-quantity-warning" value="<?=$this->good['quantity_warning']?>" class="form-control" />
+			<input type="hidden" name="quantity_warning" id="good-quantity-warning" value="<?=$this->good['quantity_warning']?>" class="form-control" />
 
 			<span class="input-group-addon"><span class="package-unit"></span></span>
 		</div>

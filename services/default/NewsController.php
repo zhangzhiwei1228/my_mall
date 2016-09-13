@@ -48,6 +48,7 @@ class NewsController extends Controller_Action
 		$data = M('Article')->getById((int)$this->_request->id);
 		if ($this->_request->mid) {
 			$data = M('Message')->getById((int)$this->_request->mid);
+			M('Message')->updateById(array('is_read' => 1), (int)$this->_request->mid);
 		}
 		if (!$data->exists()) {
 			throw new Suco_Controller_Dispatcher_Exception('Not found.');
