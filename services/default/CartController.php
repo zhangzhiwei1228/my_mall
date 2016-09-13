@@ -140,11 +140,25 @@ class CartController extends Controller_Action
 				'is_virtual' => 0,
 				'expiry_time' => time() + (int)M('Setting')->timeout_pay,
 			)));
+			if($buyer->id == 586) {
 
+			}
 			foreach($items as $k => $row) {
 				if (!$row['checkout']) continue;
-				unset($row['goods']['id']);
-				unset($row['goods']['exts']);
+				unset($row['goods']['key']);
+				unset($row['goods']['cost_price']);
+				unset($row['goods']['market_price']);
+				unset($row['goods']['point1']);
+				unset($row['goods']['point2']);
+				unset($row['goods']['quantity']);
+				unset($row['goods']['quantity_warning']);
+				unset($row['goods']['thumb1']);
+				unset($row['goods']['package_weight']);
+				unset($row['goods']['package_unit']);
+				unset($row['goods']['package_quantity']);
+				unset($row['goods']['package_lot_unit']);
+				unset($row['goods']['price_text']);
+
 				M('Order_Goods')->insert(array_merge($row['goods'], array(
 					'order_id' => $oid,
 					'buyer_id' => $buyer->id,
@@ -153,7 +167,7 @@ class CartController extends Controller_Action
 					'subtotal_save' => $row['subtotal_save'],
 					'purchase_quantity' => $row['qty'],
 					'promotion' => $row['goods']['price_label'],
-					'unit' => $row['unit'],
+					//'unit' => $row['unit'],
 					'sku_id' => $row['skuId']
 				)));
 				$cart->delItem($k);
