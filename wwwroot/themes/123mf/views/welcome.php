@@ -217,10 +217,9 @@
     </div>
     <div class="n-h5"></div>
 
-    <div class="img-box">
-    	<a href="<? echo site_url('')?>">
-    		<img src="<? echo static_file('m/img/img_4.jpg');?>" alt="">
-	    </a>
+    <div class="h20"></div>
+    <div class="img">
+        <a href="<? echo site_url('new_text/purchase')?>"><img src="<? echo static_file('m/img/pic/img_3.jpg')?>" alt=""></a>
     </div>
 
     <div class="n-h5"></div>
