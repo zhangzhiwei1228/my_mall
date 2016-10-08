@@ -50,12 +50,7 @@
 </style>
 
 <body>
-
-qewqeqwewq
-qewqeqwewq
-qewqeqwewq
-qewqeqwewq
-
+13213213213
 
 
 	<?php include_once VIEWS.'inc/header-z.php'; ?>
