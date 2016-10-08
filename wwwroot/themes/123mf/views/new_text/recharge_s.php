@@ -5,6 +5,10 @@
 
 <body style="background-color: #ebebeb;">
 
+<div class="n-personal-center-tit">
+    <a href="javascript:history.go(-1);"><img width="11" height="21" src="<? echo static_file('mobile/img/img-22.png')?>" alt=""></a>充值抵用券  
+</div>
+
 <div class="m-recharge">
 
     <div class="row f-cb">
