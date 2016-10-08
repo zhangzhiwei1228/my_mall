@@ -6,7 +6,7 @@
 <body style="background-color: #fff;">
 
 <div class="n-personal-center-tit">
-    <a href="javascript:history.go(-1);"><img width="11" height="21" src="<? echo static_file('mobile/img/img-22.png')?>" alt=""></a>购买成功  
+    <a href="javascript:history.go(-1);"><img width="11" height="21" src="<? echo static_file('mobile/img/img-22.png')?>" alt=""></a>购买抵用金  
 </div>
 
 <div class="purchase">

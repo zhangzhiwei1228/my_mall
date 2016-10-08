@@ -5,6 +5,10 @@
 
 <body style="background-color: #fff;">
 
+<div class="n-personal-center-tit">
+    <a href="javascript:history.go(-1);"><img width="11" height="21" src="<? echo static_file('mobile/img/img-22.png')?>" alt=""></a>赠送免费积分记录  
+</div>
+
 <form action="">
     <div class="records-day">
         <div class="top f-cb">
