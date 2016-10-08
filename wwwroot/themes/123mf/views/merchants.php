@@ -29,7 +29,7 @@
 			商家管理员收益
 			<?php } ?></p>
 				<p class="admin-name"><?=$this->user['nickname']?></p>
-				<p class="login-info"><a href="<?=$this->url('passport/logout')?>">退出</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?=$this->url('security/reset_login_pwd')?>">修改密码</a></p>
+				<p class="login-info"><a href="">核销低用金</a> <a href="<?=$this->url('passport/logout')?>">退出</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?=$this->url('security/reset_login_pwd')?>">修改密码</a></p>
 			</div>
 			<div class="clear"></div>
 		</div>
