@@ -53,7 +53,12 @@
 			</li>-->
 			<li>
 				<img src="<?php echo static_file('mobile/img/img-27.png')?> " alt="">
-				<span><a href="<?=$this->url('credit')?> ">免费积分转换</a></span>
+				<span><a href="<?=$this->url('credit')?> ">积分转换</a></span>
+				<a class="n-list-end" href="<?=$this->url('credit')?> "></a>
+			</li>
+			<li>
+				<img src="<?php echo static_file('mobile/img/pic/img_7.jpg')?> " alt="">
+				<span><a href="<?=$this->url('credit')?> ">抵用劵转换</a></span>
 				<a class="n-list-end" href="<?=$this->url('credit')?> "></a>
 			</li>
 			<!--<li>
