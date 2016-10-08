@@ -350,6 +350,7 @@
   width: 100%;
   text-align: center;
   table-layout: fixed;
+  background-color: #fff;
 }
 .m-notes th {
   color: #333333;
@@ -382,3 +383,226 @@
   color: #bbb;
   font-size: 14px;
 }
+.m-verifi{
+  padding: 0 0.3rem;
+  padding-top: 0.47rem;
+}
+.m-verifi .row{
+  width: 100%;
+}
+.m-verifi .row input[type=text]{
+  float: left;
+  background-color: #fff;
+  font-size: 0.28rem;
+  line-height: normal;
+  border: 0;
+  width: 82%;
+  box-sizing: border-box;
+  padding: 0.315rem 0.2rem;
+}
+.m-verifi .row .sub{
+  float: left;
+  background: url("../img/pic/img_71.jpg") no-repeat;
+  background-size: 100% 100%;
+  width: 18%;
+  height: 1rem;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.m-verifi .list{
+  table-layout: fixed;
+  width: 100%;
+  margin-top: 0.46rem;
+  background-color: #fff;
+  border-radius: 0.08rem;
+}
+.m-verifi .list.m-t{
+  margin-top: 0;
+}
+.m-verifi .list th{
+  line-height: 1;
+  font-size: 0.28rem;
+  color: #333333;
+  font-weight: normal;
+  padding: 0.38rem 0.4rem 0.34rem 0.4rem;
+}
+.m-verifi .list th:nth-child(1){
+  text-align: left;
+}
+.m-verifi .list td {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 0.24rem;
+  color: #333333;
+  text-align: center;
+  padding: 0.38rem 0.4rem 0.34rem 0.4rem;
+}
+.m-verifi .list td:nth-child(1){
+  text-align: left;
+}
+.m-verifi .sm-row{
+  line-height: 1;
+  font-size: 0.24rem;
+  color: #333333;
+  margin-top: 0.45rem;
+}
+.m-verifi .sm-row input{
+  color: #b40000;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 4.3rem;
+  background-color: transparent;
+}
+.butn-bot{
+  display: block;
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.28rem;
+  color: #fff;
+  line-height: 1;
+  padding-top: 0.28rem;
+  padding-bottom: 0.25rem;
+  border-radius: 0.08rem;
+  background-color: #ff6600;
+}
+.m-verifi .tit{
+  background-color: #ffb400;
+  line-height: 1;
+  padding-bottom: 0.2rem;
+  margin-top: 0.4rem;
+}
+.m-verifi .tit:before{
+  content: '';
+  position: relative;
+  top: -0.08rem;
+  display: block;
+  background: url("../img/pic/img_19.png") no-repeat top;
+  background-size: 100%;
+  height: 0.23rem;
+}
+.m-verifi .tit p{
+  font-size: 0.3rem;
+  padding: 0.15rem 0.4rem;
+  color: #fff;
+}
+.m-verifi .bod{
+  background-color: #fff;
+  font-size: 0.36rem;
+  color: #000;
+  text-align: center;
+  line-height: 1;
+  padding-top: 0.58rem;
+  padding-bottom: 0.68rem;
+}
+.m-verifi .botm {
+  background-color: #fff;
+  color: #777777;
+  font-size: 0.28rem;
+  line-height: 1;
+  border-top: 1px dashed #d8d8d8;
+  position: relative;
+}
+.m-verifi .botm p{
+  padding: 0.3rem 0.38rem;
+}
+.m-verifi .botm:after{
+  content: '';
+  position: absolute;
+  display: block;
+  width: 100%;
+  background: url("../img/pic/img_20.png") no-repeat bottom;
+  background-size: 100%;
+  height: 0.23rem;
+  bottom: -0.1rem;
+}
+.m-verifi.tab{
+  padding: 0;
+  padding-top: 0.3rem;
+}
+.m-verifi.tab .m-notes{
+  padding: 0;
+}
+.m-verifi.tab .m-notes td.hot{
+  color: #22a000;
+}
+.m-verifi.tab .nave{
+  line-height: 1;
+  background-color: #fff;
+  text-align: center;
+  position: relative;
+}
+.m-verifi.tab .nave:before{
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 1.2rem;
+  top: 50%;
+  margin-top: -0.6rem;
+  background-color: #e4e4e4;
+}
+.m-verifi.tab .nave li{
+  float: left;
+  width: 50%;
+  padding: 0.4rem 0;
+}
+.m-verifi.tab .nave li b{
+  font-weight: bold;
+  font-size: 0.4rem;
+  color: #b40000;
+}
+.m-verifi.tab .nave li p{
+  color: #333333;
+  font-size: 0.24rem;
+  margin-top: 0.2rem;
+}
+.m-recharge{
+  padding: 0 5%;
+  padding-top: 0.47rem;
+}
+.m-recharge .row{
+  background: url("../img/pic/img_21.png") no-repeat 5.4rem center;
+  background-color: #fff;
+  background-size: 0.11rem;
+  border-radius: 0.08rem;
+}
+.m-recharge .row input{
+  float: right;
+  width: 2.1rem;
+  color: #bbbbbb;
+  font-size: 0.28rem;
+  line-height: normal;
+  height: 1rem;
+  text-align: right;
+  border: 0;
+  margin-right: 0.65rem;
+}
+.m-recharge .tit{
+  color: #555555;
+  font-size: 0.28rem;
+  line-height: 1;
+  padding: 0.37rem 0;
+  margin-left: 0.3rem;
+}
+.m-recharge .bu-tit {
+  font-size: 0.28rem;
+  color: #555555;
+  line-height: 1;
+  padding: 0.37rem 0;
+  text-align: center;
+}
+.m-recharge .bu-tit span{
+  color: #b40000;
+  margin: 0 0.12rem;
+}
+.m-recharge .butn-bot {
+  margin-top: 0.4rem;
+}
+.butn-bot:hover {
+  color: #fff;
+}
+
+
