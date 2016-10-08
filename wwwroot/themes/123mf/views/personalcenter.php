@@ -118,6 +118,11 @@
 				<a class="n-list-end" href="<?=$this->url('order')?> "></a>
 			</li>
 			<li>
+				<img src="<?php echo static_file('m/img/pic/img_7.jpg')?> " alt="">
+				<span><a href="<?=$this->url('order')?> ">抵用金兑换记录</a></span>
+				<a class="n-list-end" href="<?=$this->url('order')?> "></a>
+			</li>
+			<li>
 				<img src="<?php echo static_file('mobile/img/img-04.png'); ?>" alt="" style="background-color: red">
 				<span><a href="<?=$this->url('default/cart/default')?> ">我的购物车</a></span>
 				<a class="n-list-end" href="<?=$this->url('default/cart/default')?> "></a>
