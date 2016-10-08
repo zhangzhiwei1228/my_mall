@@ -109,11 +109,11 @@
   border-top: 1px solid #dbdbdb;
 }
 .m-records .list li.n1 {
-  background: url("../img/img_16.png") no-repeat 0.32rem center;
+  background: url("../img/pic/img_16.png") no-repeat 0.32rem center;
   background-size: auto 1.1rem;
 }
 .m-records .list li.n2 {
-  background: url("../img/img_17.png") no-repeat 0.32rem center;
+  background: url("../img/pic/img_17.png") no-repeat 0.32rem center;
   background-size: auto 1.1rem;
 }
 .m-records .list li:nth-child(1) a span {
