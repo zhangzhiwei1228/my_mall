@@ -51,12 +51,7 @@
 
 <body>
 
-
-
-afqwefwefew
-afqwefwefew
-afqwefwefew
-afqwefwefew
+123456
 
 	<?php include_once VIEWS.'inc/header-z.php'; ?>
     <div class="n-big">
