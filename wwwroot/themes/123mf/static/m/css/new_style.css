@@ -372,3 +372,13 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+.merc-admin{
+  position: relative;
+}
+.merc-admin .f-top{
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #bbb;
+  font-size: 14px;
+}

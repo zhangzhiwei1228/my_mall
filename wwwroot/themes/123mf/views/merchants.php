@@ -18,6 +18,7 @@
 	</div>
 	<div class="admin-box bgwhite">
 		<div class="merc-admin w90">
+			<a href="" class="f-top">核销记录</a>
 			<div class="pic fl">
 <!--				<img src="--><?php //echo static_file('m/img/pic17.png'); ?><!-- ">-->
 				<img src="<?php echo $this->baseUrl('uploads/avatar/6.png'); ?> ">
@@ -29,7 +30,7 @@
 			商家管理员收益
 			<?php } ?></p>
 				<p class="admin-name"><?=$this->user['nickname']?></p>
-				<p class="login-info"><a href="">核销低用金</a> <a href="<?=$this->url('passport/logout')?>">退出</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?=$this->url('security/reset_login_pwd')?>">修改密码</a></p>
+				<p class="login-info"><a href="">核销低用金</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?=$this->url('passport/logout')?>">退出</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?=$this->url('security/reset_login_pwd')?>">修改密码</a></p>
 			</div>
 			<div class="clear"></div>
 		</div>
