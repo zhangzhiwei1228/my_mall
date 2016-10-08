@@ -3,7 +3,7 @@
     <?php include_once VIEWS.'inc/head.php'; ?>
 </head>
 
-<body>
+<body style="background-color: #ebebeb;">
 
 <div class="n-personal-center-tit">
     <a href="javascript:history.go(-1);"><img width="11" height="21" src="<? echo static_file('mobile/img/img-22.png')?>" alt=""></a>赠送抵用券记录  

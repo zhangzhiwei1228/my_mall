@@ -108,6 +108,9 @@
   display: block;
   border-top: 1px solid #dbdbdb;
 }
+.m-records .list li{
+  width: 100%;
+}
 .m-records .list li.n1 {
   background: url("../img/pic/img_16.png") no-repeat 0.32rem center;
   background-size: auto 1.1rem;
