@@ -105,6 +105,17 @@ $specs = cd(0);
 		<div class="help-block">单件出售时，以此价格与买家结算</div>
 	</div>
 </div>
+<div class="form-group">
+	<label class="control-label col-sm-2">积分币:</label>
+	<div class="col-sm-9">
+		<div class="input-group" style="width:260px">
+			<span class="input-group-addon">&yen;</span>
+			<input type="text" name="skus[<?=$k?>][point3]" value="<?=$sku['point3']?>" class="form-control JS_SP" />
+			<span class="input-group-addon"><span class="package-unit"></span></span>
+		</div>
+		<div class="help-block">单件出售时，以此价格与买家结算</div>
+	</div>
+</div>
 <?php foreach($this->pointConfig as $field => $row) { ?>
 <div class="form-group">
 	<label class="control-label col-sm-2"><?=$row['name']?>:</label>
