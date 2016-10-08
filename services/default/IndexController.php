@@ -51,4 +51,34 @@ class IndexController extends Controller_Action
 		$view = $this->_initView();
 		$view->render('views/shopping/wx_tokencheck.php');
 	}
+
+	public function doNotes() {
+		$view = $this->_initView();
+		$view->render('views/new_text/notes.php');
+	}
+	public function doOtherGoods() {
+		$view = $this->_initView();
+		$view->render('views/new_text/other_goods.php');
+	}
+	public function doPurchase() {
+		$view = $this->_initView();
+		$view->render('views/new_text/purchase.php');
+	}
+	public function doRecords() {
+		$view = $this->_initView();
+		$view->render('views/new_text/records.php');
+	}
+	public function doRecordsNumerical() {
+		$view = $this->_initView();
+		$view->render('views/new_text/records_numerical.php');
+	}
+	public function doRecordsVolume() {
+		$view = $this->_initView();
+		$view->render('views/new_text/records_volume.php');
+	}
+	public function doSuccess() {
+		$view = $this->_initView();
+		$view->render('views/new_text/success.php');
+	}
+
 }
