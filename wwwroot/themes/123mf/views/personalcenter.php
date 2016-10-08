@@ -118,7 +118,7 @@
 				<a class="n-list-end" href="<?=$this->url('order')?> "></a>
 			</li>
 			<li>
-				<img src="<?php echo static_file('m/img/pic/img_7.jpg')?> " alt="">
+				<img src="<?php echo static_file('m/img/pic/img_8.jpg')?> " alt="">
 				<span><a href="<?=$this->url('order')?> ">抵用金兑换记录</a></span>
 				<a class="n-list-end" href="<?=$this->url('order')?> "></a>
 			</li>
