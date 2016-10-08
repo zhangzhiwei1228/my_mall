@@ -6,7 +6,7 @@
 <body style="background-color: #fff">
 
 <div class="n-personal-center-tit">
-    <a href="javascript:history.go(-1);"><img width="11" height="21" src="http://zzw.hzboc.com/themes/123mf/static/mobile/img/img-22.png?t=1475910460 " alt=""></a>购买成功  
+    <a href="javascript:history.go(-1);"><img width="11" height="21" src="<? echo static_file('mobile/img/img-22.png')?>" alt=""></a>购买成功  
 </div>
 
 <div class="success">
