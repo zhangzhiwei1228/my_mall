@@ -43,7 +43,7 @@
         </select>
     </li>
 </ul>
-
+<div class="h20"></div>
 <div class="other-goodslist f-cb">
     <ul class="list">
         <li class="f-cb">

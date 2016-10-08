@@ -1,3 +1,9 @@
+.h20{
+  clear: both;
+  height: 0.2rem;
+  width: 100%;
+}
+
 .img-box img {
   width: 100%;
 }
@@ -38,7 +44,6 @@
 
 .other-goodslist {
   padding: 0 0.3rem;
-  margin-top: 0.2rem;
   background-color: #fff;
 }
 .other-goodslist li {
