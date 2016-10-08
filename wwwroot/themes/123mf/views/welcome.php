@@ -50,8 +50,13 @@
 </style>
 
 <body>
-13213213213
 
+
+
+afqwefwefew
+afqwefwefew
+afqwefwefew
+afqwefwefew
 
 	<?php include_once VIEWS.'inc/header-z.php'; ?>
     <div class="n-big">
