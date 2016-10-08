@@ -44,7 +44,7 @@
     </li>
 </ul>
 
-<div class="other-goodslist">
+<div class="other-goodslist f-cb">
     <ul class="list">
         <li class="f-cb">
             <div class="img fl"><img src="<? echo static_file('m/img/pic/img_6.jpg')?>" alt=""></div>

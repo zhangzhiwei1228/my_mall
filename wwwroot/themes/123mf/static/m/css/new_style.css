@@ -5,6 +5,8 @@
 .other-goodsnave {
   background-color: #fff;
   padding: 0 0.3rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 .other-goodsnave li {
   float: left;
@@ -40,6 +42,7 @@
   background-color: #fff;
 }
 .other-goodslist li {
+  width: 100%;
   padding-top: 0.3rem;
   padding-bottom: 0.2rem;
   border-top: 1px solid #e1e1e1;
