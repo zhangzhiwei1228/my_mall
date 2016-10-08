@@ -10,7 +10,7 @@
 </div>
 
 <div class="success">
-    <div class="img"><img src="<? echo static_file('m/img/img_18.png')?>" alt=""></div>
+    <div class="img"><img src="<? echo static_file('m/img/pic/img_18.png')?>" alt=""></div>
     <div class="tit">359783434</div>
 </div>
 
