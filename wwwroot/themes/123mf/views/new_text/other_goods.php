@@ -3,7 +3,7 @@
     <?php include_once VIEWS.'inc/head.php'; ?>
 </head>
 
-<body>
+<body style="background-color: #ebebeb;">
 
 <div class="n-personal-center-tit">
     <a href="javascript:history.go(-1);"><img width="11" height="21" src="<? echo static_file('mobile/img/img-22.png')?>" alt=""></a>合作商家  
@@ -47,7 +47,7 @@
 <div class="other-goodslist">
     <ul class="list">
         <li class="f-cb">
-            <div class="img fl"><img src="<? echo static_file('m/img/img_6.jpg')?>" alt=""></div>
+            <div class="img fl"><img src="<? echo static_file('m/img/pic/img_6.jpg')?>" alt=""></div>
             <div class="right fr">
                 <div class="na">商家名称</div>
                 <div class="tel">0587-8889784636</div>
@@ -57,7 +57,7 @@
             </div>
         </li>
         <li class="f-cb">
-            <div class="img fl"><img src="<? echo static_file('m/img/img_6.jpg')?>" alt=""></div>
+            <div class="img fl"><img src="<? echo static_file('m/img/pic/img_6.jpg')?>" alt=""></div>
             <div class="right fr">
                 <div class="na">商家名称</div>
                 <div class="tel">0587-8889784636</div>
@@ -67,7 +67,7 @@
             </div>
         </li>
         <li class="f-cb">
-            <div class="img fl"><img src="<? echo static_file('m/img/img_6.jpg')?>" alt=""></div>
+            <div class="img fl"><img src="<? echo static_file('m/img/pic/img_6.jpg')?>" alt=""></div>
             <div class="right fr">
                 <div class="na">商家名称</div>
                 <div class="tel">0587-8889784636</div>
@@ -77,7 +77,7 @@
             </div>
         </li>
         <li class="f-cb">
-            <div class="img fl"><img src="<? echo static_file('m/img/img_6.jpg')?>" alt=""></div>
+            <div class="img fl"><img src="<? echo static_file('m/img/pic/img_6.jpg')?>" alt=""></div>
             <div class="right fr">
                 <div class="na">商家名称</div>
                 <div class="tel">0587-8889784636</div>
@@ -87,7 +87,7 @@
             </div>
         </li>
         <li class="f-cb">
-            <div class="img fl"><img src="<? echo static_file('m/img/img_6.jpg')?>" alt=""></div>
+            <div class="img fl"><img src="<? echo static_file('m/img/pic/img_6.jpg')?>" alt=""></div>
             <div class="right fr">
                 <div class="na">商家名称</div>
                 <div class="tel">0587-8889784636</div>
