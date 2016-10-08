@@ -50,6 +50,7 @@
 </style>
 
 <body>
+aaa
 	<?php include_once VIEWS.'inc/header-z.php'; ?>
     <div class="n-big">
     <div class="n-banner">
