@@ -311,3 +311,52 @@
   border: 0;
   margin-top: 0.7rem;
 }
+
+.success {
+  text-align: center;
+  padding-top: 0.95rem;
+}
+.success .img {
+  height: 1.34rem;
+}
+.success .img img {
+  height: 100%;
+  width: auto;
+}
+.success .tit {
+  font-size: 0.6rem;
+  color: #333333;
+  line-height: 1.2;
+  margin-top: 0.5rem;
+}
+
+.m-notes {
+  padding: 0 0.3rem;
+  padding-top: 0.3rem;
+}
+.m-notes table {
+  width: 100%;
+  text-align: center;
+  table-layout: fixed;
+}
+.m-notes th {
+  color: #333333;
+  font-size: 0.24rem;
+  width: 25%;
+  font-weight: normal;
+  background-color: #f3f3f3;
+  border: 1px solid #e5e5e5;
+  height: 0.7rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.m-notes td {
+  border: 1px solid #e5e5e5;
+  height: 0.85rem;
+  color: #777777;
+  font-size: 0.22rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

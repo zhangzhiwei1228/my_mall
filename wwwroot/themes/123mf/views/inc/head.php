@@ -16,6 +16,7 @@
 </script>
 <?php
 	
+	echo static_file('m/js/self.js');
 	echo static_file('jQuery.js');
 	echo static_file('jquery-cookies.js');
 	echo static_file('jquery.easing.1.3.js');
