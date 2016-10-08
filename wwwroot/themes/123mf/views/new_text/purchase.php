@@ -4,9 +4,12 @@
 </head>
 
 <body style="background-color: #fff;">
+<div class="n-personal-center-tit">
+    <a href="javascript:history.go(-1);"><img width="11" height="21" src="http://zzw.hzboc.com/themes/123mf/static/mobile/img/img-22.png?t=1475910460 " alt=""></a>购买抵用金  
+</div>
 
 <div class="purchase">
-    <form action="<? echo site_url('new_text/success')?>" onsubmit="return form_sub()">
+    <form action="index/success" onsubmit="return form_sub()">
         <div class="top">
             <div class="row f-cb">
                 <span class="tit">消费金额</span>

@@ -213,6 +213,7 @@
   color: #333333;
   text-align: right;
   box-sizing: border-box;
+  border: 1px solid #ccc;
 }
 .purchase .top i {
   float: left;
