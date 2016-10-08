@@ -25,6 +25,7 @@
 	echo static_file('m/css/swiper.min.css');
 	echo static_file('m/css/swiper.min.css');
 	echo static_file('m/css/reset.css');
+	echo static_file('m/css/new_style.css');
 	echo static_file('m/js/swiper.min.js'); 
 	
 	//web

@@ -69,7 +69,7 @@ var cusnum = <?=$this->customs ? (int)count($this->customs) : 0?>;
 			</label>
 			<?php if (substr($item,0,1)=='#') { list($c,$t) = explode('|',$item); ?>
 			<a style="background:<?=$c?>;" class="sui-color cc-<?=$k?>">&nbsp;</a>
-			<input type="text" value="<?=$t?>" class="color_title_<?=$k?> ipt_<?=$key?>_<?=$k?> form-control input-sm" disabled="disabled" onkeyup="$.setColorCode(<?=$k?>);" style="width:60px" />
+			<input type="text" value="<?=$t?>" class="color_title_<?=$k?> ipt_<?=$key?>_<?=$k?> form-control input-sm" disabled="disabled" onchange="$.setColorCode(<?=$k?>);" style="width:60px" />
 			<input type="hidden" value="<?=$c?>" class="color_code_<?=$k?>" />
 			<input type="hidden" name="attributes[<?=$key?>][attr_value][]" value="<?=$item?>" class="ipt_<?=$key?>_<?=$k?> color_value_<?=$k?>" />
 			<script>
@@ -84,7 +84,7 @@ var cusnum = <?=$this->customs ? (int)count($this->customs) : 0?>;
 				});
 			</script>
 			<?php } else { ?>
-			<input type="text" name="attributes[<?=$key?>][attr_value][]" value="<?=$item?>" class="ipt_<?=$key?>_<?=$k?> form-control input-sm" disabled="disabled" onkeyup="$.makeSkuTable()" style="width:60px" />
+			<input type="text" name="attributes[<?=$key?>][attr_value][]" value="<?=$item?>" class="ipt_<?=$key?>_<?=$k?> form-control input-sm" disabled="disabled" onchange="$.makeSkuTable()" style="width:60px" />
 			<?php } ?>
 		</span>
 		<script type="text/javascript">

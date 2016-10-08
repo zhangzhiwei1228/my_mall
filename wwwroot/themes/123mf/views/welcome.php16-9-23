@@ -216,14 +216,6 @@
         <div class="n-same-r"></div>
     </div>
     <div class="n-h5"></div>
-
-    <div class="img-box">
-    	<a href="<? echo site_url('')?>">
-    		<img src="<? echo static_file('m/img/img_4.jpg');?>" alt="">
-	    </a>
-    </div>
-
-    <div class="n-h5"></div>
     <div class="n-lise-16 clear">
         <?php 
         $cn = array('一','二','三','四');//去掉了,'五','六','七','八'
@@ -280,7 +272,6 @@
     <div class="n-same-r"></div>
     </div>
     <div class="n-h5"></div>
-
     <div class="n-shop">
         <div class="n-shop-r">获取免费积分合作商家</div>
         <div class="n-shop-l">
@@ -293,62 +284,7 @@
             </ul>
         </div>
     </div>
-    <div class="n-h5"></div>
-
-    <div class="n-shop">
-        <div class="n-shop-r"><span  style="margin-top: 8px;display: block;">获取抵用券合作商家</span></div>
-        <div class="n-shop-l">
-            <ul>
-                <?php foreach($this->recShop as $row) { ?>
-                <li><a href="<?=$this->url('/shop/detail?id='.$row['id'])?>"><img src="<?php echo $row['ref_img_bg'] ? $this->baseUrl($row['ref_img_bg']) : $this->baseUrl($row['thumb'])?> " alt="<?=$row['name']?>"></a></li>
-                <?php } ?>
-                
-                <li class="n-shop-l-te"><a href="<?=$this->url('/shop/list/?is_special=2')?> ">更多</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="n-h5"></div>
-
-    <div class="n-shop">
-        <div class="n-shop-r" style="line-height: 12px;"><span>获取特殊免费积分合作商家</span></div>
-        <div class="n-shop-l">
-            <ul>
-                <?php foreach($this->recShop as $row) { ?>
-                <li><a href="<?=$this->url('/shop/detail?id='.$row['id'])?>"><img src="<?php echo $row['ref_img_bg'] ? $this->baseUrl($row['ref_img_bg']) : $this->baseUrl($row['thumb'])?> " alt="<?=$row['name']?>"></a></li>
-                <?php } ?>
-                
-                <li class="n-shop-l-te"><a href="<?=$this->url('/shop/list/?is_special=2')?> ">更多</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="n-h5"></div>
-
-    <div class="n-shop">
-        <div class="n-shop-r"><span style="display: block;margin-top: 10px">获取抵用金合作商家</span></div>
-        <div class="n-shop-l">
-            <ul>
-                <?php foreach($this->recShop as $row) { ?>
-                <li><a href="<?=$this->url('/shop/detail?id='.$row['id'])?>"><img src="<?php echo $row['ref_img_bg'] ? $this->baseUrl($row['ref_img_bg']) : $this->baseUrl($row['thumb'])?> " alt="<?=$row['name']?>"></a></li>
-                <?php } ?>
-                
-                <li class="n-shop-l-te"><a href="<?=$this->url('/shop/list/?is_special=2')?> ">更多</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="n-h5"></div>
-
-    <div class="n-shop">
-        <div class="n-shop-r" style="line-height: 12px;"><span style="margin-top: 3px;">获取部分免费积分合作商家</span></div>
-        <div class="n-shop-l">
-            <ul>
-                <?php foreach($this->recShop as $row) { ?>
-                <li><a href="<?=$this->url('/shop/detail?id='.$row['id'])?>"><img src="<?php echo $row['ref_img_bg'] ? $this->baseUrl($row['ref_img_bg']) : $this->baseUrl($row['thumb'])?> " alt="<?=$row['name']?>"></a></li>
-                <?php } ?>
-                
-                <li class="n-shop-l-te"><a href="<?=$this->url('/shop/list/?is_special=2')?> ">更多</a></li>
-            </ul>
-        </div>
-    </div>
+	
 
     <div class="n-h5"></div>
     <div class="n-banner2">

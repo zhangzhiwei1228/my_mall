@@ -103,12 +103,9 @@ class CartController extends Controller_Action
 		if (!$cart->getTotalQty()) {
 			throw new App_Exception('下单失败，您的购买车中没有需结算的商品');
 		}
-		
 
 		M('Order')->getAdapter()->beginTrans();
-		
 		try {
-			
 			//减库存
 			foreach ($items as $key =>$item) {
 				//处理规格库存
@@ -135,7 +132,6 @@ class CartController extends Controller_Action
 				$shippings[$key] = $item['shipping_id'];
 			}
 
-
 			$oid = M('Order')->insert(array_merge($_POST, $status, array(
 				'code' => time(),
 				'buyer_id' => $buyer->id,
@@ -149,7 +145,6 @@ class CartController extends Controller_Action
 			}
 			foreach($items as $k => $row) {
 				if (!$row['checkout']) continue;
-				unset($row['goods']['id']);
 				unset($row['goods']['key']);
 				unset($row['goods']['cost_price']);
 				unset($row['goods']['market_price']);
@@ -178,8 +173,6 @@ class CartController extends Controller_Action
 				$cart->delItem($k);
 			}
 
-
-
 			//发票处理
 			if ($_POST['invoice']['type_id']) {
 				$invoiceId = M('Invoice')->insert(array_merge($_POST['invoice'], $_POST, array(
@@ -195,10 +188,10 @@ class CartController extends Controller_Action
 		} catch (Suco_Exception $e) {
 			M('Order')->getAdapter()->rollback();
 			return $this->_notice(array(
-				'title' => '订单提交失败,请查看该商品是否有未付订单',
-				'message' => '',//$e->getMessage()
+				'title' => '订单提交失败',
+				'message' => $e->getMessage(),
 				'links' => array(
-					array('修改购物车', 'controller=cart&action=default'),
+					array('修改购物车', 'controller=cart'),
 					array('返回首页', 'index')
 				),
 			), 'error');
