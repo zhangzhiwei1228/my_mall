@@ -57,7 +57,7 @@
 				<a class="n-list-end" href="<?=$this->url('credit')?> "></a>
 			</li>
 			<li>
-				<img src="<?php echo static_file('mobile/img/pic/img_7.jpg')?> " alt="">
+				<img src="<?php echo static_file('m/img/pic/img_7.jpg')?> " alt="">
 				<span><a href="<?=$this->url('credit')?> ">抵用劵转换</a></span>
 				<a class="n-list-end" href="<?=$this->url('credit')?> "></a>
 			</li>
