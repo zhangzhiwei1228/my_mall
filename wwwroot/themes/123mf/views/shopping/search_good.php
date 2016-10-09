@@ -7,8 +7,10 @@
     <?php include_once VIEWS.'inc/header_shop02.php'; ?>
     <div style="width:100%;" class="xs-box">
         <ul class="search-good fl">
+            <?php if($this->brand) {?>
+                <li><a href="javascript:;" data-id="<?=$this->brand['category_id']?>"><?=$this->brand['title']?></a></li>
+            <?php }?>
 
-            <li><a href="javascript:;" data-id="<?=$this->brand['category_id']?>"><?=$this->brand['title']?></a></li>
             <?php foreach($this->cates as $row) { ?>
     	   <li><a href="javascript:;" data-id="<?=$row['id']?>"><?=$row['name']?></a></li>
             <?php } ?>
