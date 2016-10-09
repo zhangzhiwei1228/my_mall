@@ -92,11 +92,28 @@ class GoodsController extends Controller_Action
 		if(in_array($search_cid,$cates_cids)) {
 			$flag = true;
 		}
+		//品牌墙
+		$brand = M('Brand')->select('*')->where('category_id='.(int)$this->_request->cid)->fetchRow()->toArray();
+
 		$view->cates = $cates;
 		$view->flag = $flag;
+		$view->brand = $brand;
 		$view->render('views/shopping/search_good.php');
 	}
+	public function doBrand() {
+		if ($this->_request->isAjax()) {
+			$brand = M('Brand')->select()
+				->where('category_id='.(int)$this->_request->cid)
+				->order('id ASC')
+				->fetchRows();
 
+			$view = $this->_initView();
+			$view->brand = $brand;
+			$view->render('views/ajax/brand_ajax.php');
+
+			return;
+		}
+	}
 	public function doList()
 	{
 		//载入分类

@@ -74,6 +74,10 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 					<td><?=$row['update_time'] ? date(DATETIME_FORMAT, $row['update_time']) : 'N/A'?></td>
 					<td><a href="<?=$this->url('action=add&pid=' . $row['id'])?>">加子类</a> | 
 						<a href="<?=$this->url('action=edit&id=' . $row['id'])?>">编辑</a>
+						<?php if($row['level'] == 1) {?>
+							|<a href="<?=$this->url('controller=brand&action=default&id=' . $row['id'])?>">品牌墙</a>
+						<?php }?>
+
 						<?php if ($row['is_locked']) { ?>
 						 | <span style="color:#888">锁定</span>
 						<?php } else { ?>
