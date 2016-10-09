@@ -32,6 +32,20 @@ class Agent_IndexController extends Agent_Controller_Action
 			case 'seller':
 				$view = $this->_initView();
 				$view->bonus = $this->user->getStaffBonus();
+				$uid = $this->user->id;
+				$year = date("Y");
+				$month = date("m");
+				$day = date("d");
+				$dayBegin = mktime(0,0,0,$month,$day,$year);//当天开始时间戳
+				$dayEnd = mktime(23,59,59,$month,$day,$year);//当天结束时间戳
+
+				$view = $this->_initView();
+				$view->employ = M('User_Credit')->select('sum(credit) as total')
+					->where('user_id = '.(int)$uid." and type='".'credit'."'".' and credit<0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
+					->fetchRow()->toArray();
+				$view->recharge =  M('User_Credit')->select('sum(credit) as total')
+					->where('user_id = '.(int)$uid." and type='".'credit'."'".' and credit>0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
+					->fetchRow()->toArray();
 				$view->render('views/merchants.php');
 				break;
 			case 'agent':

@@ -18,7 +18,10 @@
 	</div>
 	<div class="admin-box bgwhite">
 		<div class="merc-admin w90">
-			<a href="" class="f-top">核销记录</a>
+			<?php if ($this->user['role'] == 'seller') { ?>
+				<a href="" class="f-top" >核销记录</a>
+			<?php } ?>
+
 			<div class="pic fl">
 <!--				<img src="--><?php //echo static_file('m/img/pic17.png'); ?><!-- ">-->
 				<img src="<?php echo $this->baseUrl('uploads/avatar/6.png'); ?> ">
@@ -30,7 +33,13 @@
 			商家管理员收益
 			<?php } ?></p>
 				<p class="admin-name"><?=$this->user['nickname']?></p>
-				<p class="login-info"><a href="">核销低用金</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?=$this->url('passport/logout')?>">退出</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?=$this->url('security/reset_login_pwd')?>">修改密码</a></p>
+				<p class="login-info">
+					<?php if ($this->user['role'] == 'seller') { ?>
+						<a href="">核销低用金</a>&nbsp;&nbsp;&nbsp;&nbsp;
+					<?php } ?>
+					<a href="<?=$this->url('passport/logout')?>">退出</a>&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="<?=$this->url('security/reset_login_pwd')?>">修改密码</a>
+				</p>
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -53,8 +62,12 @@
 
 	<?php if ($this->user['role'] == 'seller') { ?>
 	<div style="margin-bottom:71px;" class="member-rank bgwhite">
-		<p class="w90">一级会员：我直接邀请注册的会员</p>
-		<p class="w90">二级会员：我的一级会员邀请注册的会员</p>
+		<a href="<?php echo $this->url('agent/logs/recharge')?>" ><p class="w90">商家本日充值免费积分：<?php echo $this->employ['total']?>（查看详情）</p></a>
+		<a href="<?php echo $this->url('agent/logs/employ')?>" ><p class="w90">商家本日赠送免费积分：<?php echo $this->recharge['total']?>（查看详情）</p></a>
+
+
+		<!--<p class="w90">一级会员：我直接邀请注册的会员</p>
+		<p class="w90">二级会员：我的一级会员邀请注册的会员</p>-->
 	</div>
 	<?php } ?>
 	<?php if($this->user['role'] == 'seller') {?>
