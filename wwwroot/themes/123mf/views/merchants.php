@@ -62,8 +62,8 @@
 
 	<?php if ($this->user['role'] == 'seller') { ?>
 	<div style="margin-bottom:71px;" class="member-rank bgwhite">
-		<a href="<?php echo $this->url('agent/logs/recharge')?>" ><p class="w90">商家本日充值免费积分：<span style="font-size: 20px;color: #b40000;"><?php echo $this->employ['total'] ? $this->employ['total'] : 0 ?></span>（查看详情）</p></a>
-		<a href="<?php echo $this->url('agent/logs/employ')?>" ><p class="w90">商家本日赠送免费积分：<span style="font-size: 20px;color: #b40000;"><?php echo $this->recharge['total'] ? $this->recharge['total'] : 0?></span>（查看详情）</p></a>
+		<a href="<?php echo $this->url('agent/logs/recharge')?>" ><p class="w90">商家本日赠送免费积分：<span style="font-size: 20px;color: #b40000;"><?php echo $this->employ['total'] ? $this->employ['total'] : 0 ?></span>（查看详情）</p></a>
+		<a href="<?php echo $this->url('agent/logs/employ')?>" ><p class="w90">商家本日充值免费积分：<span style="font-size: 20px;color: #b40000;"><?php echo $this->recharge['total'] ? $this->recharge['total'] : 0?></span>（查看详情）</p></a>
 		<p class="w90">商家本月赠送免费积分数：<span style="font-size: 20px;color: #b40000;"><?php echo $this->Memploy['total'] ? $this->Memploy['total'] : 0?></span></p>
 
 
