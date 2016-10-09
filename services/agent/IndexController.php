@@ -39,9 +39,16 @@ class Agent_IndexController extends Agent_Controller_Action
 				$dayBegin = mktime(0,0,0,$month,$day,$year);//当天开始时间戳
 				$dayEnd = mktime(23,59,59,$month,$day,$year);//当天结束时间戳
 
+				$BeginDate=strtotime(date('Y-m-01', strtotime(date("Y-m-d"))));
+				$start_month = date('Y-m-01', strtotime(date("Y-m-d")));
+				$EndDate =  strtotime(date('Y-m-d', strtotime("$start_month +1 month -1 day")));
+
 				$view = $this->_initView();
 				$view->employ = M('User_Credit')->select('sum(credit) as total')
 					->where('user_id = '.(int)$uid." and type='".'credit'."'".' and credit<0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
+					->fetchRow()->toArray();
+				$view->Memploy = M('User_Credit')->select('sum(credit) as total')
+					->where('user_id = '.(int)$uid." and type='".'credit'."'".' and credit<0 and create_time >'.$BeginDate.' and create_time <'.$EndDate)
 					->fetchRow()->toArray();
 				$view->recharge =  M('User_Credit')->select('sum(credit) as total')
 					->where('user_id = '.(int)$uid." and type='".'credit'."'".' and credit>0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
