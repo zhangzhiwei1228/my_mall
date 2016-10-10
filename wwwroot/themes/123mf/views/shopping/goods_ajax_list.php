@@ -25,6 +25,9 @@
                 <?php if ($row['skus'][0]['point2'] > 0) { ?>
                     <p class="text01">免费积分：<span><?=$row['skus'][0]['point2']?></span>积分</p>
                 <?php } ?>
+                <?php if ($row['skus'][0]['point3'] > 0) { ?>
+                    <p class="text01">积分币：<span><?=$row['skus'][0]['point3']?></span>币</p>
+                <?php } ?>
                 <?php if ($row['skus'][0]['exts']['ext1']['cash']) { ?>
                     <p class="text02">现金+免费积分：￥<span><?=$row['skus'][0]['exts']['ext1']['cash']?></span>+<span><?=$row['skus'][0]['exts']['ext1']['point']?></span>免费积分</p>
                 <?php } ?>
