@@ -19,7 +19,7 @@
 		</div>
 		<div class="n-recharge-pic-te">
 			<p style="color:#b40000;font-size:14px;font-weight:bold;">转换说明：</p>
-			<p style="color:#555;">积分可按<font style="color:#b40000;">8 : 1</font>转换成积分币，<font style="color:#b40000;">10000</font>积分起转按<font style="color:#b40000;">1000</font>整数倍增加。例<font style="color:#b40000;">800</font>积分可转换成<font style="color:#b40000;">100</font>积分币。</p>
+			<p style="color:#555;">积分可按<font style="color:#b40000;">2 : 1</font>转换成积分币，<font style="color:#b40000;">10000</font>积分起转按<font style="color:#b40000;">1000</font>整数倍增加。例<font style="color:#b40000;">200</font>积分可转换成<font style="color:#b40000;">100</font>积分币。</p>
 		</div>
 		<div class="n-h5"></div>
 		<div class="n-dealer-end">
@@ -65,11 +65,11 @@
 				alert('输入的金额已大于您所拥有的');
 				return false;
 			}
-			if(credit % 8 !=0) {
+			if(credit % 2 !=0) {
 				alert('转换必须是8的倍数');
 				return false;
 			}
-			var credit_coin = credit/8;
+			var credit_coin = credit/2;
 			$('#credit-coin').text(credit_coin);
 			$('#now-credit').text(user_credit-credit);
 			flag = true;

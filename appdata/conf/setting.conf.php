@@ -37,5 +37,5 @@ return array (
   'credit_rate' => '3',
   'credit_rate_agent' => '5',
   'credit_happy_rate' => '10',
-  'credit_coin_rate' => '1',
+  'credit_coin_rate' => '2',
 );

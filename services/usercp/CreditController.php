@@ -24,10 +24,10 @@ class Usercp_CreditController extends Usercp_Controller_Action
 		if($credit > $this->user['credit']){
 			throw new App_Exception("输入的数字大于您所拥有的", 1001);
 		}
-		if($credit % 8 != 0){
+		if($credit % 2 != 0){
 			throw new App_Exception("不是8的整数倍", 1001);
 		}
-		$credit_coin = $credit / 8;
+		$credit_coin = $credit / 2;
 		M('User')->updateById('
 					credit = credit - '.(int)$credit.',
 					credit_coin = credit_coin + '.$credit_coin
