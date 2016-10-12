@@ -81,10 +81,12 @@ $this->head()->setTitle($this->title);
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">特殊商家:</label>
+			<label class="control-label col-sm-2">商家类型:</label>
 			<div class="col-sm-7">
-				<label><input type="radio" name="is_special" value="1" <?=$this->data['is_special']==1 ? 'checked' : ''?>> 是</label>
-				<label><input type="radio" name="is_special" value="0" <?=$this->data['is_special']==0 ? 'checked' : ''?>> 否</label>
+				<?php foreach($this->clotypes as $key=> $row) {?>
+					<label><input type="radio" name="is_special" value="<?php echo $key?>" <?=$this->data['is_special']==$key ? 'checked' : ''?>> <?php echo $row['name']?></label>
+				<?php }?>
+
 			</div>
 		</div>
 		<div class="form-group">

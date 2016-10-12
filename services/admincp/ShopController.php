@@ -27,8 +27,9 @@ class Admincp_ShopController extends Admincp_Controller_Action
 		if ($this->_request->q) {
 			$select->where('s.name LIKE ?', '%'.$this->_request->q.'%');
 		}
-
+		$clotypes = M('Coltypes')->select('name')->where("english = 'shop'")->fetchRows()->toArray();
 		$view = $this->_initView();
+		$view->clotypes = $clotypes;
 		$view->category = M('Shop_Category')->getById((int)$this->_request->cid);
 		$view->categories = M('Shop_Category')->select()->fetchRows()->toTreeList();
 		$view->datalist = $select->fetchRows();
@@ -58,7 +59,9 @@ class Admincp_ShopController extends Admincp_Controller_Action
 		}
 
 		$view = $this->_initView();
+		$clotypes = M('Coltypes')->select('name')->where("english = 'shop'")->fetchRows()->toArray();
 		$view->categories = M('Shop_Category')->toTreeList(M('Shop_Category')->select()->fetchRows()->toArray());
+		$view->clotypes = $clotypes;
 		$view->render('shop/input.php');
 	}
 
@@ -75,7 +78,9 @@ class Admincp_ShopController extends Admincp_Controller_Action
 		}
 
 		$view = $this->_initView();
+		$clotypes = M('Coltypes')->select('name')->where("english = 'shop'")->fetchRows()->toArray();
 		$view->data = $data;
+		$view->clotypes = $clotypes;
 		$view->categories = M('Shop_Category')->toTreeList(M('Shop_Category')->select()->fetchRows()->toArray());
 		$view->render('shop/input.php');
 	}

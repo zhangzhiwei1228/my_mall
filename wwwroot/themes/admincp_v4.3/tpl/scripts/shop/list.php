@@ -46,9 +46,9 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 					<th width="20" align="center"><input type="checkbox" role="chk-all" /></th>
 					<th width="75" class="text-center">商家图片</th>
 					<th>商家名称</th>
-					<th width="160">电话</th>
+					<th width="100">电话</th>
 					<th width="260">地址</th>
-					<th width="100">特殊商家</th>
+					<th width="160">商家类型</th>
 					<th width="80" class="text-center">推荐</th>
 					<th width="160">创建时间</th>
 					<th width="80">操作</th>
@@ -74,7 +74,11 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 					</td>
 					<td><?=$row['tel']?></td>
 					<td><?=$row['addr']?></td>
-					<td><?=$row['is_special']==1?'是':'否'?></td>
+					<td>
+						<?php foreach ($this->clotypes as $key=>$val) {?>
+							<?php if($key == $row['is_special']) echo $val['name']?>
+						<?php }?>
+					</td>
 					<td class="text-center">
 						<a href="<?=$this->url('action=toggle_status&t=is_rec&id='.$row['id'].'&v='.$row['is_rec'].'&ref='.$this->_request->url)?>">
 						<?=$row['is_rec'] ? '<span class="label label-success">是</span>' : '<span class="label label-default">否</span>'?>

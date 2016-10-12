@@ -17,12 +17,16 @@ class IndexController extends Controller_Action
 			->where('parent_id = 0 AND type = ? AND is_enabled <> 0', 'main')
 			->order('rank ASC, id ASC')
 			->fetchRows();
-
-		$recShop = M('Shop')->select()
-			->where('is_special = 0')
-			->order('is_rec DESC, id DESC')
-			->limit(7)
-			->fetchRows();
+		$clotypes = M('Coltypes')->select('name')->where("english = 'shop'")->fetchRows()->toArray();
+		//$view->clotypes = $clotypes;
+		foreach($clotypes as $key => &$val) {
+			$recShop = M('Shop')->select()
+				->where('is_special = '.$key)
+				->order('is_rec DESC, id DESC')
+				->limit(7)
+				->fetchRows()->toArray();
+			$val['shops'] = $recShop;
+		}
 
 		$specialShop = M('Shop')->select()
 			->where('is_special = 1')
@@ -42,7 +46,7 @@ class IndexController extends Controller_Action
 		$view->video = M('Page')->getByCode('video');
 		$view->todaynews = M('Page')->getByCode('today-news');
 		$view->quickLinks = $quickLinks;
-		$view->recShop = $recShop;
+		$view->recShop = $clotypes;
 		$view->specialShop = $specialShop;
 		$view->recGoodsCates = $recGoodsCates->hasmanyGoods();
 		$view->render('views/welcome.php');
