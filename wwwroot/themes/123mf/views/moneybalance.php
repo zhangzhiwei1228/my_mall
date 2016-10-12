@@ -30,6 +30,12 @@
 				<a class="n-list-end1" href="">币</a>
 				<p><?=$this->user['credit_coin']?></p>
 			</li>
+			<li>
+				<img src="<?php echo static_file('mobile/img/img-49.png'); ?> " alt="">
+				<span><a href="">我的抵用金:</a></span>
+				<a class="n-list-end1" href="">金</a>
+				<p><?=$this->user['worth_gold']?></p>
+			</li>
 			<!--<li>
 				<img src="<?php /*echo static_file('mobile/img/img-50.png'); */?> " alt="">
 				<span><a href="">我的抵用券：</a></span>
@@ -58,6 +64,11 @@
 			<li>
 				<img src="<?php echo static_file('mobile/img/img-54.png'); ?> " alt="">
 				<span><a href="<?=$this->url('./credit?t=credit')?>">获得免费积分记录</a></span>
+				<a class="n-list-end" href=""></a>
+			</li>
+			<li>
+				<img src="<?php echo static_file('mobile/img/img-54.png'); ?> " alt="">
+				<span><a href="<?=$this->url('./credit?t=worth_gold')?>">抵用金记录</a></span>
 				<a class="n-list-end" href=""></a>
 			</li>
 		</ul>

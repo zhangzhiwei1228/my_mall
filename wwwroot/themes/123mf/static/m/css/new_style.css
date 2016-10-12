@@ -534,7 +534,7 @@
   text-align: center;
   position: relative;
 }
-.m-verifi.tab .nave:before{
+/*.m-verifi.tab .nave:before{
   content: '';
   position: absolute;
   left: 50%;
@@ -543,7 +543,7 @@
   top: 50%;
   margin-top: -0.6rem;
   background-color: #e4e4e4;
-}
+}*/
 .m-verifi.tab .nave li{
   float: left;
   width: 50%;

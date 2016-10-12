@@ -56,10 +56,15 @@
 				<span><a href="<?=$this->url('credit')?> ">积分转换</a></span>
 				<a class="n-list-end" href="<?=$this->url('credit')?> "></a>
 			</li>
+			<!--<li>
+				<img src="<?php /*echo static_file('m/img/pic/img_7.jpg')*/?> " alt="">
+				<span><a href="<?/*=$this->url('credit')*/?> ">抵用劵转换</a></span>
+				<a class="n-list-end" href="<?/*=$this->url('credit')*/?> "></a>
+			</li>-->
 			<li>
 				<img src="<?php echo static_file('m/img/pic/img_7.jpg')?> " alt="">
-				<span><a href="<?=$this->url('credit')?> ">抵用劵转换</a></span>
-				<a class="n-list-end" href="<?=$this->url('credit')?> "></a>
+				<span><a href="<?=$this->url('/usercp/money/purchase')?> ">抵用金购买</a></span>
+				<a class="n-list-end" href="<?=$this->url('/usercp/money/purchase')?> "></a>
 			</li>
 			<!--<li>
 				<img src="<?php /*echo static_file('mobile/img/img-28.png')*/?> " alt="">
@@ -117,11 +122,11 @@
 				<span><a href="<?=$this->url('order')?> ">我的订单</a></span>
 				<a class="n-list-end" href="<?=$this->url('order')?> "></a>
 			</li>
-			<li>
-				<img src="<?php echo static_file('m/img/pic/img_8.jpg')?> " alt="">
-				<span><a href="<?=$this->url('order')?> ">抵用金兑换记录</a></span>
-				<a class="n-list-end" href="<?=$this->url('order')?> "></a>
-			</li>
+			<!--<li>
+				<img src="<?php /*echo static_file('m/img/pic/img_8.jpg')*/?> " alt="">
+				<span><a href="<?/*=$this->url('order')*/?> ">抵用金兑换记录</a></span>
+				<a class="n-list-end" href="<?/*=$this->url('order')*/?> "></a>
+			</li>-->
 			<li>
 				<img src="<?php echo static_file('mobile/img/img-04.png'); ?>" alt="" style="background-color: red">
 				<span><a href="<?=$this->url('default/cart/default')?> ">我的购物车</a></span>

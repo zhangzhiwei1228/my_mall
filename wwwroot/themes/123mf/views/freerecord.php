@@ -7,7 +7,23 @@
 	<div class="n-rechargerecord">
 		<div class="n-personal-center-tit">
 			<a href="javascript:history.go(-1);"><img width="11" height="21" src="<?php echo static_file('mobile/img/img-22.png'); ?> " alt=""></a>
-			获取免费积分记录
+			<?php
+				switch($this->type) {
+					case 'credit' :
+						echo '获取免费积分记录';
+						break;
+					case 'credit_happy' :
+						echo '获取免费快乐积分记录';
+						break;
+					case 'credit_coin' :
+						echo '我充值积分币记录';
+						break;
+					case 'worth_gold' :
+						echo '获取抵用金记录';
+						break;
+				}
+			?>
+
 		</div>
 		<div class="n-rechargerecord-day">
 			<span>日期</span><input value="日期插件" type="datetime-local"><span>至</span><input value="日期插件" type="datetime-local">

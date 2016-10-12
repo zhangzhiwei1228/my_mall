@@ -29,15 +29,14 @@
 		<ul>
 			<?php foreach($this->payments as $row) { ?>
 			<li class="payment"><a href="javascript:;" data-code="<?=$row['code']?>" class="choose-payment"><img src="<?=$this->baseUrl($row['logo'])?>" alt="<?=$row['name']?>" style="margin-top: 0px"></a></li>
-
 			<?php } ?>
 		</ul>
 	</div>
 </div>
 <form method="post" action="<?=$this->url('usercp/money/pay')?>" class="pay-form">
-	<input type="hidden" name="return_url" value="<?=$_POST['return_url']?>">
-	<input type="hidden" name="type" value="<?=$_POST['type']?>">
-	<input type="hidden" name="amount" value="<?=$_POST['amount']?>">
+	<input type="hidden" name="return_url" value="<?=$_POST['return_url'] ? $_POST['return_url'] : $this->url($this->data['return_url']) ?>">
+	<input type="hidden" name="type" value="<?=$_POST['type'] ? $_POST['type'] : $this->data['type'] ?>">
+	<input type="hidden" name="amount" value="<?=$_POST['amount'] ? $_POST['amount'] : $this->data['amount']?>">
 	<input type="hidden" name="payment">
 </form>
 </body>

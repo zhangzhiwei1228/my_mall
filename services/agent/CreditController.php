@@ -148,4 +148,66 @@ class Agent_CreditController extends Agent_Controller_Action
 			die;
 		}
 	}
+	//核销抵佣金
+	public function doVerification() {
+		$view = $this->_initView();
+		$view->render('views/new_text/verification.php');
+	}
+	public function doQueryGold()
+	{
+		echo M('Worthglod')->alias('wg')
+			->leftJoin(M('User')->getTableName().' AS u', 'wg.uid = u.id')
+			->columns('wg.*,u.username,u.mobile')
+			->where('wg.code = ?', $this->_request->q)
+			->limit(10)
+			->fetchRows()
+			->toJson();
+	}
+	public function doCheckout() {
+		$glod = M('Worthglod')->getById((int)$this->_request->gid);
+		if (!$glod->exists()) {
+			throw new App_Exception('此兑换码不存在');
+		}
+		$account = M('User')->getById((int)$glod['uid']);
+		if (!$account->exists()) {
+			throw new App_Exception('所属账户不存在');
+		}
+		if ($this->_request->isPost()) {
+			$worthglod = M('User_Credit')->select()->where('user_id='.$account['id'].' and code='."'".$glod['code']."'")->fetchRow()->toArray();
+			if($worthglod) {
+				throw new App_Exception('此账户已经核销过，请不要重复核销');
+			}
+
+			if($account['worth_gold'] < $glod['privilege']) {
+				throw new App_Exception('该帐户抵用金不足');
+			}
+			$view = $this->_initView();
+			$view->account = $account;
+			$view->glod = $glod;
+			$this->user->worthGold($glod['privilege'],'核销用户【'.$account['username'].'-'.$account['id'].'】【'.$glod['privilege'].'抵用金】', $glod['code']);
+			$account->worthGold($glod['privilege'] * -1,'被用户【'.$this->user['username'].'-'.$this->user['id'].'】核销【'.$glod['privilege'].'抵用金】', $glod['code']);
+			$view->render('views/new_text/verification_okinfo.php');
+			return;
+		}
+
+		$view = $this->_initView();
+		$view->glod = $glod;
+		$view->account = $account;
+		$view->render('views/new_text/verification_ok.php');
+	}
+	//核销记录
+	public function doCancel() {
+		$datas = M('User_Credit')->alias('uc')
+			->where('uc.user_id = '.(int)$this->user->id.' and uc.type='."'".'worth_gold'."'".' and uc.code !='."''")
+			->leftJoin(M('Worthglod')->getTableName().' AS wg', 'wg.code = uc.code')
+			->leftJoin(M('User')->getTableName().' AS u', 'u.id = wg.uid')
+			->columns('wg.*,u.username,uc.create_time')
+			->paginator(20, $this->_request->page)
+			->fetchRows();
+		$view = $this->_initView();
+		$view->datas = $datas;
+
+		$view->earnings = $this->user->countGold();
+		$view->render('views/new_text/verification_table.php');
+	}
 }

@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <head>
     <?php include_once VIEWS.'inc/head.php'; ?>
+    <style>
+        .m-verifi .list th{font-size: 14px;padding:0;padding-top:20px;padding-left: 10px;padding-bottom: 20px}
+        .m-verifi .list td{font-size: 12px;padding:0;padding-top:10px;padding-left: 10px;padding-bottom: 20px}
+    </style>
 </head>
 
 <body style="background-color: #ebebeb;">
@@ -11,20 +15,23 @@
 
 <div class="m-verifi">
     <div class="g-box">
-
-        <table class="list m-t">
-            <tr>
-                <th>会员账号</th>
-                <th>会员名</th>
-            </tr>
-            <tr>
-                <td>000101</td>
-                <td>韦小宝</td>
-            </tr>
-        </table>
-
-        <a href="" class="butn-bot">确定核销</a>
-
+        <form class="search-result" method="post">
+            <table class="list m-t">
+                <tr>
+                    <th>会员账号</th>
+                    <th>抵用金额</th>
+                    <th>兑换码</th>
+                    <th>状态</th>
+                </tr>
+                <tr>
+                    <td><?php echo $this->account['username']?></td>
+                    <td><?php echo $this->glod['privilege']?></td>
+                    <td><?php echo $this->glod['code']?></td>
+                    <td><?php echo $this->glod['write'] < 2 ? '未核销' : '已核销' ?></td>
+                </tr>
+            </table>
+            <a href="javascript:;" onclick="$('.search-result').submit();" class="butn-bot">确定核销</a>
+        </form>
     </div>
 </div>
 

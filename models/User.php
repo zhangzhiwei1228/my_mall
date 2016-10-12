@@ -465,6 +465,30 @@ class User extends Abstract_User
 		$user->save();
 	}
 
+	//抵用获得和使用
+	public function worthGold($user, $val, $note, $code='')
+	{
+		//检查帐户
+		if (!$user->exists()) {
+			throw new App_Exception('帐户不存在');
+		}
+		$user->refresh();
+		M('User_Credit')->insert(array(
+			'user_id' => $user['id'],
+			'type' => 'worth_gold',
+			'credit' => $val,
+			'note' => $note,
+			'code' => $code,
+			'create_time' => time()
+		));
+		if ($val > 0) { //增加经验
+			$user->worth_gold += $val;
+		} elseif ($val < 0) { //减少经验
+			$user->worth_gold -= abs($val);
+		}
+		$user->save();
+	}
+
 	public function creditHappy($user, $val, $note)
 	{
 		//检查帐户
@@ -866,5 +890,18 @@ class User extends Abstract_User
 			case $str == 'seller-0':
 				return '商家管理员';
 		}
+	}
+	//计算商家本月核销抵佣金，获得收益
+	public function countGold($user) {
+		$BeginDate=date('Y-m-01', strtotime(date("Y-m-d")));
+		$start = strtotime($BeginDate);
+		$end =  strtotime(date('Y-m-d 23:59:59', strtotime("$BeginDate +1 month -1 day")));
+		$count = M('User_Credit')->select('SUM(credit) AS total')
+			->where('user_id = '.(int)$user['id'].' and type='."'".'worth_gold'."'".' and code !='."''".' and create_time >'.$start.' and create_time <'.$end)
+			->fetchRow()->toArray();
+		$proportion = M('Proportion')->getById(19);
+		$earnings = floor($count['total']/$proportion['l_digital']);
+		return array('total'=>$count['total'],'earnings'=>$earnings);
+
 	}
 }
