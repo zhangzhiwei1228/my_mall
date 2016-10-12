@@ -135,7 +135,8 @@ class CartController extends Controller_Action
 				$shippings[$key] = $item['shipping_id'];
 			}
 
-
+			$postage = $this->doPostAge($item, $item['total'], $item['subtotal_weight']);
+			$status['total_freight'] = $postage;
 			$oid = M('Order')->insert(array_merge($_POST, $status, array(
 				'code' => time(),
 				'buyer_id' => $buyer->id,
