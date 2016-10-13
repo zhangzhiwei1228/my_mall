@@ -35,7 +35,7 @@
 				<p class="admin-name"><?=$this->user['nickname']?></p>
 				<p class="login-info">
 					<?php if ($this->user['role'] == 'seller') { ?>
-						<a href="<?php echo $this->url('/agent/credit/verification')?>">核销低用金</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="<?php echo $this->url('/agent/credit/verification')?>">核销抵用金</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<?php } ?>
 					<a href="<?=$this->url('passport/logout')?>">退出</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="<?=$this->url('security/reset_login_pwd')?>">修改密码</a>

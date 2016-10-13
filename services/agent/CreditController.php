@@ -181,6 +181,10 @@ class Agent_CreditController extends Agent_Controller_Action
 			if($account['worth_gold'] < $glod['privilege']) {
 				throw new App_Exception('该帐户抵用金不足');
 			}
+			$glod->write = 2;
+			$glod->write_uid = $this->user->id;
+			$glod->write_time = time();
+			$glod->save();
 			$view = $this->_initView();
 			$view->account = $account;
 			$view->glod = $glod;
@@ -202,6 +206,7 @@ class Agent_CreditController extends Agent_Controller_Action
 			->leftJoin(M('Worthglod')->getTableName().' AS wg', 'wg.code = uc.code')
 			->leftJoin(M('User')->getTableName().' AS u', 'u.id = wg.uid')
 			->columns('wg.*,u.username,uc.create_time')
+			->order('uc.create_time DESC')
 			->paginator(20, $this->_request->page)
 			->fetchRows();
 		$view = $this->_initView();

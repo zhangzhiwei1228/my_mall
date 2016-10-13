@@ -142,8 +142,15 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			->order('id DESC')
 			->paginator(20, $this->_request->page);
 
-		if ($this->_request->t) {
-			$select->where('type = ?', $this->_request->t);
+		if ($this->_request->t ) {
+			if( $this->_request->t != 'worth_gold' ) {
+				$select->where('type = ?', $this->_request->t);
+			} else {
+				$select = M('Worthglod')->select()
+					->where('uid = ?', $this->user['id'])
+					->order('create_time DESC')
+					->paginator(20, $this->_request->page);
+			}
 		}
 
 		$view = $this->_initView();

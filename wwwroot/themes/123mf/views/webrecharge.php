@@ -13,7 +13,7 @@
 	</div>
 	<div class="n-recharge-pic clear">
 		<div class="n-recharge-head">
-			<div class="n-recharge-head-info"><img src="<?=$this->baseUrl($row['avatar'])?>" alt=""></div>
+			<div class="n-recharge-head-info"><img src="<?php echo $this->baseUrl('uploads/avatar/6.png'); ?>" alt=""></div>
 		</div>
 		<span><?=$this->user['nickname']?></span>
 		<p>会员账号：<?=$this->user['mobile']?></p>
