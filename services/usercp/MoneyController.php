@@ -123,7 +123,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			$_POST['return_url'] = isset($_SESSION['awaiting_payment']) ? (string)new Suco_Helper_Url('module=usercp&controller=order&action=list').'?t=awaiting_payment' :$_POST['return_url'];
 			if($_POST['type'] == 'hybrid' || $_POST['type'] == 'cash' || $_POST['type'] == 'single') {
 				$glod = M('Worthglod')->getById((int)$_POST['glod_id']);
-				$_POST['amount'] = 0.01;
+				//$_POST['amount'] = 0.01;
 				$data = array(
 					'user_id' => $this->user->id,
 					'trade_no' => $prefix.$glod['order_no'],
