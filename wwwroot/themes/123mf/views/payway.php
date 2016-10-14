@@ -53,7 +53,7 @@
 	<input type="hidden" name="return_url" value="<?=$_POST['return_url'] ? $_POST['return_url'] : $this->url($this->data['return_url']) ?>">
 	<input type="hidden" name="type" value="<?=$_POST['type'] ? $_POST['type'] : $this->data['type'] ?>">
 	<input type="hidden" name="amount" value="<?=$_POST['amount'] ? $_POST['amount'] : ($this->data['type'] == 'hybrid' || $this->data['type'] == 'cash' || $this->data['type'] == 'single' ? $this->data['pay_amount'] :$this->data['amount'])?>">
-	<?php if(isset($this->data) && $this->data['type'] == 'hybrid' || $this->data['type'] == 'cash') {?>
+	<?php if(isset($this->data) && $this->data['type'] == 'hybrid' || $this->data['type'] == 'cash' || $this->data['type'] == 'single') {?>
 		<input type="hidden" name="glod_id" value="<?php echo $this->data['glod_id']?>">
 	<?php }?>
 	<input type="hidden" name="payment">
