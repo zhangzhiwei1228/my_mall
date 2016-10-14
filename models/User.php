@@ -488,6 +488,24 @@ class User extends Abstract_User
 		}
 		$user->save();
 	}
+	//现金支付抵佣金
+	public function cash($user, $val, $note, $code='')
+	{
+		//检查帐户
+		if (!$user->exists()) {
+			throw new App_Exception('帐户不存在');
+		}
+		$user->refresh();
+		M('User_Credit')->insert(array(
+			'user_id' => $user['id'],
+			'type' => 'cash',
+			'credit' => $val,
+			'note' => $note,
+			'code' => $code,
+			'create_time' => time()
+		));
+		$user->save();
+	}
 
 	public function creditHappy($user, $val, $note)
 	{

@@ -109,19 +109,38 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 				case 'vip4_active':
 					$prefix = 'VIP4-';
 					break;
+				case 'hybrid':
+					$prefix = 'hybrid-';
+					break;
+				case 'cash':
+					$prefix = 'cash-';
+					break;
+				case 'single':
+					$prefix = 'single-';
+					break;
 			}
 
 			$_POST['return_url'] = isset($_SESSION['awaiting_payment']) ? (string)new Suco_Helper_Url('module=usercp&controller=order&action=list').'?t=awaiting_payment' :$_POST['return_url'];
+			if($_POST['type'] == 'hybrid' || $_POST['type'] == 'cash' || $_POST['type'] == 'single') {
+				$glod = M('Worthglod')->getById((int)$_POST['glod_id']);
+				$data = array(
+					'user_id' => $this->user->id,
+					'trade_no' => $prefix.$glod['order_no'],
+					'subject' => '会员购买抵用金',
+				);
+			} else {
+				$data = array(
+					'user_id' => $this->user->id,
+					'trade_no' => $prefix.$this->user->id.'-'.time(),
+					'subject' => '帐户充值',
+				);
+			}
 			if($_POST['payment'] == 'wxpay') {
-				$this->redirect('action=payjsapi&amount='.$_POST['amount'].'&params='.base64_encode(http_build_query(array('user_id' => $this->user->id, 'trade_no' => $prefix.$this->user->id.'-'.time(), 'subject' => '帐户充值','return_url'=>$_POST['return_url']))));
+				$this->redirect('action=payjsapi&amount='.$_POST['amount'].'&params='.base64_encode(http_build_query(array_merge($data,array('return_url'=>$_POST['return_url'])))));
 				return false;
 			}
 			$payment = M('Payment')->factory($_POST['payment']);
-			$payment->pay($_POST['amount'], http_build_query(array(
-				'user_id' => $this->user->id,
-				'trade_no' => $prefix.$this->user->id.'-'.time(),
-				'subject' => '帐户充值',
-			)), $_POST['return_url'],$_POST['type']);
+			$payment->pay($_POST['amount'], http_build_query($data), $_POST['return_url'],$_POST['type']);
 			die;
 		}
 	}
@@ -169,7 +188,16 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			$data['left_name'] = $left_name['name'];
 			$data['right_name'] = $right_name['name'];
 			$data['type_name'] = $type_name['name'];
+			if($data['exts']) {
+				$data['exts'] = json_decode($data['exts']);
+			}
 		}
+		$pro15 = M('Proportion')->getById(15)->toArray();
+		$pro16 = M('Proportion')->getById(16)->toArray();
+		$pro17 = M('Proportion')->getById(17)->toArray();
+		$pro18 = M('Proportion')->getById(18)->toArray();
+		$cash = 0;$money = 0;//支付现金
+		$flag = false;
 		if ($this->_request->isPost()) {
 			$post = $this->_request->getPosts();
 			$consume = $post['consume'];//消费金额
@@ -186,14 +214,34 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			}
 			$privilege = round($consume - $consume*$discount,2);//优惠
 			$service = round($privilege * $service_charge['price'],2);//服务费
+
+			if($price_type == 100 || $price_type == 101 || $price_type == 102) {
+				$money = round(($consume - $consume*$discount)*($pro18['l_digital']/$pro18['r_digital'])*0.5);//支付的货币金额
+				$cash = $money + $service;
+			}
+			if($price_type == 100) {
+				$price_type = 15;$flag=true;
+			} elseif($price_type == 101) {
+				$price_type = 16;$flag=true;
+			} elseif($price_type == 102) {
+				$price_type = 17;$flag=true;
+			}
 			$proportion = M('Proportion')->select()->where('id='.(int)$price_type)->fetchRow()->toArray();
-			$payment = round(($consume - $consume*$discount)*($proportion['l_digital']/$proportion['r_digital']));//支付的金额
+			$payment = round(($consume - $consume*$discount)*($proportion['l_digital']/$proportion['r_digital']));//支付的货币金额
 			$pay_name = M('Coltypes')->select('name,english')->where('id='.$proportion['left_id'])->fetchRow()->toArray();
 			$right = M('Coltypes')->select('name')->where('id='.$proportion['right_id'])->fetchRow()->toArray();
 			if(!$privilege || !$service || !$payment) {
 				throw new App_Exception('计算错误，请重新计算提交');
 			}
-
+			if($flag){
+				$payment = round($payment/2);
+			}
+			if(!$flag && $price_type !=18) {
+				$cash = $service;
+			}
+			if($price_type == 18) {
+				$cash = $service + $payment;
+			}
 			try {
 				if ($pay_name['english'] == 'credit' && $this->user['credit'] < $payment) {
 					throw new App_Exception("支付失败，您的免费积分不足", 101);
@@ -212,8 +260,6 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 				$view->render('views/shopping/no_enough.php');
 				return;
 			}
-
-
 			$extra['uid'] = $this->user->id;
 			$extra['privilege'] = $privilege;
 			$extra['service_charge'] = $service;
@@ -221,58 +267,66 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			$extra['order_no'] = $this->doOrderNo();
 			$extra['code'] = $this->doRandStr();
 			$pay_json['payment'] = $payment;
-			$pay_json['pay_name'] = $pay_name['name'];
-			$pay_json['pay_desc'] = $proportion['l_digital'].$pay_name['name'].'='.$proportion['r_digital'].$right['name'];
+			$pay_json['exts_type'] = $flag ? $pay_name['english'] : '';
+			$pay_json['exts_amount'] = $flag ? $money : '';
+			$pay_json['pay_name'] = $flag ? $pay_name['name'].'+元' :$pay_name['name'];
+			$pay_json['pay_desc'] = $flag ? $payment.$pay_name['name'].'+'.$money.'元'.'='.$privilege.$right['name'] :$proportion['l_digital'].$pay_name['name'].'='.$proportion['r_digital'].$right['name'];
 			$extra['pay_json'] = json_encode($pay_json);
 			$glod_id = M('Worthglod')->insert(array_merge($post,$extra));
-			$pay_data['type'] = $pay_name['english'];
+			$pay_data['type'] = $flag ? 'hybrid' : $pay_name['english'];
+			$pay_data['exts_type'] = $pay_name['english'];
 			$pay_data['amount'] = $payment;
-			$pay_data['return_url'] = '/usercp/';
+			$pay_data['pay_amount'] = $cash;
+			$pay_data['flag'] = $flag;
+			$pay_data['money'] = $money;
+			$pay_data['return_url'] = '/usercp/money/credit/?t=worth_gold';
 			$pay_data['glod_id'] = $glod_id;
 			$pay_data['pay_name'] = $pay_name['name'];
 			$pay_data['privilege'] = $privilege;
 			$this->doPayPurchase($pay_data);
-			//$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=default');
 		}
-
 
 		$view = $this->_initView();
 		$view->data = $proportions;
+		$view->pro15 = $pro15;
+		$view->pro16 = $pro16;
+		$view->pro17 = $pro17;
+		$view->pro18 = $pro18;
 		$view->service_charge = $service_charge;
 		$view->render('views/new_text/purchase.php');
 	}
 	public function doPayPurchase($data) {
+
+		$data['desc'] = $data['flag'] ? '使用【'.$data['amount'].$data['pay_name'].'+'.$data['money'].'元'.'】购买【'.$data['privilege'].'抵用金】' :'使用【'.$data['amount'].$data['pay_name'].'】购买【'.$data['privilege'].'抵用金】';
 		$worthglod = M('Worthglod')->getById((int)$data['glod_id']);
 		switch ($data['type']) {
 			case 'credit':
-				$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
-				break;
+				/*$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+				break;*/
 			case 'credit_happy':
-				$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
-				break;
+				/*$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+				break;*/
 			case 'credit_coin':
-				$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
-				break;
+				/*$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+				break;*/
 			case 'vouchers'://抵用券
-				$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
-				break;
+				/*$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+				break;*/
+				$this->doPaySingle($data);
+				die();
 			case 'cash'://现金
-				$this->user->cash($data['amount']*-1, '购买抵用金【TS-'.$data['glod_id'].'】');
+				/*$this->user->cash($data['amount']*-1, '购买抵用金【TS-'.$data['glod_id'].'】');
+				break;*/
+			case 'hybrid'://混合支付
+				$this->doHybrid($data);
+				die();
 				break;
 		}
 		$worthglod->status = 2;
 		$worthglod->pay_time = time();
 		$worthglod->save();
-
-		$this->user->worthGold($data['privilege'],'使用【'.$data['amount'].$data['pay_name'].'】购买【'.$data['privilege'].'抵用金】');
+		$this->user->worthGold($data['privilege'],$data['desc']);
 		$this->redirect('action=success&id='.$data['glod_id']);
-		/*$view = $this->_initView();
-		$view->payments = M('Payment')->select()
-			->where('is_enabled = 1')
-			->order('rank ASC, id ASC')
-			->fetchRows();
-		$view->data = $data;
-		$view->render('views/payway.php');*/
 	}
 	//购买抵用金成功
 	public function doSuccess() {
@@ -299,5 +353,26 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			if ($r != $string{$i - 1}) $string .=  $r;
 		}
 		return $string;
+	}
+	//混合支付
+	public function doHybrid($data) {
+		$view = $this->_initView();
+		$view->payments = M('Payment')->select()
+			->where('is_enabled = 1')
+			->order('rank ASC, id ASC')
+			->fetchRows();
+		$view->data = $data;
+		$view->render('views/payway.php');
+	}
+	//非混合支付
+	public function doPaySingle($data) {
+		$data['type'] = 'single';
+		$view = $this->_initView();
+		$view->payments = M('Payment')->select()
+			->where('is_enabled = 1')
+			->order('rank ASC, id ASC')
+			->fetchRows();
+		$view->data = $data;
+		$view->render('views/payway.php');
 	}
 }

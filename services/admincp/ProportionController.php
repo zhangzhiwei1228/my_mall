@@ -25,6 +25,9 @@ class Admincp_ProportionController extends Admincp_Controller_Action
             $data['left_name'] = $left_name['name'];
             $data['right_name'] = $right_name['name'];
             $data['type_name'] = $type_name['name'];
+            if($data['exts']) {
+                $data['exts'] = json_decode($data['exts']);
+            }
         }
         $view = $this->_initView();
         $view->datalist = $datalist;
@@ -34,7 +37,13 @@ class Admincp_ProportionController extends Admincp_Controller_Action
     public function doAdd()
     {
         if ($this->_request->isPost()) {
-            M('Proportion')->insert($this->_request->getPosts());
+            $data = $this->_request->getPosts();
+            if($data['exts']['value']) {
+                $data['exts'] = json_encode($data['exts']);
+            } else {
+                $data['exts'] = '';
+            }
+            M('Proportion')->insert($data);
             $this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
         }
         $datalist = M('Proportion')->select()->fetchRows();
@@ -49,12 +58,20 @@ class Admincp_ProportionController extends Admincp_Controller_Action
     public function doEdit()
     {
         if ($this->_request->isPost()) {
-            M('Proportion')->updateById($this->_request->getPosts(), (int)$this->_request->id);
+            $pdata = $this->_request->getPosts();
+            if($pdata['exts']['value']) {
+                $pdata['exts'] = json_encode($pdata['exts']);
+            } else {
+                $pdata['exts'] = '';
+            }
+            M('Proportion')->updateById($pdata, (int)$this->_request->id);
 
             $this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
         }
         $data = M('Proportion')->select()->where('id='.(int)$this->_request->id)->fetchRow()->toArray();
-
+        if($data['exts']) {
+            $data['exts'] = json_decode($data['exts']);
+        }
         $coltypes_cash = M('Coltypes')->select()->where('type=1')->fetchRows()->toArray();
         $coltypes_desc = M('Coltypes')->select()->where('type=2')->fetchRows()->toArray();
         $view = $this->_initView();

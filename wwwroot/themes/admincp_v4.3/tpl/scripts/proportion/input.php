@@ -25,6 +25,14 @@ $this->head()->setTitle($this->title);
 					<?php }?>
 				</select>
 			</div>
+			<input type="checkbox" class="hybrid_pay" <?php echo $this->data['exts'] ? 'checked' : '' ?>  value="<?php echo $this->data['exts'] ? '1' : '0' ?>"><label class="control-label col-sm-0">混合支付</label>
+		</div>
+		<div class="form-group hybrid" style="<?php echo $this->data['exts'] ? 'display: block' : 'display: none' ?>">
+			<label class="control-label col-sm-2"> <span style="color: red">附加条件</span></label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" value="<?php echo $this->data['exts']->value?>" name="exts[value]">
+			</div>
+			<label class="control-label col-sm-0"><input type="hidden"  value="<?php echo $this->data['exts']->name ? $this->data['exts']->name : '元' ?>" name="exts[name]">元</label>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2"> 右侧数值 </label>
@@ -60,3 +68,17 @@ $this->head()->setTitle($this->title);
 		</div>
 	</form>
 </div>
+<script>
+	$(document).ready(function() {
+		$(".hybrid_pay").click(function() {
+			var hybrid = $(this).val();
+			if (hybrid == 1) {
+				$(this).val(0);
+				$(".hybrid").hide();
+			}else{
+				$(this).val(1);
+				$(".hybrid").show();
+			}
+		});
+	});
+</script>

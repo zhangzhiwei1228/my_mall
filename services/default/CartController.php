@@ -380,6 +380,52 @@ class CartController extends Controller_Action
 			}
 
 			switch($type) {
+				case 'hybrid': //会员混合支付抵用金
+					if (!$code) {
+						die('fail');
+					}
+
+					$order = M('Worthglod')->getByOrderNo($code);
+					if ($order->exists() && $order->status == 1) {
+						$exts = json_decode($order['pay_json']);
+						$total_fee = $order['service_charge'] +$exts['exts_amount'];
+						$order->buyer->recharge(
+							$total_fee, 0, $voucher, '微信支付抵佣金', $this->_pid
+						)->commit();
+						$order->payHybrid();
+
+						die('success');
+					}
+					break;
+				case 'cash': //会员现金支付抵用金
+					if (!$code) {
+						die('fail');
+					}
+
+					$order = M('Worthglod')->getByOrderNo($code);
+					if ($order->exists() && $order->status == 1) {
+						$exts = json_decode($order['pay_json']);
+						$total_fee = $order['service_charge'] +$exts['payment'];
+						$order->buyer->recharge(
+							$total_fee, 0, $voucher, '微信现金支付抵佣金', $this->_pid
+						)->commit();
+						$order->payCash();
+						die('success');
+					}
+					break;
+				case 'single': //会员非混合支付抵用金
+					if (!$code) {
+						die('fail');
+					}
+					$order = M('Worthglod')->getByOrderNo($code);
+					if ($order->exists() && $order->status == 1) {
+						$order->buyer->recharge(
+							$order['service_charge'], 0, $voucher, '微信非混合支付抵佣金', $this->_pid
+						)->commit();
+						$order->paySingle();
+						die('success');
+					}
+					break;
 				case 'TS': //支付订单
 					if (!$code) {
 						die('fail');

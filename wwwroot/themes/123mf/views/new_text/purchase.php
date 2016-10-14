@@ -28,19 +28,63 @@
         </ul>
         <ul class="sel-list">
             <?php foreach($this->data as $row) {?>
+                <?php if($row['exts']) continue;?>
                 <li class="f-cb">
                     <label>
-                        <div class="label fl">
+                        <div class="label fl" style="font-size: 16px">
                             <input type="radio" name="price_type" value="<?php echo $row['id']?>">
                             <i class="fl"></i>
                             <span class="compute" data-id="<?php echo $row['l_digital']/$row['r_digital']?>">0</span><?php echo $row['left_name']?>
                         </div>
-                        <p class="tit fl"><?php echo $row['l_digital']?><?php echo $row['left_name']?>=<?php echo $row['r_digital']?><?php echo $row['right_name']?></p>
+                        <p class="tit fl" style="margin-left: 30px">
+                            <?php echo $row['l_digital'].$row['left_name'].' = '.$row['r_digital'].$row['right_name']?>
+                        </p>
                     </label>
                 </li>
             <?php }?>
+            <li class="f-cb">
+                <label>
+                    <div class="label fl" style="font-size: 16px">
+                        <input type="radio" name="price_type" value="100">
+                        <i class="fl"></i>
+                        <span class="compute" data-id="<?php echo ($this->pro15['l_digital']/$this->pro15['r_digital'])* 0.5;?>" data-val="">0</span>免费积分 +
+                        <span class="hybrid" data-id="<?php echo ($this->pro18['l_digital']/$this->pro18['r_digital'])* 0.5;?>">0</span>元
+                    </div>
+                    <p class="tit fl" style="margin-left: 30px">
+
+                    </p>
+                </label>
+            </li>
+            <br/>
+            <li class="f-cb">
+
+                <label>
+                    <div class="label fl" style="font-size: 16px">
+                        <input type="radio" name="price_type" value="101">
+                        <i class="fl"></i>
+                        <span class="compute" data-id="<?php echo ($this->pro16['l_digital']/$this->pro16['r_digital'])* 0.5;?>" data-val="">0</span>抵用券 +
+                        <span class="hybrid" data-id="<?php echo ($this->pro18['l_digital']/$this->pro18['r_digital'])* 0.5;?>">0</span>元
+                    </div>
+                    <p class="tit fl" style="margin-left: 30px">
+
+                    </p>
+                </label>
+            </li>
+            <li class="f-cb">
+                <label>
+                    <div class="label fl" style="font-size: 16px">
+                        <input type="radio" name="price_type" value="102">
+                        <i class="fl"></i>
+                        <span class="compute" data-id="<?php echo ($this->pro17['l_digital']/$this->pro17['r_digital'])* 0.5;?>" data-val="">0</span>积分币 +
+                        <span class="hybrid" data-id="<?php echo ($this->pro18['l_digital']/$this->pro18['r_digital'])* 0.5;?>">0</span>元
+                    </div>
+                    <p class="tit fl" style="margin-left: 30px">
+
+                    </p>
+                </label>
+            </li>
         </ul>
-        <input type="submit" value="确定购买" class="submit">
+        <input type="submit" value="确定购买" class="submit" style="margin-top: 10px;margin-bottom: 10px">
     </form>
 </div>
 
@@ -58,14 +102,12 @@ echo static_file('m/js/main.js');
             charge = '<?php echo $this->service_charge['price']?>';
             service_charge = charge * discount;
             $('#service_charge').text(service_charge.toFixed(2));
-
-
             $('.sel-list li').each(function(){
                 var othis = $(this).find('.compute');
-
                 othis.text(Math.round(discount*othis.attr('data-id')));
+                var hthis = $(this).find('.hybrid');
+                hthis.text(Math.round(discount*hthis.attr('data-id')));
             });
-
         });
 
         $('input[name=consume]').blur(function() {
@@ -79,6 +121,8 @@ echo static_file('m/js/main.js');
                 $('.sel-list li').each(function(){
                     var othis = $(this).find('.compute');
                     othis.text(Math.round(discount*othis.attr('data-id')));
+                    var hthis = $(this).find('.hybrid');
+                    hthis.text(Math.round(discount*hthis.attr('data-id')));
                 });
             }
         });

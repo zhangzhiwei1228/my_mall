@@ -58,7 +58,12 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 					<td align="center"><input type="checkbox" name="ids[]" role="chk-item" value="<?=$row['id']?>" /></td>
 					<td>
 						<a href="<?=$this->url('action=edit&id=' . $row['id'].'&ref='.$this->_request->url)?>">
-						<?php echo $row['l_digital'].$row['left_name'].' = '.$row['r_digital'].$row['right_name']?>
+						<?php if($row['exts']) {?>
+							<?php echo $row['l_digital'].$row['left_name'].'+'.$row['exts']->value .$row['exts']->name.' = '.$row['r_digital'].$row['right_name']?>
+						<?php } else {?>
+							<?php echo $row['l_digital'].$row['left_name'].' = '.$row['r_digital'].$row['right_name']?>
+						<?php }?>
+
 						</a>
 					</td>
 					<td class="hidden-xs"><?=$this->highlight($row['type_name'], $this->_request->q)?></td>

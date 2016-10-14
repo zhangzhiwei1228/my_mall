@@ -38,6 +38,50 @@ class PayNotifyCallBack extends WxPayNotify
 					die('fail');
 				}
 				switch($type) {
+					case 'hybrid': //会员混合支付抵用金
+						if (!$code) {
+							die('fail');
+						}
+
+						$order = M('Worthglod')->getByOrderNo($code);
+						if ($order->exists() && $order->status == 1) {
+
+							$order->buyer->recharge(
+								$result['cash_fee']/100, 0, $voucher, '微信支付抵佣金', $this->_pid
+							)->commit();
+							$order->payHybrid();
+
+							die('success');
+						}
+						break;
+					case 'cash': //会员现金支付抵用金
+						if (!$code) {
+							die('fail');
+						}
+
+						$order = M('Worthglod')->getByOrderNo($code);
+						if ($order->exists() && $order->status == 1) {
+
+							$order->buyer->recharge(
+								$result['cash_fee']/100, 0, $voucher, '微信现金支付抵佣金', $this->_pid
+							)->commit();
+							$order->payCash();
+							die('success');
+						}
+						break;
+					case 'single': //会员非混合支付抵用金
+						if (!$code) {
+							die('fail');
+						}
+						$order = M('Worthglod')->getByOrderNo($code);
+						if ($order->exists() && $order->status == 1) {
+							$order->buyer->recharge(
+								$result['cash_fee']/100, 0, $voucher, '微信非混合支付抵佣金', $this->_pid
+							)->commit();
+							$order->paySingle();
+							die('success');
+						}
+						break;
 					case 'TS': //支付订单
 						if (!$code) {
 							die('fail');
