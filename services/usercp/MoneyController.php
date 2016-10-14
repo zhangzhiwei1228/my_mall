@@ -268,7 +268,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			$extra['order_no'] = $this->doOrderNo();
 			$extra['code'] = $this->doRandStr();
 			$pay_json['payment'] = $payment;
-			$pay_json['exts_type'] = $flag ? $pay_name['english'] : '';
+			$pay_json['exts_type'] = $flag ? $pay_name['english'] : $pay_name['english'];
 			$pay_json['exts_amount'] = $flag ? $money : '';
 			$pay_json['pay_name'] = $flag ? $pay_name['name'].'+元' :$pay_name['name'];
 			$pay_json['pay_desc'] = $flag ? $payment.$pay_name['name'].'+'.$money.'元'.'='.$privilege.$right['name'] :$proportion['l_digital'].$pay_name['name'].'='.$proportion['r_digital'].$right['name'];
