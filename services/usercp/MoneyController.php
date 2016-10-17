@@ -135,7 +135,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 					'subject' => '会员购买抵用金',
 				);
 			} else {
-				$_POST['amount'] = 0.01;
+				//$_POST['amount'] = 0.01;
 				$data = array(
 					'user_id' => $this->user->id,
 					'trade_no' => $prefix.$this->user->id.'-'.time(),
@@ -382,10 +382,5 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 		$view->data = $data;
 		$view->render('views/payway.php');
 	}
-	//转换
-	public function doConversion() {
 
-		$view = $this->_initView();
-		$view->render('views/numerical_list.php');
-	}
 }

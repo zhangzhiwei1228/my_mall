@@ -53,7 +53,7 @@
 			</li>
 			<li>
 				<img src="<?php echo static_file('mobile/img/img-27.png')?> " alt="">
-				<span><a href="<?=$this->url('credit')?> ">积分转换</a></span>
+				<span><a href="<?=$this->url('credit/conversionlist')?> ">积分转换</a></span>
 				<a class="n-list-end" href="<?=$this->url('credit')?> "></a>
 			</li>
 			<!--<li>

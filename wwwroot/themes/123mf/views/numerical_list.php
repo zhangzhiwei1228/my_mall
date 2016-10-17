@@ -9,12 +9,9 @@
 	转换
 </div>
 <ul class="numerical_list">
-	<li><a href="">免费积分转化成积分币</a></li>   
-	<li><a href="">免费积分转化成积分币</a></li>   
-	<li><a href="">免费积分转化成积分币</a></li>   
-	<li><a href="">免费积分转化成积分币</a></li>   
-	<li><a href="">免费积分转化成积分币</a></li>   
-	<li><a href="">免费积分转化成积分币</a></li>   
+	<?php foreach($this->datalist as $row) {?>
+		<li><a href="<?php echo $this->url('/usercp/credit/').'?cid='.$row['id']?>"><?php echo $row['left_name']?>转化成<?php echo $row['right_name']?></a></li>
+	<?php }?>
 </ul>
 
 <?php
