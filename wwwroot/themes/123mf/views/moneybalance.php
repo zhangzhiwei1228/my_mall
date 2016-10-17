@@ -36,6 +36,12 @@
 				<a class="n-list-end1" href="">金</a>
 				<p><?=$this->user['worth_gold']?></p>
 			</li>
+			<li>
+				<img src="<?php echo static_file('mobile/img/img-49.png'); ?> " alt="">
+				<span><a href="">我的抵用券:</a></span>
+				<a class="n-list-end1" href="">券</a>
+				<p><?=$this->user['vouchers']?></p>
+			</li>
 			<!--<li>
 				<img src="<?php /*echo static_file('mobile/img/img-50.png'); */?> " alt="">
 				<span><a href="">我的抵用券：</a></span>
@@ -56,11 +62,11 @@
 				<span><a href="<?=$this->url('./credit?t=credit_coin')?>">我充值积分币记录</a></span>
 				<a class="n-list-end" href=""></a>
 			</li>
-			<!--<li>
-				<img src="<?php /*echo static_file('mobile/img/img-53.png'); */?> " alt="">
-				<span><a href="<?php /*echo site_url('rechargerecord'); */?> ">我充值抵用券记录</a></span>
+			<li>
+				<img src="<?php echo static_file('mobile/img/img-53.png'); ?> " alt="">
+				<span><a href="<?php echo $this->url('./credit?t=vouchers'); ?> ">我充值抵用券记录</a></span>
 				<a class="n-list-end" href=""></a>
-			</li>-->
+			</li>
 			<li>
 				<img src="<?php echo static_file('mobile/img/img-54.png'); ?> " alt="">
 				<span><a href="<?=$this->url('./credit?t=credit')?>">获得免费积分记录</a></span>
