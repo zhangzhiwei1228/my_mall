@@ -605,4 +605,25 @@
   color: #fff;
 }
 
+.numerical_list{
+  margin-top: 0.25rem;
+  background-color: #fff;
+  border-bottom: 1px solid #dddddd;
+}
+.numerical_list li{
+  width: 100%;
+  border-top: 1px solid #dddddd;
+}
+.numerical_list li a{
+  display: block;
+  padding: 0.35rem 0.3rem;
+  line-height: 1;
+  font-size: 0.28rem;
+  color: #555555;
+  padding-left: 0.85rem;
+  background: url(../img/img_22.png) no-repeat 0.3rem center;
+  background-size: 0.4rem;
+}
+
+
 

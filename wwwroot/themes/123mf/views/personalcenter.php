@@ -46,11 +46,11 @@
 				<span><a href="<?=$this->url('money/recharge?t=credit_coin')?>">积分币充值</a></span>
 				<a class="n-list-end" href="<?=$this->url('money/recharge?t=credit_coin')?>"></a>
 			</li>
-			<!--<li>
-				<img src="<?php /*echo static_file('mobile/img/img-26.png'); */?> " alt="">
-				<span><a href="<?php /*echo site_url('webrecharge'); */?> ">抵用卷充值</a></span>
-				<a class="n-list-end" href="<?php /*echo site_url('webrecharge'); */?>"></a>
-			</li>-->
+			<li>
+				<img src="<?php echo static_file('mobile/img/img-26.png'); ?> " alt="">
+				<span><a href="<?php echo $this->url('/usercp/money/recharge?t=vouchers'); ?> ">抵用券充值</a></span>
+				<a class="n-list-end" href="<?php echo $this->url('/usercp/money/recharge?t=vouchers'); ?>"></a>
+			</li>
 			<li>
 				<img src="<?php echo static_file('mobile/img/img-27.png')?> " alt="">
 				<span><a href="<?=$this->url('credit')?> ">积分转换</a></span>

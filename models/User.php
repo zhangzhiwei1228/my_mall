@@ -554,6 +554,30 @@ class User extends Abstract_User
 		}
 		$user->save();
 	}
+	//抵用券
+	public function vouchers($user, $val, $note)
+	{
+		//检查帐户
+		if (!$user->exists()) {
+			throw new App_Exception('帐户不存在');
+		}
+
+		$user->refresh();
+		M('User_Credit')->insert(array(
+			'user_id' => $user['id'],
+			'type' => 'vouchers',
+			'credit' => $val,
+			'note' => $note,
+			'create_time' => time()
+		));
+
+		if ($val > 0) { //增加经验
+			$user->vouchers += $val;
+		} elseif ($val < 0) { //减少经验
+			$user->vouchers -= abs($val);
+		}
+		$user->save();
+	}
 
 	/**
 	 * 冻结资金

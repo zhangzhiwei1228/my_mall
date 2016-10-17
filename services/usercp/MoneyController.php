@@ -30,8 +30,10 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			$view->render('views/payway.php');
 			die;
 		}
-
+		$coltype = M('Coltypes')->select('id,english')->where("english='".$this->_request->t."'")->fetchRow()->toArray();
+		$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
 		$view = $this->_initView();
+		$view->data = $data;
 		$view->render('views/webrecharge.php');
 	}
 
@@ -118,6 +120,9 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 				case 'single':
 					$prefix = 'single-';
 					break;
+				case 'vouchers'://抵佣券
+					$prefix = 'RCD-';
+					break;
 			}
 
 			$_POST['return_url'] = isset($_SESSION['awaiting_payment']) ? (string)new Suco_Helper_Url('module=usercp&controller=order&action=list').'?t=awaiting_payment' :$_POST['return_url'];
@@ -130,6 +135,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 					'subject' => '会员购买抵用金',
 				);
 			} else {
+				$_POST['amount'] = 0.01;
 				$data = array(
 					'user_id' => $this->user->id,
 					'trade_no' => $prefix.$this->user->id.'-'.time(),
@@ -375,5 +381,11 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			->fetchRows();
 		$view->data = $data;
 		$view->render('views/payway.php');
+	}
+	//转换
+	public function doConversion() {
+
+		$view = $this->_initView();
+		$view->render('views/numerical_list.php');
 	}
 }

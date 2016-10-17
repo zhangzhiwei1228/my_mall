@@ -116,9 +116,17 @@ class PayNotifyCallBack extends WxPayNotify
 							$user->expend(
 								'pay', $result['cash_fee']/100, $voucher, '购买免费积分#'.$voucher
 							)->commit();
-							$point = ($user['role'] == 'seller') ? $setting['credit_rate_agent']*($result['cash_fee']/100) : $setting['credit_rate']*($result['cash_fee']/100);
+							//$point = ($user['role'] == 'seller') ? $setting['credit_rate_agent']*($result['cash_fee']/100) : $setting['credit_rate']*($result['cash_fee']/100);
 							/*$point = $setting['credit_rate']*($result['cash_fee']/100);*/
+							//$user->credit($point, '购买免费积分');
+
+							$type_id = ($user['role'] == 'seller') ? 8 : 7;
+							$pay_type = 'credit';
+							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+							$data = M('Proportion')->select()->where('type='.(int)$type_id.' and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+							$point = $data['r_digital']*($result['cash_fee']/100);
 							$user->credit($point, '购买免费积分');
+
 							die('success');
 						}
 						break;
@@ -133,7 +141,12 @@ class PayNotifyCallBack extends WxPayNotify
 								'pay', $result['cash_fee']/100, $voucher, '购买快乐积分#'.$voucher
 							)->commit();
 
-							$point = $setting['credit_happy_rate']*($result['cash_fee']/100);
+							//$point = $setting['credit_happy_rate']*($result['cash_fee']/100);
+							//$user->creditHappy($point, '购买快乐积分');
+							$pay_type = 'credit_happy';
+							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+							$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+							$point = $data['r_digital']*($result['cash_fee']/100);
 							$user->creditHappy($point, '购买快乐积分');
 							die('success');
 						}
@@ -149,8 +162,36 @@ class PayNotifyCallBack extends WxPayNotify
 								'pay', $result['cash_fee']/100, $voucher, '购买积分币#'.$voucher
 							)->commit();
 
-							$point = $setting['credit_coin_rate']*($result['cash_fee']/100);
+							//$point = $setting['credit_coin_rate']*($result['cash_fee']/100);
+							//$user->creditCoin($point, '购买积分币');
+							$pay_type = 'credit_coin';
+							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+							$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+							$point = $data['r_digital']*($result['cash_fee']/100);
 							$user->creditCoin($point, '购买积分币');
+							die('success');
+						}
+						break;
+					case 'RCD': //抵用券充值
+						$user = M('User')->getById($code);
+
+						if ($user->exists()) {
+							$user->recharge(
+								$result['cash_fee']/100, 0, $voucher, '微信充值', 2
+							)->commit();
+							$user->expend(
+								'pay', $result['cash_fee']/100, $voucher, '购买抵用券#'.$voucher
+							)->commit();
+
+							//$point = $setting['credit_coin_rate']*($result['cash_fee']/100);
+							//$user->creditCoin($point, '购买积分币');
+
+							$pay_type = 'vouchers';
+							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+							$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+							$point = $data['r_digital']*($result['cash_fee']/100);
+
+							$user->vouchers($point, '购买抵用券');
 							die('success');
 						}
 						break;

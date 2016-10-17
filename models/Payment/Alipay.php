@@ -235,7 +235,13 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 								'pay', $q['total_fee'], $voucher, '购买免费积分#'.$voucher
 							)->commit();
 
-							$point = ($user['role'] == 'seller') ? $setting['credit_rate_agent']*$q['total_fee'] : $setting['credit_rate']*$q['total_fee'];
+							//$point = ($user['role'] == 'seller') ? $setting['credit_rate_agent']*$q['total_fee'] : $setting['credit_rate']*$q['total_fee'];
+							$type_id = ($user['role'] == 'seller') ? 8 : 7;
+							$pay_type = 'credit';
+							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+							$data = M('Proportion')->select()->where('type='.(int)$type_id.' and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+							$point = $data['r_digital']*$q['total_fee'];
+
 							$user->credit($point, '购买免费积分');
 							die('success');
 						}
@@ -251,7 +257,12 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 								'pay', $q['total_fee'], $voucher, '购买快乐积分#'.$voucher
 							)->commit();
 
-							$point = $setting['credit_happy_rate']*$q['total_fee'];
+							//$point = $setting['credit_happy_rate']*$q['total_fee'];
+
+							$pay_type = 'credit_happy';
+							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+							$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+							$point = $data['r_digital']*$q['total_fee'];
 							$user->creditHappy($point, '购买快乐积分');
 							die('success');
 						}
@@ -267,8 +278,32 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 								'pay', $q['total_fee'], $voucher, '购买积分币#'.$voucher
 							)->commit();
 
-							$point = $setting['credit_coin_rate']*$q['total_fee'];
+							//$point = $setting['credit_coin_rate']*$q['total_fee'];
+
+							$pay_type = 'credit_coin';
+							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+							$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+							$point = $data['r_digital']*$q['total_fee'];
 							$user->creditCoin($point, '购买积分币');
+							die('success');
+						}
+						break;
+					case 'RCD': //抵用券充值
+						$user = M('User')->getById($code);
+
+						if ($user->exists()) {
+							$user->recharge(
+								$q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+							)->commit();
+							$user->expend(
+								'pay', $q['total_fee'], $voucher, '购买抵用券#'.$voucher
+							)->commit();
+							$pay_type = 'vouchers';
+							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+							$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+							$point = $data['r_digital']*$q['total_fee'];
+
+							$user->vouchers($point, '购买抵用券');
 							die('success');
 						}
 						break;
