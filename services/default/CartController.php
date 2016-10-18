@@ -283,6 +283,9 @@ class CartController extends Controller_Action
 					if ($order['total_credit_coin']) {
 						$this->user->creditCoin($order['total_credit_coin']*-1, '支付订单【TS-'.$order['id'].'】');
 					}
+					if ($order['total_vouchers']) {
+						$this->user->vouchers($order['total_vouchers']*-1, '支付订单【TS-'.$order['id'].'】');
+					}
 					$order->status = 2;
 					$order->save();
 					$user_id = $order->buyer_id;
@@ -322,6 +325,9 @@ class CartController extends Controller_Action
 			}
 			if ($order['total_credit_coin'] > 0 && $this->user['credit_coin'] < $order['total_credit_coin']) {
 				throw new App_Exception("支付失败，您的积分币不足", 103);
+			}
+			if ($order['total_vouchers'] > 0 && $this->user['vouchers'] < $order['total_vouchers']) {
+				throw new App_Exception("支付失败，您的抵用券不足", 104);
 			}
 		} catch(App_Exception $e) {
 			$_SESSION['awaiting_payment'] = 'awaiting_payment';
