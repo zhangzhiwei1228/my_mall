@@ -20,7 +20,7 @@
 		    		<td align="center">会员账号</td>
 		    		<td align="center">会员名</td>
 					<?php if($this->_request->t == 'credit') {?>
-						<td align="center">积分余额</td>
+						<td align="center">免费积分余额</td>
 					<?php } else {?>
 						<td align="center">抵用券余额</td>
 					<?php }?>
