@@ -85,11 +85,12 @@ class Agent_CreditController extends Agent_Controller_Action
 	{
 		if ($c1 > $c2) {
 			$view = $this->_initView();
-			if($type == 'credit') {
+//			if($type == 'credit') {
+			$view->type = $type;
 				$view->render('views/jifen/jifenstep04.php');
-			} else {
-				$view->render('views/new_text/recharge.php');
-			}
+//			} else {
+//				$view->render('views/new_text/recharge.php');
+//			}
 
 			return false;
 		} else {

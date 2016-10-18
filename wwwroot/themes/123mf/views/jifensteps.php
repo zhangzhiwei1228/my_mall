@@ -46,7 +46,8 @@
 			<?php if($this->_request->t == 'credit') {?>
 				<a href="<?php echo $this->url('agent/credit/recharge/?t=credit')?>">立即充值免费积分</a>
 			<?php } else {?>
-				<a href="<?php echo $this->url('agent/credit/vouchers/')?>">立即充值抵用券</a>
+				<a href="<?php echo $this->url('agent/credit/recharge/?t=vouchers')?>">立即充值抵用券</a>
+
 			<?php }?>
 
 	    </div>

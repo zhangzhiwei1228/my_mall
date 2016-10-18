@@ -97,9 +97,9 @@
 	<?php } elseif ($this->_request->t == 'vouchers') { ?>
 		<div class="n-recharge-pic-te">
 			<p style="color:#b40000;font-size:14px;">充值抵用券赠送活动说明：</p>
-			<p style="color:#555;">会员充值抵用卷赠送免费积分活动，赠送值为充值抵用卷金额的50%（充1000,送500）。</p>
+			<p style="color:#555;">会员线下消费后，商家赠送抵用券，抵用券可在帮帮网商城中兑换商品使用</p>
 			<p style="color:#b40000;font-size:14px;">抵用券充值说明：</p>
-			<p style="color:#555;">1元=<?php echo $this->data['r_digital']?>抵用券（抵用券可转换为免费积分，积分币、商城现金及退款现金）</p>
+			<p style="color:#555;">1元=<?php echo $this->data['r_digital']?>抵用券（抵用券可转换为免费积分、积分币等）</p>
 		</div>
 		<div class="n-h5"></div>
 		<div class="n-recharge-sp">
