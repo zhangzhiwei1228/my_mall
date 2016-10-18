@@ -124,6 +124,9 @@
 			if(!flag || credit == '') return false;
 			$.post('<?php echo site_url('usercp/credit/conversion/');?>',{credit:credit,cid:cid},function(data) {
 				$('#credit').val('');
+				if($.parseJSON(data).glod_id) {
+					window.location.href = '<?php echo $this->url('/usercp/money/success/')?>'+'?id='+$.parseJSON(data).glod_id;
+				}
 				alert($.parseJSON(data).msg);
 
 			});

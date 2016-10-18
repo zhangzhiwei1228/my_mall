@@ -47,6 +47,7 @@ class Usercp_CreditController extends Usercp_Controller_Action
 		$user->$left_name['english'] = $user->$left_name['english'] - (int)$credit;
 		//$user->$right_name['english'] = $user->$right_name['english'] + (int)$credit_coin;
 		$user->save();
+		$glod_id = 0;
 		$desc = '以【'.$data['l_digital'].':'.$data['r_digital'].'】的比例进行【'.$left_name['name'].'转换成'.$right_name['name'].'】';
 		switch($right_name['english']) {
 			case 'credit':
@@ -62,11 +63,18 @@ class Usercp_CreditController extends Usercp_Controller_Action
 				$user->vouchers($credit_coin,$desc);
 				break;
 			case 'worth_gold':
+				$extra = array(
+					'uid' => $this->user->id,
+					'privilege' => $credit_coin,
+					'code' => $this->doRandStr(),
+					'status' => 3,
+				);
+				$glod_id = M('Worthglod')->insert($extra);
 				$user->worthGold($credit_coin,$desc);
 				break;
 		}
 		//$user->creditCoin($credit_coin,'积分转换成积分币');
-		echo json_encode(array('status'=>1,'msg'=>'转换成功'));
+		echo json_encode(array('status'=>1,'msg'=>'转换成功','glod_id'=>$glod_id));
 		return ;
 	}
 	//转换
@@ -81,5 +89,16 @@ class Usercp_CreditController extends Usercp_Controller_Action
 		$view = $this->_initView();
 		$view->datalist = $datas;
 		$view->render('views/numerical_list.php');
+	}
+	function doRandStr($length = 10, $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890')
+	{
+		$chars_length = (strlen($chars) - 1);
+		$string = $chars{rand(0, $chars_length)};
+		for ($i = 1; $i < $length; $i = strlen($string))
+		{
+			$r = $chars{rand(0, $chars_length)};
+			if ($r != $string{$i - 1}) $string .=  $r;
+		}
+		return $string;
 	}
 }
