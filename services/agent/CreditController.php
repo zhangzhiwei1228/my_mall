@@ -108,7 +108,10 @@ class Agent_CreditController extends Agent_Controller_Action
 			die;
 		}
 
+		$coltype = M('Coltypes')->select('id,english')->where("english='".$this->_request->t."'")->fetchRow()->toArray();
+		$data = M('Proportion')->select()->where('type=8 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
 		$view = $this->_initView();
+		$view->data = $data;
 		$view->render('views/agentrecharge.php');
 	}
 	//选择充值
@@ -139,6 +142,9 @@ class Agent_CreditController extends Agent_Controller_Action
 					break;
 				case 'vip4_active':
 					$prefix = 'VIP4-';
+					break;
+				case 'vouchers'://抵佣券
+					$prefix = 'RCD-';
 					break;
 			}
 			if($_POST['payment'] == 'wxpay') {
@@ -232,7 +238,11 @@ class Agent_CreditController extends Agent_Controller_Action
 	}
 	//商家充值抵用券
 	public function doVouchers() {
+		$type = 'vouchers';
+		$coltype = M('Coltypes')->select('id,english')->where("english='".$type."'")->fetchRow()->toArray();
+		$data = M('Proportion')->select()->where('type=8 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
 		$view = $this->_initView();
+		$view->data = $data;
 		$view->render('views/new_text/recharge.php');
 	}
 }
