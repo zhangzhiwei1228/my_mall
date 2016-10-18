@@ -116,6 +116,28 @@ $specs = cd(0);
 		<div class="help-block">单件出售时，以此价格与买家结算</div>
 	</div>
 </div>
+<div class="form-group">
+	<label class="control-label col-sm-2">抵用券:</label>
+	<div class="col-sm-9">
+		<div class="input-group" style="width:260px">
+			<span class="input-group-addon">&yen;</span>
+			<input type="text" name="skus[<?=$k?>][point4]" value="<?=$sku['point4']?>" class="form-control JS_SP" />
+			<span class="input-group-addon"><span class="package-unit"></span></span>
+		</div>
+		<div class="help-block">单件出售时，以此价格与买家结算</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="control-label col-sm-2">现金:</label>
+	<div class="col-sm-9">
+		<div class="input-group" style="width:260px">
+			<span class="input-group-addon">&yen;</span>
+			<input type="text" name="skus[<?=$k?>][point5]" value="<?=$sku['point5']?>" class="form-control JS_SP" />
+			<span class="input-group-addon"><span class="package-unit"></span></span>
+		</div>
+		<div class="help-block">单件出售时，以此价格与买家结算</div>
+	</div>
+</div>
 <?php foreach($this->pointConfig as $field => $row) { ?>
 <div class="form-group">
 	<label class="control-label col-sm-2"><?=$row['name']?>:</label>
@@ -123,7 +145,7 @@ $specs = cd(0);
 		<div class="input-group pcf" style="width:260px">
 			<input type="text" name="skus[<?=$k?>][exts][<?=$field?>][cash]" value="<?=@$sku['exts'][$field]['cash']?>" class="form-control fd-<?=$field?>" placeholder="现金" />
 			<span class="input-group-addon">+</span>
-			<input type="text" name="skus[<?=$k?>][exts][<?=$field?>][point]" value="<?=@$sku['exts'][$field]['point']?>" data-rate="<?=$row['rate']?>" class="form-control" placeholder="积分" />
+			<input type="text" name="skus[<?=$k?>][exts][<?=$field?>][point]" value="<?=@$sku['exts'][$field]['point']?>" data-rate="<?=$row['rate']?>" class="form-control" placeholder="<?php echo $row['extname']?>" />
 			<span class="input-group-addon">元</span>
 		</div>
 	</div>

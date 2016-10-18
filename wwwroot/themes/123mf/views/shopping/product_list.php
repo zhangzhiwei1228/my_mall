@@ -75,11 +75,20 @@
                     <?php if ($row['skus'][0]['point3'] > 0) { ?>
                         <p class="text01">积分币：<span><?=$row['skus'][0]['point3']?></span>币</p>
                     <?php } ?>
+                    <?php if ($row['skus'][0]['point4'] > 0) { ?>
+                        <p class="text01">抵用券：<span><?=$row['skus'][0]['point4']?></span>券</p>
+                    <?php } ?>
+                    <?php if ($row['skus'][0]['point5'] > 0) { ?>
+                        <p class="text01">现金：<span><?=$row['skus'][0]['point5']?></span>￥</p>
+                    <?php } ?>
                     <?php if ($row['skus'][0]['exts']['ext1']['cash']) { ?>
                     <p class="text02">现金+免费积分：￥<span><?=$row['skus'][0]['exts']['ext1']['cash']?></span>+<span><?=$row['skus'][0]['exts']['ext1']['point']?></span>免费积分</p>
                     <?php } ?>
                     <?php if ($row['skus'][0]['exts']['ext2']['cash']) { ?>
                     <p class="text03">现金+积分币：￥<span><span><?=$row['skus'][0]['exts']['ext2']['cash']?></span>+<span><span><?=$row['skus'][0]['exts']['ext2']['point']?></span>积分币</p>
+                    <?php } ?>
+                    <?php if ($row['skus'][0]['exts']['ext3']['cash']) { ?>
+                        <p class="text03">现金+抵用券：￥<span><span><?=$row['skus'][0]['exts']['ext3']['cash']?></span>+<span><span><?=$row['skus'][0]['exts']['ext3']['point']?></span>抵用券</p>
                     <?php } ?>
                     <p class="text04">原价：￥<span class=""><?=$row['skus'][0]['market_price']?></span></p>
                 </div>

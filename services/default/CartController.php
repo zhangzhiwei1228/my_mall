@@ -151,12 +151,16 @@ class CartController extends Controller_Action
 			}
 			foreach($items as $k => $row) {
 				if (!$row['checkout']) continue;
+				var_dump($row);
 				unset($row['goods']['id']);
 				unset($row['goods']['key']);
 				unset($row['goods']['cost_price']);
 				unset($row['goods']['market_price']);
 				unset($row['goods']['point1']);
 				unset($row['goods']['point2']);
+				unset($row['goods']['point3']);
+				unset($row['goods']['point4']);
+				unset($row['goods']['point5']);
 				unset($row['goods']['quantity']);
 				unset($row['goods']['quantity_warning']);
 				unset($row['goods']['thumb1']);
@@ -174,6 +178,7 @@ class CartController extends Controller_Action
 					'subtotal_save' => $row['subtotal_save'],
 					'purchase_quantity' => $row['qty'],
 					'promotion' => $row['goods']['price_label'],
+					'subtotal_vouchers' => $row['subtotal_vouchers'],
 					//'unit' => $row['unit'],
 					'sku_id' => $row['skuId']
 				)));

@@ -155,17 +155,20 @@ $.refreshCart = function() {
 	var total_credit = 0;
 	var total_credit_coin = 0;
 	var total_credit_happy = 0;
+	var total_vouchers = 0;
 	var html = '<p></p>';
 	$('[role=chk-item]:checked').each(function(i){
 		var subtotal_amount = $(this).data('amount');
 		var subtotal_credit = $(this).data('credit');
 		var subtotal_credit_happy = $(this).data('credit-happy');
 		var subtotal_credit_coin = $(this).data('credit-coin');
+		var subtotal_vouchers = $(this).data('vouchers');
 
 		total_amount += subtotal_amount;
 		total_credit += subtotal_credit;
 		total_credit_happy += subtotal_credit_happy;
 		total_credit_coin += subtotal_credit_coin;
+		total_vouchers += subtotal_vouchers;
 
 		html = '<p></p>';
 		if (total_credit_happy>0) {
@@ -179,6 +182,9 @@ $.refreshCart = function() {
 		}
 		if (total_amount>0) {
 			html += '<p>'+total_amount+'现金</p>';
+		}
+		if (total_vouchers>0) {
+			html += '<p>'+total_vouchers+'抵用券</p>';
 		}
 	});
 	$('.n-shopping-end-r').html(html);

@@ -82,6 +82,9 @@
             <?php if(!empty($this->order['total_credit_coin'])) {?>
                 <span><?=$this->order['total_credit_coin']?></span>积分币+
             <?php }?>
+            <?php if(!empty($this->order['total_vouchers'])) {?>
+                <span><?=$this->order['total_vouchers']?></span>抵用券+
+            <?php }?>
             <span><?=$this->total_postage + $this->order['total_amount'];?></span>
             RMB
         </p>

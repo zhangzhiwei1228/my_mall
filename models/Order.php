@@ -159,6 +159,10 @@ class Order extends Abstract_Model
 			if ($order['total_credit_coin']) {
 				$order->buyer->creditCoin($order['total_credit_coin']*-1, '消耗'.$order['total_credit_coin'].'点积分币');
 			}
+			//扣抵用券
+			if ($order['total_vouchers']) {
+				$order->buyer->creditCoin($order['total_vouchers']*-1, '消耗'.$order['total_vouchers'].'点抵用券');
+			}
 
 			//修改相关发票状态为待开票
 			M('Invoice')->update('status = 1', 'order_ids = '.(int)$order['id']);

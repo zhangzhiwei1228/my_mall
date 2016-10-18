@@ -13,18 +13,21 @@ if(!defined('APP_KEY')) { exit('Access Denied'); }
 return array(
 	'ext1' => array(
 		'name'=>'现金+免费积分', 
-		'rate'=>100
+		'rate'=>100,
+		'extname'=>'免费积分'
 	),	
 	'ext2' => array(
 		'name'=>'现金+积分币', 
-		'rate'=>50
+		'rate'=>50,
+		'extname'=>'积分币'
 	),	
-	// 'ext3' => array(
-	// 	'name'=>'积分币', 
-	// 	'rate'=>1
-	// ),
-	// 'ext4' => array(
-	// 	'name'=>'积分三', 
-	// 	'rate'=>1
-	// ),
+	 'ext3' => array(
+	 	'name'=>'现金+抵用券',
+	 	'rate'=>1,
+	 	'extname'=>'抵用券'
+	 ),
+//	 'ext4' => array(
+//	 	'name'=>'积分三',
+//	 	'rate'=>1
+//	 ),
 );

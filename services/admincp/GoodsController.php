@@ -112,6 +112,32 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 		$view->render('goods/list.php');
 	}
 	/**
+	 * 添加
+	 */
+	public function doAdd()
+	{
+		if ($this->_request->isPost()) {
+			$skus = $this->_request->getPosts();
+			if(count($skus['skus']) > 1) {
+				foreach($skus['skus'] as $key => &$exts) {
+					if($key == 0) continue;
+					$exts['market_price'] = $skus['skus'][0]['market_price'];
+					$exts['point1'] = $skus['skus'][0]['point1'];
+					$exts['point2'] = $skus['skus'][0]['point2'];
+					$exts['point3'] = $skus['skus'][0]['point3'];
+					$exts['point4'] = $skus['skus'][0]['point4'];
+					$exts['point5'] = $skus['skus'][0]['point5'];
+					$exts['exts'] = $skus['skus'][0]['exts'];
+				}
+			}
+			M($this->_formatModelName())->insert(array_merge($skus, $this->_request->getFiles()));
+			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
+		}
+
+		$view = $this->_initView();
+		$view->render($this->_formatViewName().'/input.php');
+	}
+	/**
 	 * 编辑
 	 * sku_change 1表示不改变，2表示先清空再重新录入，3表示单个改变
 	 */
@@ -130,6 +156,9 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 					$exts['market_price'] = $skus['skus'][0]['market_price'];
 					$exts['point1'] = $skus['skus'][0]['point1'];
 					$exts['point2'] = $skus['skus'][0]['point2'];
+					$exts['point3'] = $skus['skus'][0]['point3'];
+					$exts['point4'] = $skus['skus'][0]['point4'];
+					$exts['point5'] = $skus['skus'][0]['point5'];
 					$exts['exts'] = $skus['skus'][0]['exts'];
 				}
 			}

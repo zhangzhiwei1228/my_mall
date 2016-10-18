@@ -21,7 +21,7 @@
 	<input type="hidden" name="cart[<?=$key?>][shipping_id]" value="<?=$row['shipping_id']?>" />
 	<div class="n-shopping-box">
 		<div class="n-shopping-box-top">
-			<input type="checkbox" name="cart[<?=$key?>][checkout]" role="chk-item" value="1" <?=$row['checkout']?'checked':''?> <?=$row['goods']['quantity']==0?'disabled':''?> data-credit="<?=$row['subtotal_credit']?>" data-credit-happy="<?=$row['subtotal_credit_happy']?>" data-credit-coin="<?=$row['subtotal_credit_coin']?>" data-amount="<?=$row['subtotal_amount']?>" /> 
+			<input type="checkbox" name="cart[<?=$key?>][checkout]" role="chk-item" value="1" <?=$row['checkout']?'checked':''?> <?=$row['goods']['quantity']==0?'disabled':''?> data-credit="<?=$row['subtotal_credit']?>" data-vouchers="<?=$row['subtotal_vouchers']?>" data-credit-happy="<?=$row['subtotal_credit_happy']?>" data-credit-coin="<?=$row['subtotal_credit_coin']?>" data-amount="<?=$row['subtotal_amount']?>" />
 			<span>价格：<?=$row['goods']['price_text']?></span>
 			<a class="n-shopping-hide" href="javascript:;" onclick="$.removeCart('<?=$key?>')"><img src="<?php echo static_file('mobile/img/img-46.png'); ?> " alt=""></a>
 		</div>
@@ -51,6 +51,9 @@
 			<?php } ?>
 			<?php if ($this->status['total_credit_coin']) { ?>
 			<p><?=$this->status['total_credit_coin']?>积分币</p>
+			<?php } ?>
+			<?php if ($this->status['total_vouchers']) { ?>
+				<p><?=$this->status['total_vouchers']?>抵用券</p>
 			<?php } ?>
 			<?php if ($this->status['total_amount']) { ?>
 			<p><?=$this->status['total_amount']?>现金</p>

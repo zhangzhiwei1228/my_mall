@@ -75,6 +75,19 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 					$g['final_credit_coin'] =  $g['exts']['ext2']['point']?$g['exts']['ext2']['point'] : $sku['exts']['ext2']['point'];
 					$g['final_cash'] = $g['exts']['ext2']['cash']?$g['exts']['ext2']['cash'] : $sku['exts']['ext2']['cash'];
 					break;
+				case 6:
+					$g['price_text'] = ($g['point4']?$g['point4'] : $sku['point4']).'抵用券';
+					$g['final_vouchers'] = $g['point4']?$g['point4'] : $sku['point4'];
+					break;
+				case 7:
+					$g['price_text'] = ($g['point5']?$g['point5'] : $sku['point5']).'现金';
+					$g['final_cash'] = $g['point5']?$g['point5'] : $sku['point5'];
+					break;
+				case 8:
+					$g['price_text'] = ($g['exts']['ext3']['cash']?$g['exts']['ext3']['cash'] : $sku['exts']['ext3']['cash']).'元+'. ($g['exts']['ext3']['point']?$g['exts']['ext3']['point'] : $sku['exts']['ext3']['point']).'抵用券';
+					$g['final_vouchers'] =  $g['exts']['ext3']['point']?$g['exts']['ext3']['point'] : $sku['exts']['ext3']['point'];
+					$g['final_cash'] = $g['exts']['ext3']['cash']?$g['exts']['ext3']['cash'] : $sku['exts']['ext3']['cash'];
+					break;
 			}
 			$g['final_price'] = $g['final_cash'];
 			// 获取优惠价
@@ -115,6 +128,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 			$items[$i]['subtotal_credit'] = $item['qty'] * $g['final_credit'];
 			$items[$i]['subtotal_credit_happy'] = $item['qty'] * $g['final_credit_happy'];
 			$items[$i]['subtotal_credit_coin'] = $item['qty'] * $g['final_credit_coin'];
+			$items[$i]['subtotal_vouchers'] = $item['qty'] * $g['final_vouchers'];//抵用券
 			//$items[$i]['subtotal_cash'] = $item['qty'] * $g['final_cash'];
 			$items[$i]['subtotal_amount'] = $item['qty'] * $g['final_cash'];
 			$items[$i]['subtotal_weight'] = $item['qty'] * $g['package_weight'];
@@ -131,6 +145,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 				$total += $items[$i]['subtotal_amount'];
 				$weight += $items[$i]['subtotal_weight'];
 				$points += $items[$i]['subtotal_earn_points'];
+				$vouchers += $items[$i]['subtotal_vouchers'];//抵用券
 
 				$credit += $items[$i]['subtotal_credit'];
 				$credit_happy += $items[$i]['subtotal_credit_happy'];
@@ -144,6 +159,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 			->setStatus('total_credit', $credit)
 			->setStatus('total_credit_happy', $credit_happy)
 			->setStatus('total_credit_coin', $credit_coin)
+			->setStatus('total_vouchers', $vouchers)//抵用券
 			//->setStatus('total_cash', $cash)
 			->setStatus('total_save', $save)
 			->setStatus('total_quantity', $qty)
@@ -227,12 +243,26 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 							$g['final_credit_coin'] =  $g['exts']['ext2']['point']?$g['exts']['ext2']['point'] : $sku['exts']['ext2']['point'];
 							$g['final_cash'] = $g['exts']['ext2']['cash']?$g['exts']['ext2']['cash'] : $sku['exts']['ext2']['cash'];
 							break;
+						case 6:
+							$g['price_text'] = ($g['point4']?$g['point4'] : $sku['point4']).'抵用券';
+							$g['final_vouchers'] = $g['point4']?$g['point4'] : $sku['point4'];
+							break;
+						case 7:
+							$g['price_text'] = ($g['point5']?$g['point5'] : $sku['point5']).'现金';
+							$g['final_cash'] = $g['point5']?$g['point5'] : $sku['point5'];
+							break;
+						case 8:
+							$g['price_text'] = ($g['exts']['ext3']['cash']?$g['exts']['ext3']['cash'] : $sku['exts']['ext3']['cash']).'元+'. ($g['exts']['ext3']['point']?$g['exts']['ext3']['point'] : $sku['exts']['ext3']['point']).'抵用券';
+							$g['final_vouchers'] =  $g['exts']['ext3']['point']?$g['exts']['ext3']['point'] : $sku['exts']['ext3']['point'];
+							$g['final_cash'] = $g['exts']['ext3']['cash']?$g['exts']['ext3']['cash'] : $sku['exts']['ext3']['cash'];
+							break;
 					}
 					$g['final_price'] = $g['final_cash'];
 					$subtotal_credit = $qty * $g['final_credit'];
 					$subtotal_credit_happy = $qty * $g['final_credit_happy'];
 					$subtotal_credit_coin = $qty * $g['final_credit_coin'];
 					$subtotal_weight = $qty * $g['package_weight'];
+					$subtotal_vouchers = $qty * $g['final_vouchers'];//抵用券
 					if ($g['earn_points'] == -1) {
 						$ratio = M('Setting')->get('credit_expend');
 						$subtotal_earn_points= $qty * ($g['final_price'] * $ratio);
@@ -249,6 +279,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 						$ids[$keys]['subtotal_credit'] += $subtotal_credit;
 						$ids[$keys]['subtotal_credit_happy'] += $subtotal_credit_happy;
 						$ids[$keys]['subtotal_credit_coin'] += $subtotal_credit_coin;
+						$ids[$keys]['subtotal_vouchers'] += $subtotal_vouchers;//抵用券
 					}
 					$key1 = explode('.',$key);
 					$shipping[$key1[1]] = $val;
@@ -286,12 +317,26 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 						$g['final_credit_coin'] =  $g['exts']['ext2']['point']?$g['exts']['ext2']['point'] : $sku['exts']['ext2']['point'];
 						$g['final_cash'] = $g['exts']['ext2']['cash']?$g['exts']['ext2']['cash'] : $sku['exts']['ext2']['cash'];
 						break;
+					case 6:
+						$g['price_text'] = ($g['point4']?$g['point4'] : $sku['point4']).'抵用券';
+						$g['final_vouchers'] = $g['point4']?$g['point4'] : $sku['point4'];
+						break;
+					case 7:
+						$g['price_text'] = ($g['point5']?$g['point5'] : $sku['point5']).'现金';
+						$g['final_cash'] = $g['point5']?$g['point5'] : $sku['point5'];
+						break;
+					case 8:
+						$g['price_text'] = ($g['exts']['ext3']['cash']?$g['exts']['ext3']['cash'] : $sku['exts']['ext3']['cash']).'元+'. ($g['exts']['ext3']['point']?$g['exts']['ext3']['point'] : $sku['exts']['ext3']['point']).'抵用券';
+						$g['final_vouchers'] =  $g['exts']['ext3']['point']?$g['exts']['ext3']['point'] : $sku['exts']['ext3']['point'];
+						$g['final_cash'] = $g['exts']['ext3']['cash']?$g['exts']['ext3']['cash'] : $sku['exts']['ext3']['cash'];
+						break;
 				}
 				$g['final_price'] = $g['final_cash'];
 				$subtotal_credit = $qty * $g['final_credit'];
 				$subtotal_credit_happy = $qty * $g['final_credit_happy'];
 				$subtotal_credit_coin = $qty * $g['final_credit_coin'];
 				$subtotal_weight = $qty * $g['package_weight'];
+				$subtotal_vouchers = $qty * $g['final_vouchers'];//抵用券
 				if ($g['earn_points'] == -1) {
 					$ratio = M('Setting')->get('credit_expend');
 					$subtotal_earn_points= $qty * ($g['final_price'] * $ratio);
@@ -308,6 +353,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 					$ids[$keys]['subtotal_credit'] += $subtotal_credit;
 					$ids[$keys]['subtotal_credit_happy'] += $subtotal_credit_happy;
 					$ids[$keys]['subtotal_credit_coin'] += $subtotal_credit_coin;
+					$ids[$keys]['subtotal_vouchers'] += $subtotal_vouchers;//抵用券
 				}
 			}
 			$keys++;
