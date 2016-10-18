@@ -298,9 +298,12 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 							$user->expend(
 								'pay', $q['total_fee'], $voucher, '购买抵用券#'.$voucher
 							)->commit();
+
+
+							$type_id = ($user['role'] == 'seller') ? 8 : 7;
 							$pay_type = 'vouchers';
 							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
-							$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+							$data = M('Proportion')->select()->where('type='.(int)$type_id.' and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
 							$point = $data['r_digital']*$q['total_fee'];
 
 							$user->vouchers($point, '购买抵用券');

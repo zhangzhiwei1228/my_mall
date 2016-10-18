@@ -185,10 +185,10 @@ class PayNotifyCallBack extends WxPayNotify
 
 							//$point = $setting['credit_coin_rate']*($result['cash_fee']/100);
 							//$user->creditCoin($point, '购买积分币');
-
+							$type_id = ($user['role'] == 'seller') ? 8 : 7;
 							$pay_type = 'vouchers';
 							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
-							$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+							$data = M('Proportion')->select()->where('type='.(int)$type_id.' and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
 							$point = $data['r_digital']*($result['cash_fee']/100);
 
 							$user->vouchers($point, '购买抵用券');
