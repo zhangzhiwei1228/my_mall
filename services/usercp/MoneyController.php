@@ -112,12 +112,15 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 					$prefix = 'VIP4-';
 					break;
 				case 'hybrid':
+					unset($_SESSION['awaiting_payment']);
 					$prefix = 'hybrid-';
 					break;
 				case 'cash':
+					unset($_SESSION['awaiting_payment']);
 					$prefix = 'cash-';
 					break;
 				case 'single':
+					unset($_SESSION['awaiting_payment']);
 					$prefix = 'single-';
 					break;
 				case 'vouchers'://抵佣券
@@ -286,7 +289,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			$pay_data['pay_amount'] = $cash;
 			$pay_data['flag'] = $flag;
 			$pay_data['money'] = $money;
-			$pay_data['return_url'] = '/usercp/money/credit/?t=worth_gold';
+			$pay_data['return_url'] = '/usercp/money/success/?id='.$glod_id;
 			$pay_data['glod_id'] = $glod_id;
 			$pay_data['pay_name'] = $pay_name['name'];
 			$pay_data['privilege'] = $privilege;
