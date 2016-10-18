@@ -208,6 +208,7 @@
         <div class="n-same-r"></div>
     </div>
      <div class="n-h5"></div>
+
     <div class="n-same" onclick="window.location = '<?=$this->url('controller=page&action=detail&code='.$this->description['code'])?>'">
         <div class="n-smae-l">
             <a href="<?=$this->url('controller=page&action=detail&code='.$this->description['code'])?>">商城说明</a>
@@ -217,12 +218,13 @@
     </div>
     <div class="n-h5"></div>
 
-    <div class="h20"></div>
+
+    <!--<div class="h20"></div>
     <div class="img-box">
-        <a href="<?php echo $this->url('usercp/money/purchase')?>"><img src="<? echo static_file('m/img/pic/img_3.jpg')?>" alt=""></a>
+        <a href="<?php /*echo $this->url('usercp/money/purchase')*/?>"><img src="<?/* echo static_file('m/img/pic/img_3.jpg')*/?>" alt=""></a>
     </div>
 
-    <div class="n-h5"></div>
+    <div class="n-h5"></div>-->
     <div class="n-lise-16 clear">
         <?php 
         $cn = array('一','二','三','四');//去掉了,'五','六','七','八'
@@ -271,14 +273,14 @@
     </div>
 
     <div class="n-h5"></div>
-    <div class="n-same" onclick="window.location = '<?=$this->url('controller=page&action=detail&code='.$this->guide['code'])?>'">
+    <!--<div class="n-same" onclick="window.location = '<?/*=$this->url('controller=page&action=detail&code='.$this->guide['code'])*/?>'">
     <div class="n-smae-l">
-        <a href="<?=$this->url('controller=page&action=detail&code='.$this->guide['code'])?>">商城指南</a>
-        <p><?=$this->cutstr($this->guide['content'], 62)?></p>
+        <a href="<?/*=$this->url('controller=page&action=detail&code='.$this->guide['code'])*/?>">商城指南</a>
+        <p><?/*=$this->cutstr($this->guide['content'], 62)*/?></p>
     </div>
     <div class="n-same-r"></div>
     </div>
-    <div class="n-h5"></div>
+    <div class="n-h5"></div>-->
 
     <?php foreach($this->recShop as $key => $row) {?>
         <?php if($row['shops']) {?>
