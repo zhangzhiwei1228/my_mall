@@ -50,13 +50,19 @@
      <div class="m-address m-text bgwhite">
     	<p class="w90"><span>地址：</span><?=$this->data['addr']?><a class="fr map" href="<?php echo $this->baseUrl('shop/map/?id='.$this->data['id'])?>" data-addr="<?php echo $this->data['addr'];?>" data-id="<?php echo $this->data['id'];?>" ></a></p>
     </div>
+    <div class="m-intro m-text bgwhite">
+        <div class="intro-main w90">
+            <p class="title">赠送比例说明：</p>
+            <label class="info"><?=$this->data['pro_desc']?></label>
+        </div>
+    </div>
     <!-- <div class="m-serve m-text bgwhite">
     	<p class="w90"><span>地址：</span>WIFI</p>
     </div> -->
     <div class="m-intro m-text bgwhite">
     	<div class="intro-main w90">
     		<p class="title">商家概述：</p>
-    		<p class="info"><?=$this->data['description']?></p>
+    		<label class="info"><?=$this->data['description']?></label>
     	</div>
     </div>
     <?php //include_once VIEWS.'inc/footer.php'; ?>

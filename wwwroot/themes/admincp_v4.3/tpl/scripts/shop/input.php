@@ -81,6 +81,12 @@ $this->head()->setTitle($this->title);
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="control-label col-sm-2">赠送比例说明:</label>
+			<div class="col-sm-7">
+				<textarea name="pro_desc" rows="4" class="form-control" ><?=stripcslashes($this->data['pro_desc'])?></textarea>
+			</div>
+		</div>
+		<div class="form-group">
 			<label class="control-label col-sm-2">商家类型:</label>
 			<div class="col-sm-7">
 				<?php foreach($this->clotypes as $key=> $row) {?>
