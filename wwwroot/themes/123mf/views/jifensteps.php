@@ -19,7 +19,12 @@
 		    		<td width="30"></td>
 		    		<td align="center">会员账号</td>
 		    		<td align="center">会员名</td>
-		    		<td align="center">积分余额</td>
+					<?php if($this->_request->t == 'credit') {?>
+						<td align="center">积分余额</td>
+					<?php } else {?>
+						<td align="center">抵用券余额</td>
+					<?php }?>
+
 		    	</tr>
 	    	</thead>
 	    	<tbody class="query_result">
@@ -31,13 +36,19 @@
     <div class="jifen-default">
 	    <div class="jifen-free bgwhite">
 	    	<div class="w90">
-	    		<p class="free-text fl"><em>积</em>免费积分余额</p>
-	    		<p class="free-point fr"><span><?=$this->user['credit']?></span>分</p>
+
+	    		<p class="free-text fl"><em><?php echo $this->_request->t == 'credit' ? '积' : '券'; ?></em><?php echo $this->_request->t == 'credit' ? '免费积分余额':'抵用券余额' ?></p>
+	    		<p class="free-point fr"><span><?=$this->user[$this->_request->t]?></span>分</p>
 	    		<div class="clear"></div>
 	    	</div>
 	    </div>
 	    <div class="jifen-recharge bgwhite">
-	    	<a href="<?php echo $this->url('agent/credit/recharge/?t=credit')?>">立即充值免费积分</a>
+			<?php if($this->_request->t == 'credit') {?>
+				<a href="<?php echo $this->url('agent/credit/recharge/?t=credit')?>">立即充值免费积分</a>
+			<?php } else {?>
+				<a href="<?php echo $this->url('agent/credit/vouchers/')?>">立即充值抵用券</a>
+			<?php }?>
+
 	    </div>
 	</div>
 	<div class="n-h60"></div>
@@ -49,22 +60,37 @@
 	$('.jifen-searchbox').on('submit', function(){
 		var el = $(this);
 		var q = $('[name=q]', this).val();
+		var t = '<?php echo $this->_request->t?>';
 		if (!q) {
 			alert('请输入会员账号');
 			return false;
 		}
+		if (!t) {
+			alert('请不要随意修改url');
+			return false;
+		}
 
-		$.getJSON('<?=$this->url('./query_user')?>', {q:q}, function(json){
+		$.getJSON('<?=$this->url('./query_user')?>', {q:q,t:t}, function(json){
 			console.log(json);
 			$('.query_result').empty();
 			if (json.length > 0) {
 				$(json).each(function(){
-					$('.query_result').append('<tr>'
-						+'<td align="center"><input type="radio" name="uid" value="'+this.id+'" checked></td>'
-			    		+'<td align="center">'+this.username+'</td>'
-			    		+'<td align="center">'+this.nickname+'</td>'
-			    		+'<td align="center">'+this.credit+'</td>'
-			    	+'</tr>');
+					if(t == 'credit') {
+						$('.query_result').append('<tr>'
+							+'<td align="center"><input type="hidden" name="type" value="'+t+'"><input type="radio" name="uid" value="'+this.id+'" checked></td>'
+							+'<td align="center">'+this.username+'</td>'
+							+'<td align="center">'+this.nickname+'</td>'
+							+'<td align="center">'+this.credit+'</td>'
+							+'</tr>');
+					} else {
+						$('.query_result').append('<tr>'
+							+'<td align="center"><input type="hidden" name="type" value="'+t+'"><input type="radio" name="uid" value="'+this.id+'" checked></td>'
+							+'<td align="center">'+this.username+'</td>'
+							+'<td align="center">'+this.nickname+'</td>'
+							+'<td align="center">'+this.vouchers+'</td>'
+							+'</tr>');
+					}
+
 				});
 				$('.next').css('background', '#ff6600');
 			} else {

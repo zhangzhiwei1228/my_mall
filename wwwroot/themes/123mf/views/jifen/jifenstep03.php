@@ -11,7 +11,12 @@
 	    	<dl>
 	    		<dt></dt>
 	    		<dd class="sure-info">您确认要给<?=$this->account['nickname']?>(<?=$this->account['username']?>)用户</dd>
-	    		<dd class="sure-point">赠送免费积分<span><?=$_POST['credit']?></span>点</dd>
+	    		<dd class="sure-point">
+					<?php echo $this->_request->type == 'credit' ? '赠送免费积分' : '赠送抵用券' ?>
+					<span><?=$_POST[$this->_request->type]?></span>
+					<?php echo $this->_request->type == 'credit' ? '点' : '券' ?>
+
+				</dd>
 	    	</dl>
 	    </div>
 	</div>
@@ -28,7 +33,8 @@
 
 <form method="post" action="<?=$this->url('./pay')?>" class="pay-form">
 <input type="hidden" name="uid" value="<?=$this->account['id']?>">
-<input type="hidden" name="credit" value="<?=$_POST['credit']?>">
+<input type="hidden" name="<?php echo $this->_request->type?>" value="<?=$_POST[$this->_request->type]?>">
+<input type="hidden" name="type" value="<?php echo $this->_request->type?>">
 </form>
 
 <script type="text/javascript">

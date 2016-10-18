@@ -73,7 +73,7 @@
 <div class="n-rechargerecord">
     <div class="n-personal-center-tit">
         <a href="javascript:history.go(-1);"><img width="11" height="21" src="<?php echo static_file('mobile/img/img-22.png'); ?> " alt=""></a>
-        赠送免费积分记录
+        <?php echo $this->_request->t == 'credit' ? '赠送免费积分记录':'赠送抵用券记录' ?>
     </div>
     <form method="post" enctype="multipart/form-data" class="form-horizontal sui-dataitem">
         <div class="n-rechargerecord-day">
@@ -104,7 +104,8 @@
     </div>
     <script type="text/javascript">
         $.gotopage = function(page) {
-            window.location.href = '<?php echo $this->url('agent/logs/employ/')?>'+'?page='+page;
+            var t = '<?php echo $this->_request->t?>';
+            window.location.href = '<?php echo $this->url('agent/logs/employ/')?>'+'?page='+page+'&t='+t;
         }
     </script>
 </div>

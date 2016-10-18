@@ -62,9 +62,41 @@
 
 	<?php if ($this->user['role'] == 'seller') { ?>
 	<div style="margin-bottom:71px;" class="member-rank bgwhite">
-		<a href="<?php echo $this->url('agent/logs/employ')?>" ><p class="w90">商家本日赠送免费积分：<span style="font-size: 20px;color: #b40000;"><?php echo $this->employ['total'] ? $this->employ['total'] : 0 ?></span>（查看详情）</p></a>
-		<a href="<?php echo $this->url('agent/logs/recharge')?>" ><p class="w90">商家本日充值免费积分：<span style="font-size: 20px;color: #b40000;"><?php echo $this->recharge['total'] ? $this->recharge['total'] : 0?></span>（查看详情）</p></a>
+		<a href="<?php echo $this->url('agent/logs/employ/?t=credit')?>" >
+			<p class="w90">
+				商家本日赠送免费积分：
+				<span style="font-size: 20px;color: #b40000;">
+					<?php echo $this->employ['total'] ? $this->employ['total'] : 0 ?>
+				</span>（查看详情）
+			</p>
+		</a>
+		<a href="<?php echo $this->url('agent/logs/recharge/?t=credit')?>" >
+			<p class="w90">
+				商家本日充值免费积分：
+				<span style="font-size: 20px;color: #b40000;">
+					<?php echo $this->recharge['total'] ? $this->recharge['total'] : 0?>
+				</span>（查看详情）
+			</p>
+		</a>
 		<p class="w90">商家本月赠送免费积分数：<span style="font-size: 20px;color: #b40000;"><?php echo $this->Memploy['total'] ? $this->Memploy['total'] : 0?></span></p>
+
+		<a href="<?php echo $this->url('agent/logs/employ/?t=vouchers')?>" >
+			<p class="w90">
+				商家本日赠送抵用券：
+				<span style="font-size: 20px;color: #b40000;">
+					<?php echo $this->Demploy['total'] ? $this->Demploy['total'] : 0 ?>
+				</span>（查看详情）
+			</p>
+		</a>
+		<a href="<?php echo $this->url('agent/logs/recharge/?t=vouchers')?>" >
+			<p class="w90">
+				商家本日充值抵用券：
+				<span style="font-size: 20px;color: #b40000;">
+					<?php echo $this->rechargeV['total'] ? $this->rechargeV['total'] : 0?>
+				</span>（查看详情）
+			</p>
+		</a>
+		<p class="w90">商家本月赠送抵用券数：<span style="font-size: 20px;color: #b40000;"><?php echo $this->MemployV['total'] ? $this->MemployV['total'] : 0?></span></p>
 		<!--<p class="w90">一级会员：我直接邀请注册的会员</p>
 		<p class="w90">二级会员：我的一级会员邀请注册的会员</p>-->
 	</div>

@@ -23,6 +23,8 @@
 					case 'credit': echo '免费积分'; break;
 					case 'credit_happy': echo '快乐积分'; break;
 					case 'credit_coin': echo '积分币'; break;
+					case 'worth_gold': echo '抵用金'; break;
+					case 'vouchers': echo '抵用券'; break;
 			} ?></td>
 			<td><?=$row['note']?></td>
 			<td><?=$row['credit']>0?('+'.abs($row['credit'])):('-'.abs($row['credit']))?></td>
@@ -60,6 +62,7 @@
 					<option value="credit">免费积分</option>
 					<option value="credit_happy">快乐积分</option>
 					<option value="credit_coin">积分币</option>
+					<option value="vouchers">抵用券</option>
 				</select>
 			</div>
 			<div class="form-group">

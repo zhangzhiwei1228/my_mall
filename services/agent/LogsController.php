@@ -26,7 +26,7 @@ class Agent_LogsController extends Agent_Controller_Action
 
         $view = $this->_initView();
         $view->datalist = M('User_Credit')->select()
-            ->where('user_id = '.(int)$uid." and type='".'credit'."'".' and credit>0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
+            ->where('user_id = '.(int)$uid." and type='".$this->_request->t."'".' and credit>0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
             ->order('id DESC')
             ->paginator(20, $this->_request->page)
             ->fetchRows();
@@ -45,7 +45,7 @@ class Agent_LogsController extends Agent_Controller_Action
 
         $view = $this->_initView();
         $view->datalist = M('User_Credit')->select()
-            ->where('user_id = '.(int)$uid." and type='".'credit'."'".' and credit<0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
+            ->where('user_id = '.(int)$uid." and type='".$this->_request->t."'".' and credit<0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
             ->order('id DESC')
             ->paginator(20, $this->_request->page)
             ->fetchRows();

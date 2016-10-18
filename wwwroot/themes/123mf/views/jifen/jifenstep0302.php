@@ -16,7 +16,7 @@
 	    </div>
 	</div>
 	<div class="jifen-step02">
-	    <a href="<?=$this->url('./default')?>" class=" btn sure">返 回</a>
+	    <a href="<?=$this->url('/agent')?>" class=" btn sure">返 回</a>
     </div>
     <div class="n-h56"></div>
      <?php include_once VIEWS.'inc/footer_merchantsw.php'; ?>

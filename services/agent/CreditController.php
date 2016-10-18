@@ -11,12 +11,20 @@ class Agent_CreditController extends Agent_Controller_Action
 	public function doDefault()
 	{
 		$view = $this->_initView();
+		$view->page_type = 'giving';
+		$view->render('views/new_text/records.php');
+		//$view->render('views/jifensteps.php');
+	}
+	//赠送
+	public function doGiving()
+	{
+		$view = $this->_initView();
 		$view->render('views/jifensteps.php');
 	}
 
 	public function doQueryUser()
 	{
-		echo M('User')->select('id, username, nickname, credit, credit_happy, credit_coin, balance')
+		echo M('User')->select('id, username, nickname, credit, vouchers,credit_happy, credit_coin, balance')
 			->where('username = ?', $this->_request->q)
 			->limit(10)
 			->fetchRows()
@@ -31,7 +39,7 @@ class Agent_CreditController extends Agent_Controller_Action
 		}
 
 		if ($this->_request->isPost()) {
-			if (!$this->_checkCredit($_POST['credit'], $this->user['credit'])) {
+			if (!$this->_checkCredit($_POST[$this->_request->type], $this->user[$this->_request->type], $this->_request->type)) {
 				return false;
 			}
 
@@ -58,24 +66,31 @@ class Agent_CreditController extends Agent_Controller_Action
 		}
 
 		if ($this->_request->isPost()) {
-			if (!$this->_checkCredit($_POST['credit'], $this->user['credit'])) {
+			$type = $_POST['type'];
+			if (!$this->_checkCredit($_POST[$this->_request->type], $this->user[$this->_request->type], $type)) {
 				return false;
 			}
 
 			$account = M('User')->getById((int)$_POST['uid']);
-			$this->user->credit($_POST['credit']*-1, '赠送会员【'.$account['nickname'].'】');
-			$account->credit($_POST['credit'], '商家赠送【'.$this->user['nickname'].'】');
+
+			$this->user->$type($_POST[$type]*-1, '赠送会员【'.$account['nickname'].'】');
+			$account->$type($_POST[$type], '商家赠送【'.$this->user['nickname'].'】');
 
 			$this->redirect('&success=1&uid='.$account['id'].'&pot='.$_POST['credit']);
 			return;
 		}
 	}
 
-	protected function _checkCredit($c1, $c2)
+	protected function _checkCredit($c1, $c2,$type='credit')
 	{
 		if ($c1 > $c2) {
 			$view = $this->_initView();
-			$view->render('views/jifen/jifenstep04.php');
+			if($type == 'credit') {
+				$view->render('views/jifen/jifenstep04.php');
+			} else {
+				$view->render('views/new_text/recharge.php');
+			}
+
 			return false;
 		} else {
 			return true;
@@ -214,5 +229,10 @@ class Agent_CreditController extends Agent_Controller_Action
 
 		$view->earnings = $this->user->countGold();
 		$view->render('views/new_text/verification_table.php');
+	}
+	//商家充值抵用券
+	public function doVouchers() {
+		$view = $this->_initView();
+		$view->render('views/new_text/recharge.php');
 	}
 }

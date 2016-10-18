@@ -58,6 +58,9 @@ class Admincp_UserCreditController extends Admincp_Controller_Action
 					case 'credit_coin':
 						$account->creditCoin($_POST['point'], '后台充值');
 						break;
+					case 'vouchers':
+						$account->vouchers($_POST['point'], '后台充值');
+						break;
 				}
 			} catch (Exception $e) {
 				echo $e->getMessage();

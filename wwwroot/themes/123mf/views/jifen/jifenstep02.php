@@ -20,7 +20,7 @@
 	    	<tr>
 	    		<td align="left">赠送金额</td>
 	    		<td class="goon" align="right">
-	    		<input type="text" name="credit" placeholder="100" style="width: 50px; text-align: right; border:none; background: none;">
+	    		<input type="text" name="<?php echo $this->_request->type?>" placeholder="100" style="width: 50px; text-align: right; border:none; background: none;">
 	    		<a href="#"></a>
 	    		</td>
 	    	</tr>

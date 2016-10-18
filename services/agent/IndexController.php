@@ -44,6 +44,7 @@ class Agent_IndexController extends Agent_Controller_Action
 				$EndDate =  strtotime(date('Y-m-d', strtotime("$start_month +1 month -1 day")));
 
 				$view = $this->_initView();
+				//商家充值赠送的免费积分
 				$view->employ = M('User_Credit')->select('sum(credit) as total')
 					->where('user_id = '.(int)$uid." and type='".'credit'."'".' and credit<0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
 					->fetchRow()->toArray();
@@ -53,6 +54,18 @@ class Agent_IndexController extends Agent_Controller_Action
 				$view->recharge =  M('User_Credit')->select('sum(credit) as total')
 					->where('user_id = '.(int)$uid." and type='".'credit'."'".' and credit>0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
 					->fetchRow()->toArray();
+
+				//商家充值赠送的抵用券
+				$view->Demploy = M('User_Credit')->select('sum(credit) as total')
+					->where('user_id = '.(int)$uid." and type='".'vouchers'."'".' and credit<0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
+					->fetchRow()->toArray();
+				$view->MemployV = M('User_Credit')->select('sum(credit) as total')
+					->where('user_id = '.(int)$uid." and type='".'vouchers'."'".' and credit<0 and create_time >'.$BeginDate.' and create_time <'.$EndDate)
+					->fetchRow()->toArray();
+				$view->rechargeV =  M('User_Credit')->select('sum(credit) as total')
+					->where('user_id = '.(int)$uid." and type='".'vouchers'."'".' and credit>0 and create_time >'.$dayBegin.' and create_time <'.$dayEnd)
+					->fetchRow()->toArray();
+
 				$view->render('views/merchants.php');
 				break;
 			case 'agent':
