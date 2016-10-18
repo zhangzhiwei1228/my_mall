@@ -10,7 +10,9 @@
             <p class="name"><?=$row['name']?></p>
             <p class="phone"><em></em><span><?=$row['tel']?></span></p>
             <p class="address"><em></em><span class=""><?=$row['addr']?></span></p>
-            <p>赠送说明：<span class=""><?=$row['pro_desc']?></span></p>
+            <?php if($row['pro_desc']) {?>
+                <p>赠送说明：<span class=""><?=$row['pro_desc']?></span></p>
+            <?php }?>
         </div>
         <div class="clear"></div>
     </a>
