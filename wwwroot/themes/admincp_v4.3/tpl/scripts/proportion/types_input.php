@@ -42,6 +42,7 @@ $this->head()->setTitle($this->title);
                 <select name="type" class="form-control">
                     <option value="1" <?php echo $this->data['type']==1 ? 'selected': '' ?>>货币性</option>
                     <option value="2" <?php echo $this->data['type']==2 ? 'selected': '' ?>>分类性</option>
+                    <option value="3" <?php echo $this->data['type']==3 ? 'selected': '' ?>>收益性</option>
                 </select>
             </div>
         </div>

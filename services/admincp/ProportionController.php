@@ -15,10 +15,9 @@ class Admincp_ProportionController extends Admincp_Controller_Action
 
     public function doList()
     {
-        $datas = M('Proportion')->select()->fetchRows()->toArray();
-        $datalist = M('Proportion')->select()->fetchRows();
-
-        foreach($datas as &$data) {
+        //$datas = M('Proportion')->select()->fetchRows()->toArray();
+        $datalist = M('Proportion')->select()->paginator(15, $this->_request->page);
+        /*foreach($datas as &$data) {
             $left_name = M('Coltypes')->select('name')->where('id='.$data['left_id'])->fetchRow()->toArray();
             $right_name = M('Coltypes')->select('name')->where('id='.$data['right_id'])->fetchRow()->toArray();
             $type_name = M('Coltypes')->select('name')->where('id='.$data['type'])->fetchRow()->toArray();
@@ -28,10 +27,18 @@ class Admincp_ProportionController extends Admincp_Controller_Action
             if($data['exts']) {
                 $data['exts'] = json_decode($data['exts']);
             }
+        }*/
+        if ($this->_request->q) {
+            $coltypes = M('Coltypes')->select('id')->where('(name LIKE ?)', '%'.$this->_request->q.'%')->fetchRows()->toArray();
+            foreach ($coltypes as $row) {
+                $ids6[] = $row['id'];
+            }
+            $ids = $ids6 ? implode(',', $ids6) : 0;
+            $datalist->where('type IN ('.($ids ? $ids : 0).')');
         }
         $view = $this->_initView();
-        $view->datalist = $datalist;
-        $view->datas = $datas;
+        $view->datalist = $datalist->fetchRows();;
+        $view->datas = $datalist->fetchRows();;
         $view->render('proportion/list.php');
     }
     public function doAdd()
@@ -49,10 +56,12 @@ class Admincp_ProportionController extends Admincp_Controller_Action
         $datalist = M('Proportion')->select()->fetchRows();
         $coltypes_cash = M('Coltypes')->select()->where('type=1')->fetchRows()->toArray();
         $coltypes_desc = M('Coltypes')->select()->where('type=2')->fetchRows()->toArray();
+        $earnings = M('Coltypes')->select()->where('type=3')->fetchRows()->toArray();
         $view = $this->_initView();
         $view->datalist = $datalist;
         $view->coltypes_cash = $coltypes_cash;
         $view->coltypes_desc = $coltypes_desc;
+        $view->earnings = $earnings;
         $view->render('proportion/input.php');
     }
     public function doEdit()
@@ -74,10 +83,12 @@ class Admincp_ProportionController extends Admincp_Controller_Action
         }
         $coltypes_cash = M('Coltypes')->select()->where('type=1')->fetchRows()->toArray();
         $coltypes_desc = M('Coltypes')->select()->where('type=2')->fetchRows()->toArray();
+        $earnings = M('Coltypes')->select()->where('type=3')->fetchRows()->toArray();
         $view = $this->_initView();
         $view->data = $data;
         $view->coltypes_cash = $coltypes_cash;
         $view->coltypes_desc = $coltypes_desc;
+        $view->earnings = $earnings;
         $view->render('proportion/input.php');
     }
     public function doAddColtypes() {
@@ -90,8 +101,15 @@ class Admincp_ProportionController extends Admincp_Controller_Action
     }
     public function doTypesList() {
         $view = $this->_initView();
-        $view->datalist = M('Coltypes')->select()->fetchRows();
+        $datalist = M('Coltypes')->select()->paginator(15, $this->_request->page);
+        if ($this->_request->q) {
+            $datalist ->where('(name LIKE ?)', '%'.$this->_request->q.'%');
+        }
+        $view->datalist = $datalist->fetchRows();
         $view->render('proportion/types_list.php');
+    }
+    public function doTypeSearch() {
+        $this->doTypesList();
     }
     public function doTypesEdit() {
         if ($this->_request->isPost()) {

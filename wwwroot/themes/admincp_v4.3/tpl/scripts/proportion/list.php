@@ -53,17 +53,25 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 				<tr align="center">
 						<td colspan="6"><div class="notfound">找不到相关信息</div></td>
 				</tr>
-				<?php } else { foreach ($this->datas as $row) { ?>
+				<?php } else { foreach ($this->datas as $row) {
+					$left_name = M('Coltypes')->select('name')->where('id='.$row['left_id'])->fetchRow()->toArray();
+					$right_name = M('Coltypes')->select('name')->where('id='.$row['right_id'])->fetchRow()->toArray();
+					$type_name = M('Coltypes')->select('name')->where('id='.$row['type'])->fetchRow()->toArray();
+					$row['left_name'] = $left_name['name'];
+					$row['right_name'] = $right_name['name'];
+					$row['type_name'] = $type_name['name'];
+					?>
 				<tr>
 					<td align="center"><input type="checkbox" name="ids[]" role="chk-item" value="<?=$row['id']?>" /></td>
 					<td>
 						<a href="<?=$this->url('action=edit&id=' . $row['id'].'&ref='.$this->_request->url)?>">
 						<?php if($row['exts']) {?>
 							<?php echo $row['l_digital'].$row['left_name'].'+'.$row['exts']->value .$row['exts']->name.' = '.$row['r_digital'].$row['right_name']?>
-						<?php } else {?>
+						<?php } elseif($row['l_digital']) {?>
 							<?php echo $row['l_digital'].$row['left_name'].' = '.$row['r_digital'].$row['right_name']?>
+						<?php } else {?>
+							<?php echo $row['name']?>（<?php echo $row['price']*100?>%）
 						<?php }?>
-
 						</a>
 					</td>
 					<td class="hidden-xs"><?=$this->highlight($row['type_name'], $this->_request->q)?></td>

@@ -16,7 +16,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 <div class="sui-box">
     <div class="sui-page-header">
         <h1> <?=$this->head()->getTitle()?> <small>(共<?=$this->datalist->total()?>条记录)</small></h1>
-        <form method="get" action="<?=$this->url('action=search')?>" class="sui-searchbox form-inline">
+        <form method="get" action="<?=$this->url('action=typesearch')?>" class="sui-searchbox form-inline">
             <input type="hidden" name="search" value="1" />
             <input type="hidden" name="page" value="1" />
             <div class="form-group">
@@ -71,7 +71,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
                     </td>
                     <td class="hidden-xs"><?=$this->highlight($row['english'], $this->_request->q)?></td>
 
-                    <td class="hidden-xs"><?=$row['type'] <2 ? '货币性':'分类性'; ?></td>
+                    <td class="hidden-xs"><?=$row['type'] <2 ? '货币性':($row['type'] < 3 ? '分类性' :'收益性'); ?></td>
                     <td><a href="<?=$this->url('action=typesedit&id=' . $row['id'].'&ref='.$this->_request->url)?>">编辑</a> <a href="<?=$this->url('action=typesdelete&id=' . $row['id'].'&ref='.$this->_request->url)?>" onclick="return confirm('确定要删除这条记录吗?')">删除</a></td>
                 </tr>
             <?php } } ?>

@@ -36,8 +36,46 @@
         <div class="clear"></div>
     </div>
 </div>
-<div class="staff-jifen bgwhite"><p class="w90">我代理地区商家本月使用免费积分：<span class="fr"><em><?=(float)$this->bonus['seller']['credit']['total']?></em>&nbsp;分</span></p></div>
-<div class="staff-jifen bgwhite"><p class="w90">我代理地区会员本月消费积分币：<span class="fr"><em><?=(float)$this->bonus['userarea']['credit_coin']['total']?></em>&nbsp;币</span></p></div>
+<div class="staff-jifen bgwhite">
+    <p class="w90">
+        我代理地区商家本月使用免费积分：
+        <span class="fr">
+            <em><?=(float)$this->bonus['seller']['credit']['total']?></em>&nbsp;分
+        </span>
+    </p>
+</div>
+<div class="staff-jifen bgwhite">
+    <p class="w90">
+        我代理地区会员本月消费积分币：
+        <span class="fr">
+            <em><?=(float)$this->bonus['userarea']['credit_coin']['total']?></em>&nbsp;币
+        </span>
+    </p>
+</div>
+<div class="staff-jifen bgwhite">
+    <p class="w90">
+        我代理地区商家本月使用抵用券：
+        <span class="fr">
+            <em><?=(float)$this->bonus['seller_v']['vouchers']['total']?></em>&nbsp;币
+        </span>
+    </p>
+</div>
+<div class="staff-jifen bgwhite">
+    <p class="w90">
+        我代理地区商家本月收到抵用金：
+        <span class="fr">
+            <em><?=(float)$this->bonus['seller_w']['worth_gold']['total']?></em>&nbsp;币
+        </span>
+    </p>
+</div>
+<div class="staff-jifen bgwhite">
+    <p class="w90">
+        我代理地区会员本月商城消费使用抵用券：
+        <span class="fr">
+            <em><?=(float)$this->bonus['userarea_v']['vouchers']['total']?></em>&nbsp;币
+        </span>
+    </p>
+</div>
 <div class="month-income bgwhite">
     <p class="income01 w90">我的本月收益</p>
     <p class="income01 w90"><span><?=(float)$this->bonus['amount']?></span>&nbsp;元</p>

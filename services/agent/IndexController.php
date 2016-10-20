@@ -14,8 +14,9 @@ class Agent_IndexController extends Agent_Controller_Action
 		switch ($this->user['role']) {
 			case 'staff':
 				$view = $this->_initView();
-				$view->parent = M('User')->getById((int)$this->user['parent_id']);
-				$view->bonus = $this->user->getBonus();
+				$parent = M('User')->getById((int)$this->user['parent_id']);
+				$view->parent = $parent;
+				$view->bonus = $this->user->getBonus($parent['role']);
 				$view->render('views/proxyworker.php');
 				break;
 			case 'resale':
@@ -25,7 +26,7 @@ class Agent_IndexController extends Agent_Controller_Action
 					$view->render('views/proxyfour.php');
 				} else {
 					$view = $this->_initView();
-					$view->bonus = $this->user->getBonus();
+					$view->bonus = $this->user->getBonus('resale-1');
 					$view->render('views/onestar.php');
 				}
 				break;
@@ -101,7 +102,7 @@ class Agent_IndexController extends Agent_Controller_Action
 		foreach($merchants1 as $key=>$merchant) {
 			$credits = M('User_Credit')->alias('ct')->group('ct.user_id')
 				->columns('SUM(ct.credit) AS remain, SUM(IF(ct.credit > 0, ct.credit, 0)) AS recharge, SUM(IF(ct.credit < 0, ct.credit, 0)) AS consume, ct.id as ct_id')
-				->where('ct.user_id = '.$merchant['id'].' and ct.create_time <= '.$end_time.' and ct.create_time >= '.$start_time)->fetchRows();
+				->where('ct.user_id = '.$merchant['id'].' and ct.create_time <= '.$end_time.' and ct.create_time >= '.$start_time.' and type='."'".$this->_request->t."'")->fetchRows();
 			$this->seller[$key]['remain'] = $credits[0]['ct_id'] ? $credits[0]['remain'] : 0;
 			$this->seller[$key]['recharge'] = $credits[0]['ct_id'] ? $credits[0]['recharge'] : 0;
 			$this->seller[$key]['consume'] = $credits[0]['ct_id'] ? $credits[0]['consume'] : 0;

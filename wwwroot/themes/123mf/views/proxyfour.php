@@ -39,6 +39,31 @@
 				<span class="n-dealer-span3">币</span>	
 				<span class="n-dealer-span2"><?=(float)$this->bonus['area']['member']['t_coin']?></span>
 			</li>
+
+			<li>
+				<span class="n-dealer-span1">
+					<p>我代理地区我下线的</p>
+					<p>商家本月使用抵用券：</p>
+				</span>
+				<span class="n-dealer-span3">券</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['area']['seller_v']['t_credit']?></span>
+			</li>
+			<li>
+				<span class="n-dealer-span1">
+					<p>我代理地区我下线的</p>
+					<p>商家本月收到抵用金：</p>
+				</span>
+				<span class="n-dealer-span3">金</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['area']['seller_w']['t_credit']?></span>
+			</li>
+			<li>
+				<span class="n-dealer-span1">
+					<p>我代理地区我下线的</p>
+					<p>会员本月商城消费使用抵用券：</p>
+				</span>
+				<span class="n-dealer-span3">券</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['area']['member_v']['t_coin']?></span>
+			</li>
 		</ul>
 		<div class="n-h5"></div>
 		<div class="n-dealer-end">

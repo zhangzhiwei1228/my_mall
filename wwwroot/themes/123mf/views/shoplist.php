@@ -14,14 +14,49 @@
 			<th>商家名称</th>
 			<th>
 				<p>本月充值</p>
-				<p>免费积分</p>
+				<p>
+					<?php switch($this->_request->t) {
+						case 'credit' :
+							echo '免费积分';
+							break;
+						case 'vouchers' :
+							echo '抵用券';
+							break;
+						case 'worth_gold' :
+							echo '抵用金';
+							break;
+					}
+					?>
+				</p>
 			</th>
 			<th>
 				<p>本月使用</p>
-				<p>免费积分</p>
+				<p><?php switch($this->_request->t) {
+						case 'credit' :
+							echo '免费积分';
+							break;
+						case 'vouchers' :
+							echo '抵用券';
+							break;
+						case 'worth_gold' :
+							echo '抵用金';
+							break;
+					}
+					?></p>
 			</th>
 			<th>
-				<p>免费积分</p>
+				<p><?php switch($this->_request->t) {
+						case 'credit' :
+							echo '免费积分';
+							break;
+						case 'vouchers' :
+							echo '抵用券';
+							break;
+						case 'worth_gold' :
+							echo '抵用金';
+							break;
+					}
+					?></p>
 				<p>余额</p>
 			</th>
 		</tr>

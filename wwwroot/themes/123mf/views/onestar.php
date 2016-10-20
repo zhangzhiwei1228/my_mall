@@ -57,17 +57,39 @@
 	<div class="staff-jifen bgwhite"><p class="w90">本月激活的二级会员总数：<span class="fr"><em><?=(int)$this->bonus['last2']['vip']?></em>&nbsp;个</span></p></div>
     <div class="staff-jifen bgwhite"><p class="w90">历史发展的二级会员总数：<span class="fr"><em><?=(int)$this->bonus['history2']['num']?></em>&nbsp;个</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">历史激活的二级会员总数：<span class="fr"><em><?=(int)$this->bonus['history2']['vip']?></em>&nbsp;个</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">一级会员商城消费使用抵用券：<span class="fr"><em><?=(float)$this->bonus['vouchers1']['vouchers']['total']?></em>&nbsp;券</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">二级会员商城消费使用抵用券：<span class="fr"><em><?=(float)$this->bonus['vouchers2']['vouchers']['total']?></em>&nbsp;券</span></p></div>
+
 	<div class="staff-jifen bgwhite"><p class="w90">我的一级会员消费积分币：<span class="fr"><em><?=(float)$this->bonus['coin1']['credit_coin']['total']?></em>&nbsp;币</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">我的二级会员消费积分币：<span class="fr"><em><?=(float)$this->bonus['coin2']['credit_coin']['total']?></em>&nbsp;币</span></p></div>
-	<?php if ($this->user['resale_grade'] >= 2) { ?>
+	<?php /*if ($this->user['resale_grade'] >= 2) { */?><!--
+	<div class="staff-jifen bgwhite"><p class="w90">我的商家的一级会员本月消费积分币：<span class="fr"><em><?/*=(float)$this->bonus['coin3']['credit_coin']['total']*/?></em>&nbsp;币</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">我的商家的二级会员本月消费积分币：<span class="fr"><em><?/*=(float)$this->bonus['coin4']['credit_coin']['total']*/?></em>&nbsp;币</span></p></div>
+	--><?php /*} */?>
 	<div class="staff-jifen bgwhite"><p class="w90">我的商家的一级会员本月消费积分币：<span class="fr"><em><?=(float)$this->bonus['coin3']['credit_coin']['total']?></em>&nbsp;币</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">我的商家的二级会员本月消费积分币：<span class="fr"><em><?=(float)$this->bonus['coin4']['credit_coin']['total']?></em>&nbsp;币</span></p></div>
-	<?php } ?>
+
+	<div class="staff-jifen bgwhite"><p class="w90">我的商家的一级会员商城消费使用抵用券：<span class="fr"><em><?=(float)$this->bonus['vouchers3']['vouchers']['total']?></em>&nbsp;券</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">我的商家的二级会员商城消费使用抵用券：<span class="fr"><em><?=(float)$this->bonus['vouchers4']['vouchers']['total']?></em>&nbsp;券</span></p></div>
+
 	<div class="staff-jifen bgwhite">
-		<a href="<?=$this->url('/index/shoplist')?> ">
+		<a href="<?=$this->url('/index/shoplist/?t=credit')?> ">
 			<p class="w90">发展的商家本月使用免费积分(点击查看)：<span class="fr"><em><?=(float)$this->bonus['seller']['credit']['total']?></em>&nbsp;分</span></p>
 		</a>
 	</div>
+	<div class="staff-jifen bgwhite">
+		<a href="<?=$this->url('/index/shoplist/?t=vouchers')?> ">
+			<p class="w90">我的商家本月赠送抵用券（点击查看详情）：<span class="fr"><em><?=(float)$this->bonus['seller_v']['vouchers']['total']?></em>&nbsp;分</span></p>
+		</a>
+	</div>
+	<div class="staff-jifen bgwhite">
+		<a href="<?=$this->url('/index/shoplist/?t=worth_gold')?> ">
+			<p class="w90">我的商家本月收到抵用金（点击查看详情）：<span class="fr"><em><?=(float)$this->bonus['seller_w']['worth_gold']['total']?></em>&nbsp;分</span></p>
+		</a>
+	</div>
+
+
+
 	<div class="month-income bgwhite">
 		<p class="income01 w90">我的本月收益</p>
 		<p class="income01 w90"><span><?=$this->bonus['amount']?></span>&nbsp;元</p>
