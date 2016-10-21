@@ -219,12 +219,12 @@
     <div class="n-h5"></div>
 
 
-    <!--<div class="h20"></div>
+    <div class="h20"></div>
     <div class="img-box">
-        <a href="<?php /*echo $this->url('usercp/money/purchase')*/?>"><img src="<?/* echo static_file('m/img/pic/img_3.jpg')*/?>" alt=""></a>
+        <a href="<?php echo $this->url('usercp/money/purchase')?>"><img src="<? echo static_file('m/img/pic/img_3.jpg')?>" alt="" style="width: 100%;"></a>
     </div>
 
-    <div class="n-h5"></div>-->
+    <div class="n-h5"></div>
     <div class="n-lise-16 clear">
         <?php 
         $cn = array('一','二','三','四');//去掉了,'五','六','七','八'

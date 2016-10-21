@@ -240,7 +240,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			$payment = round(($consume - $consume*$discount)*($proportion['l_digital']/$proportion['r_digital']));//支付的货币金额
 			$pay_name = M('Coltypes')->select('name,english')->where('id='.$proportion['left_id'])->fetchRow()->toArray();
 			$right = M('Coltypes')->select('name')->where('id='.$proportion['right_id'])->fetchRow()->toArray();
-			if(!$privilege || !$service || !$payment) {
+			if(!$privilege || !$payment) {
 				throw new App_Exception('计算错误，请重新计算提交');
 			}
 			if($flag){
@@ -309,29 +309,63 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 
 		$data['desc'] = $data['flag'] ? '使用【'.$data['amount'].$data['pay_name'].'+'.$data['money'].'元'.'】购买【'.$data['privilege'].'抵用金】' :'使用【'.$data['amount'].$data['pay_name'].'】购买【'.$data['privilege'].'抵用金】';
 		$worthglod = M('Worthglod')->getById((int)$data['glod_id']);
-		switch ($data['type']) {
-			case 'credit':
-				/*$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
-				break;*/
-			case 'credit_happy':
-				/*$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
-				break;*/
-			case 'credit_coin':
-				/*$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
-				break;*/
-			case 'vouchers'://抵用券
-				/*$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
-				break;*/
-				$this->doPaySingle($data);
-				die();
-			case 'cash'://现金
-				/*$this->user->cash($data['amount']*-1, '购买抵用金【TS-'.$data['glod_id'].'】');
-				break;*/
-			case 'hybrid'://混合支付
-				$this->doHybrid($data);
-				die();
-				break;
+		if(!$data['pay_amount']) {
+			switch ($data['type']) {
+				case 'credit':
+					$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;
+				case 'credit_happy':
+					$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;
+				case 'credit_coin':
+					$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;
+				case 'vouchers'://抵用券
+					$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;
+				case 'hybrid'://混合支付
+					switch($data['exts_type']) {
+						case 'credit':
+							$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+							break;
+						case 'credit_happy':
+							$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+							break;
+						case 'credit_coin':
+							$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+							break;
+						case 'vouchers'://抵用券
+							$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+							break;
+					}
+					break;
+			}
+		} else {
+			switch ($data['type']) {
+				case 'credit':
+					/*$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;*/
+				case 'credit_happy':
+					/*$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;*/
+				case 'credit_coin':
+					/*$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;*/
+				case 'vouchers'://抵用券
+					/*$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;*/
+					$this->doPaySingle($data);
+					die();
+				case 'cash'://现金
+					/*$this->user->cash($data['amount']*-1, '购买抵用金【TS-'.$data['glod_id'].'】');
+                    break;*/
+				case 'hybrid'://混合支付
+					$this->doHybrid($data);
+					die();
+					break;
+			}
 		}
+
 		$worthglod->status = 2;
 		$worthglod->pay_time = time();
 		$worthglod->save();
