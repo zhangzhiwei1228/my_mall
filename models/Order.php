@@ -285,4 +285,35 @@ class Order extends Abstract_Model
 			));
 		}
 	}
+	/**
+	 * 对于待付款过期，废单的商品，还原库存量
+	 */
+	public function restore() {
+		$order = M('Order')->select()->where('restore !=1 and status != 4 AND expiry_time != 0 AND expiry_time < ?', time())->fetchRows();
+		foreach ($order as $row) {
+			if (($row->status == 1 || $row->status == 2) && $row->restore == 0) {
+				$this->getAdapter()->beginTrans();
+				try {
+					//关闭订单
+					$row->restore = 1;
+					//释放库存
+					foreach($row->goods as $row1) {
+						$goods = M('Goods')->getById($row1['goods_id']);
+						$goods->quantity += $row1['purchase_quantity'];
+						$goods->save();
+
+						$sku = M('Goods_Sku')->getById($row1['sku_id']);
+						$sku->quantity += $row1['purchase_quantity'];
+						$sku->save();
+					}
+					$row->save();
+					$this->getAdapter()->commit();
+				} catch (Suco_Exception $e) {
+					$this->getAdapter()->rollback();
+				}
+			}
+		}
+
+
+	}
 }

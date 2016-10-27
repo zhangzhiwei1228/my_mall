@@ -376,7 +376,7 @@ class GoodsController extends Controller_Action
 
 	public function doDetail()
 	{
-
+		M('Order')->restore();
 		$data = M('Goods')->getById((int)$this->_request->id);
 		if (!$data->exists()) {
 			throw new Suco_Controller_Dispatcher_Exception('Not found.');

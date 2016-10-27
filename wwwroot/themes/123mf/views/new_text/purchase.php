@@ -42,13 +42,13 @@
                     </label>
                 </li>
             <?php }?>
-            <li class="f-cb">
+            <!--<li class="f-cb">
                 <label>
                     <div class="label fl" style="font-size: 16px">
                         <input type="radio" name="price_type" value="100">
                         <i class="fl"></i>
-                        <span class="compute" data-id="<?php echo ($this->pro15['l_digital']/$this->pro15['r_digital'])* 0.5;?>" data-val="">0</span>免费积分 +
-                        <span class="hybrid" data-id="<?php echo ($this->pro18['l_digital']/$this->pro18['r_digital'])* 0.5;?>">0</span>元
+                        <span class="compute" data-id="<?php /*echo ($this->pro15['l_digital']/$this->pro15['r_digital'])* 0.5;*/?>" data-val="">0</span>免费积分 +
+                        <span class="hybrid" data-id="<?php /*echo ($this->pro18['l_digital']/$this->pro18['r_digital'])* 0.5;*/?>">0</span>元
                     </div>
                     <p class="tit fl" style="margin-left: 30px">
 
@@ -62,8 +62,8 @@
                     <div class="label fl" style="font-size: 16px">
                         <input type="radio" name="price_type" value="101">
                         <i class="fl"></i>
-                        <span class="compute" data-id="<?php echo ($this->pro16['l_digital']/$this->pro16['r_digital'])* 0.5;?>" data-val="">0</span>抵用券 +
-                        <span class="hybrid" data-id="<?php echo ($this->pro18['l_digital']/$this->pro18['r_digital'])* 0.5;?>">0</span>元
+                        <span class="compute" data-id="<?php /*echo ($this->pro16['l_digital']/$this->pro16['r_digital'])* 0.5;*/?>" data-val="">0</span>抵用券 +
+                        <span class="hybrid" data-id="<?php /*echo ($this->pro18['l_digital']/$this->pro18['r_digital'])* 0.5;*/?>">0</span>元
                     </div>
                     <p class="tit fl" style="margin-left: 30px">
 
@@ -75,14 +75,14 @@
                     <div class="label fl" style="font-size: 16px">
                         <input type="radio" name="price_type" value="102">
                         <i class="fl"></i>
-                        <span class="compute" data-id="<?php echo ($this->pro17['l_digital']/$this->pro17['r_digital'])* 0.5;?>" data-val="">0</span>积分币 +
-                        <span class="hybrid" data-id="<?php echo ($this->pro18['l_digital']/$this->pro18['r_digital'])* 0.5;?>">0</span>元
+                        <span class="compute" data-id="<?php /*echo ($this->pro17['l_digital']/$this->pro17['r_digital'])* 0.5;*/?>" data-val="">0</span>积分币 +
+                        <span class="hybrid" data-id="<?php /*echo ($this->pro18['l_digital']/$this->pro18['r_digital'])* 0.5;*/?>">0</span>元
                     </div>
                     <p class="tit fl" style="margin-left: 30px">
 
                     </p>
                 </label>
-            </li>
+            </li>-->
         </ul>
         <input type="submit" value="确定购买" class="submit" style="margin-top: 10px;margin-bottom: 10px">
     </form>
@@ -104,9 +104,9 @@ echo static_file('m/js/main.js');
             $('#service_charge').text(service_charge.toFixed(2));
             $('.sel-list li').each(function(){
                 var othis = $(this).find('.compute');
-                othis.text(Math.round(discount*othis.attr('data-id')));
+                othis.text(Math.ceil(discount*othis.attr('data-id')));
                 var hthis = $(this).find('.hybrid');
-                hthis.text(Math.round(discount*hthis.attr('data-id')));
+                hthis.text(Math.ceil(discount*hthis.attr('data-id')));
             });
         });
 
@@ -120,9 +120,9 @@ echo static_file('m/js/main.js');
                 $('#service_charge').text(service_charge.toFixed(2));
                 $('.sel-list li').each(function(){
                     var othis = $(this).find('.compute');
-                    othis.text(Math.round(discount*othis.attr('data-id')));
+                    othis.text(Math.ceil(discount*othis.attr('data-id')));
                     var hthis = $(this).find('.hybrid');
-                    hthis.text(Math.round(discount*hthis.attr('data-id')));
+                    hthis.text(Math.ceil(discount*hthis.attr('data-id')));
                 });
             }
         });

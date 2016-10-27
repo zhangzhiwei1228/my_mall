@@ -222,11 +222,11 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			if(!$price_type) {
 				throw new App_Exception('请选择支付方式');
 			}
-			$privilege = round($consume - $consume*$discount,2);//优惠
-			$service = round($privilege * $service_charge['price'],2);//服务费
+			$privilege = round(($consume - $consume*$discount),2);//优惠
+			$service = round(($privilege * $service_charge['price']),2);//服务费
 
 			if($price_type == 100 || $price_type == 101 || $price_type == 102) {
-				$money = round(($consume - $consume*$discount)*($pro18['l_digital']/$pro18['r_digital'])*0.5);//支付的货币金额
+				$money = ceil(($consume - $consume*$discount)*($pro18['l_digital']/$pro18['r_digital'])*0.5);//支付的货币金额
 				$cash = $money + $service;
 			}
 			if($price_type == 100) {
@@ -237,14 +237,14 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 				$price_type = 17;$flag=true;
 			}
 			$proportion = M('Proportion')->select()->where('id='.(int)$price_type)->fetchRow()->toArray();
-			$payment = round(($consume - $consume*$discount)*($proportion['l_digital']/$proportion['r_digital']));//支付的货币金额
+			$payment = ceil(($consume - $consume*$discount)*($proportion['l_digital']/$proportion['r_digital']));//支付的货币金额
 			$pay_name = M('Coltypes')->select('name,english')->where('id='.$proportion['left_id'])->fetchRow()->toArray();
 			$right = M('Coltypes')->select('name')->where('id='.$proportion['right_id'])->fetchRow()->toArray();
 			if(!$privilege || !$payment) {
 				throw new App_Exception('计算错误，请重新计算提交');
 			}
 			if($flag){
-				$payment = round($payment/2);
+				$payment = ceil($payment/2);
 			}
 			if(!$flag && $price_type !=18) {
 				$cash = $service;

@@ -20,12 +20,12 @@ class Usercp_OrderController extends Usercp_Controller_Action
 			->leftJoin(M('Payment')->getTableName().' AS p', 'o.payment_id = p.id')
 			->leftJoin(M('Shipping')->getTableName().' AS d', 'o.shipping_id = d.id')
 			->columns('o.*, b.username AS buyer_account, s.username AS seller_account, p.name AS payment_name, d.name AS shipping_name')
-			->where('o.buyer_id = ?', $this->user['id'])
+			->where('o.buyer_id = '. $this->user['id'].' and o.expiry_time != 0 AND o.expiry_time >= '.time())
 			->order('id DESC')
 			->paginator(10, $this->_request->page);
 
 		switch ($this->_request->t) {
-			case 'awaiting_payment': $select->where('o.status = 1'); break;
+			case 'awaiting_payment': $select->where('o.status = 1 '); break;
 			case 'shiped': $select->where('o.status = 2'); break;
 			case 'pending_receipt': $select->where('o.status = 3'); break;
 			case 'completed': $select->where('o.status = 4'); break;

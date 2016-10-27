@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php include_once VIEWS.'inc/head.php'; ?>
+<?php include_once VIEWS.'inc/head.php'; $time = time();?>
 </head>
 <body style="background:#ebebeb">
 	<div class="n-allorders">
@@ -46,11 +46,15 @@
 							</div>
 						</div>
 					</div>
-					<?php if ($row['status'] == 1) { ?>
+					<?php if ($row['status'] == 1 && $row['expiry_time'] > time()) { ?>
 						<div class="n-all-m">
 							<input value="立即支付" type="button"  onclick="window.location = '<?=$this->url('/default/cart/pay/?id='.$row['id'])?>'">
 						</div>
-					<?php } ?>
+					<?php } elseif($row['status'] == 5 && $row['expiry_time'] < time()) { ?>
+						<div class="n-all-m">
+							<input value="已过期" type="button" style="background-color: #c7bcb5" disabled>
+						</div>
+					<?php }?>
 					<?php if ($row['status'] == 3) {?>
 					<div class="n-all-m">
 						<input value="查看物流" type="button" onclick="window.location = '<?=$this->url('./express/?id='.$row['id'])?>'">
