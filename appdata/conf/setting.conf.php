@@ -13,7 +13,7 @@ return array (
   'service_email' => 'service@sucomall.com',
   'service_tel' => '400-8001-829',
   'serivce_qqs' => '26563767:客服一',
-  'timeout_pay' => '1',
+  'timeout_pay' => '86400',
   'timeout_delivery' => '259200',
   'timeout_confirm' => '1296000',
   'timeout_feedback' => '3600',

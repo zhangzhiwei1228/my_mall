@@ -6,7 +6,7 @@
 <body style="background-color: #fff">
 
 <div class="n-personal-center-tit">
-    <a href="<?php echo $this->url('usercp/money/credit/?t=worth_gold')?>"><img width="11" height="21" src="<? echo static_file('mobile/img/img-22.png')?>" alt=""></a>购买成功
+    <a href="<?php echo $this->url('default')?>"><img width="11" height="21" src="<? echo static_file('mobile/img/img-22.png')?>" alt=""></a>购买成功
 </div>
 
 <div class="success">
