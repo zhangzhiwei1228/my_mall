@@ -104,6 +104,28 @@
 				<span class="n-dealer-span3">券</span>
 				<span class="n-dealer-span2"><?=(float)$this->bonus['vouchers2']['vouchers']['total']?></span>
 			</li>
+
+			<li>
+				<span class="n-dealer-span1">我的一级会员抵用券购买抵用金：</span>
+				<span class="n-dealer-span3">金</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['buy1']['worth_gold']['total']?></span>
+			</li>
+			<li>
+				<span class="n-dealer-span1">我的二级会员抵用券购买抵用金：</span>
+				<span class="n-dealer-span3">金</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['buy2']['worth_gold']['total']?></span>
+			</li>
+
+			<li>
+				<span class="n-dealer-span1">我的一级会员抵用券转换成免费积分：</span>
+				<span class="n-dealer-span3">分</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['conversion1']['credit']['total']?></span>
+			</li>
+			<li>
+				<span class="n-dealer-span1">我的二级会员抵用券转换成免费积分：</span>
+				<span class="n-dealer-span3">分</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['conversion2']['credit']['total']?></span>
+			</li>
 			<?php if ($this->parent['role'] == 'agent' || $this->parent['role'] == 'resale') { ?>
 			<li>
 				<span class="n-dealer-span1">我的商家的一级会员本月消费积分币：</span>
@@ -115,6 +137,30 @@
 				<span class="n-dealer-span3">币</span>	
 				<span class="n-dealer-span2"><?=(float)$this->bonus['coin4']['credit_coin']['total']?></span>
 			</li>
+
+
+			<li>
+				<span class="n-dealer-span1">我的商家的一级会员抵用券购买抵用金：</span>
+				<span class="n-dealer-span3">金</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['buy3']['worth_gold']['total']?></span>
+			</li>
+			<li>
+				<span class="n-dealer-span1">我的商家的二级会员抵用券购买抵用金：</span>
+				<span class="n-dealer-span3">金</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['buy4']['worth_gold']['total']?></span>
+			</li>
+
+			<li>
+				<span class="n-dealer-span1">我的商家的一级会员抵用券转换成免费积分：</span>
+				<span class="n-dealer-span3">分</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['conversion3']['credit']['total']?></span>
+			</li>
+			<li>
+				<span class="n-dealer-span1">我的商家的二级会员抵用券转换成免费积分：</span>
+				<span class="n-dealer-span3">分</span>
+				<span class="n-dealer-span2"><?=(float)$this->bonus['conversion4']['credit']['total']?></span>
+			</li>
+
 
 			<li>
 				<span class="n-dealer-span1">我的商家的一级会员商城消费使用抵用券：</span>
@@ -142,7 +188,7 @@
 			</li>
 			<li style="height:auto;line-height:20px;">
 				<a href="<?=$this->url('/index/shoplist/?t=worth_gold')?>" style="display:block;">
-					<span class="n-dealer-span1">我的商家本月收到抵用金(点击查看)：</span>
+					<span class="n-dealer-span1">我的商家本月核销抵用金(点击查看)：</span>
 					<span class="n-dealer-span3">金</span>
 					<span class="n-dealer-span2"><?=(float)$this->bonus['seller_w']['worth_gold']['total']?></span>
 				</a>

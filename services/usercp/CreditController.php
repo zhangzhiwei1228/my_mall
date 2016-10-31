@@ -49,18 +49,43 @@ class Usercp_CreditController extends Usercp_Controller_Action
 		$user->save();
 		$glod_id = 0;
 		$desc = '以【'.$data['l_digital'].':'.$data['r_digital'].'】的比例进行【'.$left_name['name'].'转换成'.$right_name['name'].'】';
+		$status = 2;
 		switch($right_name['english']) {
 			case 'credit':
-				$user->credit($credit_coin,$desc);
+				$user->credit($credit_coin,$desc,$status,$left_name['english'].'-'.$right_name['english']);
 				break;
 			case 'credit_happy':
-				$user->creditHappy($credit_coin,$desc);
+				$user->creditHappy($credit_coin,$desc,$status,$left_name['english'].'-'.$right_name['english']);
 				break;
 			case 'credit_coin':
-				$user->creditCoin($credit_coin,$desc);
+				$user->creditCoin($credit_coin,$desc,$status,$left_name['english'].'-'.$right_name['english']);
 				break;
 			case 'vouchers':
-				$user->vouchers($credit_coin,$desc);
+				$user->vouchers($credit_coin,$desc,$status,$left_name['english'].'-'.$right_name['english']);
+				break;
+			case 'worth_gold':
+				$extra = array(
+					'uid' => $this->user->id,
+					'privilege' => $credit_coin,
+					'code' => $this->doRandStr(),
+					'status' => 3,
+				);
+				$glod_id = M('Worthglod')->insert($extra);
+				$user->worthGold($credit_coin,$desc);
+				break;
+		}
+		switch($left_name['english']) {
+			case 'credit':
+				$user->credit($credit * -1,$desc,$status,$left_name['english'].'-'.$right_name['english']);
+				break;
+			case 'credit_happy':
+				$user->creditHappy($credit * -1,$desc,$status,$left_name['english'].'-'.$right_name['english']);
+				break;
+			case 'credit_coin':
+				$user->creditCoin($credit * -1,$desc,$status,$left_name['english'].'-'.$right_name['english']);
+				break;
+			case 'vouchers':
+				$user->vouchers($credit * -1,$desc,$status,$left_name['english'].'-'.$right_name['english']);
 				break;
 			case 'worth_gold':
 				$extra = array(

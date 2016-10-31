@@ -60,6 +60,11 @@
 	<div class="staff-jifen bgwhite"><p class="w90">一级会员商城消费使用抵用券：<span class="fr"><em><?=(float)$this->bonus['vouchers1']['vouchers']['total']?></em>&nbsp;券</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">二级会员商城消费使用抵用券：<span class="fr"><em><?=(float)$this->bonus['vouchers2']['vouchers']['total']?></em>&nbsp;券</span></p></div>
 
+	<div class="staff-jifen bgwhite"><p class="w90">一级会员抵用券购买抵用金：<span class="fr"><em><?=(float)$this->bonus['buy1']['worth_gold']['total']?></em>&nbsp;金</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">二级会员抵用券购买抵用金：<span class="fr"><em><?=(float)$this->bonus['buy2']['worth_gold']['total']?></em>&nbsp;金</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">一级会员抵用券转换成免费积分：<span class="fr"><em><?=(float)$this->bonus['conversion1']['credit']['total']?></em>&nbsp;分</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">二级会员抵用券转换成免费积分：<span class="fr"><em><?=(float)$this->bonus['conversion2']['credit']['total']?></em>&nbsp;分</span></p></div>
+
 	<div class="staff-jifen bgwhite"><p class="w90">我的一级会员消费积分币：<span class="fr"><em><?=(float)$this->bonus['coin1']['credit_coin']['total']?></em>&nbsp;币</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">我的二级会员消费积分币：<span class="fr"><em><?=(float)$this->bonus['coin2']['credit_coin']['total']?></em>&nbsp;币</span></p></div>
 	<?php /*if ($this->user['resale_grade'] >= 2) { */?><!--
@@ -71,6 +76,11 @@
 
 	<div class="staff-jifen bgwhite"><p class="w90">我的商家的一级会员商城消费使用抵用券：<span class="fr"><em><?=(float)$this->bonus['vouchers3']['vouchers']['total']?></em>&nbsp;券</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">我的商家的二级会员商城消费使用抵用券：<span class="fr"><em><?=(float)$this->bonus['vouchers4']['vouchers']['total']?></em>&nbsp;券</span></p></div>
+
+	<div class="staff-jifen bgwhite"><p class="w90">我的商家的一级会员抵用券购买抵用金：<span class="fr"><em><?=(float)$this->bonus['buy3']['worth_gold']['total']?></em>&nbsp;金</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">我的商家的二级会员抵用券购买抵用金：<span class="fr"><em><?=(float)$this->bonus['buy4']['worth_gold']['total']?></em>&nbsp;金</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">我的商家的一级会员抵用券转换成免费积分：<span class="fr"><em><?=(float)$this->bonus['conversion3']['credit']['total']?></em>&nbsp;分</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">我的商家的二级会员抵用券转换成免费积分：<span class="fr"><em><?=(float)$this->bonus['conversion4']['credit']['total']?></em>&nbsp;分</span></p></div>
 
 	<div class="staff-jifen bgwhite">
 		<a href="<?=$this->url('/index/shoplist/?t=credit')?> ">

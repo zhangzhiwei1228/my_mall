@@ -36,61 +36,69 @@ class User extends Abstract_User
 
 	public function getStaffBonus($user)
 	{
-		$staff = M('User')->select('id, username')
+		$staff = M('User')->select('id, username,role')
 			->where('parent_id = ? AND role =\'staff\'', $user['id'])
 			->fetchRows();
 
 		foreach($staff as $row) {
-			$bonus = $row->getBonus($row['role']);
+			$bonus = $row->getBonus($user['role']);
 			$ct['coin1']['credit_coin']['total'] += $bonus['coin1']['credit_coin']['total'];
 			$ct['coin2']['credit_coin']['total'] += $bonus['coin2']['credit_coin']['total'];
+			$ct['vouchers1']['vouchers']['total'] += $bonus['vouchers1']['vouchers']['total'];
+			$ct['vouchers2']['vouchers']['total'] += $bonus['vouchers2']['vouchers']['total'];
+			$ct['buy1']['worth_gold']['total'] += $bonus['buy1']['worth_gold']['total'];
+			$ct['buy2']['worth_gold']['total'] += $bonus['buy2']['worth_gold']['total'];
+			$ct['conversion1']['credit']['total'] += $bonus['conversion1']['credit']['total'];
+			$ct['conversion2']['credit']['total'] += $bonus['conversion2']['credit']['total'];
 
 //			$ct['amount'] += $bonus['amount'];
 			$ct['amount'] += $bonus['amount_seller'];
 		}
+		if($user['role'] == 'agent') {
+			//我代理地区会员本月消费积分币
+			$agentArea = M('Region')->getById((int)$user['agent_aid']);
+			$aIds = $agentArea->getChildIds();
 
-		//我代理地区会员本月消费积分币
-		$agentArea = M('Region')->getById((int)$user['agent_aid']);
-		$aIds = $agentArea->getChildIds();
+			$ct['area']['member'] = M('Order')->select('SUM(total_credit_coin) AS t_coin')
+				->where('area_id IN ('.($aIds?$aIds:0).') AND status IN (2,3,4)')
+				->fetchRow()
+				->toArray();
+			//我代理地区我下线的会员本月商城消费使用抵用券
+			$ct['area']['member_v'] = M('Order')->select('SUM(total_vouchers) AS t_coin')
+				->where('area_id IN ('.($aIds?$aIds:0).') AND status IN (2,3,4)')
+				->fetchRow()
+				->toArray();
+			//我代理地区商家本月使用免费积分
+			$uIds = M('User')->select('id')
+				->where('area_id IN ('.($aIds?$aIds:0).')')
+				->fetchCols('id');
 
-		$ct['area']['member'] = M('Order')->select('SUM(total_credit_coin) AS t_coin')
-			->where('area_id IN ('.($aIds?$aIds:0).') AND status IN (2,3,4)')
-			->fetchRow()
-			->toArray();
-		//我代理地区我下线的会员本月商城消费使用抵用券
-		$ct['area']['member_v'] = M('Order')->select('SUM(total_vouchers) AS t_coin')
-			->where('area_id IN ('.($aIds?$aIds:0).') AND status IN (2,3,4)')
-			->fetchRow()
-			->toArray();
-		//我代理地区商家本月使用免费积分
-		$uIds = M('User')->select('id')
-			->where('area_id IN ('.($aIds?$aIds:0).')')
-			->fetchCols('id');
+			$ct['area']['seller'] = M('User_Credit')->select('ABS(SUM(credit)) AS t_credit')
+				->where('credit < 0 AND type = \'credit\' AND user_id IN ('.($uIds?implode(',',$uIds):0).')')
+				->fetchRow()
+				->toArray();
+			//我代理地区我下线的商家本月使用抵用券
+			$ct['area']['seller_v'] = M('User_Credit')->select('ABS(SUM(credit)) AS t_credit')
+				->where('credit < 0 AND type = \'vouchers\' AND user_id IN ('.($uIds?implode(',',$uIds):0).')')
+				->fetchRow()
+				->toArray();
+			//我代理地区我下线的商家本月收到抵用金
+			$ct['area']['seller_w'] = M('User_Credit')->select('ABS(SUM(credit)) AS t_credit')
+				->where('credit > 0 AND type = \'worth_gold\' AND user_id IN ('.($uIds?implode(',',$uIds):0).')')
+				->fetchRow()
+				->toArray();
 
-		$ct['area']['seller'] = M('User_Credit')->select('ABS(SUM(credit)) AS t_credit')
-			->where('credit < 0 AND type = \'credit\' AND user_id IN ('.($uIds?implode(',',$uIds):0).')')
-			->fetchRow()
-			->toArray();
-		//我代理地区我下线的商家本月使用抵用券
-		$ct['area']['seller_v'] = M('User_Credit')->select('ABS(SUM(credit)) AS t_credit')
-			->where('credit < 0 AND type = \'vouchers\' AND user_id IN ('.($uIds?implode(',',$uIds):0).')')
-			->fetchRow()
-			->toArray();
-		//我代理地区我下线的商家本月收到抵用金
-		$ct['area']['seller_w'] = M('User_Credit')->select('ABS(SUM(credit)) AS t_credit')
-			->where('credit > 0 AND type = \'worth_gold\' AND user_id IN ('.($uIds?implode(',',$uIds):0).')')
-			->fetchRow()
-			->toArray();
-
-		$pro = M('Proportion')->select('price,english')->where('type=26')->fetchRows()->toArray();
-		foreach($pro as $row) {
-			$pro_data[$row['english']] = $row['price'];
+			$pro = M('Proportion')->select('price,english')->where('type=26')->fetchRows()->toArray();
+			foreach($pro as $row) {
+				$pro_data[$row['english']] = $row['price'];
+			}
+			$ct['amount'] += $ct['area']['seller']['t_credit']*$pro_data['credit_seller'];
+			$ct['amount'] += $ct['area']['member']['t_coin']*$pro_data['credit_coin'];
+			$ct['amount'] += $ct['area']['member_v']['t_coin']*$pro_data['vouchers_user'];
+			$ct['amount'] += $ct['area']['seller_v']['t_credit']*$pro_data['vouchers_seller'];
+			$ct['amount'] += $ct['area']['seller_w']['t_credit']*$pro_data['worth_gold_seller'];
 		}
-		$ct['amount'] += $ct['area']['seller']['t_credit']*$pro_data['credit_seller'];
-		$ct['amount'] += $ct['area']['member']['t_coin']*$pro_data['credit_coin'];
-		$ct['amount'] += $ct['area']['member_v']['t_coin']*$pro_data['vouchers_user'];
-		$ct['amount'] += $ct['area']['seller_v']['t_credit']*$pro_data['vouchers_seller'];
-		$ct['amount'] += $ct['area']['seller_w']['t_credit']*$pro_data['worth_gold_seller'];
+
 		return $ct;
 	}
 
@@ -127,8 +135,17 @@ class User extends Abstract_User
 			->where('credit < 0 AND user_id IN ('.$ids.')AND type='.'"vouchers"')
 			->fetchOnKey('type')
 			->toArray();
+		//我的一级会员抵用券购买抵用金
+		$ct['buy1'] = M('User_Credit')->select('type,status,conversion, ABS(SUM(credit)) AS total')
+			->where('credit > 0 AND user_id IN ('.$ids.')AND type='.'"worth_gold" and status=1 and conversion='.'"vouchers-worth_gold"')
+			->fetchOnKey('type')
+			->toArray();
 
-
+		//我的一级会员抵用券转换成免费积分
+		$ct['conversion1'] = M('User_Credit')->select('type,status,conversion, ABS(SUM(credit)) AS total')
+			->where('credit > 0 AND user_id IN ('.$ids.')AND type='.'"credit" and status=2 and conversion='.'"vouchers-credit"')
+			->fetchOnKey('type')
+			->toArray();
 		//统计二级会员
 		$user2 = M('User')->select('id, username, is_vip, create_time')
 			->where('parent_id != 0 AND parent_id IN ('.$ids.') AND role =\'member\'')
@@ -155,8 +172,16 @@ class User extends Abstract_User
 			->where('credit < 0 AND user_id IN ('.$ids.')AND type='.'"vouchers"')
 			->fetchOnKey('type')
 			->toArray();
-
-
+		//我的二级会员抵用券购买抵用金
+		$ct['buy2'] = M('User_Credit')->select('type,status,conversion, ABS(SUM(credit)) AS total')
+			->where('credit > 0 AND user_id IN ('.$ids.')AND type='.'"worth_gold" and status=1 and conversion='.'"vouchers-worth_gold"')
+			->fetchOnKey('type')
+			->toArray();
+		//我的二级会员抵用券转换成免费积分
+		$ct['conversion2'] = M('User_Credit')->select('type,status,conversion, ABS(SUM(credit)) AS total')
+			->where('credit > 0 AND user_id IN ('.$ids.')AND type='.'"credit" and status=2 and conversion='.'"vouchers-credit"')
+			->fetchOnKey('type')
+			->toArray();
 		//发展的商家
 		$user3 = M('User')->select('id, username, is_vip, create_time')
 			->where('parent_id = ? AND role =\'seller\'', $user['id'])
@@ -167,6 +192,7 @@ class User extends Abstract_User
 
 		//商家员工
 		$ids = $ids3 ? implode(',', $ids3) : 0;
+
 		$user4 = M('User')->select('id, username, is_vip, create_time')
 			->where('parent_id != 0 AND parent_id IN ('.$ids.') AND role =\'staff\'')
 			->fetchRows();
@@ -202,6 +228,7 @@ class User extends Abstract_User
 			->toArray();
 
 		//一级会员消费积分币
+
 		$ids = $ids4 ? implode(',', $ids4) : 0;
 		// $ct['coin3'] = M('User_Credit')->select('type, ABS(SUM(credit)) AS total')
 		// 	->where('credit < 0 AND user_id IN ('.$ids.')')
@@ -218,6 +245,7 @@ class User extends Abstract_User
 
 		//一级会员消费积分币
 		$ids = $ids5 ? implode(',', $ids5) : 0;
+
 		$ct['coin3'] = M('User_Credit')->select('type, ABS(SUM(credit)) AS total')
 			->where('credit < 0 AND user_id IN ('.$ids.') AND type='.'"credit_coin"')
 			->fetchOnKey('type')
@@ -227,7 +255,16 @@ class User extends Abstract_User
 			->where('credit < 0 AND user_id IN ('.$ids.') AND type='.'"vouchers"')
 			->fetchOnKey('type')
 			->toArray();
-
+		//我的商家的一级会员抵用券购买抵用金
+		$ct['buy3'] = M('User_Credit')->select('type,status,conversion, ABS(SUM(credit)) AS total')
+			->where('credit > 0 AND user_id IN ('.$ids.')AND type='.'"worth_gold" and status=1 and conversion='.'"vouchers-worth_gold"')
+			->fetchOnKey('type')
+			->toArray();
+		//我的商家的一级会员抵用券转换成免费积分
+		$ct['conversion3'] = M('User_Credit')->select('type,status,conversion, ABS(SUM(credit)) AS total')
+			->where('credit > 0 AND user_id IN ('.$ids.')AND type='.'"credit" and status=2 and conversion='.'"vouchers-credit"')
+			->fetchOnKey('type')
+			->toArray();
 		//商家员工会员二级会员
 		$user6 = M('User')->select('id, username, is_vip, create_time')
 			->where('parent_id != 0 AND parent_id IN ('.$ids.') AND role =\'member\'')
@@ -236,21 +273,31 @@ class User extends Abstract_User
 			$ids6[] = $row['id'];
 		}
 
-		//一级会员消费积分币
+		//二级会员消费积分币
 		$ids = $ids6 ? implode(',', $ids6) : 0;
 		$ct['coin4'] = M('User_Credit')->select('type, ABS(SUM(credit)) AS total')
 			->where('credit < 0 AND user_id IN ('.$ids.') AND type='.'"credit_coin"')
 			->fetchOnKey('type')
 			->toArray();
-		//我的商家的一级会员商城消费使用抵用券
+		//我的商家的二级会员商城消费使用抵用券
 		$ct['vouchers4'] = M('User_Credit')->select('type, ABS(SUM(credit)) AS total')
 			->where('credit < 0 AND user_id IN ('.$ids.') AND type='.'"vouchers"')
+			->fetchOnKey('type')
+			->toArray();
+		//我的商家的二级会员抵用券购买抵用金
+		$ct['buy4'] = M('User_Credit')->select('type,status,conversion, ABS(SUM(credit)) AS total')
+			->where('credit > 0 AND user_id IN ('.$ids.')AND type='.'"worth_gold" and status=1 and conversion='.'"vouchers-worth_gold"')
+			->fetchOnKey('type')
+			->toArray();
+		//我的商家的二级会员抵用券转换成免费积分
+		$ct['conversion4'] = M('User_Credit')->select('type,status,conversion, ABS(SUM(credit)) AS total')
+			->where('credit > 0 AND user_id IN ('.$ids.')AND type='.'"credit" and status=2 and conversion='.'"vouchers-credit"')
 			->fetchOnKey('type')
 			->toArray();
 		//获取收益比例
 		switch($prole) {
 			case 'seller':
-				$type_id=25;
+				$type_id=24;
 				break;
 			case 'agent':
 				$type_id=27;
@@ -279,7 +326,11 @@ class User extends Abstract_User
 
 		$ct['amount'] = $ct['last1']['vip']*$pro_data['vip'];
 		$ct['amount'] += ($ct['coin1']['credit_coin']['total']*$pro_data['credit_coin1'])+($ct['coin2']['credit_coin']['total']*$pro_data['credit_coin2']);
-		$ct['amount_seller'] += ($ct['coin1']['credit_coin']['total']*$pro_data['credit_coin1'])+($ct['coin2']['credit_coin']['total']*$pro_data['credit_coin2']);
+
+		$ct['amount_seller'] = ($ct['coin1']['credit_coin']['total']*$pro_data['credit_coin1'])+($ct['coin2']['credit_coin']['total']*$pro_data['credit_coin2']);
+		$ct['amount_seller'] += ($ct['vouchers1']['vouchers']['total']*$pro_data['vouchers1'])+($ct['vouchers2']['vouchers']['total']*$pro_data['vouchers2']);
+		$ct['amount_seller'] += ($ct['buy1']['worth_gold']['total']*$pro_data['vouchers-worth_gold1'])+($ct['buy2']['worth_gold']['total']*$pro_data['vouchers-worth_gold2']);
+		$ct['amount_seller'] += ($ct['conversion1']['credit']['total']*$pro_data['vou_con_credit1'])+($ct['conversion2']['credit']['total']*$pro_data['vou_con_credit2']);
 		$ct['amount'] += ($ct['coin3']['credit_coin']['total']*$pro_data['credit_coin_seller1'])+($ct['coin4']['credit_coin']['total']*$pro_data['credit_coin_seller2']);
 		$ct['amount'] += ($ct['seller']['credit']['total']*$pro_data['credit_seller']);
 
@@ -289,6 +340,17 @@ class User extends Abstract_User
 		$ct['amount'] += ($ct['vouchers4']['vouchers']['total']*$pro_data['seller_vouchers2']);
 		$ct['amount'] += ($ct['seller_v']['vouchers']['total']*$pro_data['seller_vouchers']);
 		$ct['amount'] += ($ct['seller_w']['worth_gold']['total']*$pro_data['seller_worth_gold']);
+
+
+		$ct['amount'] += ($ct['buy1']['worth_gold']['total']*$pro_data['vouchers-worth_gold1']);
+		$ct['amount'] += ($ct['buy2']['worth_gold']['total']*$pro_data['vouchers-worth_gold2']);
+		$ct['amount'] += ($ct['conversion1']['credit']['total']*$pro_data['vou_con_credit1']);
+		$ct['amount'] += ($ct['conversion2']['credit']['total']*$pro_data['vou_con_credit2']);
+
+		$ct['amount'] += ($ct['buy3']['worth_gold']['total']*$pro_data['seller_vouchers-worth_gold1']);
+		$ct['amount'] += ($ct['buy4']['worth_gold']['total']*$pro_data['seller_vouchers-worth_gold2']);
+		$ct['amount'] += ($ct['conversion3']['credit']['total']*$pro_data['seller_vou_con_credit1']);
+		$ct['amount'] += ($ct['conversion4']['credit']['total']*$pro_data['seller_vou_con_credit2']);
 
 		return $ct;
 	}
@@ -556,7 +618,7 @@ class User extends Abstract_User
 	 * @param	string 	$note 备注
 	 * @return 	bool
 	 */
-	public function credit($user, $val, $note)
+	public function credit($user, $val, $note,$status=0,$conversion='')
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -567,6 +629,8 @@ class User extends Abstract_User
 		M('User_Credit')->insert(array(
 			'user_id' => $user['id'],
 			'type' => 'credit',
+			'status' => $status,
+			'conversion' => $conversion,
 			'credit' => $val,
 			'note' => $note,
 			'create_time' => time()
@@ -581,7 +645,7 @@ class User extends Abstract_User
 	}
 
 	//抵用获得和使用
-	public function worthGold($user, $val, $note, $code='')
+	public function worthGold($user, $val, $note, $code='',$status=0,$conversion='')
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -591,6 +655,8 @@ class User extends Abstract_User
 		M('User_Credit')->insert(array(
 			'user_id' => $user['id'],
 			'type' => 'worth_gold',
+			'status' => $status,
+			'conversion' => $conversion,
 			'credit' => $val,
 			'note' => $note,
 			'code' => $code,
@@ -622,7 +688,7 @@ class User extends Abstract_User
 		$user->save();
 	}
 
-	public function creditHappy($user, $val, $note)
+	public function creditHappy($user, $val, $note,$status=0,$conversion='')
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -633,6 +699,8 @@ class User extends Abstract_User
 		M('User_Credit')->insert(array(
 			'user_id' => $user['id'],
 			'type' => 'credit_happy',
+			'status' => $status,
+			'conversion' => $conversion,
 			'credit' => $val,
 			'note' => $note,
 			'create_time' => time()
@@ -646,7 +714,7 @@ class User extends Abstract_User
 		$user->save();
 	}
 
-	public function creditCoin($user, $val, $note)
+	public function creditCoin($user, $val, $note,$status=0,$conversion='')
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -657,6 +725,8 @@ class User extends Abstract_User
 		M('User_Credit')->insert(array(
 			'user_id' => $user['id'],
 			'type' => 'credit_coin',
+			'status' => $status,
+			'conversion' => $conversion,
 			'credit' => $val,
 			'note' => $note,
 			'create_time' => time()
@@ -670,7 +740,7 @@ class User extends Abstract_User
 		$user->save();
 	}
 	//抵用券
-	public function vouchers($user, $val, $note)
+	public function vouchers($user, $val, $note,$status=0,$conversion='')
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -681,6 +751,8 @@ class User extends Abstract_User
 		M('User_Credit')->insert(array(
 			'user_id' => $user['id'],
 			'type' => 'vouchers',
+			'status' => $status,
+			'conversion' => $conversion,
 			'credit' => $val,
 			'note' => $note,
 			'create_time' => time()

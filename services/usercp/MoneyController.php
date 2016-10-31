@@ -262,6 +262,9 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 				if ($pay_name['english'] == 'credit_coin' && $this->user['credit_coin'] < $payment) {
 					throw new App_Exception("支付失败，您的积分币不足", 103);
 				}
+				if ($pay_name['english'] == 'vouchers' && $this->user['vouchers'] < $payment) {
+					throw new App_Exception("支付失败，您的抵用券不足", 104);
+				}
 			} catch(App_Exception $e) {
 				$_SESSION['awaiting_payment'] = 'awaiting_payment';
 				$view = $this->_initView();
@@ -309,33 +312,34 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 
 		$data['desc'] = $data['flag'] ? '使用【'.$data['amount'].$data['pay_name'].'+'.$data['money'].'元'.'】购买【'.$data['privilege'].'抵用金】' :'使用【'.$data['amount'].$data['pay_name'].'】购买【'.$data['privilege'].'抵用金】';
 		$worthglod = M('Worthglod')->getById((int)$data['glod_id']);
+		$status = 1;
 		if(!$data['pay_amount']) {
 			switch ($data['type']) {
 				case 'credit':
-					$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+					$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit-worth_gold');
                     break;
 				case 'credit_happy':
-					$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+					$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit_happy-worth_gold');
                     break;
 				case 'credit_coin':
-					$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+					$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit_coin-worth_gold');
                     break;
 				case 'vouchers'://抵用券
-					$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+					$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'vouchers-worth_gold');
                     break;
 				case 'hybrid'://混合支付
 					switch($data['exts_type']) {
 						case 'credit':
-							$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+							$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit-worth_gold');
 							break;
 						case 'credit_happy':
-							$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+							$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit_happy-worth_gold');
 							break;
 						case 'credit_coin':
-							$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+							$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit_coin-worth_gold');
 							break;
 						case 'vouchers'://抵用券
-							$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+							$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'vouchers-worth_gold');
 							break;
 					}
 					break;
@@ -369,7 +373,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 		$worthglod->status = 2;
 		$worthglod->pay_time = time();
 		$worthglod->save();
-		$this->user->worthGold($data['privilege'],$data['desc']);
+		$this->user->worthGold($data['privilege'],$data['desc'],'',$status,$data['type'].'-worth_gold');
 		$this->redirect('action=success&id='.$data['glod_id']);
 	}
 	//购买抵用金成功

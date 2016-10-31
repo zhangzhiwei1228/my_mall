@@ -27,28 +27,29 @@ class Worthglod extends Abstract_Model {
     public function payHybrid($glod) {
         $this->getAdapter()->beginTrans();
         try {
+            $status = 1;
             $glod->status = 2;
             $glod->pay_time = time();
             $glod->save();
             $exts = json_decode($glod['pay_json']);
             //扣免费积分
             if ($exts->exts_type == 'credit') {
-                $glod->buyer->credit($exts->payment*-1, '消耗'.$exts->payment.'点免费积分，支付【'.$exts->pay_desc.'】');
+                $glod->buyer->credit($exts->payment*-1, '消耗'.$exts->payment.'点免费积分，支付【'.$exts->pay_desc.'】', $status,'credit-worth_gold');
             }
             //扣快乐积分
             if ($exts->exts_type == 'credit_happy') {
-                $glod->buyer->creditHappy($exts->payment*-1, '消耗'.$exts->payment.'点快乐积分，支付【'.$exts->pay_desc.'】');
+                $glod->buyer->creditHappy($exts->payment*-1, '消耗'.$exts->payment.'点快乐积分，支付【'.$exts->pay_desc.'】', $status,'credit_happy-worth_gold');
             }
             //扣积分币
             if ($exts->exts_type == 'credit_coin') {
-                $glod->buyer->creditCoin($exts->payment*-1, '消耗'.$exts->payment.'点积分币，支付【'.$exts->pay_desc.'】');
+                $glod->buyer->creditCoin($exts->payment*-1, '消耗'.$exts->payment.'点积分币，支付【'.$exts->pay_desc.'】', $status,'credit_coin-worth_gold');
             }
             //扣抵用券
             if ($exts->exts_type == 'vouchers') {
-                $glod->buyer->vouchers($exts->payment*-1, '消耗'.$exts->payment.'点抵用券，支付【'.$exts->pay_desc.'】');
+                $glod->buyer->vouchers($exts->payment*-1, '消耗'.$exts->payment.'点抵用券，支付【'.$exts->pay_desc.'】', $status,'vouchers-worth_gold');
             }
             $desc = explode('=',$exts->pay_desc);
-            $glod->buyer->worthGold($glod['privilege'],'使用【'.$desc[0].'】购买【'.$desc[1].'】');
+            $glod->buyer->worthGold($glod['privilege'],'使用【'.$desc[0].'】购买【'.$desc[1].'】','',$status, $exts->exts_type.'-worth_gold');
             $this->getAdapter()->commit();
         } catch (App_Exception $e) {
             $logFile = 'order'.'_'.date('Ymd').'.log';

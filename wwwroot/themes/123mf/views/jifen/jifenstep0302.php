@@ -11,7 +11,7 @@
 	    	<dl>
 	    		<dt class="sure"></dt>
 	    		<dd class="sure-info">已经给<?=$this->account['nickname']?>(<?=$this->account['username']?>)用户</dd>
-	    		<dd class="sure-point">赠送免费积分<span><?=(float)$this->_request->pot?></span>点</dd>
+	    		<dd class="sure-point"><?php echo $this->_request->pot == 'credit' ? '赠送免费积分' : '赠送抵用券' ?><span><?=(float)$this->_request->val?></span>点</dd>
 	    	</dl>
 	    </div>
 	</div>

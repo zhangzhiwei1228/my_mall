@@ -56,15 +56,15 @@
     <p class="w90">
         我代理地区商家本月使用抵用券：
         <span class="fr">
-            <em><?=(float)$this->bonus['seller_v']['vouchers']['total']?></em>&nbsp;币
+            <em><?=(float)$this->bonus['seller_v']['vouchers']['total']?></em>&nbsp;券
         </span>
     </p>
 </div>
 <div class="staff-jifen bgwhite">
     <p class="w90">
-        我代理地区商家本月收到抵用金：
+        我代理地区商家本月核销抵用金：
         <span class="fr">
-            <em><?=(float)$this->bonus['seller_w']['worth_gold']['total']?></em>&nbsp;币
+            <em><?=(float)$this->bonus['seller_w']['worth_gold']['total']?></em>&nbsp;金
         </span>
     </p>
 </div>
@@ -72,7 +72,7 @@
     <p class="w90">
         我代理地区会员本月商城消费使用抵用券：
         <span class="fr">
-            <em><?=(float)$this->bonus['userarea_v']['vouchers']['total']?></em>&nbsp;币
+            <em><?=(float)$this->bonus['userarea_v']['vouchers']['total']?></em>&nbsp;券
         </span>
     </p>
 </div>

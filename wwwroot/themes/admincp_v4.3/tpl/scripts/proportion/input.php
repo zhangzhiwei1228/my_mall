@@ -12,7 +12,7 @@ $this->head()->setTitle($this->title);
 	<div class="sui-page-header">
 		<ul class="nav nav-pills">
 			<li class="<?php echo $this->data && $this->data['name'] ? '' : 'active'?>"><a href="#base" data-toggle="tab">基本信息</a></li>
-			<li class="<?php echo $this->data && $this->data['name'] ? 'active' : ''?>"><a href="#price" data-toggle="tab">价格与库存</a></li>
+			<li class="<?php echo $this->data && $this->data['name'] ? 'active' : ''?>"><a href="#price" data-toggle="tab">收益比例</a></li>
 		</ul>
 	</div>
 	<form method="post" enctype="multipart/form-data" class="form-horizontal sui-dataitem">

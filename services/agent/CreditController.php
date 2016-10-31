@@ -76,7 +76,7 @@ class Agent_CreditController extends Agent_Controller_Action
 			$this->user->$type($_POST[$type]*-1, '赠送会员【'.$account['nickname'].'】');
 			$account->$type($_POST[$type], '商家赠送【'.$this->user['nickname'].'】');
 
-			$this->redirect('&success=1&uid='.$account['id'].'&pot='.$_POST['credit']);
+			$this->redirect('&success=1&uid='.$account['id'].'&pot='.$type.'&val='.$_POST[$this->_request->type]);
 			return;
 		}
 	}
