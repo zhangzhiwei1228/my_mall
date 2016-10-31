@@ -24,11 +24,29 @@ class Usercp_VipController extends Usercp_Controller_Action
 	{
 		$this->user = $this->_auth();
 		if ($this->_request->isPost()) {
+			$view = $this->_initView();
+			try{
+				if ( $this->user['credit'] < 20) {
+					throw new App_Exception("激活失败，您的免费积分不足", 101);
+				} else {
+					$this->user->credit(20 * -1,'使用20免费积分激活会员');
+					$this->user->is_vip = 1;
+					$this->user->save();
+					$this->user->activateAddCredit((int)$this->user->id);
+					$this->redirect('/usercp/vip');
+				}
+			} catch(App_Exception $e) {
+				$view->message = $e->getMessage();
+				$view->code = $e->getCode();
+				$view->render('views/shopping/no_enough.php');
+				return;
+			}
+			die();
 			$cfg = new Suco_Config_Php();
 			$setting = $cfg->load(CONF_DIR.'vip.conf.php');
 			$_POST['amount'] = $setting[$_POST['type']];
 
-			$view = $this->_initView();
+
 			$view->payments = M('Payment')->select()
 				->where('is_enabled = 1')
 				->order('rank ASC, id ASC')
