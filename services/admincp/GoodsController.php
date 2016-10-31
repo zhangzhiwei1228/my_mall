@@ -360,4 +360,47 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 		$view->order_goods = $order_good->fetchRows()->toArray();
 		$view->render('goods/sales.php');
 	}
+	//设置商品基数
+	public function doSold() {
+		$good = M('Goods')->getById((int)$this->_request->id);
+		if($this->_request->isPost()) {
+
+			if($this->_request->id) {
+				$good = M('Goods')->getById((int)$this->_request->id);
+				$good->sales_num = $_POST['sales_num'];
+				$good->save();
+			} else {
+				$select = M('Goods')->alias('g')
+					->columns('g.*, (g.quantity-g.quantity_warning) as diff_quantify');
+				switch ($this->_request->t) {
+					case 'quantity_warning':
+						$select->where('g.is_selling = 1 AND (g.quantity = 0 or (g.quantity - g.quantity_warning <= 0))')->order('g.update_time desc, g.quantity ASC');
+						break;
+					case 'approval_pending':
+						$select->where('g.is_checked = 0');
+						break;
+					case 'not_approved':
+						$select->where('g.is_checked = 1');
+						break;
+					case 'onsale':
+						$select->where('g.is_selling = 1 AND g.is_checked = 2 AND (g.expiry_time = 0 OR g.expiry_time > ?)', time());
+						break;
+					case 'offsale':
+						$select->where('(g.is_selling = 0 AND g.is_checked = 2 OR (g.expiry_time != 0 AND g.expiry_time < ?))', time());
+						break;
+					case 'promotion':
+						$select->where('(g.is_selling = 1 AND g.is_checked = 2 AND g.is_promotion = 1)');
+						break;
+				}
+				$goods = $select->fetchRows();
+				foreach($goods as $good) {
+					M('Goods')->updateById($_POST, (int)$good->id);
+				}
+			}
+			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list&t='.$this->_request->t);
+		}
+		$view = $this->_initView();
+		$view->data = $good;
+		$view->render('goods/sold.php');
+	}
 }

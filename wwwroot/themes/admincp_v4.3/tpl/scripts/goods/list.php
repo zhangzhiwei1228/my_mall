@@ -45,6 +45,7 @@ $this->head()->setTitle($this->title);
 			<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#move-box"> <i class="fa fa-exchange"></i> 移动</button>
 			<button type="submit" name="act" value="delete" class="btn btn-default btn-sm" onclick="return confirm('确定要删除所选记录吗?');"> <i class="fa fa-trash-o"></i> 删除</button>
 			<a class="btn btn-default btn-sm" href="<?=$this->url('action=add&ref='.$this->_request->url)?>"> <i class="fa fa-plus-circle"></i> 添加商品</a>
+			<a class="btn btn-default btn-sm" href="<?=$this->url('action=sold&ref='.$this->_request->url.'&t='.($this->_request->t ?$this->_request->t :'onsale'))?>">  批量设置已售基数</a>
 
 		</div>
 
@@ -144,6 +145,7 @@ $this->head()->setTitle($this->title);
 						<a href="<?=$this->url('module=default&controller=goods&action=detail&id='.$row['id'])?>" target="_blank">预览</a>
 						<a href="<?=$this->url('action=copy&id='.$row['id'])?>">复制</a>
 						<a href="<?=$this->url('action=sales&id='.$row['id'])?>">销售明细</a>
+						<a href="<?=$this->url('action=sold&id='.$row['id'].'&t='.$this->_request->t)?>">已售基数</a>
 					</td>
 				</tr>
 				<?php } } ?>
