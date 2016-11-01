@@ -51,7 +51,7 @@
 			<li>
 				<span class="n-dealer-span1">
 					<p>我代理地区我下线的</p>
-					<p>商家本月收到抵用金：</p>
+					<p>商家本月核销抵用金：</p>
 				</span>
 				<span class="n-dealer-span3">金</span>
 				<span class="n-dealer-span2"><?=(float)$this->bonus['area']['seller_w']['t_credit']?></span>

@@ -89,12 +89,12 @@
 	</div>
 	<div class="staff-jifen bgwhite">
 		<a href="<?=$this->url('/index/shoplist/?t=vouchers')?> ">
-			<p class="w90">我的商家本月赠送抵用券（点击查看详情）：<span class="fr"><em><?=(float)$this->bonus['seller_v']['vouchers']['total']?></em>&nbsp;分</span></p>
+			<p class="w90">我的商家本月赠送抵用券（点击查看详情）：<span class="fr"><em><?=(float)$this->bonus['seller_v']['vouchers']['total']?></em>&nbsp;券</span></p>
 		</a>
 	</div>
 	<div class="staff-jifen bgwhite">
 		<a href="<?=$this->url('/index/shoplist/?t=worth_gold')?> ">
-			<p class="w90">我的商家本月收到抵用金（点击查看详情）：<span class="fr"><em><?=(float)$this->bonus['seller_w']['worth_gold']['total']?></em>&nbsp;分</span></p>
+			<p class="w90">我的商家本月核销抵用金（点击查看详情）：<span class="fr"><em><?=(float)$this->bonus['seller_w']['worth_gold']['total']?></em>&nbsp;金</span></p>
 		</a>
 	</div>
 

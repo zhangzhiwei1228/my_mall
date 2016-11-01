@@ -54,7 +54,7 @@ class User extends Abstract_User
 //			$ct['amount'] += $bonus['amount'];
 			$ct['amount'] += $bonus['amount_seller'];
 		}
-		if($user['role'] == 'agent') {
+		if($user['role'] == 'agent' || ($user['role'] == 'resale' && $user['resale_grade'] == 4)) {
 			//我代理地区会员本月消费积分币
 			$agentArea = M('Region')->getById((int)$user['agent_aid']);
 			$aIds = $agentArea->getChildIds();
@@ -87,11 +87,16 @@ class User extends Abstract_User
 				->where('credit > 0 AND type = \'worth_gold\' AND user_id IN ('.($uIds?implode(',',$uIds):0).')')
 				->fetchRow()
 				->toArray();
-
-			$pro = M('Proportion')->select('price,english')->where('type=26')->fetchRows()->toArray();
+			if($user['role'] == 'agent') {
+				$type = 26;
+			} else {
+				$type = 28;
+			}
+			$pro = M('Proportion')->select('price,english')->where('type='.(int)$type)->fetchRows()->toArray();
 			foreach($pro as $row) {
 				$pro_data[$row['english']] = $row['price'];
 			}
+
 			$ct['amount'] += $ct['area']['seller']['t_credit']*$pro_data['credit_seller'];
 			$ct['amount'] += $ct['area']['member']['t_coin']*$pro_data['credit_coin'];
 			$ct['amount'] += $ct['area']['member_v']['t_coin']*$pro_data['vouchers_user'];
@@ -1071,7 +1076,7 @@ class User extends Abstract_User
 
 		return $rows;
 	}
-	public function activateAddCredit($uid) {
+	public function activateAddCredit($user,$uid) {
 		$rec = M('User')->select()
 			->where('id='.$uid)
 			->fetchRow();
