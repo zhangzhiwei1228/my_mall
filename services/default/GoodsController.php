@@ -217,7 +217,7 @@ class GoodsController extends Controller_Action
 			$relateCates = M('Goods_Category')->getChilds(0, 3)->toTree();
 		}
 
-		$cp = $category->getParent();
+		/*$cp = $category->getParent();
 		if ($cp->exists()) {
 			$ids = $cp->getChildIds();
 			$ids = explode(',',$ids);
@@ -233,7 +233,7 @@ class GoodsController extends Controller_Action
 				->fetchRows()
 				->hasmanySku()
 				->hasmanyPromotions();
-		}
+		}*/
 
 
 		$view = $this->_initView();
@@ -244,11 +244,33 @@ class GoodsController extends Controller_Action
 		$view->category = $category;
 		$view->relateCates = $relateCates;
 		$view->relateAttrs = $relateAttrs;
-		$view->relateGoods = $relateGoods;
+//		$view->relateGoods = $relateGoods;
 
 		$view->render('views/shopping/product_list.php');
 	}
-
+	public function doGetRelateGoodsList() {
+		$category = M('Goods_Category')->getById((int)$this->_request->cid);
+		$cp = $category->getParent();
+		if ($cp->exists()) {
+			$ids = $cp->getChildIds();
+			$ids = explode(',',$ids);
+			foreach($ids as $id) {
+				$gcategory = M('Goods_Category')->select()->where('is_enabled = 1 and id='.(int)$id)->fetchRow()->toArray();
+				if(!$gcategory) continue;
+				$ids1[] = $gcategory['id'];
+			}
+			$ids = implode(',',$ids1);
+			$relateGoods = M('Goods')->select()
+				->where('category_id IN('.($ids ? $ids : 0).') and category_id <> '.(int)$this->_request->cid.' and is_checked = 2')//去掉已选择的，并去掉限制
+				->limit(100)
+				->fetchRows()
+				->hasmanySku()
+				->hasmanyPromotions();
+		}
+		$view = $this->_initView();
+		$view->relateGoods = $relateGoods;
+		$view->render('views/shopping/relate_ajax_list.php');
+	}
 	public function doGetgoodlist()
 	{
 		//载入分类
