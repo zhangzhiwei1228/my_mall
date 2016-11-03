@@ -96,9 +96,9 @@ $this->head()->setTitle($this->title);
 					</td> -->
 					<td>
 						快乐积分：<span><?=$row['skus'][0]['point1']?></span>点<br>
-	                    免费积分：<span><?=$row['skus'][0]['point2']?></span>点<br>
+						帮帮币：<span><?=$row['skus'][0]['point2']?></span>点<br>
 	                    <?php if ($row['skus'][0]['exts']['ext1']['cash']) { ?>
-	                    现金+免费积分：￥<span><?=$row['skus'][0]['exts']['ext1']['cash']?></span>+<span><?=$row['skus'][0]['exts']['ext1']['point']?></span>免费积分<br>
+	                    现金+帮帮币：￥<span><?=$row['skus'][0]['exts']['ext1']['cash']?></span>+<span><?=$row['skus'][0]['exts']['ext1']['point']?></span>帮帮币<br>
 	                    <?php } ?>
 	                    <?php if ($row['skus'][0]['exts']['ext2']['cash']) { ?>
 	                    现金+积分币：￥<span><?=$row['skus'][0]['exts']['ext2']['cash']?></span>+<span><?=$row['skus'][0]['exts']['ext2']['point']?></span>积分币<br>

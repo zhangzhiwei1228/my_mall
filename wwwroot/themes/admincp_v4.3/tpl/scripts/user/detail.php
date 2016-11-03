@@ -231,7 +231,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 			</div>
 			<ul class="list-group">
 				<li class="list-group-item"><label>帐户余额：</label> &yen; <?=$this->data['balance']?></li>
-				<li class="list-group-item"><label>免费积分：</label> <?=$this->data['credit']?></li>
+				<li class="list-group-item"><label>帮帮币：</label> <?=$this->data['credit']?></li>
 				<li class="list-group-item"><label>快乐积分：</label> <?=$this->data['credit_happy']?></li>
 				<li class="list-group-item"><label>积分币：</label> <?=$this->data['credit_coin']?></li>
 				<li class="list-group-item"><label>帐户等级：</label> <?=$this->data->grade['name']?></li>

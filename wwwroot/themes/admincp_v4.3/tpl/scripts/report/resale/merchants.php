@@ -21,7 +21,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
             <?php include WWW_DIR.'themes/admincp_v4.3/tpl/scripts/report/resale/detail_heard.php'?>
             <div class="panel-body">
                 <?php if ($this->user['role'] == 'agent') { ?>
-                    <div class="staff-jifen bgwhite"><p class="w90">我代理地区商家本月使用免费积分：<span class="fr"><em><?=(float)$this->bonus['area']['seller']['t_credit']?></em>&nbsp;分</span></p></div>
+                    <div class="staff-jifen bgwhite"><p class="w90">我代理地区商家本月使用帮帮币：<span class="fr"><em><?=(float)$this->bonus['area']['seller']['t_credit']?></em>&nbsp;币</span></p></div>
                     <div class="staff-jifen bgwhite"><p class="w90">我代理地区会员本月消费积分币：<span class="fr"><em><?=(float)$this->bonus['area']['member']['t_coin']?></em>&nbsp;币</span></p></div>
                     <div class="month-income bgwhite">
                         <p class="income01 w90">我的本月收益</p>

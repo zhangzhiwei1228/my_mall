@@ -7,7 +7,7 @@
  */
 
 if(!defined('APP_KEY')) { exit('Access Denied'); }
-$this->head()->setTitle('免费积分统计');
+$this->head()->setTitle('帮帮币统计');
 $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this->url('action=list');
 ?>
 <style type="text/css">
@@ -36,12 +36,12 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 <div class="row" style="margin-top: 20px;">
     <div class="col-sm-12">
         <div class="panel panel-default">
-            <div class="panel-heading">免费积分统计</div>
+            <div class="panel-heading">帮帮币统计</div>
             <div class="panel-body">
                 <table width="100%" class="table table-striped" data-plugin="chk-group">
                     <thead>
                     <tr>
-                        <th>会员充值免费积分</th>
+                        <th>会员充值帮帮币</th>
                         <th>商家购买</th>
                     </tr>
                     </thead>

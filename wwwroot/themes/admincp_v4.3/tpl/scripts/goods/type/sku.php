@@ -95,7 +95,7 @@ $specs = cd(0);
 	</div>
 </div>
 <div class="form-group">
-	<label class="control-label col-sm-2">免费积分:</label>
+	<label class="control-label col-sm-2">帮帮币:</label>
 	<div class="col-sm-9">
 		<div class="input-group" style="width:260px">
 			<span class="input-group-addon">&yen;</span>

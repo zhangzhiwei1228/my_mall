@@ -49,7 +49,7 @@ $paginator = $this->paginator();
 					<th>帐号</th>
 					<!-- <th width="60">角色</th> -->
 					<th>名称</th>
-					<th width="80" class="text-center">免费积分</th>
+					<th width="80" class="text-center">帮帮币</th>
 					<th width="80" class="text-center">快乐积分</th>
 					<th width="80" class="text-center">积分币</th>
 					<th width="80" class="text-center">余额</th>

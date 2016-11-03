@@ -42,7 +42,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
                 <?php } ?>
                 <div class="staff-jifen bgwhite">
                     <a href="<?=$this->url('/index/shoplist')?> ">
-                        <p class="w90">发展的商家本月使用免费积分(点击查看)：<span class="fr"><em><?=(float)$this->bonus['seller']['credit']['total']?></em>&nbsp;分</span></p>
+                        <p class="w90">发展的商家本月使用帮帮币(点击查看)：<span class="fr"><em><?=(float)$this->bonus['seller']['credit']['total']?></em>&nbsp;分</span></p>
                     </a>
                 </div>
                 <div class="month-income bgwhite">

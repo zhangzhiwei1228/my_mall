@@ -20,7 +20,7 @@
 		<tr>
 			<td><?php
 				switch($row['type']) {
-					case 'credit': echo '免费积分'; break;
+					case 'credit': echo '帮帮币'; break;
 					case 'credit_happy': echo '快乐积分'; break;
 					case 'credit_coin': echo '积分币'; break;
 					case 'worth_gold': echo '抵用金'; break;
@@ -59,7 +59,7 @@
 			<div class="form-group">
 				<select name="type" class="form-control">
 					<option value="">请选择账户类型</option>
-					<option value="credit">免费积分</option>
+					<option value="credit">帮帮币</option>
 					<option value="credit_happy">快乐积分</option>
 					<option value="credit_coin">积分币</option>
 					<option value="vouchers">抵用券</option>

@@ -35,7 +35,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
                     <thead>
                     <tr>
                         <th>会员积分币充值</th>
-                        <th>会员充值免费积分</th>
+                        <th>会员充值帮帮币</th>
                         <th>推广激活</th>
                     </tr>
                     </thead>

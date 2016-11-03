@@ -82,7 +82,7 @@ $this->head()->setTitle($this->title);
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2">免费积分比率</label>
+					<label class="control-label col-sm-2">帮帮币比率</label>
 					<div class="col-sm-4">
 						<div class="input-group">
 							<span class="input-group-addon">1元人民币=</span>
