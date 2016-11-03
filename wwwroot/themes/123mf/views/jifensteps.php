@@ -20,7 +20,7 @@
 		    		<td align="center">会员账号</td>
 		    		<td align="center">会员名</td>
 					<?php if($this->_request->t == 'credit') {?>
-						<td align="center">免费积分余额</td>
+						<td align="center">帮帮币余额</td>
 					<?php } else {?>
 						<td align="center">抵用券余额</td>
 					<?php }?>
@@ -44,7 +44,7 @@
 	    </div>
 	    <div class="jifen-recharge bgwhite">
 			<?php if($this->_request->t == 'credit') {?>
-				<a href="<?php echo $this->url('agent/credit/recharge/?t=credit')?>">立即充值免费积分</a>
+				<a href="<?php echo $this->url('agent/credit/recharge/?t=credit')?>">立即充值帮帮币</a>
 			<?php } else {?>
 				<a href="<?php echo $this->url('agent/credit/recharge/?t=vouchers')?>">立即充值抵用券</a>
 

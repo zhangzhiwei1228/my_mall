@@ -318,7 +318,7 @@ class CartController extends Controller_Action
 
 		try {
 			if ($order['total_credit'] > 0 && $this->user['credit'] < $order['total_credit']) {
-				throw new App_Exception("支付失败，您的免费积分不足", 101);
+				throw new App_Exception("支付失败，您的帮帮币不足", 101);
 			}
 			if ($order['total_credit_happy'] > 0 && $this->user['credit_happy'] < $order['total_credit_happy']) {
 				throw new App_Exception("支付失败，您的快乐积分不足", 102);
@@ -469,11 +469,11 @@ class CartController extends Controller_Action
 							$user['amount'], 0, $voucher, '微信充值', $this->_pid
 						)->commit();
 						$user->expend(
-							'pay', $user['amount'], $voucher, '购买免费积分#'.$voucher
+							'pay', $user['amount'], $voucher, '购买帮帮币#'.$voucher
 						)->commit();
 
 						$point = $setting['credit_rate']*$user['amount'];
-						$user->credit($point, '购买免费积分');
+						$user->credit($point, '购买帮帮币');
 						die('success');
 					}
 					break;
@@ -538,7 +538,7 @@ class CartController extends Controller_Action
 						$user->save();
 
 						//赠送500免费积分
-						$user->credit(500, '升级一星分销商，赠送免费积分');
+						$user->credit(500, '升级一星分销商，赠送帮帮币');
 						die('success');
 					}
 					break;
@@ -556,7 +556,7 @@ class CartController extends Controller_Action
 						$user->save();
 
 						//赠送500免费积分
-						$user->credit(500, '升级二星分销商，赠送免费积分');
+						$user->credit(500, '升级二星分销商，赠送帮帮币');
 						die('success');
 					}
 					break;
@@ -574,7 +574,7 @@ class CartController extends Controller_Action
 						$user->save();
 
 						//赠送500免费积分
-						$user->credit(500, '升级三星分销商，赠送免费积分');
+						$user->credit(500, '升级三星分销商，赠送帮帮币');
 						die('success');
 					}
 					break;
@@ -592,7 +592,7 @@ class CartController extends Controller_Action
 						$user->save();
 
 						//赠送500免费积分
-						$user->credit(500, '升级四星分销商，赠送免费积分');
+						$user->credit(500, '升级四星分销商，赠送帮帮币');
 						die('success');
 					}
 					break;

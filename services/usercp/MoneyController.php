@@ -254,7 +254,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			}
 			try {
 				if ($pay_name['english'] == 'credit' && $this->user['credit'] < $payment) {
-					throw new App_Exception("支付失败，您的免费积分不足", 101);
+					throw new App_Exception("支付失败，您的帮帮币不足", 101);
 				}
 				if ($pay_name['english'] == 'credit_happy' && $this->user['credit_happy'] < $payment) {
 					throw new App_Exception("支付失败，您的快乐积分不足", 102);

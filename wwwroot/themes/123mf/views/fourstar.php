@@ -37,7 +37,7 @@
 	<div class="staff-jifen bgwhite"><p class="w90">我的二级会员本月消费积分币<span class="fr"><em>100</em>&nbsp;币</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">我的商家的一级会员本月消费积分币：<span class="fr"><em>23000</em>&nbsp;币</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">我的商家的二级会员本月消费积分币：<span class="fr"><em>23000</em>&nbsp;币</span></p></div>
-	<div class="staff-jifen bgwhite"><p class="w90"><a href="<?php echo site_url('fourstar/retailer_list'); ?> ">我发展的商家本月使用免费积分<span class="fr"><em>23000</em>&nbsp;分</span></a></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90"><a href="<?php echo site_url('fourstar/retailer_list'); ?> ">我发展的商家本月使用帮帮币<span class="fr"><em>23000</em>&nbsp;币</span></a></p></div>
 	<div class="month-income bgwhite">
 		<p class="income01 w90">我的本月收益</p>
 		<p class="income01 w90"><span>10000</span>&nbsp;元</p>

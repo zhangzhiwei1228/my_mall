@@ -92,7 +92,7 @@
 				<span class="n-dealer-span2"><?=(float)$this->bonus['coin4']['credit_coin']['total']?></span>
 			</li>
 			<li>
-				<span class="n-dealer-span1">发展的商家本月使用免费积分：</span>
+				<span class="n-dealer-span1">发展的商家本月使用帮帮币：</span>
 				<span class="n-dealer-span3">币</span>	
 				<span class="n-dealer-span2"><?=(float)$this->bonus['seller']['credit']['total']?></span>
 			</li>

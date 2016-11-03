@@ -38,9 +38,9 @@
 </div>
 <div class="staff-jifen bgwhite">
     <p class="w90">
-        我代理地区商家本月使用免费积分：
+        我代理地区商家本月使用帮帮币：
         <span class="fr">
-            <em><?=(float)$this->bonus['seller']['credit']['total']?></em>&nbsp;分
+            <em><?=(float)$this->bonus['seller']['credit']['total']?></em>&nbsp;币
         </span>
     </p>
 </div>

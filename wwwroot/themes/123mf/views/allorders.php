@@ -25,7 +25,7 @@
 			<?php foreach ($this->datalist as $row) { ?>
 			<div class="n-money-pro">
 					<div class="n-money-pro-top">
-						<span>价格：<?=$row['total_amount']?>元 + <?=$row['total_credit']?>免费积分 + <?=$row['total_credit_happy']?>快乐积分 + <?=$row['total_credit_coin']?>积分币+ <?=$row['total_vouchers']?>抵用券</span>
+						<span>价格：<?=$row['total_amount']?>元 + <?=$row['total_credit']?>帮帮币 + <?=$row['total_credit_happy']?>快乐积分 + <?=$row['total_credit_coin']?>积分币+ <?=$row['total_vouchers']?>抵用券</span>
 
 					</div>
 					<?php

@@ -323,7 +323,7 @@ class Admincp_ReportController extends Admincp_Controller_Action
 	public function doSiteBonus() {
 		$credits = M('User_Credit')->alias('uc')
 			->leftJoin(M('User')->getTableName().' AS u', 'u.id = uc.user_id')
-			->columns('uc.*, u.role,u.area_id')->where("uc.type='credit' and uc.note like '".'%'.'购买免费积分'.'%'."'");
+			->columns('uc.*, u.role,u.area_id')->where("uc.type='credit' and uc.note like '".'%'.'购买帮帮币'.'%'."'");
 		$seller_bonus = 0;
 		$member_bonus = 0;
 		if ($this->_request->sd) {
@@ -389,7 +389,7 @@ class Admincp_ReportController extends Admincp_Controller_Action
 	}
 	//平台总出帐
 	public function doOutAccount() {
-		$credits = M('User_Credit')->select('sum(credit) as total')->where("type='credit' and note like '".'%'.'购买免费积分'.'%'."'")->fetchRow()->toArray();
+		$credits = M('User_Credit')->select('sum(credit) as total')->where("type='credit' and note like '".'%'.'购买帮帮币'.'%'."'")->fetchRow()->toArray();
 		$coins = M('User_Credit')->select('sum(credit) as total')->where("type='credit_coin' and note like '".'%'.'购买积分币'.'%'."'")->fetchRow()->toArray();
 		$money = M('User_Money')->select('sum(amount) as total')->where("type='pay' and remark like '".'%'.'VIP激活'.'%'."'")->fetchRow()->toArray();
 		$view = $this->_initView();
