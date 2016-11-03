@@ -63,7 +63,7 @@
 			<em class="fl">总计：</em>
 			<p class="fl">
 
-				<span><i><?=$this->data['total_credit']?></i>&nbsp;免费积分</span>
+				<span><i><?=$this->data['total_credit']?></i>&nbsp;帮帮币</span>
 				<span><i><?=$this->data['total_credit_happy']?></i>&nbsp;快乐积分</span>
 				<span><i><?=$this->data['total_credit_coin']?></i>&nbsp;积分币</span>
 				<span><i><?=$this->data['total_amount']?></i>&nbsp;RMB</span>

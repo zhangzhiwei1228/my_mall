@@ -86,7 +86,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : base6
 					<p class="select"><label><input type="radio" name="price_type" value="1"  />&nbsp;&nbsp;<?=$this->data->skus[0]['point1']?> 快乐积分</label></p>
 				<?php } ?>
 				<?php if ($this->data->skus[0]['point2']) { ?>
-					<p class="select"><label><input type="radio" name="price_type" value="2" />&nbsp;&nbsp;<?=$this->data->skus[0]['point2']?> 免费积分</label></p>
+					<p class="select"><label><input type="radio" name="price_type" value="2" />&nbsp;&nbsp;<?=$this->data->skus[0]['point2']?> 帮帮币</label></p>
 				<?php } ?>
 				<?php if ($this->data->skus[0]['point3']) { ?>
 					<p class="select"><label><input type="radio" name="price_type" value="3" />&nbsp;&nbsp;<?=$this->data->skus[0]['point3']?> 积分币</label></p>
@@ -98,7 +98,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : base6
 					<p class="select"><label><input type="radio" name="price_type" value="7" />&nbsp;&nbsp;<?=$this->data->skus[0]['point5']?> 现金</label></p>
 				<?php } ?>
 				<?php if ($this->data->skus[0]['exts']['ext1']['cash']) { ?>
-					<p class="select"><label><input type="radio" name="price_type" value="4" />&nbsp;&nbsp;<?=$this->data->skus[0]['exts']['ext1']['cash']?> 元 + <?=$this->data->skus[0]['exts']['ext1']['point']?> 免费积分</label></p>
+					<p class="select"><label><input type="radio" name="price_type" value="4" />&nbsp;&nbsp;<?=$this->data->skus[0]['exts']['ext1']['cash']?> 元 + <?=$this->data->skus[0]['exts']['ext1']['point']?> 帮帮币</label></p>
 				<?php } ?>
 				<?php if ($this->data->skus[0]['exts']['ext2']['cash']) { ?>
 					<p class="select"><label><input type="radio" name="price_type" value="5" />&nbsp;&nbsp;<?=$this->data->skus[0]['exts']['ext2']['cash']?> 元 + <?=$this->data->skus[0]['exts']['ext2']['point']?> 积分币</label></p>

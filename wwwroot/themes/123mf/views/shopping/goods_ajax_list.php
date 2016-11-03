@@ -23,7 +23,7 @@
                     <p class="text01">快乐积分：<span><?=$row['skus'][0]['point1']?></span>积分</p>
                 <?php } ?>
                 <?php if ($row['skus'][0]['point2'] > 0) { ?>
-                    <p class="text01">免费积分：<span><?=$row['skus'][0]['point2']?></span>积分</p>
+                    <p class="text01">帮帮币：<span><?=$row['skus'][0]['point2']?></span>积分</p>
                 <?php } ?>
                 <?php if ($row['skus'][0]['point3'] > 0) { ?>
                     <p class="text01">积分币：<span><?=$row['skus'][0]['point3']?></span>币</p>
@@ -35,7 +35,7 @@
                     <p class="text01">现金：<span><?=$row['skus'][0]['point5']?></span>￥</p>
                 <?php } ?>
                 <?php if ($row['skus'][0]['exts']['ext1']['cash']) { ?>
-                    <p class="text02">现金+免费积分：￥<span><?=$row['skus'][0]['exts']['ext1']['cash']?></span>+<span><?=$row['skus'][0]['exts']['ext1']['point']?></span>免费积分</p>
+                    <p class="text02">现金+帮帮币：￥<span><?=$row['skus'][0]['exts']['ext1']['cash']?></span>+<span><?=$row['skus'][0]['exts']['ext1']['point']?></span>帮帮币</p>
                 <?php } ?>
                 <?php if ($row['skus'][0]['exts']['ext2']['cash']) { ?>
                     <p class="text03">现金+积分币：￥<span><span><?=$row['skus'][0]['exts']['ext2']['cash']?></span>+<span><span><?=$row['skus'][0]['exts']['ext2']['point']?></span>积分币</p>

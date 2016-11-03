@@ -73,7 +73,7 @@
 <div class="n-rechargerecord">
     <div class="n-personal-center-tit">
         <a href="javascript:history.go(-1);"><img width="11" height="21" src="<?php echo static_file('mobile/img/img-22.png'); ?> " alt=""></a>
-        <?php echo $this->_request->t == 'credit' ? '充值免费积分记录':'充值抵用券记录' ?>
+        <?php echo $this->_request->t == 'credit' ? '充值帮帮币记录':'充值抵用券记录' ?>
 
     </div>
     <form method="post" enctype="multipart/form-data" class="form-horizontal sui-dataitem">

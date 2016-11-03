@@ -11,7 +11,7 @@
 	</div>
 	<div class="sst">
 		<div class="sst-box">
-			<input value="免费积分转换" type="submit">
+			<input value="帮帮币转换" type="submit">
 			<input value="抵用卷转换" type="submit">
 		</div>
 	</div>

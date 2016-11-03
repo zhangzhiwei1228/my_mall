@@ -48,7 +48,7 @@
     	<p class="cash w90">支付金额 :</p>
         <?php if(!empty($this->order['total_credit'])) {?>
     	<p class="cash-muns w90">
-            <span><?=$this->order['total_credit']?></span>免费积分
+            <span><?=$this->order['total_credit']?></span>帮帮币
         </p>
         <?php }?>
         <?php if(!empty($this->order['total_credit_coin'])) {?>
@@ -77,7 +77,7 @@
         <p class="cash w90">总计 :</p>
         <p class="cash-muns w90">
             <?php if(!empty($this->order['total_credit'])) {?>
-                <span><?=$this->order['total_credit']?></span>免费积分+
+                <span><?=$this->order['total_credit']?></span>帮帮币+
             <?php }?>
             <?php if(!empty($this->order['total_credit_coin'])) {?>
                 <span><?=$this->order['total_credit_coin']?></span>积分币+

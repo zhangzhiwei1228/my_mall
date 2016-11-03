@@ -17,7 +17,7 @@
 				<p>
 					<?php switch($this->_request->t) {
 						case 'credit' :
-							echo '免费积分';
+							echo '帮帮币';
 							break;
 						case 'vouchers' :
 							echo '抵用券';
@@ -33,7 +33,7 @@
 				<p>本月使用</p>
 				<p><?php switch($this->_request->t) {
 						case 'credit' :
-							echo '免费积分';
+							echo '帮帮币';
 							break;
 						case 'vouchers' :
 							echo '抵用券';
@@ -47,7 +47,7 @@
 			<th>
 				<p><?php switch($this->_request->t) {
 						case 'credit' :
-							echo '免费积分';
+							echo '帮帮币';
 							break;
 						case 'vouchers' :
 							echo '抵用券';

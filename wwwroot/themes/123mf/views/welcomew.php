@@ -16,7 +16,7 @@
 		<a href="<?=$this->url('default/goods/page?t=banr')?>"></a>
 	</div>
 	<div onmouseover="this.style.cursor='pointer'" onclick="document.location='<?=$this->url('default/goods/page?t=banl')?>';" class="n-recharge-sp  ssj">
-		<p>合作商家获取免费积分</p>
+		<p>合作商家获取帮帮币</p>
 		<?php /*?><a href="<?=$this->url('default/goods')?>"></a>*/?>
 		<a href="<?=$this->url('default/goods/page?t=banl')?>"></a>
 	</div>

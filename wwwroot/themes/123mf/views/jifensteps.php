@@ -37,7 +37,7 @@
 	    <div class="jifen-free bgwhite">
 	    	<div class="w90">
 
-	    		<p class="free-text fl"><em><?php echo $this->_request->t == 'credit' ? '积' : '券'; ?></em><?php echo $this->_request->t == 'credit' ? '免费积分余额':'抵用券余额' ?></p>
+	    		<p class="free-text fl"><em><?php echo $this->_request->t == 'credit' ? '积' : '券'; ?></em><?php echo $this->_request->t == 'credit' ? '帮帮币余额':'抵用券余额' ?></p>
 	    		<p class="free-point fr"><span><?=$this->user[$this->_request->t]?></span>分</p>
 	    		<div class="clear"></div>
 	    	</div>

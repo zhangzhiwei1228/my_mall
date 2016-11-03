@@ -26,7 +26,7 @@
 			<input value="已激活" class="n-member-input1" type="button">
 			<?php } else { ?>
 <!--			<input value="立即激活(¥20)" class="n-member-input1" type="submit">-->
-			<input value="立即激活(20免费积分)" class="n-member-input1" type="submit">
+			<input value="立即激活(20帮帮币)" class="n-member-input1" type="submit">
 			<?php } ?>
 		</form>
 		<!-- <div class="n-member-input">

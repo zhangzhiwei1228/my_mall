@@ -15,7 +15,7 @@
     <div class="m-recharge">
         <div class="n-recharge-pic-te">
             <p style="color:#b40000;font-size:14px;">抵用券充值说明：</p>
-            <p style="color:#555;">1元=<?php echo $this->data['r_digital']?>抵用券（抵用券可转换为免费积分，积分币等）</p>
+            <p style="color:#555;">1元=<?php echo $this->data['r_digital']?>抵用券（抵用券可转换为帮帮币，积分币等）</p>
         </div>
         <div class="row f-cb" style="margin-top: 20px">
             <div class="tit fl">输入要充值的抵用券</div>

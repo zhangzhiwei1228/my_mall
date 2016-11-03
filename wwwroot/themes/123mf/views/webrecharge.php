@@ -14,7 +14,7 @@
 				echo '快乐积分';
 				break;
 			case 'credit':
-				echo '免费积分';
+				echo '帮帮币';
 				break;
 			case 'credit_coin':
 				echo '积分币';
@@ -85,12 +85,12 @@
 	</script>
 	<?php } elseif ($this->_request->t == 'credit') { ?>
 	<div class="n-recharge-pic-te">
-		<p style="color:#b40000;font-size:14px;">免费积分充值说明：</p>
-		<p style="color:#555;">1元=<?php echo $this->data['r_digital']?>免费积分（免费积分只能在兑购商品时使用的）</p>
+		<p style="color:#b40000;font-size:14px;">帮帮币充值说明：</p>
+		<p style="color:#555;">1元=<?php echo $this->data['r_digital']?>帮帮币（帮帮币只能在兑购商品时使用的）</p>
 	</div>
 	<div class="n-h5"></div>
 	<div class="n-recharge-sp">
-		<p>输入要充值的免费积分 </p>		
+		<p>输入要充值的帮帮币 </p>
 		<a href=""></a>
 		<input type="text" name="point">
 	</div>
@@ -111,9 +111,9 @@
 	<?php } elseif ($this->_request->t == 'vouchers') { ?>
 		<div class="n-recharge-pic-te">
 			<p style="color:#b40000;font-size:14px;">充值抵用券赠送活动说明：</p>
-			<p style="color:#555;">会员充值抵用卷赠送免费积分活动，赠送值为充值抵用卷金额的50%（充1000,送500）。</p>
+			<p style="color:#555;">会员充值抵用卷赠送帮帮币活动，赠送值为充值抵用卷金额的50%（充1000,送500）。</p>
 			<p style="color:#b40000;font-size:14px;">抵用券充值说明：</p>
-			<p style="color:#555;">1元=<?php echo $this->data['r_digital']?>抵用券（抵用券可转换为免费积分，积分币、商城现金及退款现金）</p>
+			<p style="color:#555;">1元=<?php echo $this->data['r_digital']?>抵用券（抵用券可转换为帮帮币，积分币、商城现金及退款现金）</p>
 		</div>
 		<div class="n-h5"></div>
 		<div class="n-recharge-sp">
