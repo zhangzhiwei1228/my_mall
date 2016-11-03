@@ -77,11 +77,11 @@ class PayNotifyCallBack extends WxPayNotify
 								$q['total_fee'], 0, $voucher, '微信充值', $this->_pid
 							)->commit();
 							$user->expend(
-								'pay', $q['total_fee'], $voucher, '购买免费积分#'.$voucher
+								'pay', $q['total_fee'], $voucher, '购买帮帮币#'.$voucher
 							)->commit();
 
 							$point = $setting['credit_rate']*$q['total_fee'];
-							$user->credit($point, '购买免费积分');
+							$user->credit($point, '购买帮帮币');
 							die('success');
 						}
 						break;
@@ -146,7 +146,7 @@ class PayNotifyCallBack extends WxPayNotify
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级一星分销商，赠送免费积分');
+							$user->credit(500, '升级一星分销商，赠送帮帮币');
 							die('success');
 						}
 						break;
@@ -164,7 +164,7 @@ class PayNotifyCallBack extends WxPayNotify
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级二星分销商，赠送免费积分');
+							$user->credit(500, '升级二星分销商，赠送帮帮币');
 							die('success');
 						}
 						break;
@@ -182,7 +182,7 @@ class PayNotifyCallBack extends WxPayNotify
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级三星分销商，赠送免费积分');
+							$user->credit(500, '升级三星分销商，赠送帮帮币');
 							die('success');
 						}
 						break;
@@ -200,7 +200,7 @@ class PayNotifyCallBack extends WxPayNotify
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级四星分销商，赠送免费积分');
+							$user->credit(500, '升级四星分销商，赠送帮帮币');
 							die('success');
 						}
 						break;

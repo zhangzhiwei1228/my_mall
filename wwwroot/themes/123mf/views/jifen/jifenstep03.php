@@ -12,7 +12,7 @@
 	    		<dt></dt>
 	    		<dd class="sure-info">您确认要给<?=$this->account['nickname']?>(<?=$this->account['username']?>)用户</dd>
 	    		<dd class="sure-point">
-					<?php echo $this->_request->type == 'credit' ? '赠送免费积分' : '赠送抵用券' ?>
+					<?php echo $this->_request->type == 'credit' ? '赠送帮帮币' : '赠送抵用券' ?>
 					<span><?=$_POST[$this->_request->type]?></span>
 					<?php echo $this->_request->type == 'credit' ? '点' : '券' ?>
 

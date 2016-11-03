@@ -13,13 +13,13 @@
             <li><strong>快乐积分：</strong><span><?=$row['skus'][0]['point1']?></span><p>积分</p></li> 
             <?php } ?>
             <?php if ($row['skus'][0]['point2']) { ?>
-            <li><strong>免费积分：</strong><span><?=$row['skus'][0]['point2']?></span><p>积分</p></li> 
+            <li><strong>帮帮币：</strong><span><?=$row['skus'][0]['point2']?></span><p>积分</p></li>
             <?php } ?>
             <?php if ($row['skus'][0]['exts']['ext1']['cash']) { ?>
-            <li><strong>现金+免费积分:</strong><span><?=$row['skus'][0]['exts']['ext1']['cash']?><font color="#666">元</font></span><p>+</p><span><?=$row['skus'][0]['exts']['ext1']['point']?></span><p>积分</p></li>
+            <li><strong>现金+帮帮币:</strong><span><?=$row['skus'][0]['exts']['ext1']['cash']?><font color="#666">元</font></span><p>+</p><span><?=$row['skus'][0]['exts']['ext1']['point']?></span><p>积分</p></li>
             <?php } ?>
             <?php if ($row['skus'][0]['exts']['ext2']['cash']) { ?>
-            <li><strong>现金+免费积分:</strong><span><?=$row['skus'][0]['exts']['ext2']['cash']?><font color="#666">元</font></span><p>+</p><span><?=$row['skus'][0]['exts']['ext2']['point']?></span><p>积分</p></li>
+            <li><strong>现金+帮帮币:</strong><span><?=$row['skus'][0]['exts']['ext2']['cash']?><font color="#666">元</font></span><p>+</p><span><?=$row['skus'][0]['exts']['ext2']['point']?></span><p>积分</p></li>
             <?php } ?>
             <li><del ><strong  style="text-decoration: line-through;">原价：￥</strong><span  style="text-decoration: line-through;"><?=$row['skus'][0]['market_price']?></span><p  style="text-decoration: line-through;">元</p></del><del class="fr"><strong class="cheaper"><?php echo $row['notes'];?></strong></del></li>
             

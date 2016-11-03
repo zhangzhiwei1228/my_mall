@@ -34,7 +34,7 @@ class Worthglod extends Abstract_Model {
             $exts = json_decode($glod['pay_json']);
             //扣免费积分
             if ($exts->exts_type == 'credit') {
-                $glod->buyer->credit($exts->payment*-1, '消耗'.$exts->payment.'点免费积分，支付【'.$exts->pay_desc.'】', $status,'credit-worth_gold');
+                $glod->buyer->credit($exts->payment*-1, '消耗'.$exts->payment.'点帮帮币，支付【'.$exts->pay_desc.'】', $status,'credit-worth_gold');
             }
             //扣快乐积分
             if ($exts->exts_type == 'credit_happy') {
@@ -89,7 +89,7 @@ class Worthglod extends Abstract_Model {
             //扣免费积分
             if ($exts->exts_type == 'credit') {
 
-                $glod->buyer->credit($exts->payment*-1, '消耗'.$exts->payment.'点免费积分，支付【'.$glod['privilege'].'抵用金】');
+                $glod->buyer->credit($exts->payment*-1, '消耗'.$exts->payment.'点帮帮币，支付【'.$glod['privilege'].'抵用金】');
             }
             //扣快乐积分
             if ($exts->exts_type == 'credit_happy') {

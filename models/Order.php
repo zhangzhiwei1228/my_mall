@@ -149,7 +149,7 @@ class Order extends Abstract_Model
 
 			//扣免费积分
 			if ($order['total_credit']) {
-				$order->buyer->credit($order['total_credit']*-1, '消耗'.$order['total_credit'].'点免费积分');
+				$order->buyer->credit($order['total_credit']*-1, '消耗'.$order['total_credit'].'点帮帮币');
 			}
 			//扣快乐积分
 			if ($order['total_credit_happy']) {

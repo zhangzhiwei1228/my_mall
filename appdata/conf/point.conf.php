@@ -12,9 +12,9 @@ if(!defined('APP_KEY')) { exit('Access Denied'); }
 
 return array(
 	'ext1' => array(
-		'name'=>'现金+免费积分', 
+		'name'=>'现金+帮帮币',
 		'rate'=>100,
-		'extname'=>'免费积分'
+		'extname'=>'帮帮币'
 	),	
 	'ext2' => array(
 		'name'=>'现金+积分币', 

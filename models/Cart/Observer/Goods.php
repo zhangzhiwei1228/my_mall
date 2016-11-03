@@ -58,7 +58,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 					$g['final_credit_happy'] = $g['point1']?$g['point1'] : $sku['point1'];
 					break;
 				case 2:
-					$g['price_text'] = ($g['point2']?$g['point2'] : $sku['point2']).'免费积分';
+					$g['price_text'] = ($g['point2']?$g['point2'] : $sku['point2']).'帮帮币';
 					$g['final_credit'] = $g['point2']?$g['point2'] : $sku['point2'];
 					break;
 				case 3:
@@ -66,7 +66,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 					$g['final_credit_coin'] = $g['point3']?$g['point3'] : $sku['point3'];
 					break;
 				case 4:
-					$g['price_text'] = ($g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash']).'元+'.($g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point']).'免费积分';
+					$g['price_text'] = ($g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash']).'元+'.($g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point']).'帮帮币';
 					$g['final_credit'] = $g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point'];
 					$g['final_cash'] = $g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash'];
 					break;
@@ -226,7 +226,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 							$g['final_credit_happy'] = $g['point1']?$g['point1'] : $sku['point1'];
 							break;
 						case 2:
-							$g['price_text'] = ($g['point2']?$g['point2'] : $sku['point2']).'免费积分';
+							$g['price_text'] = ($g['point2']?$g['point2'] : $sku['point2']).'帮帮币';
 							$g['final_credit'] = $g['point2']?$g['point2'] : $sku['point2'];
 							break;
 						case 3:
@@ -234,7 +234,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 							$g['final_credit_coin'] = $g['point3']?$g['point3'] : $sku['point3'];
 							break;
 						case 4:
-							$g['price_text'] = ($g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash']).'元+'.($g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point']).'免费积分';
+							$g['price_text'] = ($g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash']).'元+'.($g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point']).'帮帮币';
 							$g['final_credit'] = $g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point'];
 							$g['final_cash'] = $g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash'];
 							break;
@@ -300,7 +300,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 						$g['final_credit_happy'] = $g['point1']?$g['point1'] : $sku['point1'];
 						break;
 					case 2:
-						$g['price_text'] = ($g['point2']?$g['point2'] : $sku['point2']).'免费积分';
+						$g['price_text'] = ($g['point2']?$g['point2'] : $sku['point2']).'帮帮币';
 						$g['final_credit'] = $g['point2']?$g['point2'] : $sku['point2'];
 						break;
 					case 3:
@@ -308,7 +308,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 						$g['final_credit_coin'] = $g['point3']?$g['point3'] : $sku['point3'];
 						break;
 					case 4:
-						$g['price_text'] = ($g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash']).'元+'.($g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point']).'免费积分';
+						$g['price_text'] = ($g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash']).'元+'.($g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point']).'帮帮币';
 						$g['final_credit'] = $g['exts']['ext1']['point']?$g['exts']['ext1']['point'] : $sku['exts']['ext1']['point'];
 						$g['final_cash'] = $g['exts']['ext1']['cash']?$g['exts']['ext1']['cash'] : $sku['exts']['ext1']['cash'];
 						break;

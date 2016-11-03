@@ -12,7 +12,7 @@
 	</div>
 	<div class="jifen-step02">
         <?php if($this->type == 'credit') {?>
-            <a href="<?php echo $this->url('agent/credit/recharge/?t=credit')?>" class=" btn sure">立即充值免费积分</a>
+            <a href="<?php echo $this->url('agent/credit/recharge/?t=credit')?>" class=" btn sure">立即充值帮帮币</a>
         <?php } else {?>
             <a href="<?php echo $this->url('agent/credit/recharge/?t=vouchers')?>" class=" btn sure">立即充值抵用券</a>
         <?php }?>

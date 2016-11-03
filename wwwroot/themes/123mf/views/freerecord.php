@@ -68,7 +68,7 @@
 			<?php
 				switch($this->type) {
 					case 'credit' :
-						echo '获取免费积分记录';
+						echo '获取帮帮币记录';
 						break;
 					case 'credit_happy' :
 						echo '获取免费快乐积分记录';

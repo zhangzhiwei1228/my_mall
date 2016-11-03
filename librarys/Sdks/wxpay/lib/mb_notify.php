@@ -114,7 +114,7 @@ class PayNotifyCallBack extends WxPayNotify
 								$result['cash_fee']/100, 0, $voucher, '微信充值', 2
 							)->commit();
 							$user->expend(
-								'pay', $result['cash_fee']/100, $voucher, '购买免费积分#'.$voucher
+								'pay', $result['cash_fee']/100, $voucher, '购买帮帮币#'.$voucher
 							)->commit();
 							//$point = ($user['role'] == 'seller') ? $setting['credit_rate_agent']*($result['cash_fee']/100) : $setting['credit_rate']*($result['cash_fee']/100);
 							/*$point = $setting['credit_rate']*($result['cash_fee']/100);*/
@@ -125,7 +125,7 @@ class PayNotifyCallBack extends WxPayNotify
 							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
 							$data = M('Proportion')->select()->where('type='.(int)$type_id.' and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
 							$point = $data['r_digital']*($result['cash_fee']/100);
-							$user->credit($point, '购买免费积分');
+							$user->credit($point, '购买帮帮币');
 
 							die('success');
 						}
@@ -225,7 +225,7 @@ class PayNotifyCallBack extends WxPayNotify
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级一星分销商，赠送免费积分');
+							$user->credit(500, '升级一星分销商，赠送帮帮币');
 							die('success');
 						}
 						break;
@@ -243,7 +243,7 @@ class PayNotifyCallBack extends WxPayNotify
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级二星分销商，赠送免费积分');
+							$user->credit(500, '升级二星分销商，赠送帮帮币');
 							die('success');
 						}
 						break;
@@ -261,7 +261,7 @@ class PayNotifyCallBack extends WxPayNotify
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级三星分销商，赠送免费积分');
+							$user->credit(500, '升级三星分销商，赠送帮帮币');
 							die('success');
 						}
 						break;
@@ -279,7 +279,7 @@ class PayNotifyCallBack extends WxPayNotify
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级四星分销商，赠送免费积分');
+							$user->credit(500, '升级四星分销商，赠送帮帮币');
 							die('success');
 						}
 						break;

@@ -175,7 +175,7 @@ $.refreshCart = function() {
 			html += '<p>'+total_credit_happy+'快乐积分</p>';
 		}
 		if (total_credit>0) {
-			html += '<p>'+total_credit+'免费积分</p>';
+			html += '<p>'+total_credit+'帮帮币</p>';
 		}
 		if (total_credit_coin>0) {
 			html += '<p>'+total_credit_coin+'积分币</p>';
