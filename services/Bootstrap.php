@@ -39,6 +39,7 @@ class Bootstrap extends Suco_Bootstrap
 			->setControllerDirectory(SRV_DIR.'admincp', 'admincp')
 			->setControllerDirectory(SRV_DIR.'default', 'default')
 			->setControllerDirectory(SRV_DIR.'usercp', 'usercp')
+			->setControllerDirectory(SRV_DIR.'app', 'app')
 			->setControllerDirectory(SRV_DIR.'agent', 'agent');
 
 		#记录当前位置
