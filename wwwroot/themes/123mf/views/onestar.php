@@ -62,8 +62,8 @@
 
 	<div class="staff-jifen bgwhite"><p class="w90">一级会员抵用券购买抵用金：<span class="fr"><em><?=(float)$this->bonus['buy1']['worth_gold']['total']?></em>&nbsp;金</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">二级会员抵用券购买抵用金：<span class="fr"><em><?=(float)$this->bonus['buy2']['worth_gold']['total']?></em>&nbsp;金</span></p></div>
-	<div class="staff-jifen bgwhite"><p class="w90">一级会员抵用券转换成免费积分：<span class="fr"><em><?=(float)$this->bonus['conversion1']['credit']['total']?></em>&nbsp;分</span></p></div>
-	<div class="staff-jifen bgwhite"><p class="w90">二级会员抵用券转换成免费积分：<span class="fr"><em><?=(float)$this->bonus['conversion2']['credit']['total']?></em>&nbsp;分</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">一级会员抵用券转换成帮帮币：<span class="fr"><em><?=(float)$this->bonus['conversion1']['credit']['total']?></em>&nbsp;币</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">二级会员抵用券转换成帮帮币：<span class="fr"><em><?=(float)$this->bonus['conversion2']['credit']['total']?></em>&nbsp;币</span></p></div>
 
 	<div class="staff-jifen bgwhite"><p class="w90">我的一级会员消费积分币：<span class="fr"><em><?=(float)$this->bonus['coin1']['credit_coin']['total']?></em>&nbsp;币</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">我的二级会员消费积分币：<span class="fr"><em><?=(float)$this->bonus['coin2']['credit_coin']['total']?></em>&nbsp;币</span></p></div>
@@ -79,12 +79,12 @@
 
 	<div class="staff-jifen bgwhite"><p class="w90">我的商家的一级会员抵用券购买抵用金：<span class="fr"><em><?=(float)$this->bonus['buy3']['worth_gold']['total']?></em>&nbsp;金</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">我的商家的二级会员抵用券购买抵用金：<span class="fr"><em><?=(float)$this->bonus['buy4']['worth_gold']['total']?></em>&nbsp;金</span></p></div>
-	<div class="staff-jifen bgwhite"><p class="w90">我的商家的一级会员抵用券转换成免费积分：<span class="fr"><em><?=(float)$this->bonus['conversion3']['credit']['total']?></em>&nbsp;分</span></p></div>
-	<div class="staff-jifen bgwhite"><p class="w90">我的商家的二级会员抵用券转换成免费积分：<span class="fr"><em><?=(float)$this->bonus['conversion4']['credit']['total']?></em>&nbsp;分</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">我的商家的一级会员抵用券转换成帮帮币：<span class="fr"><em><?=(float)$this->bonus['conversion3']['credit']['total']?></em>&nbsp;币</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">我的商家的二级会员抵用券转换成帮帮币：<span class="fr"><em><?=(float)$this->bonus['conversion4']['credit']['total']?></em>&nbsp;币</span></p></div>
 
 	<div class="staff-jifen bgwhite">
 		<a href="<?=$this->url('/index/shoplist/?t=credit')?> ">
-			<p class="w90">发展的商家本月使用免费积分(点击查看)：<span class="fr"><em><?=(float)$this->bonus['seller']['credit']['total']?></em>&nbsp;分</span></p>
+			<p class="w90">发展的商家本月使用帮帮币(点击查看)：<span class="fr"><em><?=(float)$this->bonus['seller']['credit']['total']?></em>&nbsp;币</span></p>
 		</a>
 	</div>
 	<div class="staff-jifen bgwhite">
@@ -124,7 +124,7 @@
 					<dd>5，微信：截图二维码，打开微信发送给好友</dd>
 					<dd>6，朋友圈：点击即复制地址，打开微信粘贴分享</dd> -->
 					<dd>
-						分享致富：1、使用下列工具将网站分享给朋友，朋友通过您的链接注册并成功激活后，您可获得20免费积分，同时您朋友也获得20免费积分。2、升级成为星级分销商，分享可获得更多现金提成。
+						分享致富：1、使用下列工具将网站分享给朋友，朋友通过您的链接注册并成功激活后，您可获得20帮帮币，同时您朋友也获得20帮帮币。2、升级成为星级分销商，分享可获得更多现金提成。
 					</dd>
 					<dd>1、QQ：选择帐号密码登陆，登陆后选择好友点击发送</dd>
 					<dd>2、QQ空间、新浪微博、腾讯微博：输入帐号密码，登陆后直接点击分享</dd>

@@ -18,9 +18,9 @@
 	</div>
 	<div class="n-recharge-pic-te">
 		<p style="color:#b40000;font-size:14px;">充值抵用券赠送活动说明：</p>
-		<p style="color:#555;">会员充值抵用卷赠送免费积分活动，赠送值为充值抵用卷金额的50%（充1000,送500）。</p>
+		<p style="color:#555;">会员充值抵用卷赠送帮帮币活动，赠送值为充值抵用卷金额的50%（充1000,送500）。</p>
 		<p style="color:#b40000;font-size:14px;">抵用券充值说明：</p>
-		<p style="color:#555;">1元=1抵用券（抵用券可转换为免费积分，积分币、商城现金及退款现金）</p>
+		<p style="color:#555;">1元=1抵用券（抵用券可转换为帮帮币，积分币、商城现金及退款现金）</p>
 	</div>
 	<div class="n-h5"></div>
 	<div class="n-recharge-sp">

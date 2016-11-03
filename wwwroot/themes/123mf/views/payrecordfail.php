@@ -13,7 +13,7 @@
 			<div class="n-payrecordfail-head">
 				<img src="<?php echo static_file('mobile/img/img-48.png'); ?> " alt="">
 			</div>
-			<div class="n-payrecordfail-te">免费积分余额不足转换失败</div>
+			<div class="n-payrecordfail-te">帮帮币余额不足转换失败</div>
 			<div class="n-payrecordfail-input1">
 				<input style="float:left" value="确定" type="submit"><input style="float:right" value="确定" type="submit">
 			</div>

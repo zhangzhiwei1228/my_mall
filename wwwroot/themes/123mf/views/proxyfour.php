@@ -26,7 +26,7 @@
 			<li>
 				<span class="n-dealer-span1">
 					<p>我代理地区我下线的</p>
-					<p>商家本月使用免费积分：</p>
+					<p>商家本月使用帮帮币：</p>
 				</span>
 				<span class="n-dealer-span3">分</span>	
 				<span class="n-dealer-span2"><?=(float)$this->bonus['area']['seller']['t_credit']?></span>

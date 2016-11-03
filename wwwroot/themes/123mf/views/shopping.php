@@ -47,7 +47,7 @@
 			<p><?=$this->status['total_credit_happy']?>快乐积分</p>
 			<?php } ?>
 			<?php if ($this->status['total_credit']) { ?>
-			<p><?=$this->status['total_credit']?>免费积分</p>
+			<p><?=$this->status['total_credit']?>帮帮币</p>
 			<?php } ?>
 			<?php if ($this->status['total_credit_coin']) { ?>
 			<p><?=$this->status['total_credit_coin']?>积分币</p>

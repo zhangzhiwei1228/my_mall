@@ -24,7 +24,7 @@
 	<div style="background:#fff;" class="n-dealer-list">
 		<ul class="clear">
 			<li>
-				<span class="n-dealer-span1">我代理地区商家本月使用免费积分</span>
+				<span class="n-dealer-span1">我代理地区商家本月使用帮帮币</span>
 				<span class="n-dealer-span3">分</span>	
 				<span class="n-dealer-span2">10000</span>
 			</li>

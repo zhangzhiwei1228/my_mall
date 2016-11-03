@@ -45,7 +45,7 @@
 		</div>
 	</div>
 	<?php if ($this->user['role'] == 'agent') { ?>
-	<div class="staff-jifen bgwhite"><p class="w90">我代理地区商家本月使用免费积分：<span class="fr"><em><?=(float)$this->bonus['area']['seller']['t_credit']?></em>&nbsp;分</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">我代理地区商家本月使用帮帮币：<span class="fr"><em><?=(float)$this->bonus['area']['seller']['t_credit']?></em>&nbsp;币</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">我代理地区会员本月消费积分币：<span class="fr"><em><?=(float)$this->bonus['area']['member']['t_coin']?></em>&nbsp;币</span></p></div>
 	<div class="month-income bgwhite">
 		<p class="income01 w90">我的本月收益</p>
@@ -60,8 +60,8 @@
 
 	<div class="staff-jifen bgwhite"><p class="w90">我的员工的一级会员抵用券购买抵用金：<span class="fr"><em><?=(float)$this->bonus['buy1']['worth_gold']['total']?></em>&nbsp;金</span></p></div>
 	<div class="staff-jifen bgwhite"><p class="w90">我的员工的二级会员抵用券购买抵用金：<span class="fr"><em><?=(float)$this->bonus['buy2']['worth_gold']['total']?></em>&nbsp;金</span></p></div>
-	<div class="staff-jifen bgwhite"><p class="w90">我的员工的一级会员抵用券转换成免费积分：<span class="fr"><em><?=(float)$this->bonus['conversion1']['credit']['total']?></em>&nbsp;分</span></p></div>
-	<div class="staff-jifen bgwhite"><p class="w90">我的员工的二级会员抵用券转换成免费积分：<span class="fr"><em><?=(float)$this->bonus['conversion2']['credit']['total']?></em>&nbsp;分</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">我的员工的一级会员抵用券转换成帮帮币：<span class="fr"><em><?=(float)$this->bonus['conversion1']['credit']['total']?></em>&nbsp;币</span></p></div>
+	<div class="staff-jifen bgwhite"><p class="w90">我的员工的二级会员抵用券转换成帮帮币：<span class="fr"><em><?=(float)$this->bonus['conversion2']['credit']['total']?></em>&nbsp;币</span></p></div>
 	<div class="month-income bgwhite">
 		<p class="income01 w90">我的本月收益</p>
 		<p class="income01 w90"><span><?=(float)$this->bonus['amount']?></span>&nbsp;元</p>
@@ -72,7 +72,7 @@
 	<div style="margin-bottom:71px;" class="member-rank bgwhite">
 		<a href="<?php echo $this->url('agent/logs/employ/?t=credit')?>" >
 			<p class="w90">
-				商家本日赠送免费积分：
+				商家本日赠送帮帮币：
 				<span style="font-size: 20px;color: #b40000;">
 					<?php echo $this->employ['total'] ? $this->employ['total'] : 0 ?>
 				</span>（查看详情）
@@ -80,13 +80,13 @@
 		</a>
 		<a href="<?php echo $this->url('agent/logs/recharge/?t=credit')?>" >
 			<p class="w90">
-				商家本日充值免费积分：
+				商家本日充值帮帮币：
 				<span style="font-size: 20px;color: #b40000;">
 					<?php echo $this->recharge['total'] ? $this->recharge['total'] : 0?>
 				</span>（查看详情）
 			</p>
 		</a>
-		<p class="w90">商家本月赠送免费积分数：<span style="font-size: 20px;color: #b40000;"><?php echo $this->Memploy['total'] ? $this->Memploy['total'] : 0?></span></p>
+		<p class="w90">商家本月赠送帮帮币数：<span style="font-size: 20px;color: #b40000;"><?php echo $this->Memploy['total'] ? $this->Memploy['total'] : 0?></span></p>
 
 		<a href="<?php echo $this->url('agent/logs/employ/?t=vouchers')?>" >
 			<p class="w90">

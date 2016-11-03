@@ -117,12 +117,12 @@
 			</li>
 
 			<li>
-				<span class="n-dealer-span1">我的一级会员抵用券转换成免费积分：</span>
+				<span class="n-dealer-span1">我的一级会员抵用券转换成帮帮币：</span>
 				<span class="n-dealer-span3">分</span>
 				<span class="n-dealer-span2"><?=(float)$this->bonus['conversion1']['credit']['total']?></span>
 			</li>
 			<li>
-				<span class="n-dealer-span1">我的二级会员抵用券转换成免费积分：</span>
+				<span class="n-dealer-span1">我的二级会员抵用券转换成帮帮币：</span>
 				<span class="n-dealer-span3">分</span>
 				<span class="n-dealer-span2"><?=(float)$this->bonus['conversion2']['credit']['total']?></span>
 			</li>
@@ -151,12 +151,12 @@
 			</li>
 
 			<li>
-				<span class="n-dealer-span1">我的商家的一级会员抵用券转换成免费积分：</span>
+				<span class="n-dealer-span1">我的商家的一级会员抵用券转换成帮帮币：</span>
 				<span class="n-dealer-span3">分</span>
 				<span class="n-dealer-span2"><?=(float)$this->bonus['conversion3']['credit']['total']?></span>
 			</li>
 			<li>
-				<span class="n-dealer-span1">我的商家的二级会员抵用券转换成免费积分：</span>
+				<span class="n-dealer-span1">我的商家的二级会员抵用券转换成帮帮币：</span>
 				<span class="n-dealer-span3">分</span>
 				<span class="n-dealer-span2"><?=(float)$this->bonus['conversion4']['credit']['total']?></span>
 			</li>
@@ -174,7 +174,7 @@
 			</li>
 			<li style="height:auto;line-height:20px;">
 				<a href="<?=$this->url('/index/shoplist/?t=credit')?>" style="display:block;">
-					<span class="n-dealer-span1">发展的商家本月使用免费积分(点击查看)：</span>
+					<span class="n-dealer-span1">发展的商家本月使用帮帮币(点击查看)：</span>
 					<span class="n-dealer-span3">分</span>	
 					<span class="n-dealer-span2"><?=(float)$this->bonus['seller']['credit']['total']?></span>
 				</a>
@@ -214,7 +214,7 @@
 		<div class="ffxx-tips">
 			<dl>
 				<dd>分享作用：(可以把分享做为爱心分享和创业致富）</dd>
-				<dd>1,你用下列工具分享给你朋友，然后你朋友点击注册并成功激活后（在免费商城首次兑换物品），你朋友可以获得20免费积分，同时你也获得20免费积分。</dd>
+				<dd>1,你用下列工具分享给你朋友，然后你朋友点击注册并成功激活后（在免费商城首次兑换物品），你朋友可以获得20帮帮币，同时你也获得20帮帮币。</dd>
 				<dd>2,如果你升级成为星级分销商，你推荐的朋友和你朋友推荐的朋友在本平台全球低价商城购物时消费的积分币，你将获得5%至10%的现金提成收益。</dd>
 				<dd>分享工具使用方法：</dd>
 				<dd>1，QQ：选择帐号密码登陆，登陆后选择好友点击发送</dd>

@@ -20,7 +20,7 @@
 		<ul class="clear">
 			<li>
 				<img src="<?php echo static_file('mobile/img/img-27.png'); ?> " alt="">
-				<span><a href="">我的免费积分:</a></span>
+				<span><a href="">我的帮帮币:</a></span>
 				<a class="n-list-end1" href="">分</a>
 				<p><?=$this->user['credit']?></p>
 			</li>
@@ -69,7 +69,7 @@
 			</li>
 			<li>
 				<img src="<?php echo static_file('mobile/img/img-54.png'); ?> " alt="">
-				<span><a href="<?=$this->url('./credit?t=credit')?>">获得免费积分记录</a></span>
+				<span><a href="<?=$this->url('./credit?t=credit')?>">获得帮帮币记录</a></span>
 				<a class="n-list-end" href=""></a>
 			</li>
 			<li>
