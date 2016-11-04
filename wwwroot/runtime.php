@@ -17,7 +17,7 @@ define('MTPL_DIR',			BASE.'appdata'.DS.'mailtpls'.DS);
 define('CACHE_DIR',			BASE.'appdata'.DS.'caches'.DS);
 define('SCWS_DIR',			BASE.'appdata'.DS.'scws'.DS);
 
-define('APP_KEY',			'4eb45084daa1c80f51f1f3d4bad74633﻿');
+define('APP_KEY',			'4eb45084daa1c80f51f1f3d4bad74633');
 define('APP_VER',			'3.2.1 Beta');
 define('DEBUG',				0);
 
@@ -27,6 +27,7 @@ define('ONLINE_TIMEOUT',	180);	#在线超时时间	此时间内检测不到操�
 define('TIME_FORMAT',		'H:i:s');
 define('DATE_FORMAT',		'Y/m/d');
 define('DATETIME_FORMAT',	'Y/m/d H:i');
+define('ONE_MONTH', 2592000); //60 * 60 * 24 * 30  token过期时间
 
 ini_set('date.timezone','Asia/Shanghai');
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
