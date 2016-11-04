@@ -16,8 +16,8 @@ class App_Controller_Action extends Suco_Controller_Action
 			}
 			$user = M('User')->select('id, token, token_expire_time,is_enabled')->where('token='."'".$token."'")->fetchRow();
 		}
-		if (!$user->exists()) {
-			echo  self::_error_data(array('code'=>1002,'msg'=>'用户没有登录或权限不足'));
+		if (!$user) {
+			echo  self::_error_data(array('code'=>1002,'msg'=>'此token不存在'));
 			die();
 		}
 		if (!$user['is_enabled']) {
