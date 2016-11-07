@@ -91,7 +91,7 @@ $this->head()->setTitle($this->title);
 				<div class="form-group">
 					<label class="control-label col-sm-2"> 所属类型</label>
 					<div class="col-sm-4">
-						<select name="type" class="form-control">
+						<select name="type_p" class="form-control">
 							<?php foreach($this->earnings as $row) {?>
 								<option value="<?php echo $row['id']?>" <?php echo $this->data['type']==$row['id'] ? 'selected': '' ?>><?php echo $row['name']?></option>
 							<?php }?>

@@ -50,6 +50,7 @@ class Admincp_ProportionController extends Admincp_Controller_Action
             } else {
                 $data['exts'] = '';
             }
+            $data['type'] = $data['name'] ? $data['type_p'] : $data['type'];
             M('Proportion')->insert($data);
             $this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
         }
@@ -73,6 +74,7 @@ class Admincp_ProportionController extends Admincp_Controller_Action
             } else {
                 $pdata['exts'] = '';
             }
+            $pdata['type'] = $pdata['name'] ? $pdata['type_p'] : $pdata['type'];
             M('Proportion')->updateById($pdata, (int)$this->_request->id);
 
             $this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');

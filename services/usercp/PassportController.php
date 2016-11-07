@@ -112,8 +112,9 @@ class Usercp_PassportController extends Usercp_Controller_Action
 	public function doLogin()
 	{
 		if ($this->_request->success) {
-			$view = $this->_initView();
-			$view->render('views/shopping/login_success.php');
+			$this->redirect('default');
+			/*$view = $this->_initView();
+			$view->render('views/shopping/login_success.php');*/
 			return;
 		}
 

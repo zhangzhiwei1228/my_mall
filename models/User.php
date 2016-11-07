@@ -1085,7 +1085,7 @@ class User extends Abstract_User
 			$inviter = M('User')->select()
 				->where('id='.(int)$rec['parent_id'])
 				->fetchRow();
-			$credit = 20;
+			$credit = 5;
 			$this->credit($rec,$credit,'您已成功激活，奖励积分'.$credit.'点');
 			$this->credit($inviter,$credit, '成功推荐用户 '.$rec['username'].' 注册并成功激活，奖励积分'.$credit.'点');
 		} else {
