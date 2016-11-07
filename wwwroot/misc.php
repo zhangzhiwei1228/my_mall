@@ -78,7 +78,8 @@ class Misc extends Suco_Controller_Action
 		for($i=0; $i<$how; $i++)
 		{
 		    $alpha_or_number = mt_rand(0, 1); //字母还是数字
-		    $str = $alpha_or_number ? $alpha : $number;
+//		    $str = $alpha_or_number ? $alpha : $number;
+		    $str =  $number;
 		    $which = mt_rand(0, strlen($str)-1); //取哪个字符
 		    $code = substr($str, $which, 1); //取字符
 		    $j = !$i ? 4 : $j+$fontsize; //绘字符位置

@@ -53,7 +53,7 @@ class ShopController extends Controller_Action
 		}
 		//按照特殊性查找
 		if(!$this->_request->area_id && !$this->_request->cid && !$this->_request->q) {
-			$is_special = !$this->_request->is_special ? 's.is_special >= 0 ' : 's.is_special = '.(int)$this->_request->is_special;
+			$is_special = !$this->_request->is_special ? 's.is_special = 0 ' : 's.is_special = '.(int)$this->_request->is_special;
 			$select->where($is_special);
 		}
 

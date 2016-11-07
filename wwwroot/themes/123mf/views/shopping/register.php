@@ -23,7 +23,7 @@
 		<input class="input" type="password" name="password" placeholder=" 请输入6-12位密码"><br />
 		<input class="input" type="password" name="checkpass" placeholder="请再次输入密码"><br />
 		<input  style="margin-bottom:0;" class="input" name="invite_mobile" type="text" value="<?php echo !empty($this->invite_user_mobile)? $this->invite_user_mobile : '';?>" placeholder=" 请输入邀请人号码"><br />
-		<p class="gain">（填写获得20会员积分）</p>
+		<!--<p class="gain">（填写获得20会员积分）</p>
 
 		<div class="register-intro">
 			<p>
@@ -32,7 +32,7 @@
 				<br>
 				B；有邀请码注册，会员激活后获<span>20</span>积分，同时邀请码推荐人也获<span>20</span>积分（邀请码就是你推荐人的手机号，你注册成功后，用你的邀请码推荐朋友，注册成功激活后，你就可以得到<span>20</span>积分，你朋友也得<span>20</span>积分，以此类推）。
 			</p>
-		</div>
+		</div>-->
 		<input class="submit" type="submit" value="注     册">
 	</form>
     <?php //include_once VIEWS.'inc/footer.php'; ?>

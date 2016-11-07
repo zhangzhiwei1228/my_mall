@@ -17,7 +17,7 @@
 			<p style="color:#333;">会员激活后可享受兑换或购买商品服务！</p>
 			<br>
 			<p style="color:#b40000;font-size:14px;line-height:26px;">激活说明：</p>
-			<p style="color:#333;">会员第一次兑换或购买物品必须先激活，成为有效会员（激活系统服务年费为20元，同时获得10-20帮帮币）。</p>
+			<p style="color:#333;">会员第一次兑换或购买物品必须先激活，成为有效会员</p>
 		</div>
 		<form class="n-member-input" method="post" action="<?=$this->url('./active')?>">
 			<input type="hidden" name="type" value="vip0_active">

@@ -20,8 +20,15 @@
 		<?php } elseif($this->code == 103) { $t='credit_coin'?>
 		<?php } elseif($this->code == 104) { $t='vouchers'?>
 		<?php } ?>
-		<a href="<?=$this->url('/usercp/money/recharge/?t='.$t)?>" class=" btn sure">确   定</a>
-		<a href="<?=$this->url('/usercp/money/recharge/?t='.$t)?>" class=" btn cancel">充值</a>
+		<?php if($this->code == 103) {?>
+			<a href="<?=$this->url('/usercp/credit/conversionlist/')?>" class=" btn sure">去转换</a>
+			<a href="<?=$this->url('/usercp/money/recharge/?t='.$t)?>" class=" btn sure">去充值</a>
+
+		<?php } else {?>
+			<a href="<?=$this->url('/usercp/money/recharge/?t='.$t)?>" class=" btn sure">确   定</a>
+			<a href="<?=$this->url('/usercp/money/recharge/?t='.$t)?>" class=" btn cancel">充值</a>
+		<?php }?>
+
 
     </div>
     <?php //include_once VIEWS.'inc/footer.php'; ?>
