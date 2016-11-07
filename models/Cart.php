@@ -28,7 +28,7 @@ class Cart
 		 		->where('user_id = ?', $uid)
 		 		->fetchRows();
 		 	foreach ($items as $item) {
-		 		$k = $item['goods_id'].'.'.$item['sku_id'];
+		 		$k = $item['goods_id'].'.'.$item['sku_id'].$item['price_type'];
 		 		$this->_items[$k] = array(
 		 			'id'=> $item['goods_id'],
 		 			'qty'=> $item['qty'],
@@ -87,7 +87,7 @@ class Cart
 	public function addItem($id, $skuId = 0, $qty = 1, $priceType = 0, $checkout = 0, $reset = 0, $shipping_id = 0)
 	{
 		if (!$id) return;
-		$code = $id.'.'.$skuId;
+		$code = $id.'.'.$skuId.'.'.$priceType;
 		if (!isset($this->_items[$code]) || $reset) {
 			$this->_items[$code] = array('id'=>$id, 'qty'=>$qty, 'skuId'=>$skuId, 'priceType'=>$priceType, 'checkout'=>$checkout, 'shipping_id'=>$shipping_id);
 		} else { //追加商品

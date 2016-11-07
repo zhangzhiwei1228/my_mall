@@ -724,7 +724,7 @@ class CartController extends Controller_Action
 				(int)$this->_request->sku_id,
 				(int)$this->_request->quantity,
 				(int)$this->_request->price_type
-				,0,1,(int)$this->_request->shipping_id
+				,0,0,(int)$this->_request->shipping_id
 			);
 			$this->redirect('action=default');		
 		}

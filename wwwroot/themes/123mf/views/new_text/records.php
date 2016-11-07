@@ -16,6 +16,7 @@
 <div class="m-records">
     <ul class="list">
         <?php if(isset($this->page_type)) {?>
+            <li class="n1"><a href="<?php echo $this->url('/agent/credit/verification')?>"><span>我要核销抵佣金</span></a></li>
             <li class="n1"><a href="<?php echo $this->url('/agent/credit/giving/?t=credit')?>"><span>我要赠送帮帮币</span></a></li>
             <li class="n2"><a href="<?php echo $this->url('/agent/credit/giving/?t=vouchers')?>"><span>我要赠送抵用券</span></a></li>
         <?php } else {?>
