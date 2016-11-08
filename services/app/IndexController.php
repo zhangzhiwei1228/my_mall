@@ -15,8 +15,22 @@ class App_IndexController extends App_Controller_Action
 
     public function doDefault()
     {
-        $user = M('Region')->select('*')->fetchRows()->toArray();
-        $encrypt_data = ($this->_encrypt_data($user));
+        $user = M('Region')->select('*')->where('level=2')->fetchRows()->toArray();
+        $rows = array();
+        foreach($user as $key=>$row) {
+            $rows['pro'][$key] = $row;
+            $city  = M('Region')->select('*')->where('parent_id='.(int)$row['id'])->fetchRows()->toArray();
+            foreach($city as $key1=>$c) {
+                $rows['pro'][$key]['cities'][$key1] = $c;
+                $areas = M('Region')->select('*')->where('parent_id='.(int)$c['id'])->fetchRows()->toArray();
+                foreach($areas as $key2=>$area) {
+                    $rows['pro'][$key]['cities'][$key1]['areas'][$key2] = $area;
+                }
+            }
+        }
+        echo json_encode($rows);
+        die();
+        $encrypt_data = ($this->_encrypt_data($rows));
         echo $this->_decrypt_data($encrypt_data);
         die();
     }
