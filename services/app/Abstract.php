@@ -7,26 +7,27 @@ class App_Controller_Action extends Suco_Controller_Action
 	 */
 	protected function _auth()
 	{
+		require_once 'Code.php';
 		if ($this->_request->token) {
 			$token = $this->_request->token;
 
 			if(strlen($token) != 32) {
-				echo  self::_error_data(array('code'=>1001,'msg'=>'无效的token'));
+				echo  self::_error_data(API_LOGIN_FAILED_INVALID_TOKEN,'无效的token');
 				die();
 			}
 			$user = M('User')->select('id, token, token_expire_time,is_enabled')->where('token='."'".$token."'")->fetchRow();
 		}
 		if (!$user) {
-			echo  self::_error_data(array('code'=>1002,'msg'=>'此token不存在'));
+			echo  self::_error_data(API_TOKEN_NOT_FOUND,'此token不存在');
 			die();
 		}
 		if (!$user['is_enabled']) {
-			echo  self::_error_data(array('code'=>1003,'msg'=>'此账户已被禁用'));
+			echo  self::_error_data(API_USER_DISABLE,'此账户已被禁用');
 			die();
 		}
 
 		if($user['token_expire_time'] < time()){
-			echo  self::_error_data(array('code'=>1004,'msg'=>'用户token已过期，请重新登录'));
+			echo  self::_error_data(API_TOKEN_EXPIRE,'用户token已过期，请重新登录');
 			die();
 		}
 		return $user;
@@ -61,13 +62,16 @@ class App_Controller_Action extends Suco_Controller_Action
 	/**
 	 * @param $data
 	 * @param bool|false $bin2hex
+	 * @param int $code
+	 * @param string $msg
+	 * @param bool|true $secure
 	 * @return string
 	 */
-	protected function _encrypt_data($data, $bin2hex=false) {
+	protected function _encrypt_data( $data, $code=1000, $msg='请求成功', $secure = true, $bin2hex = false) {
 		require_once 'AES.php';
-		$data = array('status'=>'ok','result'=>$data);
+		$data = array('resultCode'=>$code,'resultMsg'=>$msg,'secure'=>$secure,'data'=>$data);
 		$data = json_encode($data);
-		return AES::encrypt($data,APP_KEY,$bin2hex);
+		return $secure ? AES::encrypt($data,APP_KEY,$bin2hex) : $data;
 	}
 
 	/**
@@ -83,12 +87,15 @@ class App_Controller_Action extends Suco_Controller_Action
 	/**
 	 * @param $data
 	 * @param bool|false $bin2hex
+	 * @param int $code
+	 * @param string $msg
+	 * @param bool|true $secure
 	 * @return string
 	 */
-	protected function _error_data($data,$bin2hex=false) {
+	protected function _error_data($code, $msg='请求失败', $data = '', $secure = false, $bin2hex = false) {
 		require_once 'AES.php';
-		$data = array('status'=>'fail','error'=>$data);
+		$data = array('resultCode'=>$code,'resultMsg'=>$msg,'secure'=>$secure,'data'=>$data);
 		$data = json_encode($data);
-		return AES::encrypt($data,APP_KEY,$bin2hex);
+		return $secure ? AES::encrypt($data,APP_KEY,$bin2hex) : $data;
 	}
 }

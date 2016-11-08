@@ -403,10 +403,10 @@
                     <li><strong>快乐积分：</strong><span><?=$row['skus'][0]['point1']?></span><p>快乐积分</p></li>
                     <?php } ?>
                     <?php if ($row['skus'][0]['point2']) { ?>
-                    <li><strong>帮帮币：</strong><span><?=$row['skus'][0]['point2']?></span><p>帮帮币</p></li>
+                    <li><strong>帮帮币：</strong><span><?=$row['skus'][0]['point2']?></span><p>币</p></li>
                     <?php } ?>
                     <?php if ($row['skus'][0]['exts']['ext1']['cash']) { ?>
-                    <li><strong>现金+帮帮币:</strong><span><?=$row['skus'][0]['exts']['ext1']['cash']?><font color="#666">元</font></span><p>+</p><span><?=$row['skus'][0]['exts']['ext1']['point']?></span><p>积分</p></li>
+                    <li><strong>现金+帮帮币:</strong><span><?=$row['skus'][0]['exts']['ext1']['cash']?><font color="#666">元</font></span><p>+</p><span><?=$row['skus'][0]['exts']['ext1']['point']?></span><p>币</p></li>
                     <?php } ?>
                     <?php if ($row['skus'][0]['exts']['ext2']['cash']) { ?>
                     <li><strong>现金+积分币:</strong><span><?=$row['skus'][0]['exts']['ext2']['cash']?><font color="#666">元</font></span><p>+</p><span><?=$row['skus'][0]['exts']['ext2']['point']?></span><p>积分币</p></li>

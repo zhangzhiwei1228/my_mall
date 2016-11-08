@@ -28,9 +28,20 @@ class App_IndexController extends App_Controller_Action
                 }
             }
         }
-        echo json_encode($rows);
-        die();
         $encrypt_data = ($this->_encrypt_data($rows));
+        echo $this->_decrypt_data($encrypt_data);
+        die();
+    }
+
+    /**
+     * 商场类别
+     */
+    public function doGoodsCategory() {
+        $recGoodsCates = M('Goods_Category')->select('id,name')
+                ->where('parent_id = 0 and is_enabled<>0')
+                ->order('rank ASC, id ASC')
+                ->fetchRows()->toArray();
+        $encrypt_data = ($this->_encrypt_data($recGoodsCates));
         echo $this->_decrypt_data($encrypt_data);
         die();
     }

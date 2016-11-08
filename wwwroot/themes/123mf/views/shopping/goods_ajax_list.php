@@ -23,7 +23,7 @@
                     <p class="text01">快乐积分：<span><?=$row['skus'][0]['point1']?></span>积分</p>
                 <?php } ?>
                 <?php if ($row['skus'][0]['point2'] > 0) { ?>
-                    <p class="text01">帮帮币：<span><?=$row['skus'][0]['point2']?></span>积分</p>
+                    <p class="text01">帮帮币：<span><?=$row['skus'][0]['point2']?></span>币</p>
                 <?php } ?>
                 <?php if ($row['skus'][0]['point3'] > 0) { ?>
                     <p class="text01">积分币：<span><?=$row['skus'][0]['point3']?></span>币</p>

@@ -532,10 +532,15 @@ class GoodsController extends Controller_Action
 	 */
 	public function doGetgoodsku() {
 		$param = $this->_request->param;
+		$param1 = '';
+		if(strpos($param,',')) {
+			$param1 = explode(',',$param);
+			$param1 = $param1[1].','.$param1[0];
+		}
 		$good_id = (int)$this->_request->good_id;
 		$quantity = $sku_id = 0;
 		$arrs = M('Goods_Sku')->select()
-			->where('goods_id = '.$good_id.' and reverse(spec) LIKE '. 'reverse("%'.$param.'%")')
+			->where('goods_id = '.$good_id.' and (reverse(spec) LIKE '. 'reverse("%'.$param.'%") or reverse(spec) LIKE '.'reverse("%'.$param1.'%")'.' )')
 			->fetchRows()->toArray();
 		if(count($arrs)) {
 			foreach ($arrs as $arr) {
