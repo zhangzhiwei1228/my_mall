@@ -28,8 +28,9 @@ class App_IndexController extends App_Controller_Action
                 }
             }
         }
-        $encrypt_data = ($this->_encrypt_data($rows));
-        echo $this->_decrypt_data($encrypt_data);
+        echo ($this->_encrypt_data($rows));
+//        $encrypt_data = ($this->_encrypt_data($rows));
+        //echo $this->_decrypt_data($encrypt_data);
         die();
     }
 
@@ -44,5 +45,65 @@ class App_IndexController extends App_Controller_Action
         $encrypt_data = ($this->_encrypt_data($recGoodsCates));
         echo $this->_decrypt_data($encrypt_data);
         die();
+    }
+    /**
+     * 首页头部、首页中上部、中左部、中右部广告位
+     */
+    public function doAdvertise() {
+        $data = array('app-home-heard','app-center-top','app-center-left','app-center-right','app-hot-market');
+        $home_heard = M('Advert')->getAppRowsByCode($data);
+        $encrypt_data = ($this->_encrypt_data($home_heard));
+        echo $this->_decrypt_data($encrypt_data);
+        die();
+    }
+    /**
+     * 合作商家
+     */
+    public function doTeamShop() {
+        $type_ids = M('Coltypes')->select('id,name')->where('english='."'shop"."'")->fetchRows()->toArray();
+        $data = array();
+        foreach($type_ids as $key=>$row){
+            $ids[] = $key;
+            $shops = M('Shop')->select('id,name,thumb')
+                ->where('is_special ='.(int)$key)
+                ->order('is_rec DESC, id DESC')
+                ->limit(4)
+                ->fetchRows()->toArray();
+            if($shops) {
+                foreach($shops as &$shop){
+                    $shop['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$shop['thumb'];
+                }
+                $data[$key]['shop'] = $shops ;
+                $data[$key]['name'] = $row['name'];
+
+            }
+        }
+        $encrypt_data = ($this->_encrypt_data($data));
+        echo $this->_decrypt_data($encrypt_data);
+        die();
+    }
+    /**
+     * 本月精选
+     */
+    public function doSelectGoods() {
+        $goods = M('Goods')->alias('g')
+            ->columns('g.id,g.title,g.thumb')
+            ->where('g.is_selling = 1 AND g.is_checked = 2 and ((g.quantity-g.quantity_warning) > 0) and is_select = 1 AND (g.expiry_time = 0 OR g.expiry_time > ?)', time())
+            ->limit(4)->order('g.create_time DESC')->fetchRows()->toArray();
+        foreach($goods as $key=>$row) {
+            $arrs = M('Goods_Sku')->select('point1,point2,point3,point4,point5,exts')
+                ->where('goods_id ='.(int)$row['id'])
+                ->fetchRow()
+                ->toArray();
+            $goods[$key]['point1'] = $arrs['point1'];
+            $goods[$key]['point2'] = $arrs['point2'];
+            $goods[$key]['point3'] = $arrs['point3'];
+            $goods[$key]['point4'] = $arrs['point4'];
+            $goods[$key]['point5'] = $arrs['point5'];
+            $goods[$key]['exts'] = $arrs['exts'];
+            $goods[$key]['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
+        }
+        $encrypt_data = ($this->_encrypt_data($goods));
+        echo $this->_decrypt_data($encrypt_data);
     }
 }

@@ -77,4 +77,45 @@ class Advert extends Abstract_Model
 	{
 		return $this->getByCode($code);
 	}
+
+	/**
+	 * @param $code
+	 * @return mixed
+	 * app广告位
+	 */
+	public function getAppRowsByCode($code)
+	{
+		if(is_array($code)) {
+			$rows = array();
+			$code = implode('\',\'',$code);
+			$pos = $this->select()->where('code IN ('."'".$code."'".')')->fetchRows()->toArray();
+			foreach($pos as $po) {
+				$images = M('Advert_Element')->select('id,advert_id,type,description,link,source,is_enabled,start_time,end_time')
+					->where('advert_id = ? AND is_enabled AND start_time <= ? AND (end_time >= ? OR end_time = 0)', array($po['id'], time(), time()))
+					->order('rank ASC')
+					->limit($po['limit'])
+					->fetchRows()->toArray();
+				$rows[$po['code']]['limit'] = $po['limit'];
+				foreach($images as $key=>$row) {
+					$row['source'] = 'http://'.$_SERVER['HTTP_HOST'].$row['source'];
+					$rows[$po['code']]['images'][$key] = $row;
+				}
+			}
+		} else {
+			$pos = $this->select()->where('code = ?', $code)->fetchRow()->toArray();
+			$images = M('Advert_Element')->select('id,advert_id,type,description,link,source,is_enabled,start_time,create_time')
+				->where('advert_id = ? AND is_enabled AND start_time <= ? AND (end_time >= ? OR end_time = 0)', array($pos['id'], time(), time()))
+				->order('rank ASC')
+				->limit($pos['limit'])
+				->fetchRows()->toArray();
+			$rows = array();
+			$rows[$pos['code']]['limit'] = $pos['limit'];
+			foreach($images as $key=>$row) {
+				$row['source'] = 'http://'.$_SERVER['HTTP_HOST'].$row['source'];
+				$rows[$pos['code']]['images'][$key] = $row;
+			}
+
+		}
+		return $rows;
+	}
 }

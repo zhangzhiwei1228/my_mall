@@ -72,6 +72,7 @@ class Usercp_PassportController extends Usercp_Controller_Action
 
 			//自动通过手机验证
 			$user->setAuth('mobile', 1);
+			$_SESSION['login_user_id'] = $user->id;
 			unset($_SESSION['invite_id']);
 			$this->redirect('module=usercp');
 		}
@@ -96,6 +97,7 @@ class Usercp_PassportController extends Usercp_Controller_Action
 					'uid' => $user['id'],
 					'nickname' => $user['nickname']
 				));
+				$_SESSION['login_user_id'] = $user['id'];
 			} catch(App_Exception $e) {
 				echo json_encode(array(
 					'error' => $e->getMessage()

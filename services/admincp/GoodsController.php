@@ -271,7 +271,7 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 
 	public function doToggleStatus()
 	{
-		$fields = array('is_new', 'is_hot', 'is_rec', 'is_selling');
+		$fields = array('is_new', 'is_hot', 'is_rec', 'is_selling','is_select');
 		if (in_array($this->_request->t, $fields)) {
 			$field = $this->_request->t;
 			$data[$field] = abs($this->_request->v - 1);

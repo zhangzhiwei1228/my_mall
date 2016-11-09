@@ -125,6 +125,17 @@ $this->head()->setTitle(($this->_request->getActionName() == 'add' ? '添加' : 
 						<input type="hidden" name="is_selling" value="<?=$this->data['is_selling'] ? 1 : 0?>" />
 					</div>
 				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">是否精选:</label>
+					<div class="col-sm-7">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" id="select-checkbox" onchange="$('[name=is_select]').val($(this).is(':checked') ? 1 : 0)" <?=$this->data['is_select'] ? 'checked' : ''?> />
+							</label>
+						</div>
+						<input type="hidden" name="is_select" value="<?=$this->data['is_select'] ? 1 : 0?>" />
+					</div>
+				</div>
 			</div>
 
 			<div id="desc" class="tab-pane fade">
