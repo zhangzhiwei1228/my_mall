@@ -10,7 +10,7 @@ class App_IndexController extends App_Controller_Action
     public function init()
     {
         parent::init();
-        //$this->user = $this->_auth();
+        $this->user = $this->_auth();
     }
 
     public function doDefault()
@@ -42,8 +42,9 @@ class App_IndexController extends App_Controller_Action
                 ->where('parent_id = 0 and is_enabled<>0')
                 ->order('rank ASC, id ASC')
                 ->fetchRows()->toArray();
-        $encrypt_data = ($this->_encrypt_data($recGoodsCates));
-        echo $this->_decrypt_data($encrypt_data);
+        echo $this->_encrypt_data($recGoodsCates);
+        /*$encrypt_data = ($this->_encrypt_data($recGoodsCates));
+        echo $this->_decrypt_data($encrypt_data);*/
         die();
     }
     /**
@@ -52,8 +53,9 @@ class App_IndexController extends App_Controller_Action
     public function doAdvertise() {
         $data = array('app-home-heard','app-center-top','app-center-left','app-center-right','app-hot-market');
         $home_heard = M('Advert')->getAppRowsByCode($data);
-        $encrypt_data = ($this->_encrypt_data($home_heard));
-        echo $this->_decrypt_data($encrypt_data);
+        echo $this->_encrypt_data($home_heard);
+        /*$encrypt_data = ($this->_encrypt_data($home_heard));
+        echo $this->_decrypt_data($encrypt_data);*/
         die();
     }
     /**
@@ -78,8 +80,9 @@ class App_IndexController extends App_Controller_Action
 
             }
         }
-        $encrypt_data = ($this->_encrypt_data($data));
-        echo $this->_decrypt_data($encrypt_data);
+        echo $this->_encrypt_data($data);
+        /*$encrypt_data = ($this->_encrypt_data($data));
+        echo $this->_decrypt_data($encrypt_data);*/
         die();
     }
     /**
@@ -103,7 +106,9 @@ class App_IndexController extends App_Controller_Action
             $goods[$key]['exts'] = $arrs['exts'];
             $goods[$key]['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
         }
-        $encrypt_data = ($this->_encrypt_data($goods));
-        echo $this->_decrypt_data($encrypt_data);
+        echo $this->_encrypt_data($goods);
+        /*$encrypt_data = ($this->_encrypt_data($goods));
+        echo $this->_decrypt_data($encrypt_data);*/
+        die();
     }
 }
