@@ -90,11 +90,11 @@ class App_IndexController extends App_Controller_Action
      */
     public function doSelectGoods() {
         $goods = M('Goods')->alias('g')
-            ->columns('g.id,g.title,g.thumb')
+            ->columns('g.id,g.title,g.thumb,g.notes')
             ->where('g.is_selling = 1 AND g.is_checked = 2 and ((g.quantity-g.quantity_warning) > 0) and is_select = 1 AND (g.expiry_time = 0 OR g.expiry_time > ?)', time())
             ->limit(4)->order('g.create_time DESC')->fetchRows()->toArray();
         foreach($goods as $key=>$row) {
-            $arrs = M('Goods_Sku')->select('point1,point2,point3,point4,point5,exts')
+            $arrs = M('Goods_Sku')->select('point1,point2,point3,point4,point5,exts,market_price')
                 ->where('goods_id ='.(int)$row['id'])
                 ->fetchRow()
                 ->toArray();
@@ -103,12 +103,15 @@ class App_IndexController extends App_Controller_Action
             $goods[$key]['point3'] = $arrs['point3'];
             $goods[$key]['point4'] = $arrs['point4'];
             $goods[$key]['point5'] = $arrs['point5'];
+            $goods[$key]['market_price'] = $arrs['market_price'];
             $goods[$key]['exts'] = $arrs['exts'];
             $goods[$key]['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
         }
         echo $this->_encrypt_data($goods);
-        /*$encrypt_data = ($this->_encrypt_data($goods));
-        echo $this->_decrypt_data($encrypt_data);*/
+        //$encrypt_data = ($this->_encrypt_data($goods));
+       /* $d = json_decode($encrypt_data);
+        $datas =  $this->_decrypt_data($d->data);
+        echo $datas ;*/
         die();
     }
 }

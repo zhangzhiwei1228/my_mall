@@ -2,10 +2,10 @@
 /**
  * Created by PhpStorm.
  * User: zzw
- * Date: 16-11-2
- * Time: 下午7:04
+ * Date: 16-11-21
+ * Time: 下午2:59
  */
-class App_GoodsController extends App_Controller_Action
+class App_ShopController extends App_Controller_Action
 {
     public function init()
     {
@@ -17,18 +17,17 @@ class App_GoodsController extends App_Controller_Action
         var_dump("1111");
         die();
     }
-    //商品列表
+    //商家列表
     public function doList() {
         var_dump("list");
         die();
     }
-    //商品评价
+    //商家评价
     public function doComment() {
 
     }
-    //添加商品评论
+    //添加商家评论
     public function doAddComment() {
 
     }
-
 }
