@@ -51,8 +51,8 @@ class App_IndexController extends App_Controller_Action
                 ->where('parent_id = 0 and is_enabled<>0')
                 ->order('rank ASC, id ASC')
                 ->fetchRows()->toArray();*/
-        //echo $this->_encrypt_data($datas);
-        echo $this->show_data($this->_encrypt_data($datas));
+        echo $this->_encrypt_data($datas);
+        //echo $this->show_data($this->_encrypt_data($datas));
         die();
     }
     /**
