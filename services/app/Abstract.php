@@ -93,8 +93,18 @@ class App_Controller_Action extends Suco_Controller_Action
 	 */
 	protected function _error_data($code, $msg='请求失败', $data = '', $secure = false, $bin2hex = false) {
 		require_once 'AES.php';
-		$data = array('resultCode'=>$code,'resultMsg'=>$msg,'secure'=>$secure,'data'=>$data);
-		$data = json_encode($data);
-		return $secure ? AES::encrypt($data,APP_KEY,$bin2hex) : $data;
+		$data = array('resultCode'=>$code,'resultMsg'=>$msg,'secure'=>$secure,'data'=>AES::encrypt(json_encode($data),APP_KEY,$bin2hex));
+		return json_encode($data);
+	}
+
+	/**
+	 * @param $data
+	 * @return mixed|string
+	 * 显示数据
+	 */
+	protected function show_data($data) {
+		$d = json_decode($data);
+		$data =  $this->_decrypt_data($d->data);
+		return $data ;
 	}
 }

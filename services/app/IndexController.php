@@ -38,13 +38,21 @@ class App_IndexController extends App_Controller_Action
      * 商场类别
      */
     public function doGoodsCategory() {
-        $recGoodsCates = M('Goods_Category')->select('id,name')
+        $datas = M('Navigate')->select('id,name,icon')
+            ->where('parent_id = 0 AND type = ? AND is_enabled <> 0', 'main')
+            ->order('rank ASC, id ASC')
+            ->fetchRows()->toArray();
+        foreach($datas as &$row) {
+            if($row['icon']) {
+                $row['icon'] = 'http://'.$_SERVER['HTTP_HOST'].$row['icon'];
+            }
+        }
+        /*$datas = M('Goods_Category')->select('id,name')
                 ->where('parent_id = 0 and is_enabled<>0')
                 ->order('rank ASC, id ASC')
-                ->fetchRows()->toArray();
-        echo $this->_encrypt_data($recGoodsCates);
-        /*$encrypt_data = ($this->_encrypt_data($recGoodsCates));
-        echo $this->_decrypt_data($encrypt_data);*/
+                ->fetchRows()->toArray();*/
+        //echo $this->_encrypt_data($datas);
+        echo $this->show_data($this->_encrypt_data($datas));
         die();
     }
     /**
@@ -54,8 +62,7 @@ class App_IndexController extends App_Controller_Action
         $data = array('app-home-heard','app-center-top','app-center-left','app-center-right','app-hot-market');
         $home_heard = M('Advert')->getAppRowsByCode($data);
         echo $this->_encrypt_data($home_heard);
-        /*$encrypt_data = ($this->_encrypt_data($home_heard));
-        echo $this->_decrypt_data($encrypt_data);*/
+        //echo $this->show_data($this->_encrypt_data($home_heard));
         die();
     }
     /**
@@ -81,8 +88,7 @@ class App_IndexController extends App_Controller_Action
             }
         }
         echo $this->_encrypt_data($data);
-        /*$encrypt_data = ($this->_encrypt_data($data));
-        echo $this->_decrypt_data($encrypt_data);*/
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
@@ -108,10 +114,7 @@ class App_IndexController extends App_Controller_Action
             $goods[$key]['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
         }
         echo $this->_encrypt_data($goods);
-        //$encrypt_data = ($this->_encrypt_data($goods));
-       /* $d = json_decode($encrypt_data);
-        $datas =  $this->_decrypt_data($d->data);
-        echo $datas ;*/
+        //echo $this->show_data($this->_encrypt_data($goods));
         die();
     }
 }
