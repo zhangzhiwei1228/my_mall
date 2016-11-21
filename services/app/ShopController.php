@@ -28,6 +28,7 @@ class App_ShopController extends App_Controller_Action
     }
     //添加商家评论
     public function doAddComment() {
+
         //M('Shop_Comment')->insert(array_merge($skus, $this->_request->getFiles()));
     }
 }

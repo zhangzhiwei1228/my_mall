@@ -59,7 +59,7 @@ class App_IndexController extends App_Controller_Action
      * 首页头部、首页中上部、中左部、中右部广告位
      */
     public function doAdvertise() {
-        $data = array('app-home-heard','app-center-top','app-center-left','app-center-right','app-hot-market');
+        $data = array('AppHomeHeard','AppCenterTop','AppCenterLeft','AppCenterRight','AppHotMarket');
         $home_heard = M('Advert')->getAppRowsByCode($data);
         echo $this->_encrypt_data($home_heard);
         //echo $this->show_data($this->_encrypt_data($home_heard));
