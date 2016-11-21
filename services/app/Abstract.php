@@ -8,7 +8,8 @@ class App_Controller_Action extends Suco_Controller_Action
 	protected function _auth()
 	{
 		require_once 'Code.php';
-		$token = $this->_request->token ? $this->_request->token : 'a5c5dc0c6730e7f10bd02d7e3b4eb46d';
+		$token = $this->_request->token ;
+        $token = isset($token) && $token ? $token : 'a5c5dc0c6730e7f10bd02d7e3b4eb46d';
 		if ($token) {
 			if(strlen($token) != 32) {
 				echo  self::_error_data(API_LOGIN_FAILED_INVALID_TOKEN,'无效的token');
