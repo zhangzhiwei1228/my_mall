@@ -24,6 +24,13 @@ class App_GoodsController extends App_Controller_Action
     public function doList() {
 
     }
+    /**
+     * 商品品牌页
+     */
+    public function doCategory() {
+        $cid = $this->_request->cid;
+
+    }
 
     /**
      * 商品评价
