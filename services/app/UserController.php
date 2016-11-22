@@ -26,7 +26,7 @@ class App_UserController extends App_Controller_Action
     public function doLogin() {
         $phone = $this->_request->phone;
         $pass = $this->_request->pwd;
-        $app_id = $this->_request->pwd;//1wap2android3ios4pc
+        $app_id = $this->_request->app_id;//1wap2android3ios4pc
         if (!$phone || !is_mobile($phone)) {
             echo  self::_error_data(ERR_LOGIN_FAIL_PHONE,'无效手机号');
             die();
@@ -48,14 +48,26 @@ class App_UserController extends App_Controller_Action
 
         $token_expire_time = time() + ONE_MONTH;
         $auth_token = md5(uniqid(mt_rand(), true));
-        $user['auth_token'] = $auth_token;
+        $user['token'] = $auth_token;
         $user['app_id'] = $app_id;
         $user['token_expire_time'] = $token_expire_time;
         $user['token_update_time'] = time();
         $user->save();
-
-        echo $this->_encrypt_data($user->toArray());
-        //echo $this->show_data($this->_encrypt_data($user->toArray()));
+        $user_data = $user->toArray();
+        $data['id'] = $user_data['id'];
+        $data['role'] = $user_data['role'];
+        $data['parent_id'] = $user_data['parent_id'];
+        $data['username'] = $user_data['username'];
+        $data['nickname'] = $user_data['nickname'];
+        $data['mobile'] = $user_data['mobile'];
+        $data['credit'] = $user_data['credit'];
+        $data['credit_coin'] = $user_data['credit_coin'];
+        $data['worth_gold'] = $user_data['worth_gold'];
+        $data['vouchers'] = $user_data['vouchers'];
+        $data['token'] = $user_data['token'];
+        $data['avatar'] = $user_data['avatar'] ? 'http://'.$_SERVER['HTTP_HOST'].$user_data['avatar'] : '';
+        //echo $this->_encrypt_data($data);
+        echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
@@ -141,7 +153,20 @@ class App_UserController extends App_Controller_Action
         $this->_update_or_create_token($uid,$app_id,1);//创建token
         //自动通过手机验证
         $user->setAuth('mobile', 1);
-        echo $this->_encrypt_data($user->toArray());
+        $user_data = $user->toArray();
+        $data['id'] = $user_data['id'];
+        $data['role'] = $user_data['role'];
+        $data['parent_id'] = $user_data['parent_id'];
+        $data['username'] = $user_data['username'];
+        $data['nickname'] = $user_data['nickname'];
+        $data['mobile'] = $user_data['mobile'];
+        $data['credit'] = $user_data['credit'];
+        $data['credit_coin'] = $user_data['credit_coin'];
+        $data['worth_gold'] = $user_data['worth_gold'];
+        $data['vouchers'] = $user_data['vouchers'];
+        $data['token'] = $user_data['token'];
+        $data['avatar'] = $user_data['avatar'] ? 'http://'.$_SERVER['HTTP_HOST'].$user_data['avatar'] : '';
+        echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($user->toArray()));
         die();
     }
@@ -151,7 +176,7 @@ class App_UserController extends App_Controller_Action
     public function doGetCode() {
         $phone = $this->_request->phone;
         $code_token = $this->_request->code_token;
-        $token = md5('tts_'.date('YmdH'));
+        $token = md5('123bbw_'.date('YmdH'));
         if ($code_token != $token) {
             echo  self::_error_data(API_REG_VALIDATE_TOKEN_FAIL,'获取验证码token验证失败');
             die();

@@ -48,7 +48,7 @@ class App_Controller_Action extends Suco_Controller_Action
 		if ($auth === false) {
 			$auth_token = md5(uniqid(mt_rand(), true));
 			$data = array(
-				'auth_token'  => $auth_token,
+				'token'  => $auth_token,
 				'app_id'      => $app_id,
 				'token_expire_time' => $token_expire_time,
 				'token_update_time' => time(),
