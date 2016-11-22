@@ -5,9 +5,11 @@ class App_Controller_Action extends Suco_Controller_Action
 	/**
 	 * 权限检查
 	 */
+	public function __construct(){
+		require_once 'Code.php';
+	}
 	protected function _auth()
 	{
-		require_once 'Code.php';
 		$token = $this->_request->token ;
         $token = isset($token) && $token ? $token : 'a5c5dc0c6730e7f10bd02d7e3b4eb46d';
 		if ($token) {
@@ -41,7 +43,7 @@ class App_Controller_Action extends Suco_Controller_Action
 	 * @return mixed
 	 */
 	protected function _update_or_create_token($user_id, $app_id,$token, $token_expire_time = false) {
-		$auth = M('User')->select('id,app_id,token,expire_data')->where('id='.$user_id.' and app_id='.$app_id.' and token !='."''".' and token='.$token. ' and token_expire_time >'.time())->fetchRow();
+		$auth = M('User')->select('id,app_id,token,token_expire_time')->where('id='.$user_id.' and app_id='.$app_id.' and token !='."''".' and token='.$token. ' and token_expire_time >'.time())->fetchRow();
 		if (!$token_expire_time) {
 			$token_expire_time = time() + ONE_MONTH;
 		}

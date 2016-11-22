@@ -6,7 +6,7 @@
  * Time: 下午2:33
  */
 
-
+define('PHONE_CODE_TIMEOUT',       60);//验证码过期时间
 /**
  * 用token进行登录
  */

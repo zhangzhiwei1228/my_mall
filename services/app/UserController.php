@@ -135,17 +135,17 @@ class App_UserController extends App_Controller_Action
             //'checkpass' =>$repass,
             //'invite_mobile' =>$invite,
         );
-
+        $parent_id = $inviter ? $inviter->id : 0;
         $uid = M('User')->insert(array_merge($data, array(
             'username' => $phone,
             'nickname' => $phone,
             'is_enabled' => 1,
-            'referrals_id' => $_SESSION['recid'],
+            //'referrals_id' => $_SESSION['recid'],
             'role' => 'member',
             'pay_pass' => $pass,
             //'admin_id' => $admin['id'],
             'ref' => $invite,
-            'parent_id' => $inviter ? $inviter->id : 0,
+            'parent_id' => $parent_id,
             'exp' => 5 //初始经验值
         )));
 
@@ -181,20 +181,6 @@ class App_UserController extends App_Controller_Action
             echo  self::_error_data(API_REG_VALIDATE_TOKEN_FAIL,'获取验证码token验证失败');
             die();
         }
-        if (isset($_SESSION['sms_time']) && $_SESSION['sms_time'] >= time()-60) {
-            echo  self::_error_data(API_SEND_CODE_QUICK,'发送频率过快，请稍后再试');
-            die();
-        }
-        if (isset($_SESSION['num'][$phone]) && $_SESSION['num'][$phone] >= 10) {
-            echo  self::_error_data(API_SEND_PHONE_DAY_EXCEED_LIMIT,'此号码已超出单日发送限制');
-            die();
-        }
-        if (isset($_SESSION['sms_num']) && $_SESSION['sms_num'] >= 19) {
-            echo  self::_error_data(API_SEND_DAY_EXCEED_LIMIT,'超出单日发送限制');
-            die();
-        }
-
-
         if(!$phone || !is_mobile($phone)){
             echo  self::_error_data(ERR_LOGIN_FAIL_PHONE,'手机号格式错误');
             die();
@@ -204,6 +190,18 @@ class App_UserController extends App_Controller_Action
             echo  self::_error_data(API_EXISTED_PHONE,'此手机号已被注册');
             die();
         }
+
+        $check = M('Limit')->select()->where('tel='.$phone)->order('timeline desc')->fetchRow()->toArray();
+        $count = M('Limit')->count('tel='.$phone);
+        if ($check && $check['timeline'] >= time()) {
+            echo  self::_error_data(API_SEND_CODE_QUICK,'发送频率过快，请稍后再试');
+            die();
+        }
+        if ($count && $count >= 10) {
+            echo  self::_error_data(API_SEND_PHONE_DAY_EXCEED_LIMIT,'此号码已超出单日发送限制');
+            die();
+        }
+
         $count = 6;
         $letter = FALSE;
         $ychar = "2,3,4,5,6,7,8,9";
@@ -219,28 +217,23 @@ class App_UserController extends App_Controller_Action
             $code .= $list [$randnum];
         }
         //发送短信
-        $msg="您的注册验证码为：".strtoupper ( $code )."，祝您购物愉快。";
         //$fsurl="http://120.26.69.248/msg/HttpSendSM?account=shiyuan_yishenger&pswd=Yishenger2016&mobile=".$phone."&msg=".$msg."&needstatus=true";
-        /*$fsurl="http://send.18sms.com/msg/HttpBatchSendSM?account=shiyuan_yishenger&pswd=Yishenger2016&mobile=".$phone."&msg=".$msg."&needstatus=true";
+
+        /*$msg="您的注册验证码为：".strtoupper ( $code )."，祝您购物愉快。";
+        $fsurl="http://send.18sms.com/msg/HttpBatchSendSM?account=shiyuan_yishenger&pswd=Yishenger2016&mobile=".$phone."&msg=".$msg."&needstatus=true";
         $res=file_get_contents($fsurl);
-        $msgarr=explode(',', $res);
-        if($msgarr[1]==0){
-            $_SESSION['num'][$phone] ++;
-            $_SESSION['sms_num'] ++;
-            $_SESSION['sms_time'] = time();
+        $msgarr=explode(',', $res);*/
+        //if($msgarr[1]==0){
+            $ip = Suco_Controller_Request_Http::getClientIp();
+            $data['timeline'] = time() + PHONE_CODE_TIMEOUT;
+            $data['ip'] = ip2long($ip);
+            $data['tel'] = $phone;
+            $data['code'] = $code;
+            M('Limit')->insert($data);
             echo $this->_encrypt_data((int)$code);
             //echo $this->show_data($this->_encrypt_data($goods));
             die();
-        }*/
-
-        $_SESSION['num'][$phone] ++;
-        $_SESSION['sms_num'] ++;
-        $_SESSION['sms_time'] = time();
-        echo $this->_encrypt_data((int)$code);
-        //echo $this->show_data($this->_encrypt_data($goods));
-        die();
-
-
+        //}
         echo  self::_error_data(API_GET_CODE_FAIL,'获取验证码失败');
         die();
     }
