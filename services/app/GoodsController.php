@@ -17,18 +17,27 @@ class App_GoodsController extends App_Controller_Action
         var_dump("1111");
         die();
     }
-    //商品列表
+
+    /**
+     * 商品列表
+     */
     public function doList() {
-        var_dump("list");
-        die();
+
     }
-    //商品评价
+
+    /**
+     * 商品评价
+     */
     public function doComment() {
 
     }
-    //添加商品评论
-    public function doAddComment() {
 
+    /**
+     * 添加商品评论
+     */
+    public function doAddComment() {
+        $data = $this->_request->post();
+        M('Goods_Comment')->insert(array_merge($data, $this->_request->getFiles()));
     }
 
 }

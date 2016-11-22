@@ -215,4 +215,25 @@ function cny($num){
 	}else{ 
 		return $c . "整"; 
 	}
-} 
+}
+/**
+ * 验证邮箱
+ * @param  string  $email 邮箱地址
+ * @return boolean
+ */
+function is_mail($email) {
+	// filter_var ($email, FILTER_VALIDATE_EMAIL ) ?  FALSE : TRUE;
+	return ( ! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) ? FALSE : TRUE;
+}
+
+/**
+ * 是否是手机号码
+ * @param string $phone 手机号码
+ * @return boolean
+ */
+function is_mobile($phone) {
+	if (strlen($phone) !== 11) {
+		return FALSE;
+	}
+	return (bool) (!preg_match('/^[(86)|0]?(13\d{9})|(15\d{9})|(17\d{9})|(18\d{9})$/', $phone)) ? FALSE : TRUE;
+}

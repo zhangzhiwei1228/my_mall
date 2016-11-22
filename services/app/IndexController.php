@@ -28,9 +28,8 @@ class App_IndexController extends App_Controller_Action
                 }
             }
         }
-        echo ($this->_encrypt_data($rows));
-//        $encrypt_data = ($this->_encrypt_data($rows));
-        //echo $this->_decrypt_data($encrypt_data);
+        echo $this->_encrypt_data($rows);
+        //echo $this->show_data($this->_encrypt_data($rows));
         die();
     }
 

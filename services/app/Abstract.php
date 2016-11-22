@@ -53,7 +53,7 @@ class App_Controller_Action extends Suco_Controller_Action
 				'token_expire_time' => $token_expire_time,
 				'token_update_time' => time(),
 			);
-			$auth = M('User')->updateById($data, (int)$this->_request->id);
+			$auth = M('User')->updateById($data, (int)$user_id);
 		}
 
 		return $auth;
@@ -69,7 +69,8 @@ class App_Controller_Action extends Suco_Controller_Action
 	 */
 	protected function _encrypt_data( $data, $code=1000, $msg='请求成功', $secure = true, $bin2hex = false) {
 		require_once 'AES.php';
-		$data = array('resultCode'=>$code,'resultMsg'=>$msg,'secure'=>$secure,'data'=>AES::encrypt(json_encode($data),APP_KEY,$bin2hex));
+		$data = $data ? AES::encrypt(json_encode($data),APP_KEY,$bin2hex) : $data;
+		$data = array('resultCode'=>$code,'resultMsg'=>$msg,'secure'=>$secure,'data'=>$data);
 		return json_encode($data);
 	}
 
@@ -93,7 +94,8 @@ class App_Controller_Action extends Suco_Controller_Action
 	 */
 	protected function _error_data($code, $msg='请求失败', $data = '', $secure = false, $bin2hex = false) {
 		require_once 'AES.php';
-		$data = array('resultCode'=>$code,'resultMsg'=>$msg,'secure'=>$secure,'data'=>AES::encrypt(json_encode($data),APP_KEY,$bin2hex));
+		$data = $data ? AES::encrypt(json_encode($data),APP_KEY,$bin2hex) : $data;
+		$data = array('resultCode'=>$code,'resultMsg'=>$msg,'secure'=>$secure,'data'=>$data);
 		return json_encode($data);
 	}
 
@@ -106,5 +108,13 @@ class App_Controller_Action extends Suco_Controller_Action
 		$d = json_decode($data);
 		$data =  $this->_decrypt_data($d->data);
 		return $data ;
+	}
+	protected function encrypt($pass, $salt)
+	{
+		if (substr($pass, 0, 2) != '$.') { //防止二次加密
+			return '$.'.md5(md5($pass) . $salt);
+		} else {
+			return $pass;
+		}
 	}
 }
