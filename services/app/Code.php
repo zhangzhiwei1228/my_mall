@@ -28,4 +28,10 @@ define('API_NO_INVITE',1009);//邀请人帐号不存在
 define('API_NO_PWD',1010);//密码为空
 define('API_NO_REPWD',1011);//确认密码为空
 define('API_NO_EQUAL_PWD_REPWD',1012);//确认密码和密码不相等
+define('API_EXISTED_PHONE',1013);//此手机号已被注册
+define('API_GET_CODE_FAIL',1014);//获取验证码失败
+define('API_REG_VALIDATE_TOKEN_FAIL',1015);//获取验证码token验证失败
+define('API_SEND_CODE_QUICK',1016);//发送验证码频率过快
+define('API_SEND_PHONE_DAY_EXCEED_LIMIT',1017);//此号码已超出单日发送限制
+define('API_SEND_DAY_EXCEED_LIMIT',1018);//超出单日发送限制
 
