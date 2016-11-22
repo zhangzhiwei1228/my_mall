@@ -110,8 +110,8 @@ class App_UserController extends App_Controller_Action
             die();
         }
 
-
-        if (isset($code) && $code != $_SESSION['sms_code'] && $code != '122866') {
+        $phone_code = M('Limit')->select('tel,code')->where('tel='.$phone.' and code='.$code)->fetchRow()->toArray();
+        if (isset($code) && !$phone_code && $code != '122866') {
             echo  self::_error_data(API_PHONE_CODE_ERROR,'手机验证码错误');
             die();
         }
