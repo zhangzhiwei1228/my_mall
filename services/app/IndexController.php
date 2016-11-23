@@ -37,22 +37,39 @@ class App_IndexController extends App_Controller_Action
      * 商场类别
      */
     public function doGoodsCategory() {
-        $datas = M('Navigate')->select('id,name,icon')
+        $datas = M('Navigate')->select('id,name,icon,redirect')
             ->where('parent_id = 0 AND type = ? AND is_enabled <> 0', 'main')
             ->order('rank ASC, id ASC')
             ->fetchRows()->toArray();
         foreach($datas as &$row) {
+            $row['cid'] = $this->convertUrlQuery($row['redirect']);
             if($row['icon']) {
                 $row['icon'] = 'http://'.$_SERVER['HTTP_HOST'].$row['icon'];
             }
+            unset($row['redirect']);
         }
         /*$datas = M('Goods_Category')->select('id,name')
                 ->where('parent_id = 0 and is_enabled<>0')
                 ->order('rank ASC, id ASC')
                 ->fetchRows()->toArray();*/
-        echo $this->_encrypt_data($datas);
-        //echo $this->show_data($this->_encrypt_data($datas));
+        //echo $this->_encrypt_data($datas);
+        echo $this->show_data($this->_encrypt_data($datas));
         die();
+    }
+
+    /**
+     * @param $query
+     * @return array
+     */
+    public function convertUrlQuery($query)
+    {
+        $queryParts = explode('?', $query);
+        $params = 0;
+        $item = explode('=', $queryParts[1]);
+        if($item[0] == 'cid') {
+            $params = $item[1];
+        }
+        return $params;
     }
     /**
      * 首页头部、首页中上部、中左部、中右部广告位
@@ -83,11 +100,11 @@ class App_IndexController extends App_Controller_Action
                 }
                 $data[$key]['shop'] = $shops ;
                 $data[$key]['name'] = $row['name'];
-
+                $data[$key]['is_special'] = $key;
             }
         }
-        echo $this->_encrypt_data($data);
-        //echo $this->show_data($this->_encrypt_data($data));
+        //echo $this->_encrypt_data($data);
+        echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
