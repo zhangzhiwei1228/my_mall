@@ -66,8 +66,8 @@ class App_UserController extends App_Controller_Action
         $data['vouchers'] = $user_data['vouchers'];
         $data['token'] = $user_data['token'];
         $data['avatar'] = $user_data['avatar'] ? 'http://'.$_SERVER['HTTP_HOST'].$user_data['avatar'] : '';
-        //echo $this->_encrypt_data($data);
-        echo $this->show_data($this->_encrypt_data($data));
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
