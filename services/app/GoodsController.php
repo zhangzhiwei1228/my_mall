@@ -178,7 +178,7 @@ class App_GoodsController extends App_Controller_Action
      * 商品评价
      */
     public function doComment() {
-
+ 
     }
 
     /**
