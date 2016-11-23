@@ -10,12 +10,7 @@ class App_GoodsController extends App_Controller_Action
     public function init()
     {
         parent::init();
-    }
-
-    public function doDefault()
-    {
-        var_dump("1111");
-        die();
+        $this->user = $this->_auth();
     }
     /**
      * 商品详情
@@ -28,6 +23,10 @@ class App_GoodsController extends App_Controller_Action
         }
         $filed = 'id,category_id,title,sup,thumb,ref_img,notes,shipping_id,sales_num,quantity';
         $good = M('Goods')->select($filed)->where('id='.(int)$id)->fetchRow();
+        if (!$good->exists()) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求资源不存在');
+            die();
+        }
         $getSkuOpts = $good->AppGetSkuOpts();
         $sku = M('Goods_Sku')->select('market_price,point1,point2,point3,point4,point5,exts')
             ->where('goods_id = ?', (int)$id)
@@ -113,11 +112,19 @@ class App_GoodsController extends App_Controller_Action
         $cates = M('Goods_Category')->select('id,name')
             ->where('parent_id = '.(int)$cid.' and is_enabled<>0')
             ->order('rank ASC, id ASC')
-            ->fetchRows()->toArray();
-        $brand = M('Brand')->select('id,category_id,title,thumb,ref_img')->where('category_id='.(int)$cid)->fetchRow()->toArray();
+            ->fetchRows();
+        if (!$cates->exists()) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求资源不存在');
+            die();
+        }
+        $brand = M('Brand')->select('id,category_id,title,thumb,ref_img')->where('category_id='.(int)$cid)->fetchRow();
+        if (!$brand->exists()) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求资源不存在');
+            die();
+        }
         $data = array(
-            'cates' => $cates,
-            'brand' => $brand
+            'cates' => $cates->toArray(),
+            'brand' => $brand->toArray()
         );
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));

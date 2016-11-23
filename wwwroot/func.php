@@ -237,3 +237,33 @@ function is_mobile($phone) {
 	}
 	return (bool) (!preg_match('/^[(86)|0]?(13\d{9})|(15\d{9})|(17\d{9})|(18\d{9})$/', $phone)) ? FALSE : TRUE;
 }
+
+/**
+ * @param $addr
+ * @return array
+ * 根据地址获取经纬度
+ */
+function get_lng_lat($addr) {
+	$curl = curl_init();
+	curl_setopt($curl, CURLOPT_URL, 'http://api.map.baidu.com/geocoder/v2/');
+	$get_data = array(
+		'address'=>$addr,
+		'output'=>'json',
+		'ak'=>'ag0kleDQ9ytCYfEi2OBmlgDhHU1Oau9b',
+		'callback'=>'showLocation'
+	);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $get_data);
+	curl_setopt($curl, CURLOPT_HEADER, 0);
+	//设置获取的信息以文件流的形式返回，而不是直接输出。
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	$output = curl_exec($curl);
+	curl_close($curl);
+	$shop_addr = json_decode($output);
+	$lng = $lat = '';
+	if(!$shop_addr->status) {
+		$lng = $shop_addr->result->location->lng;
+		$lat = $shop_addr->result->location->lat;
+	}
+
+	return $lng && $lat ? $lng.','.$lat : '';
+}

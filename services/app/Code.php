@@ -38,3 +38,7 @@ define('API_SEND_DAY_EXCEED_LIMIT',1018);//超出单日发送限制
  * 参数限制
  */
 define('API_MISSING_PARAMETER',       1019);//缺少必要参数
+/**
+ * 无效请求资源
+ */
+define('API_RESOURCES_NOT_FOUND',       1020);//请求资源不存在

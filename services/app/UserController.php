@@ -11,7 +11,7 @@ class App_UserController extends App_Controller_Action
     public function init()
     {
         parent::init();
-        //$this->user = $this->_auth();
+        $this->user = $this->_auth();
     }
     public function doDefault() {
         $user = M('User')->select('id,nickname,avatar,credit,credit_coin,vouchers,token')->where('id='.(int)$this->user->id)->fetchRow()->toArray();
