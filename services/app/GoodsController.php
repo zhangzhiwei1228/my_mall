@@ -113,10 +113,6 @@ class App_GoodsController extends App_Controller_Action
             ->where('parent_id = '.(int)$cid.' and is_enabled<>0')
             ->order('rank ASC, id ASC')
             ->fetchRows();
-        if (!$cates->exists()) {
-            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求资源不存在');
-            die();
-        }
         $brand = M('Brand')->select('id,category_id,title,thumb,ref_img')->where('category_id='.(int)$cid)->fetchRow();
         if (!$brand->exists()) {
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求资源不存在');
