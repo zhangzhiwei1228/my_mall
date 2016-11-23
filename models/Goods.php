@@ -536,4 +536,58 @@ class Goods extends Abstract_Model
 
 		return $rows;
 	}
+
+	/**
+	 * @param $rows
+	 * @return mixed
+	 * app的sku组合
+	 */
+	public function AppHasManySku($rows) {
+		$ids = $rows->getColumns('id');
+		if (!$ids) return $rows;
+		$arrs = M('Goods_Sku')->select('market_price,point1,point2,point3,point4,point5,exts')
+			->where('goods_id IN ('.($ids ? implode(',', $ids) : 0).')')
+			->fetchRow()
+			->toArray();
+		foreach($rows as $k => $row) {
+			$row->market_price = $arrs['market_price'];
+			$row->point1 = $arrs['point1'];
+			$row->point2 = $arrs['point2'];
+			$row->point3 = $arrs['point3'];
+			$row->point4 = $arrs['point4'];
+			$row->point5 = $arrs['point5'];
+			$row->exts = $arrs['exts'];
+			$rows->set($k, $row->toArray());
+		}
+
+		return $rows;
+	}
+
+	/**
+	 * @param $row
+	 * @return mixed
+	 * app sku选项
+	 */
+	public function AppGetSkuOpts($row)
+	{
+		$attrs = M('Goods_Attribute')->select()
+			->where('goods_id = ? AND is_sku = 1', $row['id'])
+			->order('id ASC')
+			->fetchRows()->toArray();
+		$i = 0;
+		foreach($attrs as $k => $row) {
+			$n = $row['attr_name'];
+			$opts[$n]['name'] = $row['attr_name'];
+			//$opts[$n]['type'] = $row['attr_type'];
+			if(isset($row['attr_value']) && $row['attr_value']) {
+				$opts[$n]['values'][] = $row['attr_value'];
+			}
+			if(isset($row['attr_color']) && $row['attr_color']) {
+				$opts[$n]['colour'][] = $row['attr_color'];
+			}
+			$i++;
+		}
+		$values = array_values($opts);
+		return $values;
+	}
 }

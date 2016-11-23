@@ -34,4 +34,7 @@ define('API_REG_VALIDATE_TOKEN_FAIL',1015);//获取验证码token验证失败
 define('API_SEND_CODE_QUICK',1016);//发送验证码频率过快
 define('API_SEND_PHONE_DAY_EXCEED_LIMIT',1017);//此号码已超出单日发送限制
 define('API_SEND_DAY_EXCEED_LIMIT',1018);//超出单日发送限制
-
+/**
+ * 参数限制
+ */
+define('API_MISSING_PARAMETER',       1019);//缺少必要参数
