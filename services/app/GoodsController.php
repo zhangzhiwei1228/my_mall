@@ -26,7 +26,7 @@ class App_GoodsController extends App_Controller_Action
             echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
             die();
         }
-        $filed = 'id,category_id,title,sup,description,thumb,ref_img,notes,shipping_id,sales_num,quantity';
+        $filed = 'id,category_id,title,sup,thumb,ref_img,notes,shipping_id,sales_num,quantity';
         $good = M('Goods')->select($filed)->where('id='.(int)$id)->fetchRow();
         $getSkuOpts = $good->AppGetSkuOpts();
         $sku = M('Goods_Sku')->select('market_price,point1,point2,point3,point4,point5,exts')
@@ -95,6 +95,8 @@ class App_GoodsController extends App_Controller_Action
                 $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
             }
         }
+        unset($data['price']);
+        unset($data['unit']);
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
@@ -148,8 +150,8 @@ class App_GoodsController extends App_Controller_Action
                     $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
                 }
             }
-            $data['cates'][$key]['name'] = $cate['name'];
-            $data['cates'][$key]['childs'] =$childs;
+            $data[$key]['name'] = $cate['name'];
+            $data[$key]['childs'] =$childs;
         }
 
         echo $this->_encrypt_data($data);
