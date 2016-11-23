@@ -158,6 +158,10 @@ class App_GoodsController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+
+    /**
+     * 品牌墙列表
+     */
     public function doBrandList() {
         $cid = $this->_request->cid;
         $limit = $this->_request->limit;
@@ -175,7 +179,38 @@ class App_GoodsController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
-
+    /**
+     * 判断规格的库存量
+     */
+    public function doGetgoodsku() {
+        $param = $this->_request->param;
+        if(!$param) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'请选择规格');
+            die();
+        }
+        $param1 = '';
+        if(strpos($param,',')) {
+            $param1 = explode(',',$param);
+            $param1 = $param1[1].','.$param1[0];
+        }
+        $good_id = (int)$this->_request->good_id;
+        $quantity = $sku_id = 0;
+        $arrs = M('Goods_Sku')->select()
+            ->where('goods_id = '.$good_id.' and (reverse(spec) LIKE '. 'reverse("%'.$param.'%") or reverse(spec) LIKE '.'reverse("%'.$param1.'%")'.' )')
+            ->fetchRows()->toArray();
+        if(count($arrs)) {
+            foreach ($arrs as $arr) {
+                $quantity += $arr['quantity'];
+                $sku_id = $arr['id'];
+            }
+        } else {
+            $quantity = 'error';
+        }
+        $data = array('quantity'=>$quantity,'sku_id'=>$sku_id);
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
     /**
      * 商品评价
      */
