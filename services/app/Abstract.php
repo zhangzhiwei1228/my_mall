@@ -121,11 +121,11 @@ class App_Controller_Action extends Suco_Controller_Action
 	}
 
 	/**
-	 * 解析参数
-	 * @param $par
+	 * @param $data
 	 * @return mixed|string
 	 */
-	protected function parameter($par) {
-		return $this->_decrypt_data($this->_request->$par);
+	protected function parameter($data) {
+		$data = $this->_request->$data;
+		return $this->_decrypt_data($data,true);
 	}
 }

@@ -28,11 +28,7 @@ class App_ShopController extends App_Controller_Action
         $area_id = $this->_request->area_id;
         $is_special = $this->_request->is_special;
 
-        //全部类型
-        $cates = M('Shop_Category')->select('id,name')
-            ->where('parent_id = 0')
-            ->order('rank ASC, id ASC')
-            ->fetchRows()->toArray();
+
 
         $select = M('Shop')->alias('s')
             ->leftJoin(M('Shop_Category')->getTableName().' AS sc', 's.category_id = sc.id')
@@ -70,7 +66,6 @@ class App_ShopController extends App_Controller_Action
             }
         }
         $data['shops'] = $shops;
-        $data['cates'] = $cates;
 
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
@@ -109,8 +104,27 @@ class App_ShopController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
-
-
+    /**
+     * 列表头部
+     */
+    public function doHeard() {
+        //全部类型
+        $cates = M('Shop_Category')->select('id,name')
+            ->where('parent_id = 0')
+            ->order('rank ASC, id ASC')
+            ->fetchRows()->toArray();
+        $type_ids = M('Coltypes')->select('id,name')->where('english='."'shop"."'")->fetchRows()->toArray();
+        $data['cates'] = $cates;
+        $types = array();
+        foreach($type_ids as $key=> $row) {
+            $types[$key]['name'] = $row['name'];
+            $types[$key]['is_special'] = $key;
+        }
+        $data['types'] = $types;
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
     /**
      * 商家评价
      */
