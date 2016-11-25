@@ -86,13 +86,55 @@ class App_GoodsController extends App_Controller_Action
             $select->where('g.category_id IN ('.($ids ? $ids : 0).')');
         }
 
-        $datalsit = $select->fetchRows()
-            ->AppHasManySku();
+        $datalsit = $select->fetchRows();
+            /*->AppHasManySku();*/
         $data = $datalsit->toArray();
-        foreach($data as &$row) {
+        foreach($data as $key=> &$row) {
             if($row['thumb']) {
                 $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
             }
+            $arrs = M('Goods_Sku')->select('point1,point2,point3,point4,point5,exts,market_price')
+                ->where('goods_id ='.(int)$row['id'])
+                ->fetchRow()
+                ->toArray();
+            $k_v = array();
+            if($arrs['point1']) {
+                $k_v[$key]['name'] = '快乐积分';
+                $k_v[$key]['value'] = $arrs['point1'];
+            }
+            if($arrs['point2']) {
+                $k_v[$key+1]['name'] = '帮帮币';
+                $k_v[$key+1]['value'] = $arrs['point2'];
+            }
+            if($arrs['point3']) {
+                $k_v[$key+2]['name'] = '积分币';
+                $k_v[$key+2]['value'] = $arrs['point3'];
+            }
+            if($arrs['point4']) {
+                $k_v[$key+3]['name'] = '抵用券';
+                $k_v[$key+3]['value'] = $arrs['point4'];
+            }
+            if($arrs['point5']) {
+                $k_v[$key+4]['name'] = '现金';
+                $k_v[$key+4]['value'] = $arrs['point5'];
+            }
+            if($arrs['exts']) {
+                if($arrs['exts']['ext1']['cash'] && $arrs['exts']['ext1']['point']) {
+                    $k_v[$key+5]['name'] = '现金+帮帮币';
+                    $k_v[$key+5]['value'] = $arrs['exts']['ext1']['cash'].'+'.$arrs['exts']['ext1']['point'];
+                }
+                if($arrs['exts']['ext2']['cash'] && $arrs['exts']['ext2']['point']) {
+                    $k_v[$key+6]['name'] = '现金+积分币';
+                    $k_v[$key+6]['value'] = $arrs['exts']['ext2']['cash'].'+'.$arrs['exts']['ext2']['point'];
+                }
+                if($arrs['exts']['ext3']['cash'] && $arrs['exts']['ext3']['point']) {
+                    $k_v[$key+7]['name'] = '现金+抵用券';
+                    $k_v[$key+7]['value'] = $arrs['exts']['ext3']['cash'].'+'.$arrs['exts']['ext3']['point'];
+                }
+            }
+
+            $row['market_price'] = $arrs['market_price'];
+            $row['prices'] = array_slice(array_values($k_v),0,2);
         }
         unset($data['price']);
         unset($data['unit']);
