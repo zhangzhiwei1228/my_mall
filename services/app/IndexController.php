@@ -103,9 +103,10 @@ class App_IndexController extends App_Controller_Action
                 $data[$i]['name'] = $row['name'];
                 $data[$i]['is_special'] = $key;
             }
-            $i++; 
+            $i++;
         }
         //echo $this->_encrypt_data($data);
+        $data = array_values($data);
         echo $this->show_data($this->_encrypt_data($data));
         die();
     }
