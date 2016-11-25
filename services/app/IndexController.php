@@ -98,12 +98,12 @@ class App_IndexController extends App_Controller_Action
                 foreach($shops as &$shop){
                     $shop['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$shop['thumb'];
                 }
-                var_dump($key);
                 $data[$key]['shop'] = $shops ;
                 $data[$key]['name'] = $row['name'];
                 $data[$key]['is_special'] = $key;
             }
         }
+        print_r($data);
         //echo $this->_encrypt_data($data);
         echo $this->show_data($this->_encrypt_data($data));
         die();
