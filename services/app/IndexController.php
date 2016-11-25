@@ -87,6 +87,7 @@ class App_IndexController extends App_Controller_Action
     public function doTeamShop() {
         $type_ids = M('Coltypes')->select('id,name')->where('english='."'shop"."'")->fetchRows()->toArray();
         $data = array();
+        $i = 0;
         foreach($type_ids as $key=>$row){
             $ids[] = $key;
             $shops = M('Shop')->select('id,name,thumb')
@@ -98,12 +99,12 @@ class App_IndexController extends App_Controller_Action
                 foreach($shops as &$shop){
                     $shop['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$shop['thumb'];
                 }
-                $data[$key]['shop'] = $shops ;
-                $data[$key]['name'] = $row['name'];
-                $data[$key]['is_special'] = $key;
+                $data[$i]['shop'] = $shops ;
+                $data[$i]['name'] = $row['name'];
+                $data[$i]['is_special'] = $key;
             }
+            $i++;
         }
-        print_r($data);
         //echo $this->_encrypt_data($data);
         echo $this->show_data($this->_encrypt_data($data));
         die();
