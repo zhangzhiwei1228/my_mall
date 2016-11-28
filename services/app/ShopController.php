@@ -58,7 +58,14 @@ class App_ShopController extends App_Controller_Action
 
         //获取商家经纬度
         foreach($shops as $key=>&$row) {
-            $row['lng_lat'] = $row['addr'] && $row['area_text'] ? get_lng_lat($row['area_text'].$row['addr']) : '';
+            $row['lng'] = '';
+            $row['lat'] = '';
+            if($row['addr'] && $row['area_text']) {
+                $lng_lat =  get_lng_lat($row['area_text'].$row['addr']);
+                $row['lng'] = is_array($lng_lat) ? $lng_lat['lng'] : '';
+                $row['lat'] = is_array($lng_lat) ? $lng_lat['lat'] : '';
+            }
+            //$row['lng_lat'] = $row['addr'] && $row['area_text'] ? get_lng_lat($row['area_text'].$row['addr']) : '';
             $row['thumb'] =  $row['thumb'] ? 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'] : '';
         }
         $data['shops'] = $shops;
@@ -86,7 +93,9 @@ class App_ShopController extends App_Controller_Action
         $data['id'] = $shop['id'];
         $data['name'] = $shop['name'];
         $data['tel'] = $shop['tel'];
-        $data['lng_lat'] = $lng_lat;
+        $data['lng'] = is_array($lng_lat) ? $lng_lat['lng'] : '';
+        $data['lat'] = is_array($lng_lat) ? $lng_lat['lat'] : '';
+        //$data['lng_lat'] = $lng_lat;
         $data['pro_desc'] = $shop['pro_desc'];
         $data['addr'] = $addr;
         if($shop['ref_img']) {
