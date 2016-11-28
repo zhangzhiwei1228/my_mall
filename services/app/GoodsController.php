@@ -37,35 +37,43 @@ class App_GoodsController extends App_Controller_Action
         if($sku['point1']) {
             $k_v[$i]['name'] = '快乐积分';
             $k_v[$i]['value'] = $sku['point1'];
+            $k_v[$i]['price_type'] = 1;
         }
         if($sku['point2']) {
             $k_v[$i+1]['name'] = '帮帮币';
             $k_v[$i+1]['value'] = $sku['point2'];
+            $k_v[$i+1]['price_type'] = 2;
         }
         if($sku['point3']) {
             $k_v[$i+2]['name'] = '积分币';
             $k_v[$i+2]['value'] = $sku['point3'];
+            $k_v[$i+2]['price_type'] = 3;
         }
         if($sku['point4']) {
             $k_v[$i+3]['name'] = '抵用券';
             $k_v[$i+3]['value'] = $sku['point4'];
+            $k_v[$i+3]['price_type'] = 6;
         }
         if($sku['point5']) {
             $k_v[$i+4]['name'] = '现金';
             $k_v[$i+4]['value'] = $sku['point5'];
+            $k_v[$i+4]['price_type'] = 7;
         }
         if($sku['exts']) {
             if($sku['exts']['ext1']['cash'] && $sku['exts']['ext1']['point']) {
                 $k_v[$i+5]['name'] = '现金+帮帮币';
                 $k_v[$i+5]['value'] = $sku['exts']['ext1']['cash'].'+'.$sku['exts']['ext1']['point'];
+                $k_v[$i+5]['price_type'] = 4;
             }
             if($sku['exts']['ext2']['cash'] && $sku['exts']['ext2']['point']) {
                 $k_v[$i+6]['name'] = '现金+积分币';
                 $k_v[$i+6]['value'] = $sku['exts']['ext2']['cash'].'+'.$sku['exts']['ext2']['point'];
+                $k_v[$i+6]['price_type'] = 5;
             }
             if($sku['exts']['ext3']['cash'] && $sku['exts']['ext3']['point']) {
                 $k_v[$i+7]['name'] = '现金+抵用券';
                 $k_v[$i+7]['value'] = $sku['exts']['ext3']['cash'].'+'.$sku['exts']['ext3']['point'];
+                $k_v[$i+7]['price_type'] = 8;
             }
         }
         $data = $good->toArray();
@@ -82,8 +90,8 @@ class App_GoodsController extends App_Controller_Action
         $data['prices'] = array_values($k_v);
         unset($data['price']);
         unset($data['unit']);
-        //echo $this->_encrypt_data($data);
-        echo $this->show_data($this->_encrypt_data($data));
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
 
