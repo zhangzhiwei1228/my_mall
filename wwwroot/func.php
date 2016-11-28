@@ -265,5 +265,5 @@ function get_lng_lat($addr) {
 		$lat = $shop_addr->result->location->lat;
 	}
 
-	return $lng && $lat ? $lng.','.$lat : '';
+	return $lng && $lat ? array('lng'=>$lng,'lat'=>$lat): '';
 }

@@ -10,7 +10,7 @@ class App_ShopController extends App_Controller_Action
     public function init()
     {
         parent::init();
-        $this->user = $this->_auth();
+        //$this->user = $this->_auth();
     }
 
     /**
@@ -58,12 +58,8 @@ class App_ShopController extends App_Controller_Action
 
         //获取商家经纬度
         foreach($shops as $key=>&$row) {
-            if($row['addr'] && $row['area_text']) {
-                $row['lng_lat'] = get_lng_lat($row['area_text'].$row['addr']);
-            }
-            if($row['thumb']) {
-                $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
-            }
+            $row['lng_lat'] = $row['addr'] && $row['area_text'] ? get_lng_lat($row['area_text'].$row['addr']) : '';
+            $row['thumb'] =  $row['thumb'] ? 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'] : '';
         }
         $data['shops'] = $shops;
 
@@ -125,6 +121,10 @@ class App_ShopController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    /**
+     * 根据经纬度得出距离
+     */
+
     /**
      * 商家评价
      */
