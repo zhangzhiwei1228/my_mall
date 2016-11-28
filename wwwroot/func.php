@@ -267,3 +267,32 @@ function get_lng_lat($addr) {
 
 	return $lng && $lat ? array('lng'=>$lng,'lat'=>$lat): '';
 }
+
+/**
+ * @param $lat1
+ * @param $lng1
+ * @param $lat2
+ * @param $lng2
+ * @return float
+ * 根据经纬度获取距离
+ */
+function getDistance($lat1, $lng1, $lat2, $lng2)
+{
+	$earthRadius = 6367000; //approximate radius of earth in meters
+	$lat1 = ($lat1 * pi() ) / 180;
+	$lng1 = ($lng1 * pi() ) / 180;
+
+	$lat2 = ($lat2 * pi() ) / 180;
+	$lng2 = ($lng2 * pi() ) / 180;
+	$calcLongitude = $lng2 - $lng1;
+	$calcLatitude = $lat2 - $lat1;
+	$stepOne = pow(sin($calcLatitude / 2), 2) + cos($lat1) * cos($lat2) * pow(sin($calcLongitude / 2), 2);
+	$stepTwo = 2 * asin(min(1, sqrt($stepOne)));
+	$calculatedDistance = $earthRadius * $stepTwo;
+	$distance = round($calculatedDistance);
+	if($distance < 1000)
+		return $distance.'米';
+	return number_format($distance/pow(10,3),4) . '千米';
+	//return round($calculatedDistance);
+}
+

@@ -27,7 +27,8 @@ class App_ShopController extends App_Controller_Action
         $q = $this->_request->q;
         $area_id = $this->_request->area_id;
         $is_special = $this->_request->is_special;
-
+        $ulng = $this->_request->lng;
+        $ulat = $this->_request->lat;
 
 
         $select = M('Shop')->alias('s')
@@ -65,13 +66,17 @@ class App_ShopController extends App_Controller_Action
                 $row['lng'] = is_array($lng_lat) ? $lng_lat['lng'] : '';
                 $row['lat'] = is_array($lng_lat) ? $lng_lat['lat'] : '';
             }
+            $row['distance'] = '';
+            if($row['lng'] && $row['lat'] && $ulng && $ulat) {
+                $row['distance'] = getDistance($ulat,$ulng,$row['lat'],$row['lng']);
+            }
             //$row['lng_lat'] = $row['addr'] && $row['area_text'] ? get_lng_lat($row['area_text'].$row['addr']) : '';
             $row['thumb'] =  $row['thumb'] ? 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'] : '';
         }
         $data['shops'] = $shops;
 
-        echo $this->_encrypt_data($data);
-        //echo $this->show_data($this->_encrypt_data($data));
+        //echo $this->_encrypt_data($data);
+        echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
@@ -95,6 +100,12 @@ class App_ShopController extends App_Controller_Action
         $data['tel'] = $shop['tel'];
         $data['lng'] = is_array($lng_lat) ? $lng_lat['lng'] : '';
         $data['lat'] = is_array($lng_lat) ? $lng_lat['lat'] : '';
+        $ulng = $this->_request->lng;
+        $ulat = $this->_request->lat;
+        $data['distance']= '';
+        if($data['lng'] && $data['lat'] && $ulng && $ulat) {
+            $data['distance'] = getDistance($ulat,$ulng,$data['lat'],$data['lng']);
+        }
         //$data['lng_lat'] = $lng_lat;
         $data['pro_desc'] = $shop['pro_desc'];
         $data['addr'] = $addr;
