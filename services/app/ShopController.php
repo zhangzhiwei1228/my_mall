@@ -75,8 +75,8 @@ class App_ShopController extends App_Controller_Action
         }
         $data['shops'] = $shops;
 
-        //echo $this->_encrypt_data($data);
-        echo $this->show_data($this->_encrypt_data($data));
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
