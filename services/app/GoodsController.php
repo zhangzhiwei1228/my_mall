@@ -30,7 +30,6 @@ class App_GoodsController extends App_Controller_Action
         $getSkuOpts = $good->AppGetSkuOpts();
         $sku = M('Goods_Sku')->select('market_price,point1,point2,point3,point4,point5,exts')
             ->where('goods_id = ?', (int)$id)
-            ->order('id desc')
             ->fetchRow()->toArray();
         $k_v = array();
         $i = 0;
@@ -88,6 +87,7 @@ class App_GoodsController extends App_Controller_Action
         $data['opts'] = $getSkuOpts;
         /*$data['sku'] = $sku;*/
         $data['prices'] = array_values($k_v);
+        $data['market_price'] = $sku['market_price'];
         unset($data['price']);
         unset($data['unit']);
         echo $this->_encrypt_data($data);
