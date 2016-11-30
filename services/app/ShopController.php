@@ -156,7 +156,17 @@ class App_ShopController extends App_Controller_Action
      * 添加商家评论
      */
     public function doAddComment() {
-        $data = $this->_request->post();
-        M('Shop_Comment')->insert(array_merge($data, $this->_request->getFiles()));
+
+        $this->user = $this->_auth();
+        $uid = $this->user->id;
+        /*$shop_id = $this->_request->shop_id;
+        $shop = M('Shop')->select()->where('id='.(int)$shop_id)->fetchRow()->toArray();
+        if(!$shop) {
+            echo  self::_error_data(API_SHOP_NOT_FOUND,'商家不存在');
+            die();
+        }*/
+        $image = $this->Upload();
+        echo $image;
+        //M('Shop_Comment')->insert(array_merge($data, $this->_request->getFiles()));
     }
 }

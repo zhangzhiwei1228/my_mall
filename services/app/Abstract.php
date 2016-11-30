@@ -11,7 +11,7 @@ class App_Controller_Action extends Suco_Controller_Action
 	protected function _auth()
 	{
 		$token = $this->_request->token ;
-        $token = isset($token) && $token ? $token : 'a5c5dc0c6730e7f10bd02d7e3b4eb46d';
+        //$token = isset($token) && $token ? $token : 'a5c5dc0c6730e7f10bd02d7e3b4eb46d';
 		if ($token) {
 			if(strlen($token) != 32) {
 				echo  self::_error_data(API_LOGIN_FAILED_INVALID_TOKEN,'无效的token');
@@ -127,5 +127,44 @@ class App_Controller_Action extends Suco_Controller_Action
 	protected function parameter($data) {
 		$data = $this->_request->$data;
 		return $this->_decrypt_data($data,true);
+	}
+	/**
+	 *
+	 */
+	protected function Upload() {
+		$imgConf = Suco_Config::factory(CONF_DIR.'image.conf.php');
+		$file = $_FILES['imgFile'];
+		$user = M('User')->getUserByToken($_REQUEST['token']);
+		try {
+			if (!$file) {
+				throw new Suco_Exception('The file upload fail');
+			}
+			$url = Suco_File::upload($file, 'uploads/image', array(
+				'jpg','jpeg','png','gif','bmp','pdf','txt','rar','zip','gzip',
+				'doc','docx','xls','xlsx','ppt','pptx'), getUploadFileSize());
+			$url = (string)new Suco_Helper_BaseUrl($url, false);
+
+			$result = $data = array(
+				'error' => 0,
+				//'user' => $user,
+				'ref' => $_REQUEST['ref'],
+				'sign' => $user->getSign(),
+				'format' => $file['type'],
+				'name' => $file['name'],
+				'size' => $file['size'],
+				'url' => $url,
+				'src' => $url
+			);
+
+			//保存至数据库
+			M('Image')->insert($data);
+		} catch(Suco_Exception $e) {
+			//header('HTTP/1.0 500 ' . $e->getMessage());
+			$result = array(
+				'error' => 1,
+				'message' => $e->getMessage()
+			);
+		}
+		return json_encode($result);
 	}
 }
