@@ -580,10 +580,10 @@ class Goods extends Abstract_Model
 			$opts[$n]['name'] = $row['attr_name'];
 			//$opts[$n]['type'] = $row['attr_type'];
 			if(isset($row['attr_value']) && $row['attr_value']) {
-				$opts[$n]['values'][] = $row['attr_value'];
+				$opts[$n]['values'][]['name'] = $row['attr_value'];
 			}
 			if(isset($row['attr_color']) && $row['attr_color']) {
-				$opts[$n]['colour'][] = $row['attr_color'];
+				$opts[$n]['colour'][]['name'] = $row['attr_color'];
 			}
 			$i++;
 		}
