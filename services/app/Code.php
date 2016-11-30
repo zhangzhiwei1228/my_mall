@@ -46,3 +46,16 @@ define('API_RESOURCES_NOT_FOUND',       1020);//请求资源不存在
  * 评论
  */
 define('API_SHOP_NOT_FOUND',       1021);//商家不存在
+define('API_COMMENT_NOT_NULL',       1026);//商家不存在
+define('API_COMMENT_FAIL',       1027);//评价失败
+define('API_GOOD_NOT_FOUND',       1028);//评价的商品不存在
+define('API_ORDER_NOT_FOUND',       1029);//此订单不存在
+define('API_GOOD_SKU_NOT_FOUND',       1030);//此商品的规格不存在
+
+/**
+ * 上传图片
+ */
+define('API_IMAGE_TYPE_ERROR',       1022);//图片格式错误
+define('API_IMAGE_SIZE_ERROR',       1023);//图片大小错误，最大为2M
+define('API_UPLOAD_RESOURCES_NULL',       1024);//上传资源为空
+define('API_IMAGE_WRITE_FAIL',       1025);//上传资源写入失败

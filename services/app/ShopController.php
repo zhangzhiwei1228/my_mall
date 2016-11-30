@@ -10,7 +10,6 @@ class App_ShopController extends App_Controller_Action
     public function init()
     {
         parent::init();
-        //$this->user = $this->_auth();
     }
 
     /**
@@ -141,32 +140,71 @@ class App_ShopController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
-    /**
-     * 根据经纬度得出距离
-     */
 
     /**
      * 商家评价
      */
     public function doComment() {
-
+        $shop_id = $this->_request->shop_id;
+        $shop = M('Shop')->select()->where('id='.(int)$shop_id)->fetchRow()->toArray();
+        if(!$shop) {
+            echo  self::_error_data(API_SHOP_NOT_FOUND,'商家不存在');
+            die();
+        }
+        $data = M('Shop_Comment')->select('comment,photos,create_time')->where('shop_id='.(int)$shop_id.' and is_show <> 0')->fetchRows()->toArray();
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
     }
 
     /**
      * 添加商家评论
      */
     public function doAddComment() {
-
         $this->user = $this->_auth();
         $uid = $this->user->id;
-        /*$shop_id = $this->_request->shop_id;
+        $shop_id = $this->_request->shop_id;
+        $comment = $this->_request->comment;
+        $ext1 = $this->_request->ext1;
+        $ext2 = $this->_request->ext2;
+        $ext3 = $this->_request->ext3;
+        if(!$shop_id || !$comment) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
         $shop = M('Shop')->select()->where('id='.(int)$shop_id)->fetchRow()->toArray();
         if(!$shop) {
             echo  self::_error_data(API_SHOP_NOT_FOUND,'商家不存在');
             die();
-        }*/
+        }
+
+        if(!$comment) {
+            echo  self::_error_data(API_COMMENT_NOT_NULL,'评论不能为空');
+            die();
+        }
+        //ext1 服务态度 ext2 店铺环境   ext3 价格合理
+
+        $extr = array('ext1'=>$ext1,'ext2'=>$ext2,'ext3'=>$ext3);
+        $data['shop_id'] = $shop_id;
+        $data['user_id'] = $uid;
+        $data['comment'] = $comment;
+        $data['create_time'] = time();
+        $data['extr'] = json_encode($extr);
         $image = $this->Upload();
-        echo $image;
-        //M('Shop_Comment')->insert(array_merge($data, $this->_request->getFiles()));
+        if(isset($image['error']) && $image['error']) {
+            echo  self::_error_data(API_UPLOAD_RESOURCES_NULL,'上传失败');
+            die();
+        }
+        $data['photos'] = 'http://'.$_SERVER['HTTP_HOST'].$image['src'];
+        $insert = M('Shop_Comment')->insert($data);
+        if(!$insert) {
+            echo  self::_error_data(API_COMMENT_FAIL,'评价失败');
+            die();
+        }
+        unset($data['extr']);
+        $data = array_merge($data,$extr);
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
     }
 }

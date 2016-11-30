@@ -129,7 +129,7 @@ class App_Controller_Action extends Suco_Controller_Action
 		return $this->_decrypt_data($data,true);
 	}
 	/**
-	 *
+	 *上传图片
 	 */
 	protected function Upload() {
 		$imgConf = Suco_Config::factory(CONF_DIR.'image.conf.php');
@@ -159,12 +159,80 @@ class App_Controller_Action extends Suco_Controller_Action
 			//保存至数据库
 			M('Image')->insert($data);
 		} catch(Suco_Exception $e) {
-			//header('HTTP/1.0 500 ' . $e->getMessage());
 			$result = array(
 				'error' => 1,
 				'message' => $e->getMessage()
 			);
 		}
-		return json_encode($result);
+		return $result;
+	}
+
+	/**
+	 * 二进制流转换成图片
+	 */
+	public function stream2Image() {
+		//二进制数据流
+		$data = file_get_contents ( 'php://input' ) ? file_get_contents ( 'php://input' ) : gzuncompress ( $GLOBALS ['HTTP_RAW_POST_DATA'] );
+		$save_name = md5(microtime()) . '.' ;
+		$dest = 'uploads/image';
+		$dest = rtrim($dest, '/') . '/' . date('Ymd') . '/';
+		if (!is_dir($dest)) mkdir($dest, 0777);
+		$dest = $dest . date('H') . '/';
+		if (!is_dir($dest)) mkdir($dest, 0777);
+		$dest1 = WWW_DIR.$dest;
+		//数据流不为空，则进行保存操作
+		if (! empty ( $data )) {
+			//创建并写入数据流，然后保存文件
+			if (@$fp = fopen ( '/tmp/file', 'w+' )) {
+				fwrite ( $fp, $data );
+				fclose ( $fp );
+				$img_info = getimagesize('/tmp/file');
+				if(!$img_info) {
+					unlink('/tmp/file');
+					echo  self::_error_data(API_IMAGE_TYPE_ERROR,'上传文件格式错误');
+					die();
+				}
+				$img_size = filesize('/tmp/file');
+				if($img_size > 2048000) {
+					unlink('/tmp/file');
+					echo  self::_error_data(API_IMAGE_SIZE_ERROR,'上传文件最大为2M');
+					die();
+				}
+				switch ($img_info[2]){
+					 case 1:
+  						$imgtype = "gif";
+  						break;
+					case 2:
+ 						$imgtype = "jpg";
+ 						break;
+					case 3:
+ 						$imgtype = "png";
+	 					break;
+					default:
+						$imgtype = "jpg";
+						break;
+				}
+				$allowTypes = array('jpg','jpeg','png','gif');
+				$denyTypes = array('php', 'asp', 'jsp', 'aspx', 'html', 'js', 'css');//禁止类型
+				if ((!in_array($imgtype, $allowTypes)) || in_array($denyTypes, $denyTypes)) {
+					unlink('/tmp/file');
+					echo  self::_error_data(API_IMAGE_TYPE_ERROR,'上传文件格式错误');
+					die();
+				} else {
+					if (@$fp1 = fopen ( $dest1.$save_name.$imgtype, 'w+' )) {
+						fwrite ( $fp1, $data );
+						fclose ( $fp1 );
+						unlink('/tmp/file');
+					}
+					return '/'.$dest.$save_name.$imgtype;
+				}
+			} else {
+				echo  self::_error_data(API_IMAGE_WRITE_FAIL,'文件写入失败');
+				die();
+			}
+		} else {
+			echo  self::_error_data(API_UPLOAD_RESOURCES_NULL,'上传资源为空');
+			die();
+		}
 	}
 }
