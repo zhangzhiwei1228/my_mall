@@ -10,7 +10,7 @@ class App_GoodsController extends App_Controller_Action
     public function init()
     {
         parent::init();
-        $this->user = $this->_auth();
+        //$this->user = $this->_auth();
     }
     /**
      * 商品详情
