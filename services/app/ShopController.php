@@ -199,6 +199,8 @@ class App_ShopController extends App_Controller_Action
         var_dump($image['src']);
 
         $data['photos'] = 'http://'.$_SERVER['HTTP_HOST'].$image['src'];
+        var_dump($data);
+        die();
         $insert = M('Shop_Comment')->insert($data);
         if(!$insert) {
             echo  self::_error_data(API_COMMENT_FAIL,'评价失败');
