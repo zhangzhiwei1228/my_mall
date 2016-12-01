@@ -247,7 +247,8 @@ class App_UserController extends App_Controller_Action
         $shipping_id = $this->_request->shipping_id;
         $price_type = $this->_request->price_type;
         $qty = $this->_request->qty;
-        if(!$good_id || !$sku_id || !$shipping_id || !$price_type || !$qty) {
+        $checkout = $this->_request->checkout;
+        if(!$good_id || !$sku_id || !$shipping_id || !$price_type || !$qty ) {
             echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
             die();
         }
@@ -272,7 +273,7 @@ class App_UserController extends App_Controller_Action
             'sku_id' => $sku_id,
             'shipping_id' => $shipping_id,
             'price_type' => $price_type,
-            'checkout' => 0,
+            'checkout' => $checkout,
             'qty' => $qty,
         ));
         echo $this->_encrypt_data($cart);
