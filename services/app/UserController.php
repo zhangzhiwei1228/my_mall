@@ -237,5 +237,68 @@ class App_UserController extends App_Controller_Action
         echo  self::_error_data(API_GET_CODE_FAIL,'获取验证码失败');
         die();
     }
+    /**
+     * 用户添加购物车
+     */
+    public function doCart() {
+        $this->user = $this->_auth();
+        $good_id = $this->_request->good_id;
+        $sku_id = $this->_request->sku_id;
+        $shipping_id = $this->_request->shipping_id;
+        $price_type = $this->_request->price_type;
+        $qty = $this->_request->qty;
+        if(!$good_id || !$sku_id || !$shipping_id || !$price_type || !$qty) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $good = M('Goods')->select()->where('id='.(int)$good_id)->fetchRow()->toArray();
+        if(!$good) {
+            echo  self::_error_data(API_GOOD_NOT_FOUND,'评价的商品不存在');
+            die();
+        }
+        $sku = M('Goods_Sku')->select()->where('id='.(int)$sku_id)->fetchRow()->toArray();
+        if(!$sku) {
+            echo  self::_error_data(API_GOOD_SKU_NOT_FOUND,'此商品的规格不存在');
+            die();
+        }
+        $shipping = M('Shipping')->select()->where('id='.(int)$shipping_id)->fetchRow()->toArray();
+        if(!$shipping) {
+            echo  self::_error_data(API_SHIPPING_NOT_FOUND,'发货地不存在');
+            die();
+        }
+        $cart = M('User_Cart')->insert(array(
+            'user_id' => $this->user->id,
+            'goods_id' => $good_id,
+            'sku_id' => $sku_id,
+            'shipping_id' => $shipping_id,
+            'price_type' => $price_type,
+            'checkout' => 0,
+            'qty' => $qty,
+        ));
+        echo $this->_encrypt_data($cart);
+        //echo $this->show_data($this->_encrypt_data($cart));
+        die();
+    }
+    /**
+     * 用户删除购物车
+     *
+     */
+    public function doDeleteCart() {
+        $this->user = $this->_auth();
+        $cart_id = $this->_request->id;
+        if(!$cart_id) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $cart = M('User_Cart')->select()->where('id='.(int)$cart_id)->fetchRow()->toArray();
+        if(!$cart) {
+            echo  self::_error_data(API_CART_NOT_FOUND,'此购物车id不存在');
+            die();
+        }
+        $data = M('User_Cart')->deleteById((int)$cart_id);
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
 
 }

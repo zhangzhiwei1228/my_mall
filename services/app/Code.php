@@ -59,3 +59,9 @@ define('API_IMAGE_TYPE_ERROR',       1022);//图片格式错误
 define('API_IMAGE_SIZE_ERROR',       1023);//图片大小错误，最大为2M
 define('API_UPLOAD_RESOURCES_NULL',       1024);//上传资源为空
 define('API_IMAGE_WRITE_FAIL',       1025);//上传资源写入失败
+
+/**
+ * 订单类
+ */
+define('API_SHIPPING_NOT_FOUND',       1031);//发货地不存在
+define('API_CART_NOT_FOUND',       1032);//购物车不存在
