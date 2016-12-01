@@ -376,5 +376,16 @@ class App_GoodsController extends App_Controller_Action
         echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    public function doDesc() {
+        $good_id = $this->_request->id;
+        $view = $this->_initView();
+        $good = M('Goods')->select('description')->where('id='.(int)$good_id)->fetchRow()->toArray();
+        if(!$good_id || !$good) {
+            $view->render('views/app/404.php');
+        } else {
+            $view->desc = $good['description'];
+            $view->render('views/app/products.php');
+        }
+    }
 
 }

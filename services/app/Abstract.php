@@ -235,4 +235,23 @@ class App_Controller_Action extends Suco_Controller_Action
 			die();
 		}
 	}
+	protected function _initView()
+	{
+		$theme = M('Setting')->theme;
+
+		$view = $this->getView();
+		$view->setThemePath($theme);
+		$view->setScriptPath(WWW_DIR.trim($theme,'/').'/');
+		//$view->setLayoutPath(WWW_DIR.trim($theme,'/').'/tpl/layouts/');
+		$view->setHelperPath(WWW_DIR.trim('themes/admincp_v4.3').'/tpl/helpers/');
+
+		$view->setting = M('Setting');
+		$view->advert = M('Advert');
+		$view->user = M('User')->getCurUser();
+		//$view->setLayout('default.php');
+
+		require_once WWW_DIR.trim($theme,'/').'/comm.php';
+
+		return $view;
+	}
 }

@@ -207,4 +207,17 @@ class App_ShopController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    public function doDesc() {
+        $shop_id = $this->_request->id;
+        $shop = M('Shop')->select('description')->where('id='.(int)$shop_id)->fetchRow()->toArray();
+        $view = $this->_initView();
+        if(!$shop_id || !$shop) {
+            $view->render('views/app/404.php');
+        } else {
+            $view->desc = $shop['description'];
+            $view->render('views/app/business.php');
+        }
+
+
+    }
 }
