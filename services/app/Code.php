@@ -65,3 +65,5 @@ define('API_IMAGE_WRITE_FAIL',       1025);//上传资源写入失败
  */
 define('API_SHIPPING_NOT_FOUND',       1031);//发货地不存在
 define('API_CART_NOT_FOUND',       1032);//购物车不存在
+define('API_USER_ADDR_NOT_FOUND',       1033);//收货地址不存在
+define('API_AREA_NOT_FOUND',       1034);//地区不存在

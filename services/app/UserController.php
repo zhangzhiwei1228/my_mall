@@ -301,5 +301,86 @@ class App_UserController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    /**
+     * 用户管理收货地址
+     */
+    public function doAddrList() {
+        $this->user = $this->_auth();
+        $data =
+            M('User_Address')
+            ->select('id,area_id,area_text,consignee,address,zipcode,phone,is_def,create_time')
+            ->where('user_id='.(int)$this->user->id.' and area_id <> 0 and phone <> '."''".' and address <>'."''" )->fetchRows()->toArray();
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 修改收货地址
+     */
+    public function doEditAddr() {
+        $this->user = $this->_auth();
+        $addr_id = $this->_request->id;
+        $area_id = $this->_request->area_id;
+        $area_text = $this->_request->area_text;
+        $consignee = $this->_request->consignee;
+        $address = $this->_request->address;
+        $zipcode = $this->_request->zipcode;
+        $phone = $this->_request->phone;
+        $is_def = $this->_request->is_def;
 
+        if(!$addr_id || !$area_id || !$area_text || !$consignee || !$address || !$zipcode || !$phone) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $addr = M('User_Address')->getById((int)$addr_id);
+        if(!$addr) {
+            echo self::_error_data(API_USER_ADDR_NOT_FOUND,'收获地址不存在');
+            die();
+        }
+        $area = M('Region')->getById((int)$area_id);
+        if(!$area) {
+            echo self::_error_data(API_AREA_NOT_FOUND,'地区不存在');
+            die();
+        }
+        if(!is_mobile($phone)) {
+            echo self::_error_data(ERR_LOGIN_FAIL_PHONE,'手机格式错误');
+            die();
+        }
+        $data = array(
+            'area_id' => $area_id,
+            'area_text' => $area_text,
+            'consignee' => $consignee,
+            'address' => $address,
+            'zipcode' => $zipcode,
+            'phone' => $phone,
+            'is_def' => $is_def,
+        );
+        if($is_def) {
+            M('User_Address')->update(array('is_def'=>0), 'user_id = '.(int)$this->user->id);
+        }
+        $update = M('User_Address')->updateById($data, (int)$addr_id);
+        echo $this->_encrypt_data($update);
+        //echo $this->show_data($this->_encrypt_data($update));
+        die();
+    }
+    /**
+     * 用户删除地址
+     */
+    public function doDelAddr() {
+        $this->user = $this->_auth();
+        $addr_id = $this->_request->id;
+        if(!$addr_id ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $addr = M('User_Address')->getById((int)$addr_id);
+        if(!$addr) {
+            echo self::_error_data(API_USER_ADDR_NOT_FOUND,'收获地址不存在');
+            die();
+        }
+        $delete = M('User_Address')->deleteById((int)$addr_id);
+        echo $this->_encrypt_data($delete);
+        //echo $this->show_data($this->_encrypt_data($delete));
+        die();
+    }
 }
