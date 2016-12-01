@@ -191,18 +191,21 @@ class App_ShopController extends App_Controller_Action
         $data['create_time'] = time();
         $data['extr'] = json_encode($extr);
         $image = $this->Upload();
-        var_dump($image);
-        die();
+
         if(isset($image['error']) && $image['error']) {
             echo  self::_error_data(API_UPLOAD_RESOURCES_NULL,'上传失败');
             die();
         }
+        var_dump($image['src']);
+
         $data['photos'] = 'http://'.$_SERVER['HTTP_HOST'].$image['src'];
         $insert = M('Shop_Comment')->insert($data);
         if(!$insert) {
             echo  self::_error_data(API_COMMENT_FAIL,'评价失败');
             die();
         }
+        var_dump($insert);
+        die();
         unset($data['extr']);
         $data = array_merge($data,$extr);
         echo $this->_encrypt_data($data);
