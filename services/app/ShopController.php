@@ -191,6 +191,8 @@ class App_ShopController extends App_Controller_Action
         $data['create_time'] = time();
         $data['extr'] = json_encode($extr);
         $image = $this->Upload();
+        var_dump($image);
+        die();
         if(isset($image['error']) && $image['error']) {
             echo  self::_error_data(API_UPLOAD_RESOURCES_NULL,'上传失败');
             die();
