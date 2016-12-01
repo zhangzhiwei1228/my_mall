@@ -281,6 +281,42 @@ class App_UserController extends App_Controller_Action
         die();
     }
     /**
+     * 购物车列表
+     */
+    public function doCartList() {
+        $this->user = $this->_auth();
+        $carts = M('User_Cart')->alias('c')
+            ->leftJoin(M('Goods')->getTableName().' AS gs', 'c.goods_id = gs.id')
+            ->leftJoin(M('Goods_Sku')->getTableName().' AS gsk', 'c.sku_id = gsk.id')
+            ->columns('c.id,c.price_type,c.qty, gs.title,gs.thumb, gsk.point1, gsk.point2,gsk.point3,gsk.point4,gsk.point5,gsk.exts,gsk.spec')
+            ->where('c.user_id ='.(int)$this->user->id)
+            ->fetchRows()->toArray();
+        foreach($carts as $key1=> &$row) {
+            $row = M('User_Cart')->price_type($row);
+            $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
+            unset($row['exts']);
+            unset($row['point1']);
+            unset($row['point2']);
+            unset($row['point3']);
+            unset($row['point4']);
+            unset($row['point5']);
+            unset($row['price_type']);
+            $spec = explode(',',$row['spec']);
+            $arr = array();
+            foreach($spec as $key=>$val) {
+                $val = substr($val,0,strlen($val)-1);
+                $val = substr($val,1);
+                $val = explode(':',$val);
+                $arr[$key]['name'] = $val[0];
+                $arr[$key]['value'] = $val[1];
+            }
+            $row['spec'] = $arr;
+        }
+        echo $this->_encrypt_data($carts);
+        //echo $this->show_data($this->_encrypt_data($carts));
+        die();
+    }
+    /**
      * 用户删除购物车
      *
      */
@@ -364,6 +400,38 @@ class App_UserController extends App_Controller_Action
         die();
     }
     /**
+     * 用户添加地址
+     */
+    public function doInsertAddr() {
+        $this->user = $this->_auth();
+        $area_id = $this->_request->area_id;
+        $area_text = $this->_request->area_text;
+        $consignee = $this->_request->consignee;
+        $address = $this->_request->address;
+        $zipcode = $this->_request->zipcode;
+        $phone = $this->_request->phone;
+        $is_def = $this->_request->is_def;
+        if( !$area_id || !$area_text || !$consignee || !$address || !$zipcode || !$phone) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $data = array(
+            'user_id' => $this->user->id,
+            'area_id' => $area_id,
+            'area_text' => $area_text,
+            'consignee' => $consignee,
+            'address' => $address,
+            'zipcode' => $zipcode,
+            'phone' => $phone,
+            'is_def' => $is_def,
+            'create_time' => time(),
+        );
+        $id = M('User_Address')->insert($data);
+        echo $this->_encrypt_data($id);
+        //echo $this->show_data($this->_encrypt_data($id));
+        die();
+    }
+    /**
      * 用户删除地址
      */
     public function doDelAddr() {
@@ -383,4 +451,7 @@ class App_UserController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($delete));
         die();
     }
+    /**
+     * 选择收获地址
+     */
 }
