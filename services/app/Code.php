@@ -19,7 +19,8 @@ define('API_TOKEN_EXPIRE',       1004);//token已过期
  */
 define('ERR_LOGIN_FAIL_PHONE',       1005);//登录失败,无效手机号
 define('ERR_LOGIN_FAIL_PWD_OR_ACCOUNT',       1006);//登录失败,不存在此手机号或密码错误
-define('API_IS_NOT_VIP',       1035);//登录失败,不存在此手机号或密码错误
+define('API_IS_NOT_VIP',       1035);//此用户没有激活
+define('API_USER_IS_VIP',       1036);//此用户已激活
 
 /**
  * 注册
@@ -69,3 +70,7 @@ define('API_SHIPPING_NOT_FOUND',       1031);//发货地不存在
 define('API_CART_NOT_FOUND',       1032);//购物车不存在
 define('API_USER_ADDR_NOT_FOUND',       1033);//收货地址不存在
 define('API_AREA_NOT_FOUND',       1034);//地区不存在
+/**
+ *
+ */
+define('API_USER_CREDIT_NO_ENOUGH',       1037);//帮帮币不足

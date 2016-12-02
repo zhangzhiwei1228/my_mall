@@ -455,7 +455,30 @@ class App_UserController extends App_Controller_Action
      * 商品打包
      */
     public function doPackage() {
+        $this->user = $this->_auth();
 
     }
-
+    /**
+     * 激活vip
+     */
+    public function doVip() {
+        $this->user = $this->_auth();
+        $is_vip = $this->user->is_vip;
+        if(!$is_vip) {
+            echo  self::_error_data(API_USER_IS_VIP,'您已经激活，请不要重复提交');
+            die();
+        }
+        if ( $this->user->credit < 20) {
+            echo  self::_error_data(API_USER_CREDIT_NO_ENOUGH,'帮帮币不足');
+            die();
+        }
+        $this->user->credit(20 * -1,'使用20帮帮币激活会员');
+        $this->user->is_vip = 1;
+        $this->user->save();
+        $this->user->activateAddCredit((int)$this->user->id);
+        $data = 1;
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
 }
