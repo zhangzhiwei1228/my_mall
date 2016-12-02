@@ -294,13 +294,7 @@ class App_UserController extends App_Controller_Action
         foreach($carts as $key1=> &$row) {
             $row = M('User_Cart')->price_type($row);
             $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
-            /*unset($row['exts']);
-            unset($row['point1']);
-            unset($row['point2']);
-            unset($row['point3']);
-            unset($row['point4']);
-            unset($row['point5']);
-            unset($row['price_type']);*/
+
             $spec = explode(',',$row['spec']);
             $arr = array();
             foreach($spec as $key=>$val) {
@@ -312,8 +306,8 @@ class App_UserController extends App_Controller_Action
             }
             $row['spec'] = $arr;
         }
-        echo $this->_encrypt_data($carts);
-        //echo $this->show_data($this->_encrypt_data($carts));
+        //echo $this->_encrypt_data($carts);
+        echo $this->show_data($this->_encrypt_data($carts));
         die();
     }
     /**
