@@ -23,12 +23,13 @@ class Cart
 		
 		//读取会员购物车
 		 $uid = M('User')->getCurUser()->id;
+		 unset($this->_items);
 		 if ($uid && !$this->_items) {
 		 	$items = M('User_Cart')->select()
 		 		->where('user_id = ?', $uid)
 		 		->fetchRows();
 		 	foreach ($items as $item) {
-		 		$k = $item['goods_id'].'.'.$item['sku_id'].$item['price_type'];
+		 		$k = $item['goods_id'].'.'.$item['sku_id'].'.'.$item['price_type'];
 		 		$this->_items[$k] = array(
 		 			'id'=> $item['goods_id'],
 		 			'qty'=> $item['qty'],
@@ -106,7 +107,7 @@ class Cart
 		$cart_code = explode('.',$code);
 		$uid = M('User')->getCurUser()->id;
 		if($uid && isset($cart_code[0]) && isset($cart_code[1])) {
-			M('User_Cart')->delete('user_id ='. $uid . ' and goods_id ='.$cart_code[0].' and sku_id ='.$cart_code[1]);
+			M('User_Cart')->delete('user_id ='. $uid . ' and goods_id ='.$cart_code[0].' and sku_id ='.$cart_code[1].' and price_type = '.$cart_code[2]);
 		}
 		unset($this->_items[$code]);
 		$this->save();
