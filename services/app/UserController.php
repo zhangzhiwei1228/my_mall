@@ -288,13 +288,14 @@ class App_UserController extends App_Controller_Action
         $carts = M('User_Cart')->alias('c')
             ->leftJoin(M('Goods')->getTableName().' AS gs', 'c.goods_id = gs.id')
             ->leftJoin(M('Goods_Sku')->getTableName().' AS gsk', 'c.sku_id = gsk.id')
-            ->columns('c.id,c.price_type,c.qty, gs.title,gs.thumb, gsk.point1, gsk.point2,gsk.point3,gsk.point4,gsk.point5,gsk.exts,gsk.spec')
+            ->columns('c.id,c.goods_id,c.price_type,c.qty, gs.title,gs.thumb, gsk.point1, gsk.point2,gsk.point3,gsk.point4,gsk.point5,gsk.exts,gsk.spec')
             ->where('c.user_id ='.(int)$this->user->id)
             ->fetchRows()->toArray();
         foreach($carts as $key1=> &$row) {
             $row = M('User_Cart')->price_type($row);
             $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
-
+            $row['good_id'] = $row['goods_id'];
+            unset($row['goods_id']);
             $spec = explode(',',$row['spec']);
             $arr = array();
             foreach($spec as $key=>$val) {
@@ -306,8 +307,8 @@ class App_UserController extends App_Controller_Action
             }
             $row['spec'] = $arr;
         }
-        echo $this->_encrypt_data($carts);
-        //echo $this->show_data($this->_encrypt_data($carts));
+        //echo $this->_encrypt_data($carts);
+        echo $this->show_data($this->_encrypt_data($carts));
         die();
     }
     /**
@@ -446,6 +447,10 @@ class App_UserController extends App_Controller_Action
         die();
     }
     /**
-     * 选择收获地址
+     * 商品打包
      */
+    public function doPackage() {
+
+    }
+
 }
