@@ -19,6 +19,8 @@ define('API_TOKEN_EXPIRE',       1004);//token已过期
  */
 define('ERR_LOGIN_FAIL_PHONE',       1005);//登录失败,无效手机号
 define('ERR_LOGIN_FAIL_PWD_OR_ACCOUNT',       1006);//登录失败,不存在此手机号或密码错误
+define('API_IS_NOT_VIP',       1035);//登录失败,不存在此手机号或密码错误
+
 /**
  * 注册
  */

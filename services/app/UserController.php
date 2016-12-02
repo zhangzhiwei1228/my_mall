@@ -242,6 +242,11 @@ class App_UserController extends App_Controller_Action
      */
     public function doCart() {
         $this->user = $this->_auth();
+        $is_vip = $this->user->is_vip;
+        if(!$is_vip) {
+            echo  self::_error_data(API_IS_NOT_VIP,'您还没有激活，请先激活');
+            die();
+        }
         $good_id = $this->_request->good_id;
         $sku_id = $this->_request->sku_id;
         $shipping_id = $this->_request->shipping_id;
