@@ -72,6 +72,9 @@ define('API_USER_ADDR_NOT_FOUND',       1033);//收货地址不存在
 define('API_AREA_NOT_FOUND',       1034);//地区不存在
 define('API_NO_CHOOSE_GOODS',       1038);//请选择结算的商品
 define('API_ORDER_SUBMIT_FAIL',       1039);//请选择结算的商品
+define('API_USER_CREDIT_HAPPY_NO_ENOUGH',       1041);//快乐积分不足
+define('API_USER_CREDIT_COIN_NO_ENOUGH',       1042);//积分币不足
+define('API_USER_VOUCHERS_NO_ENOUGH',       1043);//抵用券不足
 
 /**
  *

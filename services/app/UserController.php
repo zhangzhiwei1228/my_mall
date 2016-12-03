@@ -559,7 +559,215 @@ class App_UserController extends App_Controller_Action
         echo $this->_encrypt_data($order_json);
         //echo $this->show_data($this->_encrypt_data($order_json));
         die();
-        die();
+    }
+
+    /**
+     * 生成订单
+     */
+    public function doCreateOrder() {
+        $this->user = $this->_auth();
+        $cart_ids = $this->_request->ids;
+        $addr_id = $this->_request->addr_id;
+        if(!$cart_ids || !$addr_id) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $cart = M('Cart');
+        $cart->setAppCart($this->user->id);
+
+        if (!$cart->getTotalQty()) {
+            echo  self::_error_data(API_NO_CHOOSE_GOODS,'请选择结算的商品');
+            die();
+        }
+        $ids = explode(',',$cart_ids);
+        foreach($ids as $key=>$val) {
+            $data = M('User_Cart')->select('goods_id,sku_id,price_type')->where('id = '.(int)$val)->fetchRow()->toArray();
+            if(!$data) continue;
+            $codes[] = $data['goods_id'].'.'.$data['sku_id'].'.'.$data['price_type'];
+        }
+        if (!$codes) {
+            echo  self::_error_data(API_NO_CHOOSE_GOODS,'结算商品数据错误');
+            die();
+        }
+        $cart->checking($codes);
+        $items = $cart->getItems();
+        $status = $cart->getAllStatus();
+        $addr = M('User_Address')->select('area_id,area_text,consignee,address,zipcode,phone')->where('id ='.(int)$addr_id.' and user_id ='.(int)$this->user->id)->fetchRow()->toArray();
+        if(!$addr) {
+            echo self::_error_data(API_USER_ADDR_NOT_FOUND,'用户地址不正确');
+            die();
+        }
+        $addr['addr_id'] = $addr_id;
+        M('Order')->getAdapter()->beginTrans();
+        try{
+            //减库存
+            foreach ($items as $key =>$item) {
+                //处理规格库存
+                if ($item['skuId']) {
+                    $sku = M('Goods_Sku')->select()
+                        ->where('id = ?', (int)$item['skuId'])
+                        ->forUpdate(1)
+                        ->fetchRow();
+                    if ($sku['quantity'] < $item['qty'] || $item['qty'] == 0) {
+                        throw new Suco_Exception('很抱歉，商品 “'.$item['goods']['title'].'” 已经缺货。');
+                    }
+                    $sku->quantity -= $item['qty'];
+                    $sku->sales_num += $item['qty'];
+                    $sku->save();
+                }
+                if($item['shipping_id']) {
+                    $status['shipping_id'] = $item['shipping_id'];
+                }
+                M('Goods')->updateById('
+					sales_num = sales_num + '.(int)$item['qty'].',
+					trans_num = trans_num + 1,
+					quantity =	quantity - '.(int)$item['qty']
+                    , (int)$item['goods']['id']);
+                $shippings[$key] = $item['shipping_id'];
+            }
+            $postage = $this->doPostAge($item, $item['total'], $item['subtotal_weight']);
+            $status['total_freight'] = $postage;
+            $status['total_pay_amount'] = $status['total_pay_amount']+$postage;
+            $oid = M('Order')->insert(array_merge($addr, $status, array(
+                'code' => time(),
+                'buyer_id' => $this->user->id,
+                'invoice_id' => (int)$invoiceId,
+                'status' => 1,
+                'is_virtual' => 0,
+                'expiry_time' => time() + (int)M('Setting')->timeout_pay,
+            )));
+            foreach($items as $k => $row) {
+                unset($row['goods']['id']);
+                unset($row['goods']['key']);
+                unset($row['goods']['cost_price']);
+                unset($row['goods']['market_price']);
+                unset($row['goods']['point1']);
+                unset($row['goods']['point2']);
+                unset($row['goods']['point3']);
+                unset($row['goods']['point4']);
+                unset($row['goods']['point5']);
+                unset($row['goods']['quantity']);
+                unset($row['goods']['quantity_warning']);
+                unset($row['goods']['thumb1']);
+                unset($row['goods']['package_weight']);
+                unset($row['goods']['package_unit']);
+                unset($row['goods']['package_quantity']);
+                unset($row['goods']['package_lot_unit']);
+                unset($row['goods']['price_text']);
+                M('Order_Goods')->insert(array_merge($row['goods'], array(
+                    'order_id' => $oid,
+                    'buyer_id' => $this->user->id,
+                    'subtotal_amount' => $row['subtotal_amount'],
+                    'subtotal_weight' => $row['subtotal_weight'],
+                    'subtotal_save' => $row['subtotal_save'],
+                    'purchase_quantity' => $row['qty'],
+                    'promotion' => $row['goods']['price_label'],
+                    'subtotal_vouchers' => $row['subtotal_vouchers'],
+                    //'unit' => $row['unit'],
+                    'sku_id' => $row['skuId']
+                )));
+                $cart->delItem($k,$this->user->id);
+            }
+            //发票处理
+            if ($_POST['invoice']['type_id']) {
+                $invoiceId = M('Invoice')->insert(array_merge($_POST['invoice'], $_POST, array(
+                    'order_ids' => $oid,
+                    'invoice_amount' => $status['total_amount']
+                )));
+            }
+
+            //销毁购物车
+            //$cart->destroy();
+            M('Order')->getAdapter()->commit();
+            $order = M('Order')->getById((int)$oid);
+
+            $order_json = json_decode($order['order_json']);
+            $order_postage = 0;
+            //将分好的商品的邮费计算出来
+            foreach($order_json as $key =>$val) {
+                if(strpos($val->skus_id,',')) {
+                    $sku_ids = explode(',',$val->skus_id);
+                    foreach($sku_ids as $sku_id) {
+                        $sku = M('Goods_Sku')->select()->where('id = ?', (int)$sku_id)->fetchRow();
+                        $good = M('Goods')->select()->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                        $val->goods[$sku_id] = $good;
+                    }
+
+                } else {
+                    $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val->skus_id)->fetchRow();
+                    $good = M('Goods')->select()->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                    $val->goods[$val->skus_id] = $good;
+                }
+
+                $order['shipping_id'] = $val->shipping_id;
+                $postage = $this->doPostAge($order, $val->total, $val->weight);
+                $val->order_postage = $postage;
+                $order_postage += $postage;
+            }
+            $total_postage = $order['order_json'] ? $order_postage : $this->doPostAge($order);//计算邮费
+            $order->total_pay_amount = $total_postage+$order->total_pay_amount;
+            $total_amount = $total_postage+$order->total_amount;
+            $order->total_amount = $total_amount;
+            $pay = 0;
+            if(!$total_amount) {
+                if ($order['total_credit'] > 0 && $this->user['credit'] < $order['total_credit']) {
+                    echo self::_error_data(API_USER_CREDIT_NO_ENOUGH,'支付失败，您的帮帮币不足');
+                    die();
+                }
+                if ($order['total_credit_happy'] > 0 && $this->user['credit_happy'] < $order['total_credit_happy']) {
+                    echo self::_error_data(API_USER_CREDIT_HAPPY_NO_ENOUGH,'支付失败，您的快乐积分不足');
+                    die();
+                }
+                if ($order['total_credit_coin'] > 0 && $this->user['credit_coin'] < $order['total_credit_coin']) {
+                    echo self::_error_data(API_USER_CREDIT_COIN_NO_ENOUGH,'支付失败，您的积分币不足');
+                    die();
+                }
+                if ($order['total_vouchers'] > 0 && $this->user['vouchers'] < $order['total_vouchers']) {
+                    echo self::_error_data(API_USER_VOUCHERS_NO_ENOUGH,'支付失败，您的抵用券不足');
+                    die();
+                }
+
+                if ($order['total_credit']) {
+                    $this->user->credit($order['total_credit']*-1, '支付订单【TS-'.$order['id'].'】');
+                }
+                if ($order['total_credit_happy']) {
+                    $this->user->creditHappy($order['total_credit_happy']*-1, '支付订单【TS-'.$order['id'].'】');
+                }
+                if ($order['total_credit_coin']) {
+                    $this->user->creditCoin($order['total_credit_coin']*-1, '支付订单【TS-'.$order['id'].'】');
+                }
+                if ($order['total_vouchers']) {
+                    $this->user->vouchers($order['total_vouchers']*-1, '支付订单【TS-'.$order['id'].'】');
+                }
+                $order->status = 2;
+                $order->save();
+                $user_id = $order->buyer_id;
+                $area_id = $order->area_id;
+                $user_area = M('User_Area')->select('id')->where('user_id='.(int)$user_id)->fetchRow()->toArray();
+                if(!$user_area) {
+                    M('User_Area')->insert(array(
+                        'user_id' => (int)$user_id,
+                        'area_id' => $area_id,
+                        'create_time' => time()
+                    ));
+                }
+                $pay = 1;
+            }
+            $data = array(
+                'oid' => $oid,
+                'amount' => $order['total_amount'],
+                'trade_no' => 'TS-'.$order->code,
+                'subject' => '支付订单',
+                'pay' => $pay
+            );
+            echo $this->_encrypt_data($data);
+            //echo $this->show_data($this->_encrypt_data($data));
+            die();
+        } catch(Exception $e) {
+            M('Order')->getAdapter()->rollback();
+            echo  self::_error_data(API_ORDER_SUBMIT_FAIL,'订单提交失败');
+            die();
+        }
     }
     /**
      * 激活vip
