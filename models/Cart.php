@@ -41,6 +41,30 @@ class Cart
 		 	}
 		 }
 	}
+	/**
+	 * 根据移动端token设置购物车
+	 */
+	public function setAppCart($uid)
+	{
+		//读取会员购物车
+		unset($this->_items);
+		if ($uid && !$this->_items) {
+			$items = M('User_Cart')->select()
+				->where('user_id = ?', $uid)
+				->fetchRows();
+			foreach ($items as $item) {
+				$k = $item['goods_id'].'.'.$item['sku_id'].'.'.$item['price_type'];
+				$this->_items[$k] = array(
+					'id'=> $item['goods_id'],
+					'qty'=> $item['qty'],
+					'skuId'=> $item['sku_id'],
+					'shipping_id' => $item['shipping_id'],
+					'priceType' => $item['price_type'],
+					'checkout' => $item['checkout'],
+				);
+			}
+		}
+	}
 
 	/**
 	 * 添加观察者
@@ -102,10 +126,11 @@ class Cart
 	 * 移除商品
 	 * @param string $code 商品标签
 	 */
-	public function delItem($code)
+	public function delItem($code,$user_id = false )
 	{
 		$cart_code = explode('.',$code);
 		$uid = M('User')->getCurUser()->id;
+		$uid = $uid ? $uid : $user_id;
 		if($uid && isset($cart_code[0]) && isset($cart_code[1])) {
 			M('User_Cart')->delete('user_id ='. $uid . ' and goods_id ='.$cart_code[0].' and sku_id ='.$cart_code[1].' and price_type = '.$cart_code[2]);
 		}
@@ -255,6 +280,8 @@ class Cart
 			foreach ($this->_items as $code => $item) {
 				if (!in_array($code, $codes)) {
 					unset($this->_items[$code]);
+				} else {
+					$this->_items[$code]['checkout'] = 1;
 				}
 			}
 		}

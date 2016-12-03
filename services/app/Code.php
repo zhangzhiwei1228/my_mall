@@ -70,6 +70,9 @@ define('API_SHIPPING_NOT_FOUND',       1031);//发货地不存在
 define('API_CART_NOT_FOUND',       1032);//购物车不存在
 define('API_USER_ADDR_NOT_FOUND',       1033);//收货地址不存在
 define('API_AREA_NOT_FOUND',       1034);//地区不存在
+define('API_NO_CHOOSE_GOODS',       1038);//请选择结算的商品
+define('API_ORDER_SUBMIT_FAIL',       1039);//请选择结算的商品
+
 /**
  *
  */

@@ -215,6 +215,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 			if(is_array($shipping)) {
 				foreach($shipping as $key => $val) {
 					$item = $items[$key];
+
 					$g = $goods[$item['skuId']];
 					$sku = M('Goods_Sku')->select('*')->where('goods_id = '.(int)$g['goods_id'])->fetchRow()->toArray();
 					$qty = $item['qty'] > $g['quantity'] ? $g['quantity'] : $item['qty'];

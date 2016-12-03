@@ -5,6 +5,7 @@ class App_Controller_Action extends Suco_Controller_Action
 	/**
 	 * 权限检查
 	 */
+	private $uid;
 	public function __construct(){
 		require_once 'Code.php';
 	}
@@ -32,6 +33,7 @@ class App_Controller_Action extends Suco_Controller_Action
 			echo  self::_error_data(API_TOKEN_EXPIRE,'用户token已过期，请重新登录');
 			die();
 		}
+		$this->uid = $user->id;
 		return $user;
 	}
 

@@ -82,8 +82,9 @@ class CartController extends Controller_Action
 		//初化始购物车
 		$cart = M('Cart');
 		$cart->setStatus('freight_id', $_POST['freight_id']);
-		$cart->checking();
-
+		//$cart->checking();
+		$post_items = $_POST['item'];
+		$cart->checking($post_items);
 		if (!$_POST['addr_id']) {
 			M('User_Address')->insert(array_merge($_POST, array(
 				'user_id' => $buyer['id']

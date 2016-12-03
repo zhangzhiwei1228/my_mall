@@ -65,6 +65,7 @@ class App_UserController extends App_Controller_Action
         $data['worth_gold'] = $user_data['worth_gold'];
         $data['vouchers'] = $user_data['vouchers'];
         $data['token'] = $user_data['token'];
+        $data['is_vip'] = $user_data['is_vip'];
         $data['avatar'] = $user_data['avatar'] ? 'http://'.$_SERVER['HTTP_HOST'].$user_data['avatar'] : '';
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
@@ -281,8 +282,8 @@ class App_UserController extends App_Controller_Action
             'checkout' => $checkout,
             'qty' => $qty,
         ));
-        echo $this->_encrypt_data($cart);
-        //echo $this->show_data($this->_encrypt_data($cart));
+        //echo $this->_encrypt_data($cart);
+        echo $this->show_data($this->_encrypt_data($cart));
         die();
     }
     /**
@@ -456,6 +457,168 @@ class App_UserController extends App_Controller_Action
      */
     public function doPackage() {
         $this->user = $this->_auth();
+        $cart_ids = $this->_request->ids;
+        $addr_id = $this->_request->addr_id;
+        if(!$cart_ids || !$addr_id) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $cart = M('Cart');
+        $cart->setAppCart($this->user->id);
+
+        if (!$cart->getTotalQty()) {
+            echo  self::_error_data(API_NO_CHOOSE_GOODS,'请选择结算的商品');
+            die();
+        }
+        $ids = explode(',',$cart_ids);
+        foreach($ids as $key=>$val) {
+            $data = M('User_Cart')->select('goods_id,sku_id,price_type')->where('id = '.(int)$val)->fetchRow()->toArray();
+            if(!$data) continue;
+            $codes[] = $data['goods_id'].'.'.$data['sku_id'].'.'.$data['price_type'];
+        }
+        if (!$codes) {
+            echo  self::_error_data(API_NO_CHOOSE_GOODS,'结算商品数据错误');
+            die();
+        }
+
+        $cart->checking($codes);
+        $items = $cart->getItems();
+
+        $status = $cart->getAllStatus();
+        $addr = M('User_Address')->select('area_id,area_text,consignee,address,zipcode,phone')->where('id ='.(int)$addr_id.' and user_id ='.(int)$this->user->id)->fetchRow()->toArray();
+        if(!$addr) {
+            echo self::_error_data(API_USER_ADDR_NOT_FOUND,'用户地址不正确');
+            die();
+        }
+        $addr['addr_id'] = $addr_id;
+
+        M('Order')->getAdapter()->beginTrans();
+        try{
+            //减库存
+            foreach ($items as $key =>$item) {
+                //处理规格库存
+                if ($item['skuId']) {
+                    $sku = M('Goods_Sku')->select()
+                        ->where('id = ?', (int)$item['skuId'])
+                        ->forUpdate(1)
+                        ->fetchRow();
+                    if ($sku['quantity'] < $item['qty'] || $item['qty'] == 0) {
+                        throw new Suco_Exception('很抱歉，商品 “'.$item['goods']['title'].'” 已经缺货。');
+                    }
+                    $sku->quantity -= $item['qty'];
+                    $sku->sales_num += $item['qty'];
+                    $sku->save();
+                }
+                if($item['shipping_id']) {
+                    $status['shipping_id'] = $item['shipping_id'];
+                }
+                M('Goods')->updateById('
+					sales_num = sales_num + '.(int)$item['qty'].',
+					trans_num = trans_num + 1,
+					quantity =	quantity - '.(int)$item['qty']
+                    , (int)$item['goods']['id']);
+                $shippings[$key] = $item['shipping_id'];
+            }
+            $postage = $this->doPostAge($item, $item['total'], $item['subtotal_weight']);
+            $status['total_freight'] = $postage;
+            $status['total_pay_amount'] = $status['total_pay_amount']+$postage;
+            $oid = M('Order')->insert(array_merge($addr, $status, array(
+                'code' => time(),
+                'buyer_id' => $this->user->id,
+                'invoice_id' => (int)$invoiceId,
+                'status' => 1,
+                'is_virtual' => 0,
+                'expiry_time' => time() + (int)M('Setting')->timeout_pay,
+            )));
+
+            foreach($items as $k => $row) {
+                unset($row['goods']['id']);
+                unset($row['goods']['key']);
+                unset($row['goods']['cost_price']);
+                unset($row['goods']['market_price']);
+                unset($row['goods']['point1']);
+                unset($row['goods']['point2']);
+                unset($row['goods']['point3']);
+                unset($row['goods']['point4']);
+                unset($row['goods']['point5']);
+                unset($row['goods']['quantity']);
+                unset($row['goods']['quantity_warning']);
+                unset($row['goods']['thumb1']);
+                unset($row['goods']['package_weight']);
+                unset($row['goods']['package_unit']);
+                unset($row['goods']['package_quantity']);
+                unset($row['goods']['package_lot_unit']);
+                unset($row['goods']['price_text']);
+
+                M('Order_Goods')->insert(array_merge($row['goods'], array(
+                    'order_id' => $oid,
+                    'buyer_id' => $this->user->id,
+                    'subtotal_amount' => $row['subtotal_amount'],
+                    'subtotal_weight' => $row['subtotal_weight'],
+                    'subtotal_save' => $row['subtotal_save'],
+                    'purchase_quantity' => $row['qty'],
+                    'promotion' => $row['goods']['price_label'],
+                    'subtotal_vouchers' => $row['subtotal_vouchers'],
+                    //'unit' => $row['unit'],
+                    'sku_id' => $row['skuId']
+                )));
+
+                $cart->delItem($k,$this->user->id);
+
+            }
+            //发票处理
+            if ($_POST['invoice']['type_id']) {
+                $invoiceId = M('Invoice')->insert(array_merge($_POST['invoice'], $_POST, array(
+                    'order_ids' => $oid,
+                    'invoice_amount' => $status['total_amount']
+                )));
+            }
+
+            //销毁购物车
+            //$cart->destroy();
+            M('Order')->getAdapter()->commit();
+            $order = M('Order')->getById((int)$oid);
+
+            $order_json = json_decode($order['order_json']);
+            $order_postage = 0;
+            //将分好的商品的邮费计算出来
+            foreach($order_json as $key =>$val) {
+                if(strpos($val->skus_id,',')) {
+                    $sku_ids = explode(',',$val->skus_id);
+                    foreach($sku_ids as $sku_id) {
+                        $sku = M('Goods_Sku')->select()->where('id = ?', (int)$sku_id)->fetchRow();
+                        $good = M('Goods')->select()->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                        $val->goods[$sku_id] = $good;
+                    }
+
+                } else {
+                    $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val->skus_id)->fetchRow();
+                    $good = M('Goods')->select()->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                    $val->goods[$val->skus_id] = $good;
+                }
+
+                $order['shipping_id'] = $val->shipping_id;
+                $postage = $this->doPostAge($order, $val->total, $val->weight);
+                $val->order_postage = $postage;
+                $order_postage += $postage;
+            }
+            $total_postage = $order['order_json'] ? $order_postage : $this->doPostAge($order);//计算邮费
+            $order->total_pay_amount = $total_postage+$order->total_pay_amount;
+            $total_amount = $total_postage+$order->total_amount;
+            $order->total_amount = $total_amount;
+            $data = array(
+                'amount' => $order['total_amount'],
+                'trade_no' => 'TS-'.$order->code,
+                'subject' => '支付订单',
+            );
+            echo $this->_encrypt_data($data);
+            //echo $this->show_data($this->_encrypt_data($data));
+            die();
+        } catch(Exception $e) {
+            M('Order')->getAdapter()->rollback();
+            echo  self::_error_data(API_ORDER_SUBMIT_FAIL,'订单提交失败');
+            die();
+        }
 
     }
     /**
@@ -480,5 +643,44 @@ class App_UserController extends App_Controller_Action
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
+    }
+    /**
+     * @param $order
+     * @param int $total
+     * @param int $weight
+     * @return float
+     */
+    public function doPostAge($order, $total=0, $weight=0) {
+        //计算邮费
+        $total_quantity = $total ? $total : round($order['total_weight'],2);
+        $total_weight = $weight ? $weight : round($order['total_quantity'],2);
+        $user_adder_area_id = (int)$order['area_id'];
+        $shipping_id = (int)$order['shipping_id'];
+        $region = M('Region')->getById($user_adder_area_id);
+        //$region_parent_id = (int)$region['parent_id'];
+
+        $region_path_ids = $region['path_ids'];
+        $region_path_ids = explode(',',$region_path_ids);
+        $region_province = $region_path_ids[2];//获取省
+        $region_city = $region_path_ids[3];//获取市
+        //在存运费的时候，如果存的是全省中的，那destination的值是省id，如果是某些市，那会是市id
+        $shipping_freight = M('Shipping_Freight')->select()
+            ->where('shipping_id = '. $shipping_id.' and (destination like '.'"%'.$region_province.'%" or destination like '.'"%'.$region_city.'%")')->fetchRow();
+
+        $first_weight = (int)$shipping_freight['first_weight'];//首重
+        $first_freight = round($shipping_freight['first_freight'],2);//一千克首重价格
+        $second_weight = (int)$shipping_freight['second_weight'];//继重
+        $second_freight = round($shipping_freight['second_freight'],2);//一千克继重价格
+//		$one_weight = round($total_weight/$total_quantity,3);
+//		$one_weight = ceil($total_weight/$total_quantity);//向上取正
+        $one_weight = ceil($total_weight);//向上取正
+
+        if($one_weight > $first_weight) {
+            $total_postage = $first_weight*$first_freight+($one_weight-$first_weight)*$second_weight*$second_freight;
+        } else {
+            $total_postage = $first_weight*$first_freight;
+        }
+//		return round($total_quantity*$total_postage,2);
+        return round($total_postage,2);
     }
 }

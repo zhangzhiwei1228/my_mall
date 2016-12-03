@@ -111,6 +111,9 @@
 		</script>
 	<?php } ?>
 	<div class="n-addlist">
+		<?php foreach($this->items as  $key => $val) {?>
+			<input type="hidden" name="item[]" value="<?php echo $key?>" />
+		<?php }?>
 		<input value="完成" type="button" id="addr_check">
 	</div>
 </form>
