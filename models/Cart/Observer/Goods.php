@@ -259,6 +259,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 							break;
 					}
 					$g['final_price'] = $g['final_cash'];
+					$subtotal_cash = $qty * $g['final_cash'];
 					$subtotal_credit = $qty * $g['final_credit'];
 					$subtotal_credit_happy = $qty * $g['final_credit_happy'];
 					$subtotal_credit_coin = $qty * $g['final_credit_coin'];
@@ -281,6 +282,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 						$ids[$keys]['subtotal_credit_happy'] += $subtotal_credit_happy;
 						$ids[$keys]['subtotal_credit_coin'] += $subtotal_credit_coin;
 						$ids[$keys]['subtotal_vouchers'] += $subtotal_vouchers;//抵用券
+						$ids[$keys]['subtotal_cash'] += $subtotal_cash;//现金
 					}
 					$key1 = explode('.',$key);
 					$shipping[$key1[1]] = $val;
@@ -333,6 +335,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 						break;
 				}
 				$g['final_price'] = $g['final_cash'];
+				$subtotal_cash = $qty * $g['final_cash'];
 				$subtotal_credit = $qty * $g['final_credit'];
 				$subtotal_credit_happy = $qty * $g['final_credit_happy'];
 				$subtotal_credit_coin = $qty * $g['final_credit_coin'];
@@ -355,6 +358,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 					$ids[$keys]['subtotal_credit_happy'] += $subtotal_credit_happy;
 					$ids[$keys]['subtotal_credit_coin'] += $subtotal_credit_coin;
 					$ids[$keys]['subtotal_vouchers'] += $subtotal_vouchers;//抵用券
+					$ids[$keys]['subtotal_cash'] += $subtotal_cash;//现金
 				}
 			}
 			$keys++;
