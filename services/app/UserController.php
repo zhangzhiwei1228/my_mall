@@ -455,7 +455,7 @@ class App_UserController extends App_Controller_Action
     /**
      * 商品打包
      */
-    public function doPackage() {
+    public function doCreateOrder() {
         $this->user = $this->_auth();
         $cart_ids = $this->_request->ids;
         $addr_id = $this->_request->addr_id;
