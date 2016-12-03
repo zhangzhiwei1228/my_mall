@@ -607,6 +607,7 @@ class App_UserController extends App_Controller_Action
             $total_amount = $total_postage+$order->total_amount;
             $order->total_amount = $total_amount;
             $data = array(
+                'oid' => $oid,
                 'amount' => $order['total_amount'],
                 'trade_no' => 'TS-'.$order->code,
                 'subject' => '支付订单',
