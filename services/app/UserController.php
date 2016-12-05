@@ -484,12 +484,14 @@ class App_UserController extends App_Controller_Action
             die();
         }
         $pricetype = array();
+        $qty = array();
         $ids = explode(',',$cart_ids);
         foreach($ids as $key=>$val) {
-            $data = M('User_Cart')->select('goods_id,sku_id,price_type')->where('id = '.(int)$val)->fetchRow()->toArray();
+            $data = M('User_Cart')->select('goods_id,sku_id,price_type,qty')->where('id = '.(int)$val)->fetchRow()->toArray();
             if(!$data) continue;
             $codes[] = $data['goods_id'].'.'.$data['sku_id'].'.'.$data['price_type'];
             $pricetype[$data['goods_id'].'.'.$data['sku_id']] = $data['price_type'];
+            $qty[$data['goods_id'].'.'.$data['sku_id']] = $data['qty'];
         }
         if (!$codes) {
             echo  self::_error_data(API_NO_CHOOSE_GOODS,'结算商品数据错误');
@@ -511,8 +513,9 @@ class App_UserController extends App_Controller_Action
                     $sku['price_type'] = $pricetype[$sku['goods_id'].'.'.$sku_id];
                     $sku['exts'] = json_encode($sku['exts']);
                     $price_type = M('User_Cart')->price_type($sku);
-                    $good = M('Goods')->select('id,title,thumb')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                    $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                     $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
+                    $good['qty'] = $qty[$sku['goods_id'].'.'.$sku_id];
                     $spec = explode(',',$sku['spec']);
                     $arr = array();
                     foreach($spec as $key1=>$val1) {
@@ -536,8 +539,9 @@ class App_UserController extends App_Controller_Action
                 $sku['price_type'] = $pricetype[$sku['goods_id'].'.'.$val['skus_id']];
                 $sku['exts'] = json_encode($sku['exts']);
                 $price_type = M('User_Cart')->price_type($sku);
-                $good = M('Goods')->select('id,title,thumb')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                 $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
+                $good['qty'] = $qty[$sku['goods_id'].'.'.$val['skus_id']];
                 $spec = explode(',',$sku['spec']);
                 $arr = array();
                 foreach($spec as $key1=>$val1) {
@@ -565,8 +569,8 @@ class App_UserController extends App_Controller_Action
         $addr = array('addr'=>$addr);
         $order_json = array('bales'=>$order_json);
         $order_json = array_merge($order_json,$addr);
-        //echo $this->_encrypt_data($order_json);
-        echo $this->show_data($this->_encrypt_data($order_json));
+        echo $this->_encrypt_data($order_json);
+        //echo $this->show_data($this->_encrypt_data($order_json));
         die();
     }
 
