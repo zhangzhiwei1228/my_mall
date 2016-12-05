@@ -278,8 +278,8 @@ class App_ShopController extends App_Controller_Action
         unset($data['extr']);
         $data['photos'] = $phpoto_src;
         $data = array_merge($data,$extr);
-        //echo $this->_encrypt_data($data);
-        echo $this->show_data($this->_encrypt_data($data));
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
 }
