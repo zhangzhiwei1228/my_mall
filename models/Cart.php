@@ -254,7 +254,9 @@ class Cart
 				$items = M('User_Cart')->select()
 					->where('user_id ='. $uid . ' and goods_id ='.$item['id'].' and sku_id ='.$item['skuId'].' and shipping_id ='.$item['shipping_id'].' and price_type='.$item['priceType'])
 					->fetchRows()->toArray();
-				if($items) continue;
+				if($items) {
+					M('User_Cart')->update(array('qty'=>$item['qty']),'user_id ='. $uid . ' and goods_id ='.$item['id'].' and sku_id ='.$item['skuId'].' and shipping_id ='.$item['shipping_id'].' and price_type='.$item['priceType']);
+				};
 		 		M('User_Cart')->insert(array(
 		 			'user_id' => $uid,
 		 			'goods_id' => $item['id'],
