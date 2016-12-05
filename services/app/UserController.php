@@ -872,6 +872,26 @@ class App_UserController extends App_Controller_Action
         $view = $this->_initView();
         $view->content = $news['content'];
         $view->render('views/app/news_info.php');
-
+    }
+    /**
+     * 修改购物车
+     */
+    public function doEditCart() {
+        $this->user = $this->_auth();
+        $id = $this->_request->id;
+        $qty = $this->_request->qty;
+        if( !$id ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $cart = M('User_Cart')->select('id')->where('id='.(int)$id)->fetchRow()->toArray();
+        if(!$cart) {
+            echo self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+            die();
+        }
+        $data = M('User_Cart')->updateById(array('qty' => (int)$qty), (int)$id);
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
     }
 }
