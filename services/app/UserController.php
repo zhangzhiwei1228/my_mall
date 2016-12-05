@@ -913,6 +913,51 @@ class App_UserController extends App_Controller_Action
     public function doEditUser() {
         $this->user = $this->_auth();
         $image = $this->Upload();//imgFile
-        $image = $this->Upload();//imgFile
+        $nickname = $this->_request->nickname;//昵称
+        $gender = $this->_request->gender;//性别
+        $birthday = $this->_request->birthday;//出生年月
+        $age = $this->_request->age;//年龄
+        $data = array();
+
+
+        if(isset($image['src']) ) {
+            $data['avatar'] = $image['src'];
+        }
+        if($nickname) {
+            $data['nickname'] = $nickname;
+        }
+        if($gender) {
+            $extend['field_value'] = $gender;
+            $str = 'gender';
+            M('User_Extend')->update($extend, 'user_id = '.$this->user->id.' and field_key ='."'".$str."'");
+        }
+        if($birthday) {
+            $extend['field_value'] = $birthday;
+            $str = 'birthday';
+            M('User_Extend')->update($extend, 'user_id = '.$this->user->id.' and field_key ='."'".$str."'");
+        }
+        if($age) {
+            $extend['field_value'] = $age;
+            $str = 'age';
+            $user_age = M('User_Extend')->select('*')->where('user_id = '.$this->user->id.' and field_key ='."'".$str."'")->fetchRow()->toArray();
+            if($user_age) {
+                M('User_Extend')->update($extend, 'user_id = '.$this->user->id.' and field_key ='."'".$str."'");
+            } else {
+                $data = array(
+                    'user_id'=>$this->user->id,
+                    'field_key'=>$str,
+                    'field_name'=>'年龄',
+                    'field_value'=>$age,
+                );
+                M('User_Extend')->insert($data);
+            }
+        }
+        if($data) {
+            M('User')->updateById($data, (int)$this->user->id);
+        }
+        $insert = array('status'=>'ok');
+        echo $this->_encrypt_data($insert);
+        //echo $this->show_data($this->_encrypt_data($insert));
+        die();
     }
 }
