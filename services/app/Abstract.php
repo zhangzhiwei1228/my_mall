@@ -33,6 +33,8 @@ class App_Controller_Action extends Suco_Controller_Action
 			echo  self::_error_data(API_TOKEN_EXPIRE,'用户token已过期，请重新登录');
 			die();
 		}
+		$count = M('User_Cart')->count('user_id = '.$user->id);
+		$user['count_cart'] = $count;
 		$this->uid = $user->id;
 		return $user;
 	}
