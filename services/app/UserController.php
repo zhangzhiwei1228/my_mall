@@ -344,7 +344,7 @@ class App_UserController extends App_Controller_Action
                 echo  self::_error_data(API_CART_NOT_FOUND,'此购物车id不存在');
                 die();
             }
-            M('User_Cart')->deleteById((int)$cart_id);
+            M('User_Cart')->deleteById((int)$id);
         }
         $data = array('status'=>'ok');
         echo $this->_encrypt_data($data);
