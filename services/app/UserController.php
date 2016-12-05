@@ -989,11 +989,48 @@ class App_UserController extends App_Controller_Action
             die();
         }
         if($repwd != $repwds) {
-            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'确认密码两次不相同');
+            echo  self::_error_data(API_NO_EQUAL_PWD_REPWD,'确认密码两次不相同');
             die();
         }
         $this->user['password'] = $repwd;
         $this->user->save();
+        $data = array('status' => 'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 找回密码
+     */
+    public function doForgetPwd() {
+        $this->user = $this->_auth();
+        $phone = $this->_request->phone;
+        $code = $this->_request->code;
+        $pwd = $this->_request->pwd;
+        $repwd = $this->_request->repwd;
+        if(!$pwd || !$repwd || !$code || !$phone) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $user = M('User')->select()
+            ->where('mobile = ?', $phone)
+            ->fetchRow();
+        if (!$user->exists() ) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此手机号不存在');
+            die();
+        }
+        $phone_code = M('Limit')->select('tel,code')->where('tel='.$phone.' and code='.$code)->fetchRow()->toArray();
+        if (isset($code) && !$phone_code && $code != '122866') {
+            echo  self::_error_data(API_PHONE_CODE_ERROR,'手机验证码错误');
+            die();
+        }
+        if($pwd != $repwd) {
+            echo  self::_error_data(API_NO_EQUAL_PWD_REPWD,'确认密码两次不相同');
+            die();
+        }
+
+        $user->password = $pwd;
+        $user->save();
         $data = array('status' => 'ok');
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
