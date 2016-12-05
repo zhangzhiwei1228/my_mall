@@ -167,4 +167,47 @@ class App_IndexController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($goods));
         die();
     }
+    /**
+     * 消息
+     */
+    public function doNewsList() {
+        $limit = $this->_request->limit;
+        $page = $this->_request->page;
+        if(!$limit || !$page) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $cid = 14;
+        $select = M('Article')->select('id,title,create_time')
+            ->where('is_checked = 2')
+            ->paginator((int)$limit, (int)$page);
+        $ids = M('Article_Category')->getChildIds((int)$cid);
+        $select->where('category_id IN ('.($ids ? $ids : 0).') and category_id <> 15');
+        $select->order('id DESC');
+        $data = $select->fetchRows()->toArray();
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 消息详情
+     */
+    public function doNewDetail() {
+        $id = $this->_request->id;
+        if( !$id ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $news = M('Article')->select('content')->where('id='.(int)$id)->fetchRow()->toArray();
+        if(!$news) {
+            echo self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+            die();
+        }
+        M('Article')->updateById(array('is_looked' => 1), (int)$id);
+        $view = $this->_initView();
+        $view->content = $news['content'];
+        $view->render('views/app/news_info.php');
+
+    }
+
 }

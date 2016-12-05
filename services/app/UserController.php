@@ -831,4 +831,47 @@ class App_UserController extends App_Controller_Action
 //		return round($total_quantity*$total_postage,2);
         return round($total_postage,2);
     }
+    /**
+     * 用户通知
+     */
+    public function doNoticeList() {
+        $this->user = $this->_auth();
+        $limit = $this->_request->limit;
+        $page = $this->_request->page;
+        if(!$limit || !$page) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $messages = M('Message')->alias('m')
+            ->leftJoin(M('User')->getTableName().' AS u', 'u.id = m.sender_uid')
+            ->columns('m.id,m.title,m.create_time, u.username AS sender_name, u.avatar AS sender_avatar')
+            ->where('m.recipient_uid = ?', $this->user['id'])
+            ->order('m.is_read ASC, m.id DESC')
+            ->paginator((int)$limit, (int)$page);
+        $data = $messages->fetchRows()->toArray();
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 消息详情
+     */
+    public function doNoticeDetail() {
+        $this->user = $this->_auth();
+        $id = $this->_request->id;
+        if( !$id ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $news = M('Message')->select('content')->where('id='.(int)$id)->fetchRow()->toArray();
+        if(!$news) {
+            echo self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+            die();
+        }
+        M('Message')->updateById(array('is_read' => 1), (int)$id);
+        $view = $this->_initView();
+        $view->content = $news['content'];
+        $view->render('views/app/news_info.php');
+
+    }
 }
