@@ -844,7 +844,7 @@ class App_UserController extends App_Controller_Action
         }
         $messages = M('Message')->alias('m')
             ->leftJoin(M('User')->getTableName().' AS u', 'u.id = m.sender_uid')
-            ->columns('m.id,m.title,m.create_time, u.username AS sender_name, u.avatar AS sender_avatar')
+            ->columns('m.id,m.title,m.create_time,m.is_read, u.username AS sender_name, u.avatar AS sender_avatar')
             ->where('m.recipient_uid = ?', $this->user['id'])
             ->order('m.is_read ASC, m.id DESC')
             ->paginator((int)$limit, (int)$page);
