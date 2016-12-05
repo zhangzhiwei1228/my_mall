@@ -282,8 +282,9 @@ class App_UserController extends App_Controller_Action
             'checkout' => $checkout,
             'qty' => $qty,
         ));
-        //echo $this->_encrypt_data($cart);
-        echo $this->show_data($this->_encrypt_data($cart));
+        $data = array('id'=> $cart);
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
@@ -526,7 +527,8 @@ class App_UserController extends App_Controller_Action
                     unset($good['price']);
                     unset($good['unit']);
                     $good['sku_id'] = $sku_id;
-                    $val['goods'][$k] = $good;
+                    $val['goods'][] = $good;
+                    //$val['goods'][$k] = $good;
                 }
 
             } else {
@@ -900,5 +902,12 @@ class App_UserController extends App_Controller_Action
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
+    }
+    /**
+     * 修改用户信息
+     */
+    public function doEditUser() {
+        $this->user = $this->_auth();
+        $image = $this->Upload();
     }
 }
