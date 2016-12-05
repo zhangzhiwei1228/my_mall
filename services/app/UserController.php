@@ -527,8 +527,8 @@ class App_UserController extends App_Controller_Action
                     unset($good['price']);
                     unset($good['unit']);
                     $good['sku_id'] = $sku_id;
-                    $val['goods'][] = $good;
-                    //$val['goods'][$k] = $good;
+                    //$val['goods'][] = $good;
+                    $val['goods'][$k] = $good;
                 }
 
             } else {
@@ -565,8 +565,8 @@ class App_UserController extends App_Controller_Action
         $addr = array('addr'=>$addr);
         $order_json = array('bales'=>$order_json);
         $order_json = array_merge($order_json,$addr);
-        echo $this->_encrypt_data($order_json);
-        //echo $this->show_data($this->_encrypt_data($order_json));
+        //echo $this->_encrypt_data($order_json);
+        echo $this->show_data($this->_encrypt_data($order_json));
         die();
     }
 
@@ -908,6 +908,7 @@ class App_UserController extends App_Controller_Action
      */
     public function doEditUser() {
         $this->user = $this->_auth();
-        $image = $this->Upload();
+        $image = $this->Upload();//imgFile
+        $image = $this->Upload();//imgFile
     }
 }
