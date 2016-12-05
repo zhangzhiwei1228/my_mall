@@ -337,12 +337,16 @@ class App_UserController extends App_Controller_Action
             echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
             die();
         }
-        $cart = M('User_Cart')->select()->where('id='.(int)$cart_id)->fetchRow()->toArray();
-        if(!$cart) {
-            echo  self::_error_data(API_CART_NOT_FOUND,'此购物车id不存在');
-            die();
+        $ids = explode(',',$cart_id);
+        foreach($ids as $id) {
+            $cart = M('User_Cart')->select()->where('id='.(int)$id)->fetchRow()->toArray();
+            if(!$cart) {
+                echo  self::_error_data(API_CART_NOT_FOUND,'此购物车id不存在');
+                die();
+            }
+            M('User_Cart')->deleteById((int)$cart_id);
         }
-        $data = M('User_Cart')->deleteById((int)$cart_id);
+        $data = array('status'=>'ok');
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
