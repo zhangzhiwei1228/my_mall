@@ -552,7 +552,7 @@ class App_UserController extends App_Controller_Action
                 unset($good['price']);
                 unset($good['unit']);
                 $good['sku_id'] = $val['skus_id'];
-                $val['goods'][$key] = $good;
+                $val['goods'][] = $good;
             }
 
             $order['shipping_id'] = $val['shipping_id'];
