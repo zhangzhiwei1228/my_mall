@@ -569,8 +569,8 @@ class App_UserController extends App_Controller_Action
         $addr = array('addr'=>$addr);
         $order_json = array('bales'=>$order_json);
         $order_json = array_merge($order_json,$addr);
-        //echo $this->_encrypt_data($order_json);
-        echo $this->show_data($this->_encrypt_data($order_json));
+        echo $this->_encrypt_data($order_json);
+        //echo $this->show_data($this->_encrypt_data($order_json));
         die();
     }
 
