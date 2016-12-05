@@ -130,12 +130,14 @@ class App_Controller_Action extends Suco_Controller_Action
 		$data = $this->_request->$data;
 		return $this->_decrypt_data($data,true);
 	}
+
 	/**
-	 *上传图片
+	 * @param bool|false $file
+	 * @return array 上传图片
 	 */
-	protected function Upload() {
+	protected function Upload($file = false) {
 		$imgConf = Suco_Config::factory(CONF_DIR.'image.conf.php');
-		$file = $_FILES['imgFile'];
+		$file = $file ? $file : $_FILES['imgFile'];
 		$user = M('User')->getUserByToken($_REQUEST['token']);
 		try {
 			if (!$file) {

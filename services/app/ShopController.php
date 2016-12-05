@@ -227,4 +227,59 @@ class App_ShopController extends App_Controller_Action
 
 
     }
+    /**
+     * 添加商家评论--多图
+     */
+    public function doAddComments() {
+        $this->user = $this->_auth();
+        $uid = $this->user->id;
+        $shop_id = $this->_request->shop_id;
+        $comment = $this->_request->comment;
+        $ext1 = $this->_request->ext1;
+        $ext2 = $this->_request->ext2;
+        $ext3 = $this->_request->ext3;
+        if(!$shop_id || !$comment) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $shop = M('Shop')->select()->where('id='.(int)$shop_id)->fetchRow()->toArray();
+        if(!$shop) {
+            echo  self::_error_data(API_SHOP_NOT_FOUND,'商家不存在');
+            die();
+        }
+
+        if(!$comment) {
+            echo  self::_error_data(API_COMMENT_NOT_NULL,'评论不能为空');
+            die();
+        }
+        //ext1 服务态度 ext2 店铺环境   ext3 价格合理
+
+        $extr = array('ext1'=>$ext1,'ext2'=>$ext2,'ext3'=>$ext3);
+        $data['shop_id'] = $shop_id;
+        $data['user_id'] = $uid;
+        $data['comment'] = $comment;
+        $data['create_time'] = time();
+        $data['extr'] = json_encode($extr);
+        $phpoto_src = array();
+        for($i = 1;$i<4;$i++) {
+            $_FILES['imgFile'] = $_FILES['imgFile'.$i];
+            $image = $this->Upload($_FILES['imgFile']);
+            if(isset($image['error']) && $image['error']) {
+                continue;
+            }
+            $phpoto_src[]['src'] = 'http://'.$_SERVER['HTTP_HOST'].$image['src'];
+        }
+        $data['photos'] = json_encode($phpoto_src);
+        $insert = M('Shop_Comment')->insert($data);
+        if(!$insert) {
+            echo  self::_error_data(API_COMMENT_FAIL,'评价失败');
+            die();
+        }
+        unset($data['extr']);
+        $data['photos'] = $phpoto_src;
+        $data = array_merge($data,$extr);
+        //echo $this->_encrypt_data($data);
+        echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
 }
