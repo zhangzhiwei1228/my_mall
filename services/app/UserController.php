@@ -273,7 +273,15 @@ class App_UserController extends App_Controller_Action
             echo  self::_error_data(API_SHIPPING_NOT_FOUND,'发货地不存在');
             die();
         }
-        $cart = M('User_Cart')->insert(array(
+        $cart = M('Cart')->doAppAddItem(
+            (int)$this->user->id,
+            (int)$good_id,
+            (int)$sku_id,
+            (int)$qty,
+            (int)$price_type
+            ,0,0,(int)$shipping_id
+        );
+        /*$cart = M('User_Cart')->insert(array(
             'user_id' => $this->user->id,
             'goods_id' => $good_id,
             'sku_id' => $sku_id,
@@ -281,7 +289,7 @@ class App_UserController extends App_Controller_Action
             'price_type' => $price_type,
             'checkout' => $checkout,
             'qty' => $qty,
-        ));
+        ));*/
         $data = array('id'=> $cart);
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));

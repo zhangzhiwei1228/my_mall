@@ -236,9 +236,10 @@ class Cart
 	}
 
 	/**
+	 * @param bool|false $uid
 	 * 保存购物车
 	 */
-	public function save()
+	public function save($uid = false)
 	{
 		Suco_Cookie::set(__CLASS__, json_encode(array(
 			'status' => $this->_status,
@@ -246,7 +247,8 @@ class Cart
 		)), 3600*24*30);
 
 		//保存会员购物车
-		 $uid = M('User')->getCurUser()->id;
+		 //$uid = M('User')->getCurUser()->id;
+		$uid = $uid ? $uid : M('User')->getCurUser()->id;
 		 if ($uid) {
 		 	foreach($this->_items as $k => $item) {
 				$items = M('User_Cart')->select()
@@ -264,6 +266,30 @@ class Cart
 		 		));
 		 	}
 		 }
+	}
+
+	/**
+	 * @param $uid
+	 * @param $id
+	 * @param int $skuId
+	 * @param int $qty
+	 * @param int $priceType
+	 * @param int $checkout
+	 * @param int $reset
+	 * @param int $shipping_id
+	 * @return string|void
+	 * 移动端加入购物车
+	 */
+	public function doAppAddItem($uid, $id, $skuId = 0, $qty = 1, $priceType = 0, $checkout = 0, $reset = 0, $shipping_id = 0) {
+		if (!$id) return;
+		$code = $id.'.'.$skuId.'.'.$priceType;
+		if (!isset($this->_items[$code]) || $reset) {
+			$this->_items[$code] = array('id'=>$id, 'qty'=>$qty, 'skuId'=>$skuId, 'priceType'=>$priceType, 'checkout'=>$checkout, 'shipping_id'=>$shipping_id);
+		} else { //追加商品
+			$this->_items[$code]['qty'] += $qty;
+		}
+		$this->save($uid);
+		return $code;
 	}
 
 	/**
