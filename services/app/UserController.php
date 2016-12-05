@@ -972,4 +972,31 @@ class App_UserController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($insert));
         die();
     }
+    /**
+     * 修改密码
+     */
+    public function doEditPwd() {
+        $this->user = $this->_auth();
+        $pwd = $this->_request->pwd;//原密码
+        $repwd = $this->_request->repwd;//新密码
+        $repwds = $this->_request->repwds;//确认密码
+        if(!$pwd || !$repwd || !$repwds) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        if (!$this->user->checkPass($pwd)) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'原密码错误');
+            die();
+        }
+        if($repwd != $repwds) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'确认密码两次不相同');
+            die();
+        }
+        $this->user['password'] = $repwd;
+        $this->user->save();
+        $data = array('status' => 'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
 }
