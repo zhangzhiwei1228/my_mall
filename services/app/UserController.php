@@ -469,6 +469,11 @@ class App_UserController extends App_Controller_Action
                 echo self::_error_data(API_USER_ADDR_NOT_FOUND,'用户地址不正确');
                 die();
             }
+        } else {
+            $addr = M('User_Address')->select('id,area_id,area_text,consignee,address,zipcode,phone')->where('user_id ='.(int)$this->user->id.' and is_def=1' )->fetchRow()->toArray();
+            if($addr) {
+                $addr_id = $addr['id'];
+            }
         }
         $cart = M('Cart');
         $cart->setAppCart($this->user->id);
@@ -555,7 +560,9 @@ class App_UserController extends App_Controller_Action
             }
             $val['total_postage'] = $postage;
         }
-
+        $addr = array('addr'=>$addr);
+        $order_json = array('bales'=>$order_json);
+        $order_json = array_merge($order_json,$addr);
         echo $this->_encrypt_data($order_json);
         //echo $this->show_data($this->_encrypt_data($order_json));
         die();
