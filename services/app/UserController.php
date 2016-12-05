@@ -782,7 +782,7 @@ class App_UserController extends App_Controller_Action
     public function doVip() {
         $this->user = $this->_auth();
         $is_vip = $this->user->is_vip;
-        if(!$is_vip) {
+        if($is_vip) {
             echo  self::_error_data(API_USER_IS_VIP,'您已经激活，请不要重复提交');
             die();
         }
