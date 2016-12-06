@@ -162,7 +162,7 @@ class App_UserController extends App_Controller_Action
             'parent_id' => $parent_id,
             'exp' => 5 //初始经验值
         )));
-
+        $this->UserExtend();//初始化额外信息
         $user = M('User')->getById($uid);
         $this->_update_or_create_token($uid,$app_id,1);//创建token
         //自动通过手机验证
@@ -1061,7 +1061,7 @@ class App_UserController extends App_Controller_Action
         $this->user = $this->_auth();
         $token = $this->_request->token ;
         $user = M('User')
-            ->select('id, token,is_vip,credit,credit_coin,worth_gold,vouchers,shop_id,nickname,avatar')
+            ->select('id, token,is_vip,credit,credit_coin,worth_gold,vouchers,shop_id,nickname,avatar,mobile,username,role')
             ->where('token='."'".$token."'")
             ->fetchRow()->toArray();
         $count = M('User_Cart')->count('user_id = '.$user['id']);
@@ -1079,5 +1079,58 @@ class App_UserController extends App_Controller_Action
         echo $this->_encrypt_data($user);
         //echo $this->show_data($this->_encrypt_data($user));
         die();
+    }
+    public function UserExtend() {
+        $data = array(
+            'realname' => array(
+                'name' => '',
+                'value' => '',
+            ),
+            'gender' => array(
+                'name' => '',
+                'value' => '',
+            ),
+            'birthday' => array(
+                'name' => '',
+                'value' => '',
+            ),
+            'area' => array(
+                'name' => '',
+                'value' => '',
+            ),
+            'address' => array(
+                'name' => '',
+                'value' => '',
+            ),
+            'zipcode' => array(
+                'name' => '',
+                'value' => '',
+            ),
+            'major' => array(
+                'name' => '',
+                'value' => '',
+            ),
+            'qq' => array(
+                'name' => '',
+                'value' => '',
+            ),
+            'wechat' => array(
+                'name' => '',
+                'value' => '',
+            ),
+            'sign' => array(
+                'name' => '',
+                'value' => '',
+            ),
+        );
+        M('User_Extend')->delete('user_id = ?', $this->user['id']);
+        foreach($data as $k => $v) {
+            M('User_Extend')->insert(array(
+                'user_id' => $this->user['id'],
+                'field_key' => $k,
+                'field_name' => $v['name'],
+                'field_value' => $v['value']
+            ));
+        }
     }
 }

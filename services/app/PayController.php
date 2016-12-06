@@ -37,14 +37,13 @@ class App_PayController extends App_Controller_Action
 
             #字符编码格式 目前支持 gbk 或 utf-8
             'charset' => strtolower('utf-8'),
-            'timestamp' => date('yyyy-MM-dd HH:mm:ss',time()),
+            'timestamp' => date('Y-m-d H:i:s',time()),
             'version' => '1.0',
             'notify_url' => $this->notify_url,
         );
     }
     public function doSign() {
-        var_dump(date('yyyy-MM-dd HH:mm:ss',time()));
-        die();
+
         require_once("Sdks/alipay/lib/alipay_submit.class.php");
         $amount = $this->_request->amount;
         $trade_no = $this->_request->trade_no;
@@ -57,8 +56,8 @@ class App_PayController extends App_Controller_Action
             'total_amount' => $amount,
             'product_code' => 'QUICK_MSECURITY_PAY',
         );
-        $this->_config['biz_content'] = ($biz_content);
-        print_r($this->createLinkstring($this->_config));
+        $this->_config['biz_content'] = json_encode($biz_content);
+        var_dump($this->createLinkstring($this->_config));
     }
     function createLinkstring($para) {
         $arg  = "";
