@@ -89,8 +89,8 @@ class App_CreditController extends App_Controller_Action
             unset($data['left_id']);
             unset($data['right_id']);
         }
-        //echo $this->_encrypt_data($datas);
-        echo $this->show_data($this->_encrypt_data($datas));
+        echo $this->_encrypt_data($datas);
+        //echo $this->show_data($this->_encrypt_data($datas));
         die();
     }
     /**
