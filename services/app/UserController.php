@@ -66,7 +66,20 @@ class App_UserController extends App_Controller_Action
         $data['vouchers'] = $user_data['vouchers'];
         $data['token'] = $user_data['token'];
         $data['is_vip'] = $user_data['is_vip'];
+        $data['shop_id'] = $user_data['shop_id'];
         $data['avatar'] = $user_data['avatar'] ? 'http://'.$_SERVER['HTTP_HOST'].$user_data['avatar'] : '';
+        $count = M('User_Cart')->count('user_id = '.$user->id);
+        $extends = M('User_Extend')->select('field_key,field_name,field_value')->where('user_id ='.$user->id)->fetchRows()->toArray();
+        foreach($extends as $row) {
+            if($row['field_key'] == 'gender') {
+                $data['gender'] = $row['field_value'];
+            }
+            if($row['field_key'] == 'birthday') {
+                $data['birthday'] = $row['field_value'];
+            }
+        }
+        $data['count_cart'] = $count;
+        //$data['exts'] = $extends;
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
@@ -1045,34 +1058,26 @@ class App_UserController extends App_Controller_Action
         die();
     }
     public function doInfo() {
+        $this->user = $this->_auth();
         $token = $this->_request->token ;
-        if ($token) {
-            if(strlen($token) != 32) {
-                echo  self::_error_data(API_LOGIN_FAILED_INVALID_TOKEN,'无效的token');
-                die();
+        $user = M('User')
+            ->select('id, token,is_vip,credit,credit_coin,worth_gold,vouchers,shop_id,nickname,avatar')
+            ->where('token='."'".$token."'")
+            ->fetchRow()->toArray();
+        $count = M('User_Cart')->count('user_id = '.$user['id']);
+        $extends = M('User_Extend')->select('field_key,field_name,field_value')->where('user_id ='.$user['id'])->fetchRows()->toArray();
+        foreach($extends as $row) {
+            if($row['field_key'] == 'gender') {
+                $user['gender'] = $row['field_value'];
             }
-            $user = M('User')->select('id, token, token_expire_time,is_enabled,is_vip,credit,password,salt,shop_id,nickname,avatar')->where('token='."'".$token."'")->fetchRow();
+            if($row['field_key'] == 'birthday') {
+                $user['birthday'] = $row['field_value'];
+            }
         }
-        if (!$user) {
-            echo  self::_error_data(API_TOKEN_NOT_FOUND,'此token不存在');
-            die();
-        }
-        if (!$user['is_enabled']) {
-            echo  self::_error_data(API_USER_DISABLE,'此账户已被禁用');
-            die();
-        }
-
-        if($user['token_expire_time'] < time()){
-            echo  self::_error_data(API_TOKEN_EXPIRE,'用户token已过期，请重新登录');
-            die();
-        }
-        $count = M('User_Cart')->count('user_id = '.$user->id);
-        $extends = M('User_Extend')->select('field_key,field_name,field_value')->where('user_id ='.$user->id)->fetchRows()->toArray();
-        $user['exts'] = $extends;
         $user['avatar'] = 'http://'.$_SERVER['HTTP_HOST'].$user['avatar'];
         $user['count_cart'] = $count;
         echo $this->_encrypt_data($user->toArray());
-        //echo $this->show_data($this->_encrypt_data($user->toArray()));
+        //echo $this->show_data($this->_encrypt_data($user));
         die();
     }
 }

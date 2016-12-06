@@ -35,9 +35,9 @@ class App_Controller_Action extends Suco_Controller_Action
 		}
 		$count = M('User_Cart')->count('user_id = '.$user->id);
 		$extends = M('User_Extend')->select('field_key,field_name,field_value')->where('user_id ='.$user->id)->fetchRows()->toArray();
-		$user['exts'] = $extends;
-		$user['avatar'] = 'http://'.$_SERVER['HTTP_HOST'].$user['avatar'];
-		$user['count_cart'] = $count;
+		$user->__set('exts',$extends);
+		$user->__set('avatar','http://'.$_SERVER['HTTP_HOST'].$user['avatar']);
+		$user->__set('count_cart',$count);
 		$this->uid = $user->id;
 		return $user;
 	}
