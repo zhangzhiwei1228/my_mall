@@ -1044,4 +1044,10 @@ class App_UserController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    public function doInfo() {
+        $user = $this->_auth();
+        echo $this->_encrypt_data($user);
+        //echo $this->show_data($this->_encrypt_data($user));
+        die();
+    }
 }
