@@ -72,9 +72,11 @@ class Agent_CreditController extends Agent_Controller_Action
 			}
 
 			$account = M('User')->getById((int)$_POST['uid']);
+			$shop_id = $this->user->shop_id;
+			$shop = M('Shop')->select('name')->where('id = '.$shop_id)->fetchRow()->toArray();
 
-			$this->user->$type($_POST[$type]*-1, '赠送会员【'.$account['nickname'].'】');
-			$account->$type($_POST[$type], '商家赠送【'.$this->user['nickname'].'】');
+			$this->user->$type($_POST[$type]*-1, '赠送会员【'.$account['nickname'].'】', 3, $shop['name'], $account['id']);
+			$account->$type($_POST[$type], '商家赠送【'.$this->user['nickname'].'】', 3 , $shop['name'], $this->user->id);
 
 			$this->redirect('&success=1&uid='.$account['id'].'&pot='.$type.'&val='.$_POST[$this->_request->type]);
 			return;

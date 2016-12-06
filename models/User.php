@@ -623,7 +623,7 @@ class User extends Abstract_User
 	 * @param	string 	$note 备注
 	 * @return 	bool
 	 */
-	public function credit($user, $val, $note,$status=0,$conversion='')
+	public function credit($user, $val, $note, $status=0, $conversion='', $rid=0)
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -638,6 +638,7 @@ class User extends Abstract_User
 			'conversion' => $conversion,
 			'credit' => $val,
 			'note' => $note,
+			'rid' => $rid,
 			'create_time' => time()
 		));
 
@@ -650,7 +651,7 @@ class User extends Abstract_User
 	}
 
 	//抵用获得和使用
-	public function worthGold($user, $val, $note, $code='',$status=0,$conversion='')
+	public function worthGold($user, $val, $note, $code='',$status=0,$conversion='',$rid=0)
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -665,6 +666,7 @@ class User extends Abstract_User
 			'credit' => $val,
 			'note' => $note,
 			'code' => $code,
+			'rid' => $rid,
 			'create_time' => time()
 		));
 		if ($val > 0) { //增加经验
@@ -675,7 +677,7 @@ class User extends Abstract_User
 		$user->save();
 	}
 	//现金支付抵佣金
-	public function cash($user, $val, $note, $code='')
+	public function cash($user, $val, $note, $code='', $status=0, $rid=0)
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -688,12 +690,14 @@ class User extends Abstract_User
 			'credit' => $val,
 			'note' => $note,
 			'code' => $code,
+			'status' => $status,
+			'rid' => $rid,
 			'create_time' => time()
 		));
 		$user->save();
 	}
 
-	public function creditHappy($user, $val, $note,$status=0,$conversion='')
+	public function creditHappy($user, $val, $note,$status=0,$conversion='', $rid=0)
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -708,6 +712,7 @@ class User extends Abstract_User
 			'conversion' => $conversion,
 			'credit' => $val,
 			'note' => $note,
+			'rid' => $rid,
 			'create_time' => time()
 		));
 
@@ -719,7 +724,7 @@ class User extends Abstract_User
 		$user->save();
 	}
 
-	public function creditCoin($user, $val, $note,$status=0,$conversion='')
+	public function creditCoin($user, $val, $note, $status=0, $conversion='', $rid=0)
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -734,6 +739,7 @@ class User extends Abstract_User
 			'conversion' => $conversion,
 			'credit' => $val,
 			'note' => $note,
+			'rid' => $rid,
 			'create_time' => time()
 		));
 
@@ -745,7 +751,7 @@ class User extends Abstract_User
 		$user->save();
 	}
 	//抵用券
-	public function vouchers($user, $val, $note,$status=0,$conversion='')
+	public function vouchers($user, $val, $note,$status=0,$conversion='', $rid=0)
 	{
 		//检查帐户
 		if (!$user->exists()) {
@@ -760,6 +766,7 @@ class User extends Abstract_User
 			'conversion' => $conversion,
 			'credit' => $val,
 			'note' => $note,
+			'rid' => $rid,
 			'create_time' => time()
 		));
 

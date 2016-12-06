@@ -242,7 +242,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 							$data = M('Proportion')->select()->where('type='.(int)$type_id.' and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
 							$point = $data['r_digital']*$q['total_fee'];
 
-							$user->credit($point, '购买帮帮币');
+							$user->credit($point, '购买帮帮币', 1);
 							die('success');
 						}
 						break;
@@ -263,7 +263,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
 							$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
 							$point = $data['r_digital']*$q['total_fee'];
-							$user->creditHappy($point, '购买快乐积分');
+							$user->creditHappy($point, '购买快乐积分', 1);
 							die('success');
 						}
 						break;
@@ -284,7 +284,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 							$coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
 							$data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
 							$point = $data['r_digital']*$q['total_fee'];
-							$user->creditCoin($point, '购买积分币');
+							$user->creditCoin($point, '购买积分币', 1);
 							die('success');
 						}
 						break;
@@ -306,7 +306,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 							$data = M('Proportion')->select()->where('type='.(int)$type_id.' and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
 							$point = $data['r_digital']*$q['total_fee'];
 
-							$user->vouchers($point, '购买抵用券');
+							$user->vouchers($point, '购买抵用券', 1);
 							die('success');
 						}
 						break;
@@ -340,7 +340,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级一星分销商，赠送帮帮币');
+							$user->credit(500, '升级一星分销商，赠送帮帮币', 3);
 							die('success');
 						}
 						break;
@@ -358,7 +358,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级二星分销商，赠送帮帮币');
+							$user->credit(500, '升级二星分销商，赠送帮帮币', 3);
 							die('success');
 						}
 						break;
@@ -376,7 +376,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级三星分销商，赠送帮帮币');
+							$user->credit(500, '升级三星分销商，赠送帮帮币', 3);
 							die('success');
 						}
 						break;
@@ -394,7 +394,7 @@ class Payment_Alipay extends Suco_Model implements Payment_Interface
 							$user->save();
 
 							//赠送500免费积分
-							$user->credit(500, '升级四星分销商，赠送帮帮币');
+							$user->credit(500, '升级四星分销商，赠送帮帮币', 3);
 							die('success');
 						}
 						break;
