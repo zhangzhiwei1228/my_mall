@@ -1076,7 +1076,7 @@ class App_UserController extends App_Controller_Action
         }
         $user['avatar'] = 'http://'.$_SERVER['HTTP_HOST'].$user['avatar'];
         $user['count_cart'] = $count;
-        echo $this->_encrypt_data($user->toArray());
+        echo $this->_encrypt_data($user);
         //echo $this->show_data($this->_encrypt_data($user));
         die();
     }
