@@ -177,6 +177,7 @@ class App_UserController extends App_Controller_Action
     public function doGetCode() {
         $phone = $this->_request->phone;
         $code_token = $this->_request->code_token;
+        $type = $this->_request->type;//1注册2找回密码
         $token = md5('123bbw_'.date('YmdH'));
         if ($code_token != $token) {
             echo  self::_error_data(API_REG_VALIDATE_TOKEN_FAIL,'获取验证码token验证失败');
@@ -187,10 +188,18 @@ class App_UserController extends App_Controller_Action
             die();
         }
         $user = M('User')->select()->where('username = ? OR email = ? OR mobile = ?', $phone)->fetchRow();
-        if ($user->exists() ) {
-            echo  self::_error_data(API_EXISTED_PHONE,'此手机号已被注册');
-            die();
+        if($type == 1) {
+            if ($user->exists() ) {
+                echo  self::_error_data(API_EXISTED_PHONE,'此手机号已被注册');
+                die();
+            }
+        } elseif($type == 2) {
+            if (!$user->exists() ) {
+                echo  self::_error_data(ERR_LOGIN_FAIL_PWD_OR_ACCOUNT,'不存在此手机号');
+                die();
+            }
         }
+
 
         $check = M('Limit')->select()->where('tel='.$phone)->order('timeline desc')->fetchRow()->toArray();
         $count = M('Limit')->count('tel='.$phone);
