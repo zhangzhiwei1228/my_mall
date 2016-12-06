@@ -76,5 +76,28 @@ class App_CreditController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    /**
+     * 通用货币之间的转换
+     */
+    public function doConversionList() {
+        $datas = M('Proportion')->select('id,left_id,right_id,l_digital,r_digital')->where('type=9')->fetchRows()->toArray();
+        foreach($datas as &$data) {
+            $left_name = M('Coltypes')->select('name')->where('id='.$data['left_id'])->fetchRow()->toArray();
+            $right_name = M('Coltypes')->select('name')->where('id='.$data['right_id'])->fetchRow()->toArray();
+            $data['left_name'] = $left_name['name'];
+            $data['right_name'] = $right_name['name'];
+            unset($data['left_id']);
+            unset($data['right_id']);
+        }
+        //echo $this->_encrypt_data($datas);
+        echo $this->show_data($this->_encrypt_data($datas));
+        die();
+    }
+    /**
+     * 转换
+     */
+    public function doConversion() {
+
+    }
 }
 
