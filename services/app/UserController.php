@@ -1012,7 +1012,6 @@ class App_UserController extends App_Controller_Action
      * 找回密码
      */
     public function doForgetPwd() {
-        $this->user = $this->_auth();
         $phone = $this->_request->phone;
         $code = $this->_request->code;
         $pwd = $this->_request->pwd;
