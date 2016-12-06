@@ -29,11 +29,22 @@ $role = $this->data['role'] ? $this->data['role'] : $this->_request->role;
 		<div class="form-group <?=$this->_request->role?'hide':''?>">
 			<label class="col-sm-2 control-label">账户类型:</label>
 			<div class="col-sm-4">
-				<select name="role" class="form-control">
+				<select name="role" class="form-control" id="role">
 					<option value="member" <?=$role=='member'?'selected':''?>>会员</option>
 					<option value="agent" <?=$role=='agent'?'selected':''?>>代理商</option>
 					<option value="seller" <?=$role=='seller'?'selected':''?>>商家</option>
 					<option value="resale" <?=$role=='resale'?'selected':''?>>分销商</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group <?php echo $this->data['role'] == 'seller' ? '' : 'hide' ?>" id="relevance">
+			<label class="col-sm-2 control-label">关联商铺:</label>
+			<div class="col-sm-4">
+				<select name="shop_id" class="form-control" id="shop_id">
+					<?php foreach($this->shops as $row) {?>
+						<option value="<?php echo $row['id']?>" <?=$row['id'] == $this->data['shop_id'] ? 'selected':''?>><?php echo $row['name']?></option>
+					<?php }?>
+
 				</select>
 			</div>
 		</div>
@@ -171,4 +182,17 @@ seajs.use('/assets/js/dmenu/dmenu.sea.js', function(dmenu) {
 		}
 	});
 });
+</script>
+<script>
+	$(document).ready(function() {
+		$('#role').change(function() {
+			var role = $('#role option:selected') .val();
+			if(role == 'seller') {
+				$('#relevance').show();
+			} else {
+				$('#relevance').hide();
+			}
+		});
+
+	});
 </script>

@@ -221,10 +221,12 @@ class Admincp_UserController extends Admincp_Controller_Action
 			$ids .= $region_id['id'].',';
 		}
 		$ids = substr($ids,0,strlen($ids)-1);
+		$shops = M('Shop')->select('id,name')->fetchRows()->toArray();
 
 		$view = $this->_initView();
 		$view->$ids;
 		$view->data = $data;
+		$view->shops = $shops;
 		$view->render('user/input.php');
 	}
 }
