@@ -57,9 +57,24 @@ class App_PayController extends App_Controller_Action
             'product_code' => 'QUICK_MSECURITY_PAY',
         );
         $this->_config['biz_content'] = json_encode($biz_content);
-        var_dump($this->createLinkstring($this->_config));
+        $this->_config = $this->paraFilter($this->_config);
+        $this->_config = $this->argSort($this->_config);
+        //拼接
+        $mystr = $this->createLinkstring($this->_config);
+
+        //签名
+        $sign = $this->rsaSign($mystr,SRV_DIR.'app/alipay_private_key.pem');
+
+        //对签名进行urlencode转码
+        $sign = urlencode($sign);
+        //生成最终签名信息
+
+        $orderInfor = $mystr."&sign=".$sign."&sign_type=RSA";
+        echo $this->_encrypt_data($sign);
+        //echo $this->show_data($this->_encrypt_data($sign));
+        die();
     }
-    function createLinkstring($para) {
+    protected function createLinkstring($para) {
         $arg  = "";
         while (list ($key, $val) = each ($para)) {
             $arg.=$key."=".$val."&";
@@ -71,5 +86,49 @@ class App_PayController extends App_Controller_Action
         if(get_magic_quotes_gpc()){$arg = stripslashes($arg);}
 
         return $arg;
+    }
+    protected function rsaSign($data, $private_key_path) {
+        $priKey = file_get_contents($private_key_path);
+        $res = openssl_get_privatekey($priKey);
+        openssl_sign($data, $sign, $res);
+        openssl_free_key($res);
+        //base64编码
+        $sign = base64_encode($sign);
+        return $sign;
+    }
+    protected function argSort($para) {
+        ksort($para);
+        reset($para);
+        return $para;
+    }
+    /**RSA验签
+     * $data待签名数据
+     * $sign需要验签的签名
+     * 验签用支付宝公钥
+     * return 验签是否通过 bool值
+     */
+    protected function verify($data, $sign)  {
+        //读取支付宝公钥文件
+        $pubKey = file_get_contents(SRV_DIR.'app/alipay_public_key.pem');
+
+        //转换为openssl格式密钥
+        $res = openssl_get_publickey($pubKey);
+
+        //调用openssl内置方法验签，返回bool值
+        $result = (bool)openssl_verify($data, base64_decode($sign), $res);
+
+        //释放资源
+        openssl_free_key($res);
+
+        //返回资源是否成功
+        return $result;
+    }
+    protected function paraFilter($para) {
+        $para_filter = array();
+        while (list ($key, $val) = each ($para)) {
+            if($key == "sign" || $key == "sign_type" || $val == "")continue;
+            else	$para_filter[$key] = $para[$key];
+        }
+        return $para_filter;
     }
 }
