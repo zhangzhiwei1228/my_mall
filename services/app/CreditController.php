@@ -110,6 +110,9 @@ class App_CreditController extends App_Controller_Action
         }
         $left_name = M('Coltypes')->select('name,english')->where('id='.$data['left_id'])->fetchRow()->toArray();
         $right_name = M('Coltypes')->select('name,english')->where('id='.$data['right_id'])->fetchRow()->toArray();
+        var_dump($number);
+        var_dump($this->user[$left_name['english']]);
+        die();
         if($number > $this->user[$left_name['english']]){
             echo  self::_error_data(API_INPUT_NUMBER_TOO_BIG,'输入的数字大于您所拥有的');
             die();
@@ -151,6 +154,13 @@ class App_CreditController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+
+    /**
+     * @param int $length
+     * @param string $chars
+     * @return string
+     * 兑换码
+     */
     function doRandStr($length = 10, $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890')
     {
         $chars_length = (strlen($chars) - 1);
@@ -161,6 +171,37 @@ class App_CreditController extends App_Controller_Action
             if ($r != $string{$i - 1}) $string .=  $r;
         }
         return $string;
+    }
+    /***
+     * 抵佣金
+     */
+    public function doWorthGold() {
+        $service_charge = M('Coltypes')->getById(15)->toArray();
+        $proportions = M('Proportion')->select()->where('type=16')->fetchRows()->toArray();
+        foreach($proportions as &$row) {
+            $left_name = M('Coltypes')->select('name')->where('id='.$row['left_id'])->fetchRow()->toArray();
+            $right_name = M('Coltypes')->select('name')->where('id='.$row['right_id'])->fetchRow()->toArray();
+            $type_name = M('Coltypes')->select('name')->where('id='.$row['type'])->fetchRow()->toArray();
+            $row['left_name'] = $left_name['name'];
+            $row['right_name'] = $right_name['name'];
+            $row['type_name'] = $type_name['name'];
+            unset($row['left_id']);
+            unset($row['right_id']);
+            unset($row['type']);
+            if($row['exts'])  continue;
+        }
+        $data['service'] = $service_charge['price'];
+        $data['proportions'] = $proportions;
+        //echo $this->_encrypt_data($data);
+        echo $this->show_data($this->_encrypt_data($data));
+        die();
+
+    }
+    /**
+     * 购买抵佣金
+     */
+    public function doPayWorthGold() {
+
     }
 }
 
