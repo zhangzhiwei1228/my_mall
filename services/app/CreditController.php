@@ -135,7 +135,7 @@ class App_CreditController extends App_Controller_Action
             M('Worthglod')->insert($extra);
             $user->worthGold($credit_coin,$desc,$extra['code'],$extra['status']);
         } else {
-            var_dump("2");
+            var_dump("1");
             $user->$right_name['english']($credit_coin,$desc,$status,$left_name['english'].'-'.$right_name['english']);
         }
         if($left_name['english'] == 'worth_gold') {
