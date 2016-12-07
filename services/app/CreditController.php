@@ -162,7 +162,7 @@ class App_CreditController extends App_Controller_Action
             $user->$par($number * -1,$desc,$status,$left_name['english'].'-'.$right_name['english']);
         }
 
-        $data = array('status'=>'ok');
+        $data = M('User')->select('credit,credit_happy,credit_coin,worth_gold,vouchers')->where('id = '.(int)$this->user->id)->fetchRow()->toArray();
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
