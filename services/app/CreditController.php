@@ -97,7 +97,70 @@ class App_CreditController extends App_Controller_Action
      * 转换
      */
     public function doConversion() {
-
+        $id = $this->_request->id;
+        $number = $this->_request->number;
+        if( !$id || !$number ) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $data = M('Proportion')->getById((int)$id);
+        if(!$data) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+            die();
+        }
+        $left_name = M('Coltypes')->select('name,english')->where('id='.$data['left_id'])->fetchRow()->toArray();
+        $right_name = M('Coltypes')->select('name,english')->where('id='.$data['right_id'])->fetchRow()->toArray();
+        if($number > $this->user[$left_name['english']]){
+            echo  self::_error_data(API_INPUT_NUMBER_TOO_BIG,'输入的数字大于您所拥有的');
+            die();
+        }
+        if($number % floor(($data['l_digital'])) != 0){
+            echo  self::_error_data(API_MISSING_PARAMETER,'输入的数据不能整除');
+            die();
+        }
+        $credit_coin = $number * ($data['r_digital']/$data['l_digital']);
+        $user = $this->user;
+        $desc = '以【'.$data['l_digital'].':'.$data['r_digital'].'】的比例进行【'.$left_name['name'].'转换成'.$right_name['name'].'】';
+        $status = 2;
+        if($right_name['english'] == 'worth_gold') {
+            $extra = array(
+                'uid' => $this->user->id,
+                'privilege' => $credit_coin,
+                'code' => $this->doRandStr(),
+                'status' => 2,
+            );
+            M('Worthglod')->insert($extra);
+            $user->worthGold($credit_coin,$desc,$extra['code'],$extra['status']);
+        } else {
+            $user->$right_name['english']($credit_coin,$desc,$status,$left_name['english'].'-'.$right_name['english']);
+        }
+        if($left_name['english'] == 'worth_gold') {
+            $extra = array(
+                'uid' => $this->user->id,
+                'privilege' => $credit_coin,
+                'code' => $this->doRandStr(),
+                'status' => 2,
+            );
+            M('Worthglod')->insert($extra);
+            $user->worthGold($credit_coin,$desc,$extra['code'],$extra['status']);
+        } else {
+            $user->$left_name['english']($number * -1,$desc,$status,$left_name['english'].'-'.$right_name['english']);
+        }
+        $data = array('status'=>'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    function doRandStr($length = 10, $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890')
+    {
+        $chars_length = (strlen($chars) - 1);
+        $string = $chars{rand(0, $chars_length)};
+        for ($i = 1; $i < $length; $i = strlen($string))
+        {
+            $r = $chars{rand(0, $chars_length)};
+            if ($r != $string{$i - 1}) $string .=  $r;
+        }
+        return $string;
     }
 }
 

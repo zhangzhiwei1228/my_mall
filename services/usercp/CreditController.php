@@ -44,9 +44,9 @@ class Usercp_CreditController extends Usercp_Controller_Action
 		/*M('User')->updateById('credit = credit - '.(int)$credit.',credit_coin = credit_coin + '.$credit_coin
 			, (int)$this->user['id']);*/
 		$user = M('User')->getById((int)$this->user['id']);
-		$user->$left_name['english'] = $user->$left_name['english'] - (int)$credit;
+		//$user->$left_name['english'] = $user->$left_name['english'] - (int)$credit;
 		//$user->$right_name['english'] = $user->$right_name['english'] + (int)$credit_coin;
-		$user->save();
+		//$user->save();
 		$glod_id = 0;
 		$desc = '以【'.$data['l_digital'].':'.$data['r_digital'].'】的比例进行【'.$left_name['name'].'转换成'.$right_name['name'].'】';
 		$status = 2;
@@ -68,10 +68,10 @@ class Usercp_CreditController extends Usercp_Controller_Action
 					'uid' => $this->user->id,
 					'privilege' => $credit_coin,
 					'code' => $this->doRandStr(),
-					'status' => 3,
+					'status' => 2,
 				);
 				$glod_id = M('Worthglod')->insert($extra);
-				$user->worthGold($credit_coin,$desc);
+				$user->worthGold($credit_coin,$desc,$extra['code'],$status);
 				break;
 		}
 		switch($left_name['english']) {
@@ -92,10 +92,10 @@ class Usercp_CreditController extends Usercp_Controller_Action
 					'uid' => $this->user->id,
 					'privilege' => $credit_coin,
 					'code' => $this->doRandStr(),
-					'status' => 3,
+					'status' => 2,
 				);
 				$glod_id = M('Worthglod')->insert($extra);
-				$user->worthGold($credit_coin,$desc);
+				$user->worthGold($credit_coin,$desc,$extra['code'],$status);
 				break;
 		}
 		//$user->creditCoin($credit_coin,'积分转换成积分币');
