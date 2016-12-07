@@ -135,13 +135,13 @@ class App_CreditController extends App_Controller_Action
             M('Worthglod')->insert($extra);
             $user->worthGold($credit_coin,$desc,$extra['code'],$extra['status']);
         } else {
-            var_dump("1");
-            try{
-                $user->$right_name['english']($credit_coin,$desc,$status,$left_name['english'].'-'.$right_name['english']);
-            } catch(Exception $e) {
-                var_dump($e);
+            $par = explode('_',$right_name['english']);
+            $str = '';
+            if(isset($par[1])) {
+                $str = ucfirst($par[1]);
             }
-
+            $par = $par[0].$str;
+            $user->$par($credit_coin,$desc,$status,$left_name['english'].'-'.$right_name['english']);
         }
         if($left_name['english'] == 'worth_gold') {
             $extra = array(
@@ -153,11 +153,15 @@ class App_CreditController extends App_Controller_Action
             M('Worthglod')->insert($extra);
             $user->worthGold($credit_coin,$desc,$extra['code'],$extra['status']);
         } else {
-            var_dump("2");
-            $user->$left_name['english']($number * -1,$desc,$status,$left_name['english'].'-'.$right_name['english']);
+            $par = explode('_',$right_name['english']);
+            $str = '';
+            if(isset($par[1])) {
+                $str = ucfirst($par[1]);
+            }
+            $par = $par[0].$str;
+            $user->$par($number * -1,$desc,$status,$left_name['english'].'-'.$right_name['english']);
         }
-        var_dump("123123");
-        die();
+
         $data = array('status'=>'ok');
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
