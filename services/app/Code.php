@@ -80,4 +80,4 @@ define('API_USER_VOUCHERS_NO_ENOUGH',       1043);//抵用券不足
  *
  */
 define('API_USER_CREDIT_NO_ENOUGH',       1037);//帮帮币不足
-define('API_INPUT_NUMBER_TOO_BIG',       1044);//抵用券不足
+define('API_INPUT_NUMBER_TOO_BIG',       1044);//输入的数值太大

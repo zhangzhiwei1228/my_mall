@@ -190,14 +190,14 @@ class App_CreditController extends App_Controller_Action
      */
     public function doWorthGold() {
         $service_charge = M('Coltypes')->getById(15)->toArray();
-        $proportions = M('Proportion')->select()->where('type=16')->fetchRows()->toArray();
+        $proportions = M('Proportion')->select('id,l_digital,r_digital,left_id,right_id')->where('type=16')->fetchRows()->toArray();
         foreach($proportions as &$row) {
             $left_name = M('Coltypes')->select('name')->where('id='.$row['left_id'])->fetchRow()->toArray();
             $right_name = M('Coltypes')->select('name')->where('id='.$row['right_id'])->fetchRow()->toArray();
-            $type_name = M('Coltypes')->select('name')->where('id='.$row['type'])->fetchRow()->toArray();
+            //$type_name = M('Coltypes')->select('name')->where('id='.$row['type'])->fetchRow()->toArray();
             $row['left_name'] = $left_name['name'];
             $row['right_name'] = $right_name['name'];
-            $row['type_name'] = $type_name['name'];
+            //$row['type_name'] = $type_name['name'];
             unset($row['left_id']);
             unset($row['right_id']);
             unset($row['type']);
@@ -205,8 +205,8 @@ class App_CreditController extends App_Controller_Action
         }
         $data['service'] = $service_charge['price'];
         $data['proportions'] = $proportions;
-        //echo $this->_encrypt_data($data);
-        echo $this->show_data($this->_encrypt_data($data));
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
 
     }
@@ -214,7 +214,168 @@ class App_CreditController extends App_Controller_Action
      * 购买抵佣金
      */
     public function doPayWorthGold() {
+        $flag = false;
+        $service_charge = M('Coltypes')->getById(15)->toArray();
+        $price_type = $this->_request->price_type;//选择的支付方式
+        $consume = $this->_request->consume; //消费金额
+        $discount = $this->_request->discount;//折扣
+        $privilege = $this->_request->privilege;//优惠
+        $service = $this->_request->service;//服务费
 
+        $discount = $discount/100;//折扣换成百分比
+        $privilege = $privilege ? $privilege : round(($consume - $consume*$discount),2);//优惠
+        $service = $service ? $service : round(($privilege * $service_charge['price']),2);//服务费
+        $pro18 = M('Proportion')->getById(18)->toArray();
+        if($price_type == 100 || $price_type == 101 || $price_type == 102) {
+            $money = ceil(($consume - $consume*$discount)*($pro18['l_digital']/$pro18['r_digital'])*0.5);//支付的货币金额
+            $cash = $money + $service;
+        }
+
+        if($price_type == 100) {
+            $price_type = 15;$flag=true;
+        } elseif($price_type == 101) {
+            $price_type = 16;$flag=true;
+        } elseif($price_type == 102) {
+            $price_type = 17;$flag=true;
+        }
+        $proportion = M('Proportion')->select()->where('id='.(int)$price_type)->fetchRow()->toArray();
+        $payment = ceil(($consume - $consume*$discount)*($proportion['l_digital']/$proportion['r_digital']));//支付的货币金额
+        $pay_name = M('Coltypes')->select('name,english')->where('id='.$proportion['left_id'])->fetchRow()->toArray();
+        $right = M('Coltypes')->select('name')->where('id='.$proportion['right_id'])->fetchRow()->toArray();
+        if(!$privilege || !$payment) {
+            throw new App_Exception('计算错误，请重新计算提交');
+        }
+        if($flag){
+            $payment = ceil($payment/2);
+        }
+        if(!$flag && $price_type !=18) {
+            $cash = $service;
+        }
+        if($price_type == 18) {
+            $cash = $service + $payment;
+        }
+
+        if ($pay_name['english'] == 'credit' && $this->user['credit'] < $payment) {
+            echo  self::_error_data(API_USER_CREDIT_NO_ENOUGH,'支付失败，您的帮帮币不足');
+            die();
+        }
+        if ($pay_name['english'] == 'credit_happy' && $this->user['credit_happy'] < $payment) {
+            echo  self::_error_data(API_USER_CREDIT_HAPPY_NO_ENOUGH,'支付失败，您的快乐积分不足');
+            die();
+        }
+        if ($pay_name['english'] == 'credit_coin' && $this->user['credit_coin'] < $payment) {
+            echo  self::_error_data(API_USER_CREDIT_COIN_NO_ENOUGH,'支付失败，您的积分币不足');
+            die();
+        }
+        if ($pay_name['english'] == 'vouchers' && $this->user['vouchers'] < $payment) {
+            echo  self::_error_data(API_USER_VOUCHERS_NO_ENOUGH,'支付失败，您的抵用券不足');
+            die();
+        }
+        $extra['consume'] = $consume;
+        $extra['discount'] = $discount;
+        $extra['price_type'] = $price_type;
+        $extra['uid'] = $this->user->id;
+        $extra['privilege'] = $privilege;
+        $extra['service_charge'] = $service;
+        $extra['discount'] = $discount;
+        $extra['order_no'] = $this->doOrderNo();
+        $extra['code'] = $this->doRandStr();
+        $pay_json['payment'] = $payment;
+        $pay_json['exts_type'] = $flag ? $pay_name['english'] : $pay_name['english'];
+        $pay_json['exts_amount'] = $flag ? $money : '';
+        $pay_json['pay_name'] = $flag ? $pay_name['name'].'+元' :$pay_name['name'];
+        $pay_json['pay_desc'] = $flag ? $payment.$pay_name['name'].'+'.$money.'元'.'='.$privilege.$right['name'] :$proportion['l_digital'].$pay_name['name'].'='.$proportion['r_digital'].$right['name'];
+        $extra['pay_json'] = json_encode($pay_json);
+
+        $glod_id = M('Worthglod')->insert($extra);
+        $pay_data['type'] = $flag ? 'hybrid' : $pay_name['english'];
+        $pay_data['exts_type'] = $pay_name['english'];
+        $pay_data['amount'] = $payment;
+        $pay_data['pay_amount'] = $cash;
+        $pay_data['flag'] = $flag;
+        $pay_data['money'] = $money;
+        $pay_data['return_url'] = '/usercp/money/success/?id='.$glod_id;
+        $pay_data['glod_id'] = $glod_id;
+        $pay_data['pay_name'] = $pay_name['name'];
+        $pay_data['privilege'] = $privilege;
+        $this->doPayPurchase($pay_data);
+    }
+    public function doPayPurchase($data) {
+
+        $data['desc'] = $data['flag'] ? '使用【'.$data['amount'].$data['pay_name'].'+'.$data['money'].'元'.'】购买【'.$data['privilege'].'抵用金】' :'使用【'.$data['amount'].$data['pay_name'].'】购买【'.$data['privilege'].'抵用金】';
+        $worthglod = M('Worthglod')->getById((int)$data['glod_id']);
+        $status = 1;
+        if(!$data['pay_amount']) {
+            switch ($data['type']) {
+                case 'credit':
+                    $this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit-worth_gold');
+                    break;
+                case 'credit_happy':
+                    $this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit_happy-worth_gold');
+                    break;
+                case 'credit_coin':
+                    $this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit_coin-worth_gold');
+                    break;
+                case 'vouchers'://抵用券
+                    $this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'vouchers-worth_gold');
+                    break;
+                case 'hybrid'://混合支付
+                    switch($data['exts_type']) {
+                        case 'credit':
+                            $this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit-worth_gold');
+                            break;
+                        case 'credit_happy':
+                            $this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit_happy-worth_gold');
+                            break;
+                        case 'credit_coin':
+                            $this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'credit_coin-worth_gold');
+                            break;
+                        case 'vouchers'://抵用券
+                            $this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】', $status,'vouchers-worth_gold');
+                            break;
+                    }
+                    break;
+            }
+        } else {
+            switch ($data['type']) {
+                case 'credit':
+                    /*$this->user->credit($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;*/
+                case 'credit_happy':
+                    /*$this->user->creditHappy($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;*/
+                case 'credit_coin':
+                    /*$this->user->creditCoin($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;*/
+                case 'vouchers'://抵用券
+                    /*$this->user->vouchers($data['amount']*-1, '购买抵用金【GL-'.$data['glod_id'].'】');
+                    break;*/
+                    $this->doPaySingle($data);
+                    die();
+                case 'cash'://现金
+                    /*$this->user->cash($data['amount']*-1, '购买抵用金【TS-'.$data['glod_id'].'】');
+                    break;*/
+                case 'hybrid'://混合支付
+                    $this->doHybrid($data);
+                    die();
+                    break;
+            }
+        }
+
+        $worthglod->status = 2;
+        $worthglod->pay_time = time();
+        $worthglod->save();
+        $this->user->worthGold($data['privilege'],$data['desc'],'',$status,$data['type'].'-worth_gold');
+
+        $glod = M('Worthglod')->select('id,code,order_no')->where('id ='.$data['glod_id'])->fetchRow()->toArray();
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($glod));
+        die();
+    }
+    // 生成订单号 $str 前缀
+    function doOrderNo($str=''){
+        $order_no=date('Ymdhis',time()).str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
+        return $str.$order_no;
     }
 }
 
