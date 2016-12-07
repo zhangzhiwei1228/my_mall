@@ -110,13 +110,14 @@ class App_CreditController extends App_Controller_Action
         }
         $left_name = M('Coltypes')->select('name,english')->where('id='.$data['left_id'])->fetchRow()->toArray();
         $right_name = M('Coltypes')->select('name,english')->where('id='.$data['right_id'])->fetchRow()->toArray();
-        var_dump($number);
-        var_dump($this->user[$left_name['english']]);
-        die();
+
         if($number > $this->user[$left_name['english']]){
             echo  self::_error_data(API_INPUT_NUMBER_TOO_BIG,'输入的数字大于您所拥有的');
             die();
         }
+        var_dump($number);
+        var_dump($this->user[$left_name['english']]);
+        die();
         if($number % floor(($data['l_digital'])) != 0){
             echo  self::_error_data(API_MISSING_PARAMETER,'输入的数据不能整除');
             die();
