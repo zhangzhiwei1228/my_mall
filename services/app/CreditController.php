@@ -115,9 +115,7 @@ class App_CreditController extends App_Controller_Action
             echo  self::_error_data(API_INPUT_NUMBER_TOO_BIG,'输入的数字大于您所拥有的');
             die();
         }
-        var_dump($number);
-        var_dump($this->user[$left_name['english']]);
-        die();
+
         if($number % floor(($data['l_digital'])) != 0){
             echo  self::_error_data(API_MISSING_PARAMETER,'输入的数据不能整除');
             die();
@@ -126,6 +124,10 @@ class App_CreditController extends App_Controller_Action
         $user = $this->user;
         $desc = '以【'.$data['l_digital'].':'.$data['r_digital'].'】的比例进行【'.$left_name['name'].'转换成'.$right_name['name'].'】';
         $status = 2;
+        var_dump($credit_coin);
+        var_dump($right_name['english']);
+        var_dump($desc);
+        die();
         if($right_name['english'] == 'worth_gold') {
             $extra = array(
                 'uid' => $this->user->id,
