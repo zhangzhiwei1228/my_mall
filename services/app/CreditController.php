@@ -124,10 +124,7 @@ class App_CreditController extends App_Controller_Action
         $user = $this->user;
         $desc = '以【'.$data['l_digital'].':'.$data['r_digital'].'】的比例进行【'.$left_name['name'].'转换成'.$right_name['name'].'】';
         $status = 2;
-        var_dump($credit_coin);
-        var_dump($right_name['english']);
-        var_dump($desc);
-        die();
+
         if($right_name['english'] == 'worth_gold') {
             $extra = array(
                 'uid' => $this->user->id,
@@ -138,6 +135,7 @@ class App_CreditController extends App_Controller_Action
             M('Worthglod')->insert($extra);
             $user->worthGold($credit_coin,$desc,$extra['code'],$extra['status']);
         } else {
+            var_dump("2");
             $user->$right_name['english']($credit_coin,$desc,$status,$left_name['english'].'-'.$right_name['english']);
         }
         if($left_name['english'] == 'worth_gold') {
@@ -150,8 +148,11 @@ class App_CreditController extends App_Controller_Action
             M('Worthglod')->insert($extra);
             $user->worthGold($credit_coin,$desc,$extra['code'],$extra['status']);
         } else {
+            var_dump("2");
             $user->$left_name['english']($number * -1,$desc,$status,$left_name['english'].'-'.$right_name['english']);
         }
+        var_dump("123123");
+        die();
         $data = array('status'=>'ok');
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
