@@ -141,6 +141,7 @@ class App_CreditController extends App_Controller_Action
                 $str = ucfirst($par[1]);
             }
             $par = $par[0].$str;
+
             $user->$par($credit_coin,$desc,$status,$left_name['english'].'-'.$right_name['english']);
         }
         if($left_name['english'] == 'worth_gold') {
@@ -153,7 +154,7 @@ class App_CreditController extends App_Controller_Action
             M('Worthglod')->insert($extra);
             $user->worthGold($credit_coin,$desc,$extra['code'],$extra['status']);
         } else {
-            $par = explode('_',$right_name['english']);
+            $par = explode('_',$left_name['english']);
             $str = '';
             if(isset($par[1])) {
                 $str = ucfirst($par[1]);
