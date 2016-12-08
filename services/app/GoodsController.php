@@ -497,4 +497,148 @@ class App_GoodsController extends App_Controller_Action
             die();
         }
     }
+    /**
+     * 订单列表
+     */
+    public function doOrderList() {
+        $this->user = $this->_auth();
+        $limit = $this->_request->limit;
+        $page = $this->_request->page;
+        $status = $this->_request->status; //0废单,1待付款,2待发货,3待签收,4已完成，5处理超时
+        $select = M('Order')->alias('o')
+            ->leftJoin(M('User')->getTableName().' AS b', 'o.buyer_id = b.id')
+            ->leftJoin(M('User')->getTableName().' AS s', 'o.seller_id = s.id')
+            ->leftJoin(M('Payment')->getTableName().' AS p', 'o.payment_id = p.id')
+            ->leftJoin(M('Shipping')->getTableName().' AS d', 'o.shipping_id = d.id')
+            ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json ')
+            ->where('o.buyer_id = '. $this->user->id.' and o.expiry_time != 0 AND o.expiry_time >= '.time())
+            ->order('id DESC')
+            ->paginator($limit, $page);
+        if($status) {
+            $select->where('o.status = '.(int)$status);
+        }
+        switch ($this->_request->sm) {
+            case 'code':
+                $this->_request->keyword && $select->where('o.code = ?', $this->_request->keyword);
+                break;
+            case 'consignee':
+                $this->_request->keyword && $select->where('o.consignee LIKE ?', '%'.$this->_request->keyword.'%');
+                break;
+            case 'buyer_account':
+                $this->_request->keyword && $select->where('b.username LIKE ?', '%'.$this->_request->keyword.'%');
+                break;
+        }
+        if ($this->_request->begin_time) {
+            $select->where('o.create_time >= ?', strtotime($this->_request->begin_time));
+        }
+        if ($this->_request->end_time) {
+            $select->where('o.create_time <= ?', strtotime($this->_request->end_time) + (3600 * 24));
+        }
+        $datas = $select->fetchRows()->toArray();
+
+        foreach($datas as $key2=> &$row) {
+            $area_id = $row['area_id'];
+            $shipping_id = $row['shipping_id'];
+            $total_credit = $row['total_credit'];
+            $total_credit_happy = $row['total_credit_happy'];
+            $total_credit_coin = $row['total_credit_coin'];
+            $total_vouchers = $row['total_vouchers'];
+            $total_weight = $row['total_weight'];
+            $total_quantity = $row['total_quantity'];//总件数
+            $order_json = json_decode($row['order_json']);
+            foreach($order_json as $key =>&$val) {
+                $val = get_object_vars($val);
+                unset($val['thumb']);
+                unset($val['points']);
+                if(strpos($val['skus_id'],',')) {
+                    $sku_ids = explode(',',$val['skus_id']);
+                    foreach($sku_ids as $k => $sku_id) {
+                        $sku = M('Goods_Sku')->select()->where('id = ?', (int)$sku_id)->fetchRow()->toArray();
+                        $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                        $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
+                        $spec = explode(',',$sku['spec']);
+                        $arr = array();
+                        foreach($spec as $key1=>$val1) {
+                            $val1 = substr($val1,0,strlen($val1)-1);
+                            $val1 = substr($val1,1);
+                            $val1 = explode(':',$val1);
+                            $arr[$key1]['name'] = $val1[0];
+                            $arr[$key1]['value'] = $val1[1];
+                        }
+                        $good['spec'] = $arr;
+                        unset($good['price']);
+                        unset($good['unit']);
+                        $good['sku_id'] = $sku_id;
+                        $val['goods'][$k] = $good;
+                    }
+                } else {
+                    $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val['skus_id'])->fetchRow()->toArray();
+                    $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                    $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
+                    $spec = explode(',',$sku['spec']);
+                    $arr = array();
+                    foreach($spec as $key1=>$val1) {
+                        $val1 = substr($val1,0,strlen($val1)-1);
+                        $val1 = substr($val1,1);
+                        $val1 = explode(':',$val1);
+                        $arr[$key1]['name'] = $val1[0];
+                        $arr[$key1]['value'] = $val1[1];
+                    }
+                    $good['spec'] = $arr;
+                    unset($good['price']);
+                    unset($good['unit']);
+                    $good['sku_id'] = $val['skus_id'];
+                    $val['goods'][] = $good;
+                }
+                unset($row['order_json']);
+                $order['shipping_id'] = $shipping_id;
+                $order['area_id'] = $area_id;
+                $postage = $this->doPostAge($order, $val['total'], $val['weight']);
+                $val['total_postage'] = $postage;
+                $row['packages'][$key2] = $order_json;
+            }
+        }
+        echo $this->_encrypt_data($datas);
+        //echo $this->show_data($this->_encrypt_data($datas));
+        die();
+    }
+    /**
+     * @param $order
+     * @param int $total
+     * @param int $weight
+     * @return float
+     */
+    public function doPostAge($order, $total=0, $weight=0) {
+        //计算邮费
+        $total_quantity = $total ? $total : round($order['total_weight'],2);
+        $total_weight = $weight ? $weight : round($order['total_quantity'],2);
+        $user_adder_area_id = (int)$order['area_id'];
+        $shipping_id = (int)$order['shipping_id'];
+        $region = M('Region')->getById($user_adder_area_id);
+        //$region_parent_id = (int)$region['parent_id'];
+
+        $region_path_ids = $region['path_ids'];
+        $region_path_ids = explode(',',$region_path_ids);
+        $region_province = $region_path_ids[2];//获取省
+        $region_city = $region_path_ids[3];//获取市
+        //在存运费的时候，如果存的是全省中的，那destination的值是省id，如果是某些市，那会是市id
+        $shipping_freight = M('Shipping_Freight')->select()
+            ->where('shipping_id = '. $shipping_id.' and (destination like '.'"%'.$region_province.'%" or destination like '.'"%'.$region_city.'%")')->fetchRow();
+
+        $first_weight = (int)$shipping_freight['first_weight'];//首重
+        $first_freight = round($shipping_freight['first_freight'],2);//一千克首重价格
+        $second_weight = (int)$shipping_freight['second_weight'];//继重
+        $second_freight = round($shipping_freight['second_freight'],2);//一千克继重价格
+//		$one_weight = round($total_weight/$total_quantity,3);
+//		$one_weight = ceil($total_weight/$total_quantity);//向上取正
+        $one_weight = ceil($total_weight);//向上取正
+
+        if($one_weight > $first_weight) {
+            $total_postage = $first_weight*$first_freight+($one_weight-$first_weight)*$second_weight*$second_freight;
+        } else {
+            $total_postage = $first_weight*$first_freight;
+        }
+//		return round($total_quantity*$total_postage,2);
+        return round($total_postage,2);
+    }
 }
