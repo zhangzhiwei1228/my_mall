@@ -70,8 +70,9 @@ class App_PayController extends App_Controller_Action
         //生成最终签名信息
 
         $orderInfor = $mystr."&sign=".$sign."&sign_type=RSA";
-        echo $this->_encrypt_data($sign);
-        //echo $this->show_data($this->_encrypt_data($sign));
+        echo $orderInfor;
+        //echo $this->_encrypt_data($sign);
+        //echo $this->show_data($this->_encrypt_data($orderInfor));
         die();
     }
     protected function createLinkstring($para) {
