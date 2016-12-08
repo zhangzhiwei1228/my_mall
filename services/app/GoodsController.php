@@ -514,9 +514,10 @@ class App_GoodsController extends App_Controller_Action
             ->where('o.buyer_id = '. $this->user->id.' and o.expiry_time != 0 AND o.expiry_time >= '.time())
             ->order('id DESC')
             ->paginator($limit, $page);
-        if($status) {
+        if($status && $status != 6) {
             $select->where('o.status = '.(int)$status);
         }
+
         switch ($this->_request->sm) {
             case 'code':
                 $this->_request->keyword && $select->where('o.code = ?', $this->_request->keyword);
