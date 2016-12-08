@@ -387,5 +387,114 @@ class App_GoodsController extends App_Controller_Action
             $view->render('views/app/products.php');
         }
     }
-
+    /**
+     * 领取红包
+     */
+    public function doReceive() {
+        $this->user = $this->_auth();
+        $oid = $this->_request->oid;
+        if(!$oid) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $order = M('Order')->getById((int)$oid);
+        if(!$order) {
+            echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
+            die();
+        }
+        if ($order['total_earn_points']) {
+            $order->buyer->credit($order['total_earn_points'], '消费'.$order['total_amount'].'元，领取积分红包'.$order['total_earn_points'].'点');
+        } else {
+            echo  self::_error_data(API_MISSING_PARAMETER,'请求有误，请联系管理员');
+            die();
+        }
+        $order->is_receive = 1;
+        $order->save();
+        $data = array('status'=>'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 取消订单
+     */
+    public function doCancelOrder() {
+        $this->user = $this->_auth();
+        $oid = $this->_request->oid;
+        if(!$oid) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $order = M('Order')->getById((int)$oid);
+        if(!$order) {
+            echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
+            die();
+        }
+        $order->CancelOrder();
+        $desc = date('Y-m-d H:i:s',time()).'-买家取消订单';
+        $order->cancel($desc);
+        $data = array('status'=>'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 删除订单
+     */
+    public function doDelOrder() {
+        $this->user = $this->_auth();
+        $oid = $this->_request->oid;
+        if(!$oid) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $order = M('Order')->getById((int)$oid);
+        if(!$order) {
+            echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
+            die();
+        }
+        M('Order')->deleteById($oid);
+        $data = array('status'=>'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 确认收货
+     */
+    public function doConfirm() {
+        $this->user = $this->_auth();
+        $oid = $this->_request->oid;
+        if(!$oid) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $order = M('Order')->getById((int)$oid);
+        if(!$order) {
+            echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
+            die();
+        }
+        $order->confirm(date(DATETIME_FORMAT)." - 买家确认签收\r\n");
+        $data = array('status'=>'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 查看物流
+     * h5页面
+     */
+    public function doExpress() {
+        $this->user = $this->_auth();
+        $oid = $this->_request->oid;
+        if(!$oid) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $order = M('Order')->getById((int)$oid);
+        if(!$order) {
+            echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
+            die();
+        }
+    }
 }

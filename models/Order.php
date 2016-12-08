@@ -209,6 +209,8 @@ class Order extends Abstract_Model
 	}
 
 	/**
+	 * @param $order
+	 * @param string $log
 	 * 取消订单
 	 */
 	public function cancel($order, $log = '')
@@ -246,6 +248,8 @@ class Order extends Abstract_Model
 	}
 
 	/**
+	 * @param $order
+	 * @param $log
 	 * 确认收货
 	 */
 	public function confirm($order, $log)
@@ -270,7 +274,9 @@ class Order extends Abstract_Model
 			$this->getAdapter()->rollback();
 		}
 	}
+
 	/**
+	 * @param $order
 	 * 第一次购买之后给用户设置所属区域
 	 */
 	public function adduserarea($order) {
@@ -313,7 +319,5 @@ class Order extends Abstract_Model
 				}
 			}
 		}
-
-
 	}
 }
