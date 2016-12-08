@@ -18,7 +18,7 @@ class App_Controller_Action extends Suco_Controller_Action
 				echo  self::_error_data(API_LOGIN_FAILED_INVALID_TOKEN,'无效的token');
 				die();
 			}
-			$user = M('User')->select('id, token, token_expire_time,is_enabled,is_vip,credit,password,salt,shop_id,nickname,avatar')->where('token='."'".$token."'")->fetchRow();
+			$user = M('User')->select('id, token, token_expire_time,is_enabled,is_vip,credit,password,salt,shop_id,nickname,avatar,credit_happy,credit_coin,worth_gold,vouchers')->where('token='."'".$token."'")->fetchRow();
 		}
 		if (!$user) {
 			echo  self::_error_data(API_TOKEN_NOT_FOUND,'此token不存在');
