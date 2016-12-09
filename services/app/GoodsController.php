@@ -596,7 +596,7 @@ class App_GoodsController extends App_Controller_Action
                 $order['area_id'] = $area_id;
                 $postage = $this->doPostAge($order, $val['total'], $val['weight']);
                 $val['total_postage'] = $postage;
-                $row['packages'][$key2] = $order_json;
+                $row['packages'] = $order_json;
             }
         }
         echo $this->_encrypt_data($datas);
