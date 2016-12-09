@@ -552,11 +552,14 @@ class App_GoodsController extends App_Controller_Action
                 unset($val['thumb']);
                 unset($val['points']);
                 if(strpos($val['skus_id'],',')) {
+
                     $sku_ids = explode(',',$val['skus_id']);
                     foreach($sku_ids as $k => $sku_id) {
                         $sku = M('Goods_Sku')->select()->where('id = ?', (int)$sku_id)->fetchRow()->toArray();
                         $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                         $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
+                        $good['price_text'] = $val['price_text']->$sku_id;
+
                         $spec = explode(',',$sku['spec']);
                         $arr = array();
                         foreach($spec as $key1=>$val1) {
@@ -576,6 +579,7 @@ class App_GoodsController extends App_Controller_Action
                     $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val['skus_id'])->fetchRow()->toArray();
                     $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                     $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
+                    $good['price_text'] = $val['price_text'];
                     $spec = explode(',',$sku['spec']);
                     $arr = array();
                     foreach($spec as $key1=>$val1) {
@@ -599,6 +603,7 @@ class App_GoodsController extends App_Controller_Action
                 $row['packages'] = $order_json;
             }
         }
+
         echo $this->_encrypt_data($datas);
         //echo $this->show_data($this->_encrypt_data($datas));
         die();

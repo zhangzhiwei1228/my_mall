@@ -287,9 +287,11 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 						}
 						$key1 = explode('.',$key);
 						$shipping[$key1[1]] = $val;
+						$price_text[$key1[1]] = $g['price_text'];
 						unset($shipping[$key]);
 					}
 					$ids[$keys]['skus_id'] = implode(',',array_keys($shipping));
+					$ids[$keys]['price_text'] = $price_text;
 				} else {
 					$param = explode('.',$i);
 					$ids[$keys]['skus_id'] = $param[1];
@@ -348,7 +350,6 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 					} else {
 						$subtotal_earn_points = $qty * $g['earn_points'];
 					}
-
 					if ($item['checkout']) {
 						$ids[$keys]['total'] += $qty;
 						$ids[$keys]['shipping_id'] = $shipping;
@@ -360,6 +361,7 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 						$ids[$keys]['subtotal_credit_coin'] += $subtotal_credit_coin;
 						$ids[$keys]['subtotal_vouchers'] += $subtotal_vouchers;//抵用券
 						$ids[$keys]['subtotal_cash'] += $subtotal_cash;//现金
+						$ids[$keys]['price_text'] = $g['price_text'];
 					}
 				}
 				$keys++;
