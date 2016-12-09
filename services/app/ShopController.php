@@ -144,7 +144,7 @@ class App_ShopController extends App_Controller_Action
     /**
      * 商家评价
      */
-    public function doComment() {
+    public function doCommentList() {
         $shop_id = $this->_request->shop_id;
         $shop = M('Shop')->select()->where('id='.(int)$shop_id)->fetchRow()->toArray();
         if(!$shop) {
@@ -152,6 +152,15 @@ class App_ShopController extends App_Controller_Action
             die();
         }
         $data = M('Shop_Comment')->select('comment,photos,create_time')->where('shop_id='.(int)$shop_id.' and is_show <> 0')->fetchRows()->toArray();
+
+        foreach($data as  &$row) {
+            $src = json_decode($row['photos']);
+            foreach($src as $key =>$val) {
+                $d = get_object_vars($val);
+                $row['src'][] =  $d['src'];
+            }
+            unset($row['photos']);
+        }
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();

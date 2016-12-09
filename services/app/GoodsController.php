@@ -303,7 +303,7 @@ class App_GoodsController extends App_Controller_Action
     /**
      * 商品评价
      */
-    public function doComment() {
+    public function doCommentList() {
         $good_id = $this->_request->good_id;
         $shop = M('Goods')->select()->where('id='.(int)$good_id)->fetchRow()->toArray();
         if(!$shop) {
@@ -311,6 +311,14 @@ class App_GoodsController extends App_Controller_Action
             die();
         }
         $data = M('Goods_Comment')->select('comment,photos,create_time')->where('good_id='.(int)$good_id.' and is_show <> 0')->fetchRows()->toArray();
+        foreach($data as  &$row) {
+            $src = json_decode($row['photos']);
+            foreach($src as $key =>$val) {
+                $d = get_object_vars($val);
+                $row['src'][] =  $d['src'];
+            }
+            unset($row['photos']);
+        }
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
@@ -374,6 +382,76 @@ class App_GoodsController extends App_Controller_Action
         $data = array_merge($data,$extr);
         //echo $this->_encrypt_data($data);
         echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 添加商家评论--多图
+     */
+    public function doAddComments() {
+        $this->user = $this->_auth();
+        $uid = $this->user->id;
+        $good_id = $this->_request->goods_id;
+        $order_id = $this->_request->order_id;
+        $sku_id = $this->_request->sku_id;
+        $spec = $this->_request->spec;
+        $comment = $this->_request->comment;
+        $ext1 = $this->_request->ext1;
+        $ext2 = $this->_request->ext2;
+        $ext3 = $this->_request->ext3;
+        if(!$good_id || !$order_id || !$sku_id || !$comment) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $order = M('Order')->select()->where('id='.(int)$order_id)->fetchRow()->toArray();
+        if(!$order) {
+            echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
+            die();
+        }
+        $good = M('Goods')->select()->where('id='.(int)$good_id)->fetchRow()->toArray();
+        if(!$good) {
+            echo  self::_error_data(API_GOOD_NOT_FOUND,'评价的商品不存在');
+            die();
+        }
+        $sku = M('Goods_Sku')->select()->where('id='.(int)$sku_id)->fetchRow()->toArray();
+        if(!$sku) {
+            echo  self::_error_data(API_GOOD_SKU_NOT_FOUND,'此商品的规格不存在');
+            die();
+        }
+        if(!$comment) {
+            echo  self::_error_data(API_COMMENT_NOT_NULL,'评论不能为空');
+            die();
+        }
+        //ext1 服务态度 ext2 店铺环境   ext3 价格合理
+
+        $extr = array('ext1'=>$ext1,'ext2'=>$ext2,'ext3'=>$ext3);
+        $data['goods_id'] = $good_id;
+        $data['buyer_id'] = $uid;
+        $data['order_id'] = $order_id;
+        $data['sku_id'] = $sku_id;
+        $data['spec'] = $spec;
+        $data['comment'] = $comment;
+        $data['create_time'] = time();
+        $data['extr'] = json_encode($extr);
+        $phpoto_src = array();
+        for($i = 1;$i<4;$i++) {
+            $_FILES['imgFile'] = $_FILES['imgFile'.$i];
+            $image = $this->Upload($_FILES['imgFile']);
+            if(isset($image['error']) && $image['error']) {
+                continue;
+            }
+            $phpoto_src[]['src'] = 'http://'.$_SERVER['HTTP_HOST'].$image['src'];
+        }
+        $data['photos'] = json_encode($phpoto_src);
+        $insert = M('Goods_Comment')->insert($data);
+        if(!$insert) {
+            echo  self::_error_data(API_COMMENT_FAIL,'评价失败');
+            die();
+        }
+        unset($data['extr']);
+        $data['photos'] = $phpoto_src;
+        $data = array_merge($data,$extr);
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     public function doDesc() {
