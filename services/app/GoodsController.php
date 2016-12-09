@@ -609,6 +609,98 @@ class App_GoodsController extends App_Controller_Action
         die();
     }
     /**
+     * 订单列表
+     */
+    public function doOrderList1() {
+        $this->user = $this->_auth();
+        $limit = $this->_request->limit;
+        $page = $this->_request->page;
+        $status = $this->_request->status; //0废单,1待付款,2待发货,3待签收,4已完成，5处理超时
+        $select = M('Order')->alias('o')
+            ->leftJoin(M('User')->getTableName().' AS b', 'o.buyer_id = b.id')
+            ->leftJoin(M('User')->getTableName().' AS s', 'o.seller_id = s.id')
+            ->leftJoin(M('Payment')->getTableName().' AS p', 'o.payment_id = p.id')
+            ->leftJoin(M('Shipping')->getTableName().' AS d', 'o.shipping_id = d.id')
+            ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json ')
+            ->where('o.buyer_id = '. $this->user->id.' and o.expiry_time != 0 AND o.expiry_time >= '.time())
+            ->order('id DESC')
+            ->paginator($limit, $page);
+        if($status && $status != 6) {
+            $select->where('o.status = '.(int)$status);
+        }
+
+        switch ($this->_request->sm) {
+            case 'code':
+                $this->_request->keyword && $select->where('o.code = ?', $this->_request->keyword);
+                break;
+            case 'consignee':
+                $this->_request->keyword && $select->where('o.consignee LIKE ?', '%'.$this->_request->keyword.'%');
+                break;
+            case 'buyer_account':
+                $this->_request->keyword && $select->where('b.username LIKE ?', '%'.$this->_request->keyword.'%');
+                break;
+        }
+        if ($this->_request->begin_time) {
+            $select->where('o.create_time >= ?', strtotime($this->_request->begin_time));
+        }
+        if ($this->_request->end_time) {
+            $select->where('o.create_time <= ?', strtotime($this->_request->end_time) + (3600 * 24));
+        }
+        $datas = $select->fetchRows()->toArray();
+        $sku_ids = array();
+        foreach($datas as $key2=> &$row) {
+            $area_id = $row['area_id'];
+            $shipping_id = $row['shipping_id'];
+            $total_credit = $row['total_credit'];
+            $total_credit_happy = $row['total_credit_happy'];
+            $total_credit_coin = $row['total_credit_coin'];
+            $total_vouchers = $row['total_vouchers'];
+            $total_weight = $row['total_weight'];
+            $total_quantity = $row['total_quantity'];//总件数
+            $order_json = json_decode($row['order_json']);
+
+            foreach($order_json as $key =>$val) {
+                $val = get_object_vars($val);
+                unset($val['thumb']);
+                unset($val['points']);
+                if(strpos($val['skus_id'],',')) {
+                    $ids = explode(',',$val['skus_id']);
+                    foreach($ids as $id) {
+                        $sku_ids[] = $id;
+                    }
+                } else {
+                    $sku_ids[] = $val['skus_id'];
+                }
+            }
+            //$row['sku_ids'] = $sku_ids;
+            unset($row['order_json']);
+            foreach($sku_ids as $value) {
+                $sku = M('Goods_Sku')->select()->where('id = ?', (int)$value)->fetchRow()->toArray();
+                $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
+                $good['price_text'] = $val['price_text'];
+                $spec = explode(',',$sku['spec']);
+                $arr = array();
+                foreach($spec as $key1=>$val1) {
+                    $val1 = substr($val1,0,strlen($val1)-1);
+                    $val1 = substr($val1,1);
+                    $val1 = explode(':',$val1);
+                    $arr[$key1]['name'] = $val1[0];
+                    $arr[$key1]['value'] = $val1[1];
+                }
+                $good['spec'] = $arr;
+                unset($good['price']);
+                unset($good['unit']);
+                $good['sku_id'] = $val['skus_id'];
+                $row['goods'][] = $good;
+            }
+        }
+
+        echo $this->_encrypt_data($datas);
+        //echo $this->show_data($this->_encrypt_data(array_values($datas)));
+        die();
+    }
+    /**
      * @param $order
      * @param int $total
      * @param int $weight
