@@ -510,7 +510,7 @@ class App_GoodsController extends App_Controller_Action
             ->leftJoin(M('User')->getTableName().' AS s', 'o.seller_id = s.id')
             ->leftJoin(M('Payment')->getTableName().' AS p', 'o.payment_id = p.id')
             ->leftJoin(M('Shipping')->getTableName().' AS d', 'o.shipping_id = d.id')
-            ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json ')
+            ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json,o.total_amount ')
             ->where('o.buyer_id = '. $this->user->id.' and o.expiry_time != 0 AND o.expiry_time >= '.time())
             ->order('id DESC')
             ->paginator($limit, $page);
@@ -540,12 +540,6 @@ class App_GoodsController extends App_Controller_Action
         foreach($datas as $key2=> &$row) {
             $area_id = $row['area_id'];
             $shipping_id = $row['shipping_id'];
-            $total_credit = $row['total_credit'];
-            $total_credit_happy = $row['total_credit_happy'];
-            $total_credit_coin = $row['total_credit_coin'];
-            $total_vouchers = $row['total_vouchers'];
-            $total_weight = $row['total_weight'];
-            $total_quantity = $row['total_quantity'];//总件数
             $order_json = json_decode($row['order_json']);
             foreach($order_json as $key =>&$val) {
                 $val = get_object_vars($val);
@@ -621,7 +615,7 @@ class App_GoodsController extends App_Controller_Action
             ->leftJoin(M('User')->getTableName().' AS s', 'o.seller_id = s.id')
             ->leftJoin(M('Payment')->getTableName().' AS p', 'o.payment_id = p.id')
             ->leftJoin(M('Shipping')->getTableName().' AS d', 'o.shipping_id = d.id')
-            ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json ')
+            ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json,o.total_amount ')
             ->where('o.buyer_id = '. $this->user->id.' and o.expiry_time != 0 AND o.expiry_time >= '.time())
             ->order('id DESC')
             ->paginator($limit, $page);
@@ -648,15 +642,11 @@ class App_GoodsController extends App_Controller_Action
         }
         $datas = $select->fetchRows()->toArray();
         $sku_ids = array();
+        $pageage = 0;
+        $price_text = array();
         foreach($datas as $key2=> &$row) {
             $area_id = $row['area_id'];
             $shipping_id = $row['shipping_id'];
-            $total_credit = $row['total_credit'];
-            $total_credit_happy = $row['total_credit_happy'];
-            $total_credit_coin = $row['total_credit_coin'];
-            $total_vouchers = $row['total_vouchers'];
-            $total_weight = $row['total_weight'];
-            $total_quantity = $row['total_quantity'];//总件数
             $order_json = json_decode($row['order_json']);
 
             foreach($order_json as $key =>$val) {
@@ -667,10 +657,18 @@ class App_GoodsController extends App_Controller_Action
                     $ids = explode(',',$val['skus_id']);
                     foreach($ids as $id) {
                         $sku_ids[] = $id;
+                        $price_text[$id] = $val['price_text']->$id;
                     }
+
                 } else {
                     $sku_ids[] = $val['skus_id'];
+                    $price_text[$val['skus_id']] = $val['price_text'];
                 }
+
+                $order['shipping_id'] = $shipping_id;
+                $order['area_id'] = $area_id;
+                $postage = $this->doPostAge($order, $val['total'], $val['weight']);
+                $pageage += $postage;
             }
             //$row['sku_ids'] = $sku_ids;
             unset($row['order_json']);
@@ -692,8 +690,10 @@ class App_GoodsController extends App_Controller_Action
                 unset($good['price']);
                 unset($good['unit']);
                 $good['sku_id'] = $val['skus_id'];
+                $good['price_text'] = $price_text[$value];
                 $row['goods'][] = $good;
             }
+            $row['total_postage'] = $pageage;
         }
 
         echo $this->_encrypt_data($datas);
