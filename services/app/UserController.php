@@ -338,10 +338,7 @@ class App_UserController extends App_Controller_Action
                 $row['point4'] = $price['point4'];
                 $row['point5'] = $price['point5'];
                 $row['exts'] = $price['exts'];
-
             }
-            print_r($row);
-            die();
             $row = M('User_Cart')->price_type($row);
             $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
             $row['good_id'] = $row['goods_id'];
