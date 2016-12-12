@@ -340,7 +340,7 @@ class App_UserController extends App_Controller_Action
                 $row['exts'] = $price['exts'];
 
             }
-            var_dump($row);
+            print_r($row);
             die();
             $row = M('User_Cart')->price_type($row);
             $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
