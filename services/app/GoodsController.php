@@ -694,7 +694,7 @@ class App_GoodsController extends App_Controller_Action
             ->leftJoin(M('Payment')->getTableName().' AS p', 'o.payment_id = p.id')
             ->leftJoin(M('Shipping')->getTableName().' AS d', 'o.shipping_id = d.id')
             ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json,o.total_amount,o.status,o.code,o.create_time,o.expiry_time,o.pay_time,o.delivery_time,o.confirm_time ')
-            ->where('o.buyer_id = '. $this->user->id.' and o.expiry_time != 0 AND o.expiry_time >= '.time())
+            ->where('o.buyer_id = '. $this->user->id.' and o.expiry_time != 0 AND o.expiry_time >= '.time(). ' and is_return = 0')
             ->order('id DESC')
             ->paginator($limit, $page);
         if($status && $status != 6) {
@@ -823,5 +823,30 @@ class App_GoodsController extends App_Controller_Action
     /**
      * 退款
      */
+    public function doRefund() {
+        $this->user = $this->_auth();
+        $oid = $this->_request->oid;
+        if(!$oid) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $order = M('Order')->select('status')->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow()->toArray();
+        if(!$order ) {
+            echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
+            die();
+        }
+
+        if($order['is_return'] || ( (!$order['status'] || $order['status'] == 1 || $order['status'] == 5) )) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+            die();
+        }
+
+        M('Order')->update(array('is_return'=>10), 'id = '.(int)$oid);
+
+        $data = array('status'=>'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
 
 }
