@@ -8,7 +8,7 @@ class User_Cart extends Abstract_Model
 	 * 根据选择的支付返回
 	 */
 	public function price_type($cart) {
-		$cart['exts'] = json_decode($cart['exts']);
+		$cart['exts'] = is_array($cart['exts']) ? $cart['exts'] : json_decode($cart['exts']);
 
 		switch($cart['price_type']) {
 			case 1 :
@@ -32,8 +32,8 @@ class User_Cart extends Abstract_Model
 			case 4 :
 				$cart['price_text'][0]['name'] =  '现金';
 				$cart['price_text'][1]['name'] =  '帮帮币';
-				$cart['price_text'][0]['value'] = $cart['exts']->ext1->cash ;
-				$cart['price_text'][1]['value'] = $cart['exts']->ext1->point ;
+				$cart['price_text'][0]['value'] = is_array($cart['exts']) ? $cart['exts']['ext1']['cash']  : $cart['exts']->ext1->cash;
+				$cart['price_text'][1]['value'] = is_array($cart['exts']) ? $cart['exts']['ext1']['point']  : $cart['exts']->ext1->point ;
 				//$cart['price_text'] = $cart['exts']->ext1->cash .'元+'.$cart['exts']->ext1->point.'帮帮币';;
 				//$cart['final_credit'] = $cart['exts']->ext1->point;
 				//$cart['final_cash'] = $cart['exts']->ext1->cash;
@@ -41,8 +41,8 @@ class User_Cart extends Abstract_Model
 			case 5 :
 				$cart['price_text'][0]['name'] =  '现金';
 				$cart['price_text'][1]['name'] =  '积分币';
-				$cart['price_text'][0]['value'] = $cart['exts']->ext2->cash ;
-				$cart['price_text'][1]['value'] = $cart['exts']->ext2->point;
+				$cart['price_text'][0]['value'] = is_array($cart['exts']) ? $cart['exts']['ext2']['cash']  : $cart['exts']->ext2->cash ;
+				$cart['price_text'][1]['value'] = is_array($cart['exts']) ? $cart['exts']['ext2']['point']  : $cart['exts']->ext2->point ;
 				//$cart['price_text'] = $cart['exts']->ext2->cash .'元+'.$cart['exts']->ext2->point.'积分币';;
 				//$cart['final_credit'] = $cart['exts']->ext2->cash;
 				//$cart['final_credit_coin'] = $cart['exts']->ext2->point;
@@ -62,8 +62,8 @@ class User_Cart extends Abstract_Model
 			case 8 :
 				$cart['price_text'][0]['name'] =  '现金';
 				$cart['price_text'][1]['name'] =  '抵用券';
-				$cart['price_text'][0]['value'] = $cart['exts']->ext3->cash;
-				$cart['price_text'][1]['value'] = $cart['exts']->ext3->point;
+				$cart['price_text'][0]['value'] = is_array($cart['exts']) ? $cart['exts']['ext3']['cash']  : $cart['exts']->ext3->cash ;
+				$cart['price_text'][1]['value'] = is_array($cart['exts']) ? $cart['exts']['ext3']['point']  : $cart['exts']->ext3->point;
 				//$cart['price_text'] = $cart['exts']->ext3->cash.'元+'. $cart['exts']->ext3->point.'抵用券';
 				//$cart['final_vouchers'] =  $cart['exts']->ext3->point;
 				//$cart['final_cash'] =  $cart['exts']->ext3->cash;
