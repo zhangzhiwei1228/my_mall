@@ -774,8 +774,8 @@ class App_GoodsController extends App_Controller_Action
             $row['total_postage'] = $pageage;
         }
 
-        //echo $this->_encrypt_data($datas);
-        echo $this->show_data($this->_encrypt_data($datas));
+        echo $this->_encrypt_data($datas);
+        //echo $this->show_data($this->_encrypt_data($datas));
         die();
     }
     /**
@@ -817,4 +817,8 @@ class App_GoodsController extends App_Controller_Action
 //		return round($total_quantity*$total_postage,2);
         return round($total_postage,2);
     }
+    /**
+     * 退款
+     */
+
 }
