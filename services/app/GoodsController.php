@@ -700,6 +700,9 @@ class App_GoodsController extends App_Controller_Action
         if($status && $status != 6) {
             $select->where('o.status = '.(int)$status);
         }
+        if($status && $status == 6) {
+            $select->where('o.status > 0 and o.status <= 4');
+        }
 
         switch ($this->_request->sm) {
             case 'code':
