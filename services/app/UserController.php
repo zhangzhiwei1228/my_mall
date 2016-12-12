@@ -331,7 +331,9 @@ class App_UserController extends App_Controller_Action
             ->fetchRows()->toArray();
         foreach($carts as $key1=> &$row) {
             if($row['exts']) {
-                $row = M('Goods_Sku')->select()->where('goods_id = '.$row['goods_id'])->fetchRow()->toArray();
+                $row = M('Goods_Sku')->select()->where('goods_id = '.$row['goods_id'])->order('id asc')->fetchRow()->toArray();
+                var_dump($row);
+                die();
             }
             $row = M('User_Cart')->price_type($row);
             $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
