@@ -327,7 +327,7 @@ class App_UserController extends App_Controller_Action
             ->leftJoin(M('Goods_Sku')->getTableName().' AS gsk', 'c.sku_id = gsk.id')
             ->columns('c.id,c.goods_id,c.price_type,c.qty, gs.title,gs.thumb, gsk.point1, gsk.point2,gsk.point3,gsk.point4,gsk.point5,gsk.exts,gsk.spec')
             ->where('c.user_id ='.(int)$this->user->id)
-            ->order('c.create_time asc')
+            ->order('gsk.create_time asc')
             ->fetchRows()->toArray();
         foreach($carts as $key1=> &$row) {
             $row = M('User_Cart')->price_type($row);
