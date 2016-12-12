@@ -330,9 +330,7 @@ class App_UserController extends App_Controller_Action
             ->order('gsk.id asc')
             ->fetchRows()->toArray();
         foreach($carts as $key1=> &$row) {
-            var_dump($row['exts']);
-            die();
-            if($row['exts']) {
+            if(!$row['exts']) {
                 $row = M('Goods_Sku')->select()->where('goods_id = '.$row['goods_id'])->order('id asc')->fetchRow()->toArray();
                 var_dump($row);
                 die();
