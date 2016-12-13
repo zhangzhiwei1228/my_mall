@@ -883,10 +883,13 @@ class App_GoodsController extends App_Controller_Action
                 $sku_ids = explode(',',$val['skus_id']);
                 foreach($sku_ids as $k => $sku_id) {
                     $sku = M('Goods_Sku')->select()->where('id = ?', (int)$sku_id)->fetchRow()->toArray();
+                    $sku['price_type'] = $val['price_type']->$sku_id;
+                    $sku['exts'] = json_encode($sku['exts']);
+                    $price_type = M('User_Cart')->price_type($sku);
                     $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                     $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
                     $good['price_text'] = $val['price_text']->$sku_id;
-
+                    $good['price_type'] = $price_type['price_text'];
                     $spec = explode(',',$sku['spec']);
                     $arr = array();
                     foreach($spec as $key1=>$val1) {
@@ -906,6 +909,10 @@ class App_GoodsController extends App_Controller_Action
                 $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val['skus_id'])->fetchRow()->toArray();
                 $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                 $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
+                $sku['price_type'] = $val['price_type']->$val['skus_id'];;
+                $sku['exts'] = json_encode($sku['exts']);
+                $price_type = M('User_Cart')->price_type($sku);
+                $good['price_type'] = $price_type['price_text'];
                 $good['price_text'] = $val['price_text'];
                 $spec = explode(',',$sku['spec']);
                 $arr = array();
@@ -922,6 +929,8 @@ class App_GoodsController extends App_Controller_Action
                 $good['sku_id'] = $val['skus_id'];
                 $val['goods'][] = $good;
             }
+            unset($val['price_type']);
+            unset($val['price_text']);
             unset($order['order_json']);
             $da['shipping_id'] = $shipping_id;
             $da['area_id'] = $area_id;
