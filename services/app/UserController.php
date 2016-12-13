@@ -70,6 +70,9 @@ class App_UserController extends App_Controller_Action
         $data['avatar'] = $user_data['avatar'] ? 'http://'.$_SERVER['HTTP_HOST'].$user_data['avatar'] : '';
         $count = M('User_Cart')->count('user_id = '.$user->id);
         $extends = M('User_Extend')->select('field_key,field_name,field_value')->where('user_id ='.$user->id)->fetchRows()->toArray();
+        if(!$extends) {
+            $this->UserExtend($user_data['id']);//初始化额外信息
+        }
         foreach($extends as $row) {
             if($row['field_key'] == 'gender') {
                 $data['gender'] = $row['field_value'];
@@ -162,7 +165,7 @@ class App_UserController extends App_Controller_Action
             'parent_id' => $parent_id,
             'exp' => 5 //初始经验值
         )));
-        $this->UserExtend();//初始化额外信息
+        $this->UserExtend($uid);//初始化额外信息
         $user = M('User')->getById($uid);
         $this->_update_or_create_token($uid,$app_id,1);//创建token
         //自动通过手机验证
@@ -1090,7 +1093,12 @@ class App_UserController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($user));
         die();
     }
-    public function UserExtend() {
+
+    /**
+     * @param $uid
+     * 额外信息
+     */
+    public function UserExtend($uid) {
         $data = array(
             'realname' => array(
                 'name' => '',
@@ -1133,10 +1141,10 @@ class App_UserController extends App_Controller_Action
                 'value' => '',
             ),
         );
-        M('User_Extend')->delete('user_id = ?', $this->user['id']);
+        M('User_Extend')->delete('user_id = ?', $uid);
         foreach($data as $k => $v) {
             M('User_Extend')->insert(array(
-                'user_id' => $this->user['id'],
+                'user_id' => $uid,
                 'field_key' => $k,
                 'field_name' => $v['name'],
                 'field_value' => $v['value']
