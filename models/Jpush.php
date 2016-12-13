@@ -13,14 +13,10 @@ class Jpush {
     private $app_key = '99aca57ea1c603110cb1c381';
     private $master_secret = 'f427eef0ad87f9aaf18f360f';
     private $client;
-    private $alias = array();
-    public function __construct($alias, $app_key = '', $masterSecret = ''){
-        $this->appKey               = $app_key ? $app_key : $this->app_key;
-        $this->masterSecret         = $masterSecret ? $masterSecret : $this->master_secret;
-        $this->client               = new JClient($this->appKey, $this->masterSecret,LOG_DIR.'jpush.log');
-        $this->alias = $alias;
+    public function __construct(){
+        $this->client   = new JClient($this->app_key, $this->master_secret,LOG_DIR.'jpush.log');
     }
-    public function push() {
+    public function push($alias) {
         try {
             $response = $this->client->push()
                 ->setPlatform(array('ios', 'android'))
@@ -28,12 +24,12 @@ class Jpush {
                 // 这四个方法中的某一个即可，这里仅作为示例，当然全部调用也可以，多项 audience 调用表示其结果的交集
                 // 即是说一般情况下，下面三个方法和没有列出的 addTagAnd 一共四个，只适用一个便可满足大多数的场景需求
 
-                ->addAlias($this->alias)
+                ->addAlias($alias)
                 //->addTag(array('tag1', 'tag2'))
                 // ->addRegistrationId($registration_id)
 
                 ->setNotificationAlert('Hi, JPush')
-                ->iosNotification('Hello IOS', array(
+                ->iosNotification('Hello IOS345', array(
                     'sound' => 'sound.caf',
                     // 'badge' => '+1',
                     // 'content-available' => true,
@@ -44,7 +40,7 @@ class Jpush {
                         'jiguang'
                     ),
                 ))
-                ->androidNotification('Hello Android', array(
+                ->androidNotification('Hello Android123', array(
                     'title' => 'hello jpush',
                     // 'build_id' => 2,
                     'extras' => array(

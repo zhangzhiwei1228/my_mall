@@ -214,7 +214,7 @@ class App_IndexController extends App_Controller_Action
      */
     public function doPush() {
         $this->user = $this->_auth();
-        $data = M('Jpush')->push(array('266'));
+        $data = M('Jpush')->push($this->user->id);
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
