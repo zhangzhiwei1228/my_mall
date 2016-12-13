@@ -925,8 +925,8 @@ class App_GoodsController extends App_Controller_Action
             $val['total_postage'] = $postage;
             $order['packages'] = $order_json;
         }
-        echo $this->_encrypt_data($order);
-        //echo $this->show_data($this->_encrypt_data($order));
+        //echo $this->_encrypt_data($order);
+        echo $this->show_data($this->_encrypt_data($order));
         die();
     }
 
