@@ -751,9 +751,11 @@ class App_GoodsController extends App_Controller_Action
                 $postage = $this->doPostAge($order, $val['total'], $val['weight']);
                 $pageage += $postage;
             }
+
             //$row['sku_ids'] = $sku_ids;
             unset($row['order_json']);
             foreach($sku_ids as $value) {
+                //print_r($value);
                 $sku = M('Goods_Sku')->select()->where('id = ?', (int)$value)->fetchRow()->toArray();
                 $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                 $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
@@ -774,7 +776,9 @@ class App_GoodsController extends App_Controller_Action
                 $good['price_text'] = $price_text[$value];
                 $row['goods'][] = $good;
             }
+            unset($sku_ids);
             $row['total_postage'] = $pageage;
+
         }
 
         echo $this->_encrypt_data($datas);
@@ -858,7 +862,7 @@ class App_GoodsController extends App_Controller_Action
             echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
             die();
         }
-        $order = M('Order')->select('id,area_id,shipping_id,total_credit,total_credit_happy,total_credit_coin,total_vouchers,total_weight,total_quantity,order_json,total_amount,status,code,create_time,expiry_time,pay_time,delivery_time,confirm_time ')->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow()->toArray();
+        $order = M('Order')->select('id,area_id,shipping_id,total_credit,total_credit_happy,total_credit_coin,total_vouchers,total_weight,total_quantity,order_json,total_amount,status,code,create_time,expiry_time,pay_time,delivery_time,confirm_time,consignee,area_text,address,phone ')->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow()->toArray();
         if(!$order ) {
             echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
             die();
