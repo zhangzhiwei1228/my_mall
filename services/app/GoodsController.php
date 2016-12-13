@@ -848,5 +848,86 @@ class App_GoodsController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    /**
+     * 订单详情
+     */
+    public function doOrderDetail() {
+        $this->user = $this->_auth();
+        $oid = $this->_request->oid;
+        if(!$oid) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $order = M('Order')->select('id,area_id,shipping_id,total_credit,total_credit_happy,total_credit_coin,total_vouchers,total_weight,total_quantity,order_json,total_amount,status,code,create_time,expiry_time,pay_time,delivery_time,confirm_time ')->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow()->toArray();
+        if(!$order ) {
+            echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
+            die();
+        }
+        if($order['is_return'] || ( (!$order['status'] || $order['status'] == 1 || $order['status'] == 5) )) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+            die();
+        }
+        $area_id = $order['area_id'];
+        $shipping_id = $order['shipping_id'];
+        $order_json = json_decode($order['order_json']);
+        foreach($order_json as $key =>&$val) {
+            $val = get_object_vars($val);
+            unset($val['thumb']);
+            unset($val['points']);
+            if(strpos($val['skus_id'],',')) {
+
+                $sku_ids = explode(',',$val['skus_id']);
+                foreach($sku_ids as $k => $sku_id) {
+                    $sku = M('Goods_Sku')->select()->where('id = ?', (int)$sku_id)->fetchRow()->toArray();
+                    $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                    $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
+                    $good['price_text'] = $val['price_text']->$sku_id;
+
+                    $spec = explode(',',$sku['spec']);
+                    $arr = array();
+                    foreach($spec as $key1=>$val1) {
+                        $val1 = substr($val1,0,strlen($val1)-1);
+                        $val1 = substr($val1,1);
+                        $val1 = explode(':',$val1);
+                        $arr[$key1]['name'] = $val1[0];
+                        $arr[$key1]['value'] = $val1[1];
+                    }
+                    $good['spec'] = $arr;
+                    unset($good['price']);
+                    unset($good['unit']);
+                    $good['sku_id'] = $sku_id;
+                    $val['goods'][$k] = $good;
+                }
+            } else {
+                $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val['skus_id'])->fetchRow()->toArray();
+                $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
+                $good['price_text'] = $val['price_text'];
+                $spec = explode(',',$sku['spec']);
+                $arr = array();
+                foreach($spec as $key1=>$val1) {
+                    $val1 = substr($val1,0,strlen($val1)-1);
+                    $val1 = substr($val1,1);
+                    $val1 = explode(':',$val1);
+                    $arr[$key1]['name'] = $val1[0];
+                    $arr[$key1]['value'] = $val1[1];
+                }
+                $good['spec'] = $arr;
+                unset($good['price']);
+                unset($good['unit']);
+                $good['sku_id'] = $val['skus_id'];
+                $val['goods'][] = $good;
+            }
+            unset($order['order_json']);
+            $da['shipping_id'] = $shipping_id;
+            $da['area_id'] = $area_id;
+            $postage = $this->doPostAge($da, $val['total'], $val['weight']);
+            $val['total_postage'] = $postage;
+            $order['packages'] = $order_json;
+        }
+        echo $this->_encrypt_data($order);
+        //echo $this->show_data($this->_encrypt_data($order));
+        die();
+    }
 
 }
