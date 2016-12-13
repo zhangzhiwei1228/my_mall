@@ -13,12 +13,12 @@ class Jpush {
     private $app_key = '99aca57ea1c603110cb1c381';
     private $master_secret = 'f427eef0ad87f9aaf18f360f';
     private $client;
-    private $uid;
-    public function __construct($uid, $app_key = '', $masterSecret = ''){
+    private $alias = array();
+    public function __construct($alias, $app_key = '', $masterSecret = ''){
         $this->appKey               = $app_key ? $app_key : $this->app_key;
         $this->masterSecret         = $masterSecret ? $masterSecret : $this->master_secret;
         $this->client               = new JClient($this->appKey, $this->masterSecret,LOG_DIR.'jpush.log');
-        $this->uid = $uid;
+        $this->alias = $alias;
     }
     public function push() {
         try {
@@ -28,7 +28,7 @@ class Jpush {
                 // 这四个方法中的某一个即可，这里仅作为示例，当然全部调用也可以，多项 audience 调用表示其结果的交集
                 // 即是说一般情况下，下面三个方法和没有列出的 addTagAnd 一共四个，只适用一个便可满足大多数的场景需求
 
-                ->addAlias($this->uid)
+                ->addAlias($this->alias)
                 //->addTag(array('tag1', 'tag2'))
                 // ->addRegistrationId($registration_id)
 
