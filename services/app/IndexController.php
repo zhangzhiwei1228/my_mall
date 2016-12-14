@@ -38,8 +38,10 @@ class App_IndexController extends App_Controller_Action
             }
         }
         $rows = array_merge($pro,$city1,$area1);
+        echo json_encode($rows);
+        die();
         //echo $this->_encrypt_data($rows);
-        echo $this->show_data($this->_encrypt_data($rows));
+        //echo $this->show_data($this->_encrypt_data($rows));
         die();
     }
 
