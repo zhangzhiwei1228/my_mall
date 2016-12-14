@@ -17,17 +17,27 @@ class App_IndexController extends App_Controller_Action
     {
         $user = M('Region')->select('*')->where('level=2')->fetchRows()->toArray();
         $rows = array();
+        $pro = array();
+        $city1 = array();
+        $area1 = array();
         foreach($user as $key=>$row) {
-            $rows['more'][$key] = $row;
+            //$rows['more'][$key] = $row;
+            $pro[$row['id']] = $row;
             $city  = M('Region')->select('*')->where('parent_id='.(int)$row['id'])->fetchRows()->toArray();
             foreach($city as $key1=>$c) {
-                $rows['more'][$key]['more'][$key1] = $c;
+                /*$rows['more'][$key]['more'][$key1] = $c;
                 $areas = M('Region')->select('*')->where('parent_id='.(int)$c['id'])->fetchRows()->toArray();
                 foreach($areas as $key2=>$area) {
                     $rows['more'][$key]['more'][$key1]['more'][$key2] = $area;
+                }*/
+                $city1[$c['id']] = $c;
+                $areas = M('Region')->select('*')->where('parent_id='.(int)$c['id'])->fetchRows()->toArray();
+                foreach($areas as $key2=>$area) {
+                    $area1[$area['id']] = $area;
                 }
             }
         }
+        $rows = array_merge($pro,$city1,$area1);
         //echo $this->_encrypt_data($rows);
         echo $this->show_data($this->_encrypt_data($rows));
         die();
