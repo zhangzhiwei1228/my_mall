@@ -5,20 +5,34 @@
  * Date: 16-12-14
  * Time: 下午5:05
  */
-class Admincp_APPController extends Admincp_Controller_Action
+class Admincp_AppController extends Admincp_Controller_Action
 {
     public function init()
     {
         $this->_auth();
     }
 
-    public function doDefault()
+    public function doList()
     {
-        $brands = M('Brand')->select('*')->where('category_id =' . (int)$this->_request->id)->fetchRows();
+        $select = M('App')->select()
+            ->order('id DESC')
+            ->paginator(20, (int)$this->_request->page);
+
+        if ($this->_request->q) {
+            $select->where('name LIKE ?', '%'.$this->_request->q.'%');
+        }
+
         $view = $this->_initView();
-        $view->brands = $brands;
-        $view->category_id = (int)$this->_request->id;
-        $view->render('brand/list.php');
+        $view->datalist = $select->fetchRows();
+        $view->render('app/list.php');
+    }
+
+    public function doEdit()
+    {
+
+    }
+    public function doDelete()
+    {
 
     }
 }

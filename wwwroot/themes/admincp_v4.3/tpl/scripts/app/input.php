@@ -11,36 +11,39 @@ $this->head()->setTitle($this->title);
 	</div>
 	<form method="post" enctype="multipart/form-data" class="form-horizontal sui-dataitem">
 		<div class="form-group">
-			<label class="control-label col-sm-2">广告位名称:</label>
+			<label class="control-label col-sm-2">名称:</label>
 			<div class="col-sm-6">
 				<input type="text" name="name" value="<?=$this->data['name']?>" class="form-control" />
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">广告代码:</label>
+			<label class="control-label col-sm-2">版本号:</label>
 			<div class="col-sm-6">
-				<input type="text" name="code" value="<?=$this->data['code']?>" class="form-control" />
+				<input type="text" name="code" value="<?=$this->data['version']?>" class="form-control" />
 			</div>
 		</div>
+
 		<div class="form-group">
-			<label class="control-label col-sm-2">广告尺寸:</label>
-			<div class="col-sm-6">
+			<label class="control-label col-sm-2">简介:</label>
+			<div class="col-sm-9">
 				<div class="input-group">
-					<input type="text" name="width" value="<?=$this->data['width'] ? $this->data['width'] : ''?>" class="form-control" placeholder="宽度" />
-					<span class="input-group-addon">x</span>
-					<input type="text" name="height" value="<?=$this->data['height'] ? $this->data['height'] : ''?>" class="form-control" placeholder="高度" />
-					<span class="input-group-addon">像素</span>
+					<textarea name="content" class="form-control" rows="20" data-plugin="editor" data-token="<?=$this->admin->getToken()?>"><?=stripcslashes($this->content)?></textarea>
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">同时显示:</label>
-			<div class="col-sm-3">
+			<label class="control-label col-sm-2">文件:</label>
+			<div class="col-sm-9">
 				<div class="input-group">
-					<input type="text" name="limit" value="<?=$this->data['limit'] ? $this->data['limit'] : 1?>" class="form-control" />
-					<span class="input-group-addon">组</span>
+					<label><input type="file" name="app" id="app" value="" /></label>
 				</div>
-				<p class="help-block">如：焦点图片有5张轮播，则设置5组</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">所属类型:</label>
+			<div class="col-sm-7">
+				<label><input type="radio" name="type" value="1" <?=$this->data['type'] == 1 ? 'checked' : ''?>> Android </label>
+				<label><input type="radio" name="type" value="2" <?=$this->data['type'] == 2 ? 'checked' : ''?>> Ios </label>
 			</div>
 		</div>
 		<div class="form-group">
