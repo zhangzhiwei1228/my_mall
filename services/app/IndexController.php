@@ -230,5 +230,13 @@ class App_IndexController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data->toArray()));
         die();
     }
+    /**
+     *  商城须知
+     */
+    public function doShopMall() {
+        $view = $this->_initView();
+        $view->description = M('Page')->getByCode('description')->toArray();
+        $view->render('views/app/shopping_mall.php');
+    }
 
 }
