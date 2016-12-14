@@ -113,6 +113,8 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 				}
 
 				M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
+			} else {
+				M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
 			}
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list&cid=' . $_POST['cid']);
 		}

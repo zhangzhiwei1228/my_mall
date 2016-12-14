@@ -219,5 +219,16 @@ class App_IndexController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    /**
+     * 常见问题
+     */
+    public function doQuestion() {
+        $limit = $this->_request->limit ? $this->_request->limit : 10;
+        $page = $this->_request->page ? $this->_request->page : 1;
+        $data = M('Article')->select('title,content')->where('category_id = 22')->paginator($limit, $page)->fetchRows();
+        echo $this->_encrypt_data($data->toArray());
+        //echo $this->show_data($this->_encrypt_data($data->toArray()));
+        die();
+    }
 
 }
