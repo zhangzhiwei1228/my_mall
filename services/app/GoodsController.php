@@ -508,7 +508,7 @@ class App_GoodsController extends App_Controller_Action
             echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
             die();
         }
-        $order->CancelOrder();
+        //$order->CancelOrder();
         $desc = date('Y-m-d H:i:s',time()).'-买家取消订单';
         $order->cancel($desc);
         $data = array('status'=>'ok');
