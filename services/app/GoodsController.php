@@ -574,6 +574,12 @@ class App_GoodsController extends App_Controller_Action
             echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
             die();
         }
+        $delivery = M('Order_Delivery')->select()->where('order_id='.(int)$oid)->fetchRow()->toArray();
+        $view = $this->_initView();
+        $view->delivery = $delivery;
+        $view->kuaidi100 = M('Kuaidi100')->toArray();
+
+        $view->render('views/app/order.php');
     }
     /**
      * 订单列表
