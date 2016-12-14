@@ -725,6 +725,7 @@ class App_GoodsController extends App_Controller_Action
         $sku_ids = array();
         $pageage = 0;
         $price_text = array();
+        $type = array();
         foreach($datas as $key2=> &$row) {
             $area_id = $row['area_id'];
             $shipping_id = $row['shipping_id'];
@@ -734,14 +735,27 @@ class App_GoodsController extends App_Controller_Action
                 $val = get_object_vars($val);
                 unset($val['thumb']);
                 unset($val['points']);
+
                 if(strpos($val['skus_id'],',')) {
+
                     $ids = explode(',',$val['skus_id']);
                     foreach($ids as $id) {
+                        $sku = M('Goods_Sku')->select()->where('id = ?', (int)$id)->fetchRow()->toArray();
+                        $sku['price_type'] = $val['price_type']->$id;
+                        $sku['exts'] = json_encode($sku['exts']);
+                        $price_type = M('User_Cart')->price_type($sku);
+                        $type[$id] = $price_type['price_text'];
                         $sku_ids[] = $id;
                         $price_text[$id] = $val['price_text']->$id;
                     }
 
                 } else {
+
+                    $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val['skus_id'])->fetchRow()->toArray();
+                    $sku['price_type'] = $val['price_type'];
+                    $sku['exts'] = json_encode($sku['exts']);
+                    $price_type = M('User_Cart')->price_type($sku);
+                    $type[$val['skus_id']] = $price_type['price_text'];
                     $sku_ids[] = $val['skus_id'];
                     $price_text[$val['skus_id']] = $val['price_text'];
                 }
@@ -751,12 +765,12 @@ class App_GoodsController extends App_Controller_Action
                 $postage = $this->doPostAge($order, $val['total'], $val['weight']);
                 $pageage += $postage;
             }
-
             //$row['sku_ids'] = $sku_ids;
             unset($row['order_json']);
             foreach($sku_ids as $value) {
                 //print_r($value);
                 $sku = M('Goods_Sku')->select()->where('id = ?', (int)$value)->fetchRow()->toArray();
+
                 $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                 $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
                 $good['price_text'] = $val['price_text'];
@@ -774,6 +788,7 @@ class App_GoodsController extends App_Controller_Action
                 unset($good['unit']);
                 $good['sku_id'] = $val['skus_id'];
                 $good['price_text'] = $price_text[$value];
+                $good['price_type'] = $type[$value];
                 $row['goods'][] = $good;
             }
             unset($sku_ids);
@@ -874,6 +889,7 @@ class App_GoodsController extends App_Controller_Action
         $area_id = $order['area_id'];
         $shipping_id = $order['shipping_id'];
         $order_json = json_decode($order['order_json']);
+        $age = 0;
         foreach($order_json as $key =>&$val) {
             $val = get_object_vars($val);
             unset($val['thumb']);
@@ -889,6 +905,7 @@ class App_GoodsController extends App_Controller_Action
                     $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                     $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
                     $good['price_text'] = $val['price_text']->$sku_id;
+                    $good['qty'] = $val['qty']->$sku_id;
                     $good['price_type'] = $price_type['price_text'];
                     $spec = explode(',',$sku['spec']);
                     $arr = array();
@@ -914,6 +931,7 @@ class App_GoodsController extends App_Controller_Action
                 $price_type = M('User_Cart')->price_type($sku);
                 $good['price_type'] = $price_type['price_text'];
                 $good['price_text'] = $val['price_text'];
+                $good['qty'] = $val['qty'];
                 $spec = explode(',',$sku['spec']);
                 $arr = array();
                 foreach($spec as $key1=>$val1) {
@@ -931,13 +949,16 @@ class App_GoodsController extends App_Controller_Action
             }
             unset($val['price_type']);
             unset($val['price_text']);
+            unset($val['qty']);
             unset($order['order_json']);
             $da['shipping_id'] = $shipping_id;
             $da['area_id'] = $area_id;
             $postage = $this->doPostAge($da, $val['total'], $val['weight']);
+            $age  += $postage;
             $val['total_postage'] = $postage;
             $order['packages'] = $order_json;
         }
+        $order['total_postage'] = $age;
         echo $this->_encrypt_data($order);
         //echo $this->show_data($this->_encrypt_data($order));
         die();
