@@ -248,5 +248,11 @@ class App_IndexController extends App_Controller_Action
         $view->description = M('Page')->getByCode('description')->toArray();
         $view->render('views/app/shopping_mall.php');
     }
+    /**
+     * 版本控制
+     */
+    public function doVersionControl() {
+        
+    }
 
 }

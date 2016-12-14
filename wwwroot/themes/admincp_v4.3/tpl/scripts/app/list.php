@@ -60,7 +60,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 					<td><?=$this->highlight($row['version'], $this->_request->q)?></td>
 					<td><?php echo $row['url']?></td>
 					<td><?=$row['create_time'] ? date(DATETIME_FORMAT, $row['create_time']) : 'N/A'?></td>
-					<td><a href="<?=$this->url('action=setting&id=' . $row['id'].'&ref='.$this->_request->url)?>">设置</a> <a href="<?=$this->url('action=edit&id=' . $row['id'].'&ref='.$this->_request->url)?>">编辑</a> <a href="<?=$this->url('action=delete&id=' . $row['id'].'&ref='.$this->_request->url)?>" onclick="return confirm('确定要删除这条记录吗?')">删除</a></td>
+					<td><a href="<?=$this->url('action=edit&id=' . $row['id'].'&ref='.$this->_request->url)?>">编辑</a> <a href="<?=$this->url('action=delete&id=' . $row['id'].'&ref='.$this->_request->url)?>" onclick="return confirm('确定要删除这条记录吗?')">删除</a></td>
 				</tr>
 				<?php } } ?>
 			</tbody>

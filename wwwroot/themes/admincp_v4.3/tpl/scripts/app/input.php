@@ -1,6 +1,6 @@
 <?php
 if(!defined('APP_KEY')) { exit('Access Denied'); }
-$this->title = ($this->_request->getActionName() == 'add' ? '添加' : '修改'). '广告位';
+$this->title = ($this->_request->getActionName() == 'add' ? '添加' : '修改'). 'App版本';
 $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this->url('action=list');
 $this->head()->setTitle($this->title);
 ?>
@@ -19,7 +19,7 @@ $this->head()->setTitle($this->title);
 		<div class="form-group">
 			<label class="control-label col-sm-2">版本号:</label>
 			<div class="col-sm-6">
-				<input type="text" name="code" value="<?=$this->data['version']?>" class="form-control" />
+				<input type="text" name="version" value="<?=$this->data['version']?>" class="form-control" />
 			</div>
 		</div>
 
@@ -27,7 +27,7 @@ $this->head()->setTitle($this->title);
 			<label class="control-label col-sm-2">简介:</label>
 			<div class="col-sm-9">
 				<div class="input-group">
-					<textarea name="content" class="form-control" rows="20" data-plugin="editor" data-token="<?=$this->admin->getToken()?>"><?=stripcslashes($this->content)?></textarea>
+					<textarea name="content" class="form-control" rows="20" data-plugin="editor" data-token="<?=$this->admin->getToken()?>"><?=$this->data['content']?></textarea>
 				</div>
 			</div>
 		</div>
