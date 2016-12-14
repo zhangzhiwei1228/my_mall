@@ -252,7 +252,11 @@ class App_IndexController extends App_Controller_Action
      * 版本控制
      */
     public function doVersionControl() {
-        
+        $data = M('App')->select()->order('create_time desc')->fetchRow();
+        $data['url'] = 'http://'.$_SERVER['HTTP_HOST'].$data['url'];
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data->toArray()));
+        die();
     }
 
 }
