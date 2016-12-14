@@ -18,13 +18,13 @@ class App_IndexController extends App_Controller_Action
         $user = M('Region')->select('*')->where('level=2')->fetchRows()->toArray();
         $rows = array();
         foreach($user as $key=>$row) {
-            $rows['pro'][$key] = $row;
+            $rows['more'][$key] = $row;
             $city  = M('Region')->select('*')->where('parent_id='.(int)$row['id'])->fetchRows()->toArray();
             foreach($city as $key1=>$c) {
-                $rows['pro'][$key]['cities'][$key1] = $c;
+                $rows['more'][$key]['more'][$key1] = $c;
                 $areas = M('Region')->select('*')->where('parent_id='.(int)$c['id'])->fetchRows()->toArray();
                 foreach($areas as $key2=>$area) {
-                    $rows['pro'][$key]['cities'][$key1]['areas'][$key2] = $area;
+                    $rows['more'][$key]['more'][$key1]['more'][$key2] = $area;
                 }
             }
         }
