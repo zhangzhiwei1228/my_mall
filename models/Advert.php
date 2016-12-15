@@ -85,12 +85,15 @@ class Advert extends Abstract_Model
 	 */
 	public function getAppRowsByCode($code)
 	{
+		$config = new Suco_Config_Php();
+		$app_redirt = $config->load(CONF_DIR.'app.conf.php')->toArray();
+		$jump = $app_redirt['advertise'];
 		if(is_array($code)) {
 			$rows = array();
 			$code = implode('\',\'',$code);
 			$pos = $this->select()->where('code IN ('."'".$code."'".')')->fetchRows()->toArray();
 			foreach($pos as $po) {
-				$images = M('Advert_Element')->select('id,advert_id,type,description,link,source,is_enabled,start_time,end_time')
+				$images = M('Advert_Element')->select('id,advert_id,type,description,link,source,is_enabled,start_time,end_time,jump_id,exts_id')
 					->where('advert_id = ? AND is_enabled AND start_time <= ? AND (end_time >= ? OR end_time = 0)', array($po['id'], time(), time()))
 					->order('rank ASC')
 					->limit($po['limit'])
@@ -98,7 +101,9 @@ class Advert extends Abstract_Model
 				$rows[$po['code']]['limit'] = $po['limit'];
 				foreach($images as $key=>$row) {
 					$row['source'] = 'http://'.$_SERVER['HTTP_HOST'].$row['source'];
+					$row['jump_name'] = $jump[$row['jump_id']]['name'];
 					$rows[$po['code']]['images'][$key] = $row;
+
 				}
 			}
 		} else {

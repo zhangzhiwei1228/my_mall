@@ -257,7 +257,7 @@ class App_IndexController extends App_Controller_Action
         $view->render('views/app/shopping_mall.php');
     }
     /**
-     *  商城须知
+     *  常见问题详情页
      */
     public function doQuestionDetail() {
         $id = $this->_request->id;

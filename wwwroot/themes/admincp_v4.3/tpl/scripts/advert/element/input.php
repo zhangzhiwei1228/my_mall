@@ -22,6 +22,18 @@ $this->paths[] = array(
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="control-label col-sm-2">选择类型:</label>
+			<div class="col-sm-6">
+				<select name="jump_id" class="form-control" id="jump_id">
+					<?php foreach ($this->jump as $row) { ?>
+						<option value="<?=$row['type']?>" <?php if ($this->data['app'] == $row['type']) echo 'selected';?>> <?=$row['name']?></option>
+					<?php } ?>
+				</select>
+				<input id="exts_id" type="text" name="exts_id" value="<?=$this->data['exts_id']?>" class="form-control" placeholder="请输入要绑定的id" style="<?php echo $this->data['app'] && $this->data['app'] < 4 ? 'display: block': 'display: none' ?>"/>
+
+			</div>
+		</div>
+		<div class="form-group">
 			<label class="control-label col-sm-2">投放位置:</label>
 			<div class="col-sm-6">
 				<select name="advert_id" class="form-control">
@@ -99,6 +111,20 @@ $('select[name=position_id]').change(function(){
 });
 $.fn.ready(function() {
 	changeType('<?=$this->data['type']?>');
+});
+$(document).ready(function() {
+	var id = $('#jump_id option:selected').val();
+	if(id < 4) {
+		$('#exts_id').show();
+	}
+	$('#jump_id').change(function() {
+		var app_id = $('#jump_id option:selected').val();
+		if(app_id < 4) {
+			$('#exts_id').show();
+		} else {
+			$('#exts_id').hide();
+		}
+	});
 });
 </script> 
 
