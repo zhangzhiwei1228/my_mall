@@ -7,7 +7,7 @@
     <?php include_once VIEWS.'app/inc/header.php'; ?>
     <div class="n-shopping">
     	<div class="text">
-    		<h2>商场须知</h2>
+    		<h2><?php echo $this->title?></h2>
     		<?php echo $this->description['content']?>
     	</div>
     </div>

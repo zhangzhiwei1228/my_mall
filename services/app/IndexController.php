@@ -253,6 +253,26 @@ class App_IndexController extends App_Controller_Action
     public function doShopMall() {
         $view = $this->_initView();
         $view->description = M('Page')->getByCode('description')->toArray();
+        $view->title = '商城须知';
+        $view->render('views/app/shopping_mall.php');
+    }
+    /**
+     *  商城须知
+     */
+    public function doQuestionDetail() {
+        $id = $this->_request->id;
+        $news = M('Article')->select('title,content')->where('id = '.(int)$id)->fetchRow()->toArray();
+        if( !$id ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        if(!$news) {
+            echo self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+            die();
+        }
+        $view = $this->_initView();
+        $view->description = $news;
+        $view->title = $news['title'];
         $view->render('views/app/shopping_mall.php');
     }
     /**
