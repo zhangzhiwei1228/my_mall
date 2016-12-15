@@ -237,9 +237,14 @@ class App_IndexController extends App_Controller_Action
     public function doQuestion() {
         $limit = $this->_request->limit ? $this->_request->limit : 10;
         $page = $this->_request->page ? $this->_request->page : 1;
-        $data = M('Article')->select('title,content')->where('category_id = 22')->paginator($limit, $page)->fetchRows();
-        echo $this->_encrypt_data($data->toArray());
-        //echo $this->show_data($this->_encrypt_data($data->toArray()));
+        $news = M('Article')->select('title,content')->where('category_id = 22')->paginator($limit, $page)->fetchRows();
+        $data = $news->toArray();
+        $cutstr = new Suco_Helper_Cutstr();
+        foreach ($data as &$row) {
+            $row['desc'] = $cutstr->cutstr(strip_tags($row['content']),50);
+        }
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
