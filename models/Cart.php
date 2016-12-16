@@ -249,7 +249,7 @@ class Cart
 		//保存会员购物车
 		 //$uid = M('User')->getCurUser()->id;
 		$uid = $uid ? $uid : M('User')->getCurUser()->id;
-		$card_id = 0;
+		$cart_id = 0;
 		 if ($uid) {
 		 	foreach($this->_items as $k => $item) {
 				$items = M('User_Cart')->select()
@@ -258,7 +258,7 @@ class Cart
 				if($items) {
 					M('User_Cart')->update(array('qty'=>$item['qty']),'user_id ='. $uid . ' and goods_id ='.$item['id'].' and sku_id ='.$item['skuId'].' and shipping_id ='.$item['shipping_id'].' and price_type='.$item['priceType']);
 				};
-		 		$cart_id = M('User_Cart')->insert(array(
+				$cart_id = M('User_Cart')->insert(array(
 		 			'user_id' => $uid,
 		 			'goods_id' => $item['id'],
 		 			'sku_id' => $item['skuId'],
@@ -269,7 +269,7 @@ class Cart
 		 		));
 		 	}
 		 	if($checkout) {
-				return $card_id;
+				return $cart_id;
 			}
 		 }
 	}
