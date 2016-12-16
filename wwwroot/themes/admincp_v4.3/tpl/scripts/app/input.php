@@ -19,6 +19,12 @@ $this->head()->setTitle($this->title);
 		<div class="form-group">
 			<label class="control-label col-sm-2">版本号:</label>
 			<div class="col-sm-6">
+				<input type="text" name="type" id="type" value="<?=$this->data['type']?>" class="form-control" placeholder="如：1,2,3....."/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">版本名称:</label>
+			<div class="col-sm-6">
 				<input type="text" name="version" value="<?=$this->data['version']?>" class="form-control" />
 			</div>
 		</div>
@@ -39,13 +45,7 @@ $this->head()->setTitle($this->title);
 				</div>
 			</div>
 		</div>
-		<div class="form-group">
-			<label class="control-label col-sm-2">所属类型:</label>
-			<div class="col-sm-7">
-				<label><input type="radio" name="type" value="1" <?=$this->data['type'] == 1 ? 'checked' : ''?>> Android </label>
-				<label><input type="radio" name="type" value="2" <?=$this->data['type'] == 2 ? 'checked' : ''?>> Ios </label>
-			</div>
-		</div>
+
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-9">
 				<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
