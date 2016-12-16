@@ -239,7 +239,7 @@ class Cart
 	 * @param bool|false $uid
 	 * 保存购物车
 	 */
-	public function save($uid = false)
+	public function save($uid = false,$checkout=0)
 	{
 		Suco_Cookie::set(__CLASS__, json_encode(array(
 			'status' => $this->_status,
@@ -249,6 +249,7 @@ class Cart
 		//保存会员购物车
 		 //$uid = M('User')->getCurUser()->id;
 		$uid = $uid ? $uid : M('User')->getCurUser()->id;
+		$card_id = 0;
 		 if ($uid) {
 		 	foreach($this->_items as $k => $item) {
 				$items = M('User_Cart')->select()
@@ -257,7 +258,7 @@ class Cart
 				if($items) {
 					M('User_Cart')->update(array('qty'=>$item['qty']),'user_id ='. $uid . ' and goods_id ='.$item['id'].' and sku_id ='.$item['skuId'].' and shipping_id ='.$item['shipping_id'].' and price_type='.$item['priceType']);
 				};
-		 		M('User_Cart')->insert(array(
+		 		$cart_id = M('User_Cart')->insert(array(
 		 			'user_id' => $uid,
 		 			'goods_id' => $item['id'],
 		 			'sku_id' => $item['skuId'],
@@ -267,6 +268,9 @@ class Cart
 		 			'qty' => $item['qty'],
 		 		));
 		 	}
+		 	if($checkout) {
+				return $card_id;
+			}
 		 }
 	}
 
@@ -290,8 +294,8 @@ class Cart
 		} else { //追加商品
 			$this->_items[$code]['qty'] += $qty;
 		}
-		$this->save($uid);
-		return $code;
+		$cart_id = $this->save($uid,$checkout);
+		return $checkout ? $cart_id : $code;
 	}
 
 	/**

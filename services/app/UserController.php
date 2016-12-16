@@ -304,7 +304,7 @@ class App_UserController extends App_Controller_Action
             (int)$sku_id,
             (int)$qty,
             (int)$price_type
-            ,0,0,(int)$shipping_id
+            ,$checkout,$checkout,(int)$shipping_id
         );
         /*$cart = M('User_Cart')->insert(array(
             'user_id' => $this->user->id,
