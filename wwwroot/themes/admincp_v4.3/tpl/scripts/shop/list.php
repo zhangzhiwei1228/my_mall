@@ -44,6 +44,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 			<thead>
 				<tr>
 					<th width="20" align="center"><input type="checkbox" role="chk-all" /></th>
+					<th width="30" class="text-center">ID</th>
 					<th width="75" class="text-center">商家图片</th>
 					<th>商家名称</th>
 					<th width="100">电话</th>
@@ -62,10 +63,12 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 				<?php } else { foreach ($this->datalist as $row) { ?>
 				<tr>
 					<td align="center"><input type="checkbox" name="ids[]" role="chk-item" value="<?=$row['id']?>" /></td>
+					<td><?php echo $row['id']?></td>
 					<td class="text-center">
 						<a href="<?=$this->url('action=edit&id='.$row['id'].'&ref='.$this->_request->url)?>">
 							<img src="<?php echo $row['ref_img_bg']? $this->img($row['ref_img_bg'], '160x160') : $this->img($row['thumb'], '160x160')?>" class="img-thumbnail"></a>
 					</td>
+
 					<td>
 						[<?=$row['cate_name']?>]
 						<a href="<?=$this->url('action=edit&id=' . $row['id'].'&ref='.$this->_request->url)?>">
