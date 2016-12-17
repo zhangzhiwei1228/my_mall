@@ -43,6 +43,7 @@ $this->head()->setTitle($this->title);
 			<thead>
 				<tr>
 					<th width="20" class="text-center"><input type="checkbox" role="chk-all" /></th>
+					<th>ID</th>
 					<th>标题</th>
 					<th width="120">所属分类</th>
 					<!--<td width="120">出处</td>-->
@@ -61,6 +62,7 @@ $this->head()->setTitle($this->title);
 				<?php } else { foreach ($this->datalist as $row) { ?>
 				<tr>
 					<td class="text-center"><input type="checkbox" name="ids[]" role="chk-item" value="<?=$row['id']?>" /></td>
+					<td><?php echo $row['id']?></td>
 					<td><a id="img_<?=$row['id']?>" href="<?=$this->url('action=edit&id=' . $row['id'].'&ref='.$this->_request->url)?>">
 						<?=$this->highlight($row['title'], $this->_request->q)?><?php if ($row['thumb']) { echo '(图)'; }?></a>
 												</td>
