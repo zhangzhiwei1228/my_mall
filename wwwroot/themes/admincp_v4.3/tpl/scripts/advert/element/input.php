@@ -26,7 +26,7 @@ $this->paths[] = array(
 			<div class="col-sm-6">
 				<select name="jump_id" class="form-control" id="jump_id">
 					<?php foreach ($this->jump as $row) { ?>
-						<option value="<?=$row['type']?>" <?php if ($this->data['app'] == $row['type']) echo 'selected';?>> <?=$row['name']?></option>
+						<option value="<?=$row['type']?>" <?php if ($this->data['jump_id'] == $row['type']) echo 'selected';?>> <?=$row['name']?></option>
 					<?php } ?>
 				</select>
 				<input id="exts_id" type="text" name="exts_id" value="<?=$this->data['exts_id']?>" class="form-control" placeholder="请输入要绑定的id" style="<?php echo $this->data['app'] && $this->data['app'] < 4 ? 'display: block': 'display: none' ?>"/>
