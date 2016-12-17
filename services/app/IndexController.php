@@ -237,7 +237,7 @@ class App_IndexController extends App_Controller_Action
     public function doQuestion() {
         $limit = $this->_request->limit ? $this->_request->limit : 10;
         $page = $this->_request->page ? $this->_request->page : 1;
-        $news = M('Article')->select('title,content')->where('category_id = 22')->paginator($limit, $page)->fetchRows();
+        $news = M('Article')->select('id,title,content')->where('category_id = 22')->paginator($limit, $page)->fetchRows();
         $data = $news->toArray();
         $cutstr = new Suco_Helper_Cutstr();
         foreach ($data as &$row) {
