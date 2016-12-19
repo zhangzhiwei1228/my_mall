@@ -92,6 +92,8 @@ class App_VipController extends App_Controller_Action
             $day_selas = $this->_request->day_selas;//日营业额
             $day_volume = $this->_request->day_volume;//日客流量
             $day_volume_stat = $this->_request->day_volume_stat;//日客流量状态
+            $area = $this->_request->area;//占地面积
+            $data['area'] = $area;
             $data['company'] = $company;
             $data['type'] = $business;
             $data['day_selas'] = $day_selas;
