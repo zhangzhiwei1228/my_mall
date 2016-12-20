@@ -105,4 +105,52 @@ class App_VipController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($insert_id));
         die();
     }
+    /**
+     * 充值说明
+     * credit 帮帮币
+     * credit_coin 积分币
+     * vouchers 抵用券
+     */
+    public function doPayDesc() {
+        $type = $this->_request->type;
+        if( !$type ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $coltype = M('Coltypes')->select('id,english,name')->where("english='".$type."'")->fetchRow()->toArray();
+
+        $data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+        $view = $this->_initView();
+        $view->data = $data;
+        $view->name = $coltype['name'];
+        $view->type = $type;
+        $view->render('views/app/recharge.php');
+    }
+    /**
+     * 充值比例
+     */
+    public function doProDesc() {
+        $type = $this->_request->type;
+        if( !$type ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $coltype = M('Coltypes')->select('id,english,name')->where("english='".$type."'")->fetchRow()->toArray();
+
+        $pro = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+        $data = array(
+            'name'  =>  '1元='.$pro['r_digital'].$coltype['name'],
+            'value' =>  $pro['r_digital']
+        );
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 激活说明
+     */
+    public function doActiveDesc() {
+        $view = $this->_initView();
+        $view->render('views/app/member_two.php');
+    }
 }
