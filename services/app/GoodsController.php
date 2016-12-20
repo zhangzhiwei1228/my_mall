@@ -429,6 +429,7 @@ class App_GoodsController extends App_Controller_Action
         $data['order_id'] = $order_id;
         $data['sku_id'] = $sku_id;
         $data['spec'] = $spec;
+        $data['is_show'] = 1;
         $data['comment'] = $comment;
         $data['create_time'] = time();
         $data['extr'] = json_encode($extr);
