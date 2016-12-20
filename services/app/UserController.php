@@ -475,6 +475,9 @@ class App_UserController extends App_Controller_Action
             'is_def' => $is_def,
             'create_time' => time(),
         );
+        if($is_def) {
+            M('User_Address')->update(array('is_def'=>0), 'user_id = '.(int)$this->user->id);
+        }
         $id = M('User_Address')->insert($data);
         echo $this->_encrypt_data($id);
         //echo $this->show_data($this->_encrypt_data($id));
