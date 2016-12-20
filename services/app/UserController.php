@@ -976,12 +976,34 @@ class App_UserController extends App_Controller_Action
         if($gender) {
             $extend['field_value'] = $gender;
             $str = 'gender';
-            M('User_Extend')->update($extend, 'user_id = '.$this->user->id.' and field_key ='."'".$str."'");
+            $user_age = M('User_Extend')->select('*')->where('user_id = '.$this->user->id.' and field_key ='."'".$str."'")->fetchRow()->toArray();
+            if($user_age) {
+                M('User_Extend')->update($extend, 'user_id = '.$this->user->id.' and field_key ='."'".$str."'");
+            } else {
+                $data = array(
+                    'user_id'=>$this->user->id,
+                    'field_key'=>$str,
+                    'field_name'=>'性别',
+                    'field_value'=>$gender,
+                );
+                M('User_Extend')->insert($data);
+            }
         }
         if($birthday) {
             $extend['field_value'] = $birthday;
             $str = 'birthday';
-            M('User_Extend')->update($extend, 'user_id = '.$this->user->id.' and field_key ='."'".$str."'");
+            $user_age = M('User_Extend')->select('*')->where('user_id = '.$this->user->id.' and field_key ='."'".$str."'")->fetchRow()->toArray();
+            if($user_age) {
+                M('User_Extend')->update($extend, 'user_id = '.$this->user->id.' and field_key ='."'".$str."'");
+            } else {
+                $data = array(
+                    'user_id'=>$this->user->id,
+                    'field_key'=>$str,
+                    'field_name'=>'出生日期',
+                    'field_value'=>$birthday,
+                );
+                M('User_Extend')->insert($data);
+            }
         }
         if($age) {
             $extend['field_value'] = $age;
