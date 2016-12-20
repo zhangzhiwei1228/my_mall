@@ -310,8 +310,11 @@ class App_GoodsController extends App_Controller_Action
             echo  self::_error_data(API_GOOD_NOT_FOUND,'商品不存在');
             die();
         }
-        $data = M('Goods_Comment')->select('comment,photos,create_time')->where('goods_id='.(int)$good_id.' and is_show <> 0')->fetchRows()->toArray();
+        $data = M('Goods_Comment')->select('buyer_id,comment,photos,create_time')->where('goods_id='.(int)$good_id.' and is_show <> 0')->fetchRows()->toArray();
         foreach($data as  &$row) {
+            $user = M('User')->select('avatar,nickname')->where('id = '.(int)$row['buyer_id'])->fetchRow()->toArray();
+            $row['avatar'] = 'http://'.$_SERVER['HTTP_HOST'].$user['avatar'];
+            $row['nickname'] = $user['nickname'];
             $src = json_decode($row['photos']);
             foreach($src as $key =>$val) {
                 $d = get_object_vars($val);
