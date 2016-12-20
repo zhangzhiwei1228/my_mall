@@ -520,4 +520,36 @@
   line-height: .36rem;
 }
 
+.n-downbox {
+  width: 100%;
+  background: #fff;
+  position: relative;
+}
+.n-downbox .logo {
+  width: 3.61rem;
+  height: 3.88rem;
+  left: 50%;
+  margin-left: -1.8rem;
+  top: 15%;
+  position: absolute;
+}
+.n-downbox .logo img {
+  width: 3.61rem;
+  height: 3.88rem;
+}
+.n-downbox .bo-x {
+  color: #333;
+  font-size: .32rem;
+  width: 2.67rem;
+  height: .75rem;
+  line-height: .75rem;
+  text-align: center;
+  border-radius: .05rem;
+  position: absolute;
+  left: 50%;
+  margin-left: -1.33rem;
+  bottom: 10%;
+  border: 1px solid #ebebeb;
+}
+
 /*# sourceMappingURL=style.css.map */
