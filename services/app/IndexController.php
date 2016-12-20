@@ -285,5 +285,13 @@ class App_IndexController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data->toArray()));
         die();
     }
+    /**
+     * 分享下载
+     *
+     */
+    public function doDownload() {
+        $view = $this->_initView();
+        $view->render('views/app/download.php');
+    }
 
 }
