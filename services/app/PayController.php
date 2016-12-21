@@ -178,13 +178,11 @@ class App_PayController extends App_Controller_Action
                 //此处应该更新一下订单状态，商户自行增删操作
                 Log::DEBUG("微信【通信出错】:". $xml);
 
-            }
-            elseif($notify->data["result_code"] == "FAIL"){
+            } elseif ($notify->data["result_code"] == "FAIL") {
                 //此处应该更新一下订单状态，商户自行增删操作
                 Log::DEBUG("微信【业务出错】:". $xml);
 
-            }
-            else{
+            } else {
                 //此处应该更新一下订单状态，商户自行增删操作
                 Log::DEBUG("微信【支付】:". print_r($notify,1));
                 $out_trade_no=$notify->data["out_trade_no"];
@@ -192,6 +190,60 @@ class App_PayController extends App_Controller_Action
                 Log::DEBUG($out_trade_no);
                 Log::DEBUG($out_trade_no_V);
             }
+        }
+    }
+
+    /**
+     * 微信生成签名
+     */
+    public function doWxSign() {
+        $this->user = $this->_auth();
+        $trade_no = $this->_request->trade_no;
+        $amount = $this->_request->amount;
+        $subject = $this->_request->subject;
+        require_once LIB_DIR."Sdks/weixin/WxPayPubHelper/WxPayPubHelper.php";
+        require_once LIB_DIR."Sdks/wxpay/lib/log.php";
+        //初始化日志
+        $logHandler= new CLogFileHandler(LOG_DIR.date('Y-m-d').'.log');
+        $log = Log::Init($logHandler, 15);
+        $notify = new Notify_pub();
+
+        $notifyUrl = (string)new Suco_Helper_Url('module=app&controller=pay&action=WxNotify');
+        $data = '';
+
+        $paydata=array(
+            'appid'=>WxPayConf_pub::APPID,
+            'mch_id'=>WxPayConf_pub::MCHID,
+            'nonce_str'=>$notify->createNoncestr(),
+            'body'=>$subject,
+            'out_trade_no'=>$trade_no,
+            'total_fee'=>$amount,
+            'spbill_create_ip'=>get_ip(),
+            'notify_url'=>$notifyUrl,
+            'trade_type'=>'APP'
+        );
+
+        $paydata['sign']=$notify->getSign($paydata);
+        $data['sign'] = $notify->getSign($paydata);
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+        $xml= $notify->postXmlCurl($notify->arrayToXml($paydata),'https://api.mch.weixin.qq.com/pay/unifiedorder');
+        $paydatanew=$notify->xmlToArray($xml);
+        if($paydatanew['return_code']=="SUCCESS"){
+            $data['appid']=$paydatanew['appid'];
+            $data['partnerid']=$paydatanew['mch_id'];
+            $data['prepayid']=$paydatanew['prepay_id'];
+            $data['package']="Sign=WXPay";
+            $data['noncestr']=$notify->createNoncestr();
+            $data['timestamp']=time();
+            $data['sign']=$notify->getSign($data);;
+            echo $this->_encrypt_data($data);
+            //echo $this->show_data($this->_encrypt_data($data));
+            die();
+        }else{
+            echo self::_error_data(API_RESOURCES_NOT_FOUND,'生成签名失败');
+            die();
         }
     }
 }
