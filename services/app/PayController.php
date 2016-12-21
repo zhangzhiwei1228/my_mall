@@ -162,14 +162,16 @@ class App_PayController extends App_Controller_Action
         if($notify->checkSign() == FALSE){
             $notify->setReturnParameter("return_code","FAIL");//返回状态码
             $notify->setReturnParameter("return_msg","签名失败");//返回信息
+            Log::DEBUG('shibai');
         }else{
             $notify->setReturnParameter("return_code","SUCCESS");//设置返回码
+            Log::DEBUG('SUCCESS');
         }
         $returnXml = $notify->returnXml();
-
+        Log::DEBUG('returnXml:'.$returnXml);
         echo $returnXml;
 
-
+        Log::DEBUG('checkSign:'.$notify->checkSign());
         if($notify->checkSign() == TRUE)
         {
             if ($notify->data["return_code"] == "FAIL") {
