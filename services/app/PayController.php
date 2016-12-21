@@ -14,7 +14,7 @@ class App_PayController extends App_Controller_Action
     public function init()
     {
         parent::init();
-        $this->user = $this->_auth();
+
         $payment = M('Payment')->select()
             ->where('code = ?', 'alipay')
             ->fetchRow();
@@ -43,7 +43,7 @@ class App_PayController extends App_Controller_Action
         );
     }
     public function doSign() {
-
+        $this->user = $this->_auth();
         require_once("Sdks/alipay/lib/alipay_submit.class.php");
         $amount = $this->_request->amount;
         $trade_no = $this->_request->trade_no;
@@ -76,6 +76,7 @@ class App_PayController extends App_Controller_Action
         die();
     }
     protected function createLinkstring($para) {
+        $this->user = $this->_auth();
         $arg  = "";
         while (list ($key, $val) = each ($para)) {
             $arg.=$key."=".$val."&";
@@ -89,6 +90,7 @@ class App_PayController extends App_Controller_Action
         return $arg;
     }
     protected function rsaSign($data, $private_key_path) {
+        $this->user = $this->_auth();
         $priKey = file_get_contents($private_key_path);
         $res = openssl_get_privatekey($priKey);
         openssl_sign($data, $sign, $res);
@@ -98,6 +100,7 @@ class App_PayController extends App_Controller_Action
         return $sign;
     }
     protected function argSort($para) {
+        $this->user = $this->_auth();
         ksort($para);
         reset($para);
         return $para;
@@ -109,6 +112,7 @@ class App_PayController extends App_Controller_Action
      * return 验签是否通过 bool值
      */
     protected function verify($data, $sign)  {
+        $this->user = $this->_auth();
         //读取支付宝公钥文件
         $pubKey = file_get_contents(SRV_DIR.'app/alipay_public_key.pem');
 
@@ -125,11 +129,67 @@ class App_PayController extends App_Controller_Action
         return $result;
     }
     protected function paraFilter($para) {
+        $this->user = $this->_auth();
         $para_filter = array();
         while (list ($key, $val) = each ($para)) {
             if($key == "sign" || $key == "sign_type" || $val == "")continue;
             else	$para_filter[$key] = $para[$key];
         }
         return $para_filter;
+    }
+    /**
+     * 微信回调
+     */
+    public function doWxNotify() {
+        require_once LIB_DIR."Sdks/weixin/WxPayPubHelper/WxPayPubHelper.php";
+        require_once LIB_DIR."Sdks/wxpay/lib/log.php";
+        //初始化日志
+        $logHandler= new CLogFileHandler(LOG_DIR.date('Y-m-d-H-i-s').'.log');
+        $log = Log::Init($logHandler, 15);
+        //使用通用通知接口
+        $notify = new Notify_pub();
+        Log::DEBUG($notify);
+        //存储微信的回调
+        $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
+        Log::DEBUG("微信xml:");
+        Log::DEBUG($xml);
+        $notify->saveData($xml);
+
+        //验证签名，并回应微信。
+        //对后台通知交互时，如果微信收到商户的应答不是成功或超时，微信认为通知失败，
+        //微信会通过一定的策略（如30分钟共8次）定期重新发起通知，
+        //尽可能提高通知的成功率，但微信不保证通知最终能成功。
+        if($notify->checkSign() == FALSE){
+            $notify->setReturnParameter("return_code","FAIL");//返回状态码
+            $notify->setReturnParameter("return_msg","签名失败");//返回信息
+        }else{
+            $notify->setReturnParameter("return_code","SUCCESS");//设置返回码
+        }
+        $returnXml = $notify->returnXml();
+
+        echo $returnXml;
+
+
+        if($notify->checkSign() == TRUE)
+        {
+            if ($notify->data["return_code"] == "FAIL") {
+                //此处应该更新一下订单状态，商户自行增删操作
+                Log::DEBUG("微信【通信出错】:". $xml);
+
+            }
+            elseif($notify->data["result_code"] == "FAIL"){
+                //此处应该更新一下订单状态，商户自行增删操作
+                Log::DEBUG("微信【业务出错】:". $xml);
+
+            }
+            else{
+                //此处应该更新一下订单状态，商户自行增删操作
+                Log::DEBUG("微信【支付】:". print_r($notify,1));
+                $out_trade_no=$notify->data["out_trade_no"];
+                $out_trade_no_V = substr($out_trade_no, 0, 3);
+                Log::DEBUG($out_trade_no);
+                Log::DEBUG($out_trade_no_V);
+            }
+        }
     }
 }
