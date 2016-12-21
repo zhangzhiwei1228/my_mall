@@ -357,8 +357,8 @@ class App_UserController extends App_Controller_Action
             }
             $row['spec'] = $arr;
         }
-        //echo $this->_encrypt_data($carts);
-        echo $this->show_data($this->_encrypt_data($carts));
+        echo $this->_encrypt_data($carts);
+        //echo $this->show_data($this->_encrypt_data($carts));
         die();
     }
     /**
