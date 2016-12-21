@@ -148,7 +148,7 @@ class App_PayController extends App_Controller_Action
         $log = Log::Init($logHandler, 15);
         //使用通用通知接口
         $notify = new Notify_pub();
-        Log::DEBUG($notify);
+        //Log::DEBUG($notify);
         //存储微信的回调
         $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
         Log::DEBUG("微信xml:");
