@@ -48,11 +48,12 @@ class App_PayController extends App_Controller_Action
         $paydata['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
         //$data['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
 
-
-        $data['paycode']=createLinkstringUrlencode($paydata);
+        echo createLinkstringUrlencode($paydata);
+        die();
+        /*$data['paycode']=createLinkstringUrlencode($paydata);
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
-        die();
+        die();*/
         $re_data['paytype']=1;
 
     }
