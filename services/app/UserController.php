@@ -245,11 +245,11 @@ class App_UserController extends App_Controller_Action
         //发送短信
         //$fsurl="http://120.26.69.248/msg/HttpSendSM?account=shiyuan_yishenger&pswd=Yishenger2016&mobile=".$phone."&msg=".$msg."&needstatus=true";
 
-        /*$msg="您的注册验证码为：".strtoupper ( $code )."，祝您购物愉快。";
+        $msg="您的注册验证码为：".strtoupper ( $code )."，祝您购物愉快。";
         $fsurl="http://send.18sms.com/msg/HttpBatchSendSM?account=shiyuan_yishenger&pswd=Yishenger2016&mobile=".$phone."&msg=".$msg."&needstatus=true";
         $res=file_get_contents($fsurl);
-        $msgarr=explode(',', $res);*/
-        //if($msgarr[1]==0){
+        $msgarr=explode(',', $res);
+        if($msgarr[1]==0){
             $ip = Suco_Controller_Request_Http::getClientIp();
             $data['timeline'] = time() + PHONE_CODE_TIMEOUT;
             $data['ip'] = ip2long($ip);
@@ -259,7 +259,7 @@ class App_UserController extends App_Controller_Action
             echo $this->_encrypt_data((int)$code);
             //echo $this->show_data($this->_encrypt_data($goods));
             die();
-        //}
+        }
         echo  self::_error_data(API_GET_CODE_FAIL,'获取验证码失败');
         die();
     }
