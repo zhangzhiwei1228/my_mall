@@ -17,7 +17,8 @@
 function createLinkstring($para) {
 	$arg  = "";
 	while (list ($key, $val) = each ($para)) {
-		$arg.=$key."=".$val."&";
+		//$arg.=$key."=".$val."&";
+		$arg.=$key."=".'"'.$val.'"'."&";
 	}
 	//去掉最后一个&字符
 	$arg = substr($arg,0,count($arg)-2);
