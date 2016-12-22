@@ -115,7 +115,8 @@ class App_PayController extends App_Controller_Action
 
         $paydata['sign']=$notify->getSign($paydata);
         //$data['sign']=$notify->getSign($paydata);
-        $data = $notify->arrayToXml($paydata);
+        $data['xml'] = $notify->arrayToXml($paydata);
+        $data['json'] = $paydata;
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
