@@ -13,7 +13,7 @@ class WxPayConf_pub
 	//商户支付密钥Key。审核通过后，在微信发送的邮件中查看
 	const KEY = 'eJxO3uehIINBsF8ngIsiDx6c2YfdmHie';
 	//JSAPI接口中获取openid，审核后在公众平台开启开发模式后可查看
-	const APPSECRET = '5b1fff4b9064672254a28466868c78f1';
+	//const APPSECRET = '5b1fff4b9064672254a28466868c78f1';
 	
 	//=======【JSAPI路径设置】===================================
 	//获取access_token过程中的跳转uri，通过跳转将code传入jsapi支付页面
