@@ -138,6 +138,55 @@ class App_PayController extends App_Controller_Action
             die();
         }
     }
+    public function doTest() {
+        $this->user = $this->_auth();
+        $trade_no = $this->_request->trade_no;
+        $amount = $this->_request->amount;
+        $subject = $this->_request->subject;
+        if( !$trade_no || !$amount  ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        require_once LIB_DIR."Sdks/weixin/WxPayPubHelper/WxPayPubHelper.php";
+        require_once LIB_DIR."Sdks/wxpay/lib/log.php";
+        //初始化日志
+        $logHandler= new CLogFileHandler(LOG_DIR.date('Y-m-d').'.log');
+        $log = Log::Init($logHandler, 15);
+        $notify = new Notify_pub();
+
+        $notifyUrl = (string)new Suco_Helper_Url('module=app&controller=pay&action=WxNotify');
+        $paydata=array(
+            'appid'=>WxPayConf_pub::APPID,
+            'mch_id'=>WxPayConf_pub::MCHID,
+            'nonce_str'=>$notify->createNoncestr(),
+            'body'=>$subject,
+            'out_trade_no'=>$trade_no,
+            'total_fee'=>$amount,
+            'spbill_create_ip'=>get_ip(),
+            'notify_url'=>$notifyUrl,
+            'trade_type'=>'APP'
+        );
+
+        $paydata['sign']=$notify->getSign($paydata);
+
+        $xml= $notify->postXmlCurl($notify->arrayToXml($paydata),'https://api.mch.weixin.qq.com/pay/unifiedorder');
+        $paydatanew=$notify->xmlToArray($xml);
+        if($paydatanew['return_code']=="SUCCESS"){
+            $arr['appid']=$paydatanew['appid'];
+            $arr['partnerid']=$paydatanew['mch_id'];
+            $arr['prepayid']=$paydatanew['prepay_id'];
+            $arr['package']="Sign=WXPay";
+            $arr['noncestr']=$notify->createNoncestr();
+            $arr['timestamp']=time();
+            $arr['sign']=$notify->getSign($arr);
+            echo $this->_encrypt_data($arr);
+            //echo $this->show_data($this->_encrypt_data($arr));
+            die();
+        }else{
+            echo self::_error_data(API_RESOURCES_NOT_FOUND,'生成签名失败');
+            die();
+        }
+    }
     /**
      * 微信回调
      */
