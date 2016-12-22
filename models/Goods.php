@@ -575,6 +575,7 @@ class Goods extends Abstract_Model
 			->order('id ASC')
 			->fetchRows()->toArray();
 		$i = 0;
+		$opts = array();
 		foreach($attrs as $k => $row) {
 			$n = $row['attr_name'];
 			$opts[$n]['name'] = $row['attr_name'];
