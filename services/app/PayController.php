@@ -114,9 +114,10 @@ class App_PayController extends App_Controller_Action
         );
 
         $paydata['sign']=$notify->getSign($paydata);
-        $data['sign']=$notify->getSign($paydata);
-        echo $this->_encrypt_data($paydata);
-        //echo $this->show_data($this->_encrypt_data($paydata));
+        //$data['sign']=$notify->getSign($paydata);
+        $data = $notify->arrayToXml($paydata);
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
         $xml= $notify->postXmlCurl($notify->arrayToXml($paydata),'https://api.mch.weixin.qq.com/pay/unifiedorder');
         $paydatanew=$notify->xmlToArray($xml);
