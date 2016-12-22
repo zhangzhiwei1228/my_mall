@@ -133,6 +133,7 @@ class App_GoodsController extends App_Controller_Action
         $datalsit = $select->fetchRows();
             /*->AppHasManySku();*/
         $data = $datalsit->toArray();
+        $i = 0;
         foreach($data as $key=> &$row) {
             if($row['thumb']) {
                 $row['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
@@ -179,6 +180,14 @@ class App_GoodsController extends App_Controller_Action
 
             $row['market_price'] = $arrs['market_price'];
             $row['prices'] = array_slice(array_values($k_v),0,2);
+            $sup1 = json_decode($row['sup']);
+            foreach($sup1 as $k => $v) {
+                $sup[$i]['name'] = $k;
+                $sup[$i]['value'] = $v;
+                $i++;
+            }
+            $row['sup'] =array_values($sup);
+            unset($sup);
         }
         unset($data['price']);
         unset($data['unit']);
