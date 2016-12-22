@@ -58,6 +58,43 @@ class App_PayController extends App_Controller_Action
         $re_data['paytype']=1;
 
     }
+    public function doTestAli() {
+        $this->user = $this->_auth();
+        $notifyUrl = (string)new Suco_Helper_Url('module=app&controller=pay&action=AliPayNotify');
+        $trade_no = $this->_request->trade_no;
+        $amount = $this->_request->amount;
+        $subject = $this->_request->subject;
+        if( !$trade_no || !$amount  ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        require_once LIB_DIR."Sdks/alipayapp/alipay.config.php";
+        require_once LIB_DIR."Sdks/alipayapp/lib/alipay_notify.class.php";
+        $paydata=array(
+            'app_id'=>$alipay_config['APPID'],
+            'method'=>"alipay.trade.app.pay",
+            'charset'=>'utf-8',
+            'sign_type'=>'RSA',
+            //'format'=>'json',
+            'timestamp'=>date('Y-m-d H:i:s'),
+            'version'=>'1.0',
+            'notify_url'=>$notifyUrl,
+            'biz_content'=>json_encode(array('subject'=>$subject,'seller_id'=>$alipay_config['partner'],'body'=>"商品购买",'out_trade_no'=>$trade_no,'total_amount'=>$amount,'product_code'=>'QUICK_MSECURITY_PAY','timeout_express'=>'150m'))
+        );
+
+        $paydata=argSort($paydata);
+        $str=createLinkstring($paydata);
+        $paydata['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
+        //$data['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
+
+
+        $data['paycode']=createLinkstringUrlencode($paydata);
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+        $re_data['paytype']=1;
+
+    }
     /**
      * 支付宝回调
      */
