@@ -195,6 +195,10 @@ class App_UserController extends App_Controller_Action
         $code_token = $this->_request->code_token;
         $type = $this->_request->type;//1注册2找回密码
         $token = md5('123bbw_'.date('YmdH'));
+        if( !$phone || !$code_token || !$type  ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
         if ($code_token != $token) {
             echo  self::_error_data(API_REG_VALIDATE_TOKEN_FAIL,'获取验证码token验证失败');
             die();
