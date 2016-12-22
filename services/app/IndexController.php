@@ -180,7 +180,7 @@ class App_IndexController extends App_Controller_Action
                 $sup[$i]['value'] = $v;
                 $i++;
             }
-            $goods[$key]['sup'] =$sup;
+            $goods[$key]['sup'] =array_values($sup);
             unset($sup);
             $goods[$key]['prices'] = array_slice(array_values($k_v),0,2);
             $goods[$key]['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$row['thumb'];
