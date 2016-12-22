@@ -107,7 +107,7 @@ class App_PayController extends App_Controller_Action
             'nonce_str'=>$notify->createNoncestr(),
             'body'=>$subject,
             'out_trade_no'=>$trade_no,
-            'total_fee'=>$amount,
+            'total_fee'=>$amount * 100,
             'spbill_create_ip'=>get_ip(),
             'notify_url'=>$notifyUrl,
             'trade_type'=>'APP'
