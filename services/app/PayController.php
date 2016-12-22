@@ -36,7 +36,7 @@ class App_PayController extends App_Controller_Action
             'method'=>"alipay.trade.app.pay",
             'charset'=>'utf-8',
             'sign_type'=>'RSA',
-            'format'=>'json',
+            //'format'=>'json',
             'timestamp'=>date('Y-m-d H:i:s'),
             'version'=>'1.0',
             'notify_url'=>$notifyUrl,
