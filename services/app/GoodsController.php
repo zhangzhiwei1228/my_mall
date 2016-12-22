@@ -85,7 +85,7 @@ class App_GoodsController extends App_Controller_Action
         $data['ref_img'] = $ref_img;
         $data['opts'] = $getSkuOpts;
         /*$data['sku'] = $sku;*/
-        $data['prices'] = array_values($k_v);
+        $data['prices'] = is_array($k_v) ? array_values($k_v) : $k_v;
         $data['market_price'] = $sku['market_price'];
         unset($data['price']);
         unset($data['unit']);
