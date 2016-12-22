@@ -29,9 +29,8 @@ class App_PayController extends App_Controller_Action
             echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
             die();
         }
-
-        require_once LIBS_PATH . "Sdks/alipayapp/alipay.config.php";
-        require_once LIBS_PATH . "Sdks/alipayapp/lib/alipay_notify.class.php";
+        require_once LIB_DIR."Sdks/alipayapp/alipay.config.php";
+        require_once LIB_DIR."Sdks/alipayapp/lib/alipay_notify.class.php";
         $paydata=array(
             'app_id'=>$alipay_config['APPID'],
             'method'=>"alipay.trade.app.pay",
@@ -43,6 +42,7 @@ class App_PayController extends App_Controller_Action
             'notify_url'=>$notifyUrl,
             'biz_content'=>json_encode(array('subject'=>$subject,'seller_id'=>$alipay_config['partner'],'body'=>"商品购买",'out_trade_no'=>$trade_no,'total_amount'=>$amount,'product_code'=>'QUICK_MSECURITY_PAY','timeout_express'=>'150m'))
         );
+
         $paydata=argSort($paydata);
         $str=createLinkstring($paydata);
         $paydata['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
@@ -59,8 +59,8 @@ class App_PayController extends App_Controller_Action
      * 支付宝回调
      */
     public function doAliPayNotify() {
-        require_once LIBS_PATH . "Sdks/alipayapp/alipay.config.php";
-        require_once LIBS_PATH . "Sdks/alipayapp/lib/alipay_notify.class.php";
+        require_once LIB_DIR . "Sdks/alipayapp/alipay.config.php";
+        require_once LIB_DIR . "Sdks/alipayapp/lib/alipay_notify.class.php";
         //计算得出通知验证结果
         $alipayNotify = new AlipayNotify($alipay_config);
         Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', $alipayNotify, 'a');
