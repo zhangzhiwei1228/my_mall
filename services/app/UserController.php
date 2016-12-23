@@ -320,8 +320,8 @@ class App_UserController extends App_Controller_Action
             'qty' => $qty,
         ));*/
         $data = array('id'=> $cart);
-        //echo $this->_encrypt_data($data);
-        echo $this->show_data($this->_encrypt_data($data));
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
