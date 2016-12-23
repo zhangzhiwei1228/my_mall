@@ -13,6 +13,8 @@ $alipay_config['seller_id']    = '13626566333@163.com';
 
 //安全检验码，以数字和字母组成的32位字符
 $alipay_config['key']            = 'bochy2h95oa54tpx2r3td5kyf4fwzamh';
+$alipay_config['service']            = 'mobile.securitypay.pay';
+$alipay_config['payment_type']            = '1';
 
 //商户的私钥（后缀是.pen）文件相对路径
 $alipay_config['private_key_path']	= LIB_DIR."Sdks/alipayapp/key/rsa_private_key.pem";
@@ -28,7 +30,8 @@ $alipay_config['ali_public_key_path']= LIB_DIR."Sdks/alipayapp/key/rsa_public_ke
 $alipay_config['sign_type']    = strtoupper('RSA');
 
 //字符编码格式 目前支持 gbk 或 utf-8
-$alipay_config['input_charset']= strtolower('utf-8');
+$alipay_config['_input_charset']= strtolower('utf-8');
+$alipay_config['it_b_pay']= '30m';
 
 //ca证书路径地址，用于curl中ssl校验
 //请保证cacert.pem文件在当前文件夹目录中

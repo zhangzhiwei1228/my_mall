@@ -148,7 +148,7 @@ class App_PayController extends App_Controller_Action
         $orderInfo=argSort($orderInfo);
         $str=createLinkstring($orderInfo);
         $orderInfo['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
-        $data['paycode']=createLinkstringUrlencode($orderInfo);
+        $data = createLinkstring($orderInfo).'&sign_type='.'"'."RSA".'"';
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
@@ -157,19 +157,14 @@ class App_PayController extends App_Controller_Action
      * 支付宝回调
      */
     public function doAliPayNotify() {
-        require_once LIB_DIR . "Sdks/alipayapp/alipay.config.php";
+        require_once LIB_DIR . "Sdks/alipayapp/mobile.config.php";
         require_once LIB_DIR . "Sdks/alipayapp/lib/alipay_notify.class.php";
         //计算得出通知验证结果
         Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'start:', 'a');
-        try{
-            $alipayNotify = new AlipayNotify($alipay_config);
-
-            $verify_result = $alipayNotify->verifyNotify();
-
-        } catch(Exception $e) {
-            Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'error: '.$e, 'a');
-        }
-
+        //Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'alipay_config: '.$alipay_config, 'a');
+        $alipayNotify = new AlipayNotify($alipay_config);
+        //Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'alipayNotify: '.$alipayNotify, 'a');
+        $verify_result = $alipayNotify->verifyNotify();
         Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'verify_result: '.$verify_result, 'a');
 
         if ($verify_result) {
