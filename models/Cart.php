@@ -256,7 +256,7 @@ class Cart
 					->where('user_id ='. $uid . ' and goods_id ='.$item['id'].' and sku_id ='.$item['skuId'].' and shipping_id ='.$item['shipping_id'].' and price_type='.$item['priceType'])
 					->fetchRows()->toArray();
 				if($items) {
-					$cart_id = M('User_Cart')->update(array('qty'=>$item['qty']),'user_id ='. $uid . ' and goods_id ='.$item['id'].' and sku_id ='.$item['skuId'].' and shipping_id ='.$item['shipping_id'].' and price_type='.$item['priceType']);
+					M('User_Cart')->update(array('qty'=>$item['qty']),'user_id ='. $uid . ' and goods_id ='.$item['id'].' and sku_id ='.$item['skuId'].' and shipping_id ='.$item['shipping_id'].' and price_type='.$item['priceType']);
 				} else {
 					$cart_id = M('User_Cart')->insert(array(
 						'user_id' => $uid,
@@ -271,7 +271,7 @@ class Cart
 
 		 	}
 		 	if($checkout) {
-				return $cart_id;
+				return $cart_id ? $cart_id : $items['id'];
 			}
 		 }
 	}
