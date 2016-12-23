@@ -33,7 +33,7 @@ class App_PayController extends App_Controller_Action
         require_once LIB_DIR."Sdks/alipayapp/lib/alipay_notify.class.php";
         $paydata=array(
             'app_id'=>$alipay_config['APPID'],
-            'method'=>"alipay.trade.app.pay",
+            'method'=>"mobile.securitypay.pay",
             'charset'=>'utf-8',
             'sign_type'=>'RSA',
             //'format'=>'json',
@@ -48,13 +48,13 @@ class App_PayController extends App_Controller_Action
         $paydata['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
         //$data['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
 
-        $data['paycode']=createLinkstringUrlencode($paydata);
-        echo json_encode($data);
-        die();
         /*$data['paycode']=createLinkstringUrlencode($paydata);
+        echo json_encode($data);
+        die();*/
+        $data['paycode']=createLinkstringUrlencode($paydata);
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
-        die();*/
+        die();
         $re_data['paytype']=1;
 
     }
@@ -72,7 +72,7 @@ class App_PayController extends App_Controller_Action
         require_once LIB_DIR."Sdks/alipayapp/lib/alipay_notify.class.php";
         $paydata=array(
             'app_id'=>$alipay_config['APPID'],
-            'method'=>"alipay.trade.app.pay",
+            'method'=>"mobile.securitypay.pay",
             'charset'=>'utf-8',
             'sign_type'=>'RSA',
             //'format'=>'json',
