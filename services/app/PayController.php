@@ -160,6 +160,8 @@ class App_PayController extends App_Controller_Action
         require_once LIB_DIR . "Sdks/alipayapp/alipay.config.php";
         require_once LIB_DIR . "Sdks/alipayapp/lib/alipay_notify.class.php";
         //计算得出通知验证结果
+        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'start:', 'a');
+        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', $alipay_config, 'a');
         $alipayNotify = new AlipayNotify($alipay_config);
         Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', $alipayNotify, 'a');
         $verify_result = $alipayNotify->verifyNotify();
