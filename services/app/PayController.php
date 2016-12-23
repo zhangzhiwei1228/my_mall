@@ -145,12 +145,13 @@ class App_PayController extends App_Controller_Action
         $orderInfo['return_url'] = 'm.alipay.com';
         // 调用银行卡支付，需配置此参数，参与签名， 固定值 （需要签约《无线银行卡快捷支付》才能使用）
         // orderInfo += "&paymethod=\"expressGateway\"";
-        $orderInfo=argSort($orderInfo);
-        $str=createLinkstring($orderInfo);
-        $orderInfo['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
-        $data = createLinkstring($orderInfo).'&sign_type='.'"'."RSA".'"';
-        echo $this->_encrypt_data($data);
-        //echo $this->show_data($this->_encrypt_data($data));
+        //$orderInfo=argSort($orderInfo);
+        //$str=createLinkstring($orderInfo);
+        $orderInfo['rsa_private_key'] = 'MIICXgIBAAKBgQDDlTB0y/Ee2Rac926mKiygR/jBsGAjREtGI3rwOIAktBpMhJqFQo6Dg2XAzZMG5KTtwLBPWH4kc/j2TLjzsGBBej75UQTFRAmV8DJNjyGF9MMLU2YucECfpMYVehmPqZD8Uqhc/KGcjhW5NQBCOo170la0IyKBZK/Pg/4yZJdOUQIDAQABAoGBAIFvfn4NaimsKdb/uW6mgpogh3RHsZglXluwp2/LNKMVvkHdkBWZEo/eqbyLUD5DmxLtbsFUI0ckqSL3a396vnftYZx7SMb6RQnpH5cSGvZrtdTLWi4WYpHiKvqkxSUU1mOohaj+SxuSEZijti6j425NSmZMv8uQkO0gH8liriNBAkEA9cD4sXnN9S+mkk7a8Ph6tmur5iDJMJKUezba7HE1Ys9f0pdvBqcg9i1R5kQ41E5vBdfmR+gDTNOC5yjieczvBQJBAMu8uPBZ9mqdwLmOW3JaMjsg/yO1lI8revk5r5yak8cmI3Wxlaks7PvdSn754VhZ/9U0AtFk/Pg4fDQebCnUy90CQQChIn0uCRqFCFBkoDWoSJRVZfXZN2gTZBjdTVNwMq55clV3BHn018KiB4cqv1Kvyhm7sBs6zKLVTd4H6WPNzxRtAkEApma6ihyAJa441ZUO3YQLmL2nhWvuLU0vAFV8OCUMY9Cjj6H+gZFe8YtZKAJBah7/1AvJ7WpVLws7bnoWj8fsxQJAGUgL3EDCdFJMtzuT27Ihi4/y3WiS5F4Zvh7vrlLUy77cIirfhMTEBgdEYVdS75J6gwmuNTpYIyiMe+47YeVsOg==';
+        //$orderInfo['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
+        //$data = createLinkstring($orderInfo).'&sign_type='.'"'."RSA".'"';
+        echo $this->_encrypt_data($orderInfo);
+        //echo $this->show_data($this->_encrypt_data($orderInfo));
         die();
     }
     /**
