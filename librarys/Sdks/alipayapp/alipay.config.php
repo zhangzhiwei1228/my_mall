@@ -35,7 +35,7 @@ $alipay_config['key']            = 'bochy2h95oa54tpx2r3td5kyf4fwzamh';
 $alipay_config['private_key_path']	= LIB_DIR."Sdks/alipayapp/key/rsa_private_key.pem";
 
 //支付宝公钥（后缀是.pen）文件相对路径
-$alipay_config['ali_public_key_path']= LIB_DIR."Sdks/alipayapp/key/rsa_public_key.pem";
+$alipay_config['ali_public_key_path']= LIB_DIR."Sdks/alipayapp/key/alipay_public_key.pem";
 
 
 //↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
