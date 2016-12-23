@@ -157,7 +157,7 @@ class App_PayController extends App_Controller_Action
      * 支付宝回调
      */
     public function doAliPayNotify() {
-        require_once LIB_DIR . "Sdks/alipayapp/mobile.config.php";
+        require_once LIB_DIR . "Sdks/alipayapp/alipay.config.php";
         require_once LIB_DIR . "Sdks/alipayapp/lib/alipay_notify.class.php";
         //计算得出通知验证结果
         Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'start:', 'a');
