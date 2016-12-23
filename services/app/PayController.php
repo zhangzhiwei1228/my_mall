@@ -17,7 +17,7 @@ class App_PayController extends App_Controller_Action
     }
 
     /**
-     * 支付宝签名
+     * 支付宝签名 alipay.trade.app.pay
      */
     public function doAliSign() {
         $this->user = $this->_auth();
@@ -33,7 +33,7 @@ class App_PayController extends App_Controller_Action
         require_once LIB_DIR."Sdks/alipayapp/lib/alipay_notify.class.php";
         $paydata=array(
             'app_id'=>$alipay_config['APPID'],
-            'method'=>"mobile.securitypay.pay",
+            'method'=>"alipay.trade.app.pay",
             'charset'=>'utf-8',
             'sign_type'=>'RSA',
             //'format'=>'json',
@@ -72,7 +72,7 @@ class App_PayController extends App_Controller_Action
         require_once LIB_DIR."Sdks/alipayapp/lib/alipay_notify.class.php";
         $paydata=array(
             'app_id'=>$alipay_config['APPID'],
-            'method'=>"mobile.securitypay.pay",
+            'method'=>"alipay.trade.app.pay",
             'charset'=>'utf-8',
             'sign_type'=>'RSA',
             //'format'=>'json',
@@ -94,6 +94,64 @@ class App_PayController extends App_Controller_Action
         die();
         $re_data['paytype']=1;
 
+    }
+    /**
+     * 支付宝签名，mobile.securitypay.pay
+     */
+    public function doAliSignMobile() {
+        $this->user = $this->_auth();
+        $notifyUrl = (string)new Suco_Helper_Url('module=app&controller=pay&action=AliPayNotify');
+        $trade_no = $this->_request->trade_no;
+        $amount = $this->_request->amount;
+        $subject = $this->_request->subject;
+        if( !$trade_no || !$amount  ) {
+            echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        require_once LIB_DIR."Sdks/alipayapp/alipay.config.php";
+        require_once LIB_DIR."Sdks/alipayapp/lib/alipay_notify.class.php";
+        // 签约合作者身份ID
+        $orderInfo['partner'] = '2088221359126641';
+        // 签约卖家支付宝账号
+        $orderInfo['seller_id'] = '13626566333@163.com';
+        // 商户网站唯一订单号
+        $orderInfo['out_trade_no'] = $trade_no;
+        // 商品名称
+        $orderInfo['subject'] = $subject;
+        // 商品详情
+        $orderInfo['body'] = '购买商品';
+        // 商品金额
+        $orderInfo['total_fee'] = $amount;
+        // 服务器异步通知页面路径
+        $orderInfo['notify_url'] = $notifyUrl;
+        // 服务接口名称， 固定值
+        $orderInfo['service'] = 'mobile.securitypay.pay';
+        // 支付类型， 固定值
+        $orderInfo['payment_type'] = '1';
+        // 参数编码， 固定值
+        $orderInfo['_input_charset'] = 'utf-8';
+
+        // 设置未付款交易的超时时间
+        // 默认30分钟，一旦超时，该笔交易就会自动被关闭。
+        // 取值范围：1m～15d。
+        // m-分钟，h-小时，d-天，1c-当天（无论交易何时创建，都在0点关闭）。
+        // 该参数数值不接受小数点，如1.5h，可转换为90m。
+        $orderInfo['it_b_pay'] = '30m';
+
+        // extern_token为经过快登授权获取到的alipay_open_id,带上此参数用户将使用授权的账户进行支付
+        // orderInfo += "&extern_token=" + "\"" + extern_token + "\"";
+
+        // 支付宝处理完请求后，当前页面跳转到商户指定页面的路径，可空
+        $orderInfo['return_url'] = 'm.alipay.com';
+        // 调用银行卡支付，需配置此参数，参与签名， 固定值 （需要签约《无线银行卡快捷支付》才能使用）
+        // orderInfo += "&paymethod=\"expressGateway\"";
+        $orderInfo=argSort($orderInfo);
+        $str=createLinkstring($orderInfo);
+        $orderInfo['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
+        $data['paycode']=createLinkstringUrlencode($orderInfo);
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
     }
     /**
      * 支付宝回调
