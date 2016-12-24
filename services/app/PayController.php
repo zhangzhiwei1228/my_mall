@@ -217,8 +217,11 @@ class App_PayController extends App_Controller_Action
 
         $paydata['sign']=$notify->getSign($paydata);
         //$data['sign']=$notify->getSign($paydata);
-
+        Log::DEBUG("微信sign:");
+        Log::DEBUG($paydata);
         $xml= $notify->postXmlCurl($notify->arrayToXml($paydata),'https://api.mch.weixin.qq.com/pay/unifiedorder');
+        Log::DEBUG("微信xml:");
+        Log::DEBUG($xml);
         $paydatanew=$notify->xmlToArray($xml);
         if($paydatanew['return_code']=="SUCCESS"){
             $arr['appid']=$paydatanew['appid'];
