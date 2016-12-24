@@ -36,9 +36,9 @@ class App_PayController extends App_Controller_Action
             'method'=>"alipay.trade.app.pay",
             'charset'=>'utf-8',
             'sign_type'=>'RSA',
-            //'format'=>'json',
+            'format'=>'json',
             'timestamp'=>date('Y-m-d H:i:s'),
-            'version'=>'1.0',
+            'version'=>'2.0',
             'notify_url'=>$notifyUrl,
             'biz_content'=>json_encode(array('subject'=>$subject,'seller_id'=>$alipay_config['partner'],'body'=>"商品购买",'out_trade_no'=>$trade_no,'total_amount'=>$amount,'product_code'=>'QUICK_MSECURITY_PAY','timeout_express'=>'150m'))
         );
@@ -75,9 +75,9 @@ class App_PayController extends App_Controller_Action
             'method'=>"alipay.trade.app.pay",
             'charset'=>'utf-8',
             'sign_type'=>'RSA',
-            //'format'=>'json',
+            'format'=>'json',
             'timestamp'=>date('Y-m-d H:i:s'),
-            'version'=>'1.0',
+            'version'=>'2.0',
             'notify_url'=>$notifyUrl,
             'biz_content'=>json_encode(array('subject'=>$subject,'seller_id'=>$alipay_config['partner'],'body'=>"商品购买",'out_trade_no'=>$trade_no,'total_amount'=>$amount,'product_code'=>'QUICK_MSECURITY_PAY','timeout_express'=>'150m'))
         );
