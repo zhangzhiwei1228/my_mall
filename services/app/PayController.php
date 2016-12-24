@@ -224,6 +224,7 @@ class App_PayController extends App_Controller_Action
             $arr['appid']=$paydatanew['appid'];
             $arr['partnerid']=$paydatanew['mch_id'];
             $arr['prepayid']=$paydatanew['prepay_id'];
+            $arr['mch_id']=$paydatanew['mch_id'];
             $arr['package']="Sign=WXPay";
             $arr['noncestr']=$notify->createNoncestr();
             $arr['timestamp']=time();
