@@ -722,7 +722,8 @@ class App_GoodsController extends App_Controller_Action
         if($status && $status == 6) {
             $select->where('o.status > 0 and o.status <= 4');
         }
-
+        var_dump($select);
+        die();
         switch ($this->_request->sm) {
             case 'code':
                 $this->_request->keyword && $select->where('o.code = ?', $this->_request->keyword);
