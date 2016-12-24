@@ -224,13 +224,12 @@ class App_PayController extends App_Controller_Action
             $arr['appid']=$paydatanew['appid'];
             $arr['partnerid']=$paydatanew['mch_id'];
             $arr['prepayid']=$paydatanew['prepay_id'];
-            $arr['mch_id']=$paydatanew['mch_id'];
             $arr['package']="Sign=WXPay";
             $arr['noncestr']=$notify->createNoncestr();
             $arr['timestamp']=time();
             $arr['sign']=$notify->getSign($arr);
             $data['xml'] = $notify->arrayToXml($paydata);
-            $data['json'] = $paydata;
+            $data['json'] = $arr;
             echo $this->_encrypt_data($data);
             //echo $this->show_data($this->_encrypt_data($data));
             die();
