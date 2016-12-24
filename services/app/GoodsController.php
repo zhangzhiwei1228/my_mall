@@ -741,8 +741,7 @@ class App_GoodsController extends App_Controller_Action
             $select->where('o.create_time <= ?', strtotime($this->_request->end_time) + (3600 * 24));
         }
         $datas = $select->fetchRows()->toArray();
-        var_dump($datas);
-        die();
+        
         $sku_ids = array();
         $pageage = 0;
         $price_text = array();
