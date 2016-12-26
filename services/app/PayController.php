@@ -163,7 +163,7 @@ class App_PayController extends App_Controller_Action
         //计算得出通知验证结果
         $data = $_POST;
 
-        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'sign: '.$_POST["sign"], 'a');
+
         Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'start:', 'a');
         //Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'alipay_config: '.$alipay_config, 'a');
         $alipayNotify = new AlipayNotify($alipay_config);
