@@ -77,9 +77,20 @@ class App_PayController extends App_Controller_Action
             'sign_type'=>'RSA',
             'format'=>'json',
             'timestamp'=>date('Y-m-d H:i:s'),
-            'version'=>'2.0',
+            'version'=>'1.0',
             'notify_url'=>$notifyUrl,
-            'biz_content'=>json_encode(array('subject'=>$subject,'seller_id'=>$alipay_config['seller_email'],'partner'=>$alipay_config['partner'],'body'=>"商品购买",'out_trade_no'=>$trade_no,'total_amount'=>$amount,'product_code'=>'QUICK_MSECURITY_PAY','timeout_express'=>'150m'))
+            'biz_content'=>json_encode(
+                array(
+                    'timeout_express'=>'150m',
+                    'seller_id'=>$alipay_config['seller_email'],
+                    'product_code'=>'QUICK_MSECURITY_PAY',
+                    'total_amount'=>$amount,
+                    'subject'=>$subject,
+                    'body'=>"商品购买",
+                    'out_trade_no'=>$trade_no
+                    //'partner'=>$alipay_config['partner']
+                )
+            )
         );
 
         $paydata=argSort($paydata);
