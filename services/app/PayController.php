@@ -164,7 +164,7 @@ class App_PayController extends App_Controller_Action
         $orderInfo['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
 
         $data = createLinkstring($orderInfo).'&sign_type='.'"'."RSA".'"';
-        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'data:'.$data, 'a');
+        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'sign_data:----------'.$data, 'a');
         echo $this->_encrypt_data($android);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
