@@ -162,9 +162,6 @@ class App_PayController extends App_Controller_Action
         $str=createLinkstring($orderInfo);
         $android['rsa_private_key'] = 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKiuKYtScBO6gTxVGDrSD0WYmUiE8INAS7fKEvzOVLOXtYc0uES+Y3dMiCMw62zLqyuOOiA3KO86iqO6u94A23da0jRZ3ikEXb15v5MyQOZ9LDZbK4Jwxx5rGCTXK2hpdqly4QlpmCkf9Fw+YcU1qLsnLq/9nsWilI/oHVKkSEqjAgMBAAECgYBnHWiaGcAX31hniGFye70IP3vcwB/DLIfdB3PKBVv0GZbH22uV4oktgaRrVtlkPbEaxCw2S2IDtFbSNjHoSb/e3S4ZiZPWNfVPHtvB+qfbKSk4tnB/Ju7kLo9iNgeufs/aU0SPplQrhz21emedtyuBvsTVuq7JrrvPtSS/adrVIQJBANxil4npduzCDnxDhPBTJnV3c+r5/pQsxDPXgl9JSY9El6XTs5ftZdaG+dTF+YhLgblJZbpPnFoHz5C2jV1O49MCQQDD8IZhG3O1ZdxRvjl59o5+xhIXSfWOG9MVwLjtIGMX++n4xDCucMMmZwwiiGA2bumHG00Qlsih3XxAI6DEh0vxAkBpkFBGHy53+fw2SaFD/JBPdAhyZY0sLMVOj8xDGDfECHcbV2yPOYeuWrkQ0kPUpVZeCmpP9BJQja0/BDJyn3dBAkEAtiXXBlb6zdsPYX4w+ExYU0nWb4f1mlILfOFYCDhfZmBtNTFNAB0bjYumIEQfDPs2ZL7geVdy0+aOJyH3xjrwQQJBAL1OcKWyvEvMr2KUevRQA0bO/H1sWDMh0XMLnZVz1wJ9cEfURhrurnSFhf1W0yAU+/7dk3yexfIsmni8fuysMdY=';
         $orderInfo['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
-
-        $data = createLinkstring($orderInfo).'&sign_type='.'"'."RSA".'"';
-        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'sign_data:----------'.$data, 'a');
         echo $this->_encrypt_data($android);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
@@ -176,18 +173,10 @@ class App_PayController extends App_Controller_Action
         require_once LIB_DIR . "Sdks/alipayapp/alipay.config.php";
         require_once LIB_DIR . "Sdks/alipayapp/lib/alipay_notify.class.php";
         //计算得出通知验证结果
-        $data = $_POST;
 
-
-        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'start:', 'a');
-        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'post_data:'.var_export($_POST,true), 'a');
-        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'get_data:'.var_export($_GET,true), 'a');
-        //Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'alipay_config: '.$alipay_config, 'a');
         $alipayNotify = new AlipayNotify($alipay_config);
-        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'alipayNotify: '.var_export($alipayNotify,true), 'a');
-        $verify_result = $alipayNotify->verifyNotify();
 
-        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'verify_result: '.var_export($verify_result,true), 'a');
+        $verify_result = $alipayNotify->verifyNotify();
 
         if ($verify_result) {
             //验证成功
@@ -197,10 +186,275 @@ class App_PayController extends App_Controller_Action
             $trade_no = $_POST['trade_no'];
             //交易状态
             $trade_status = $_POST['trade_status'];
-            Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', $trade_status, 'a');
             if ($trade_status == 'TRADE_FINISHED' || $trade_status == 'TRADE_SUCCESS') {
+                //充值
+                $q = $data = array_merge($_POST, $_GET);
+                try {
+                    list($type, $code) = explode('-', trim($q['out_trade_no']));
+                    $voucher = 'ALI-'.$q['trade_no'];
+                    if(isset($_SESSION['awaiting_payment'])) {
+                        unset($_SESSION['awaiting_payment']);
+                    }
+                    //滤重
+                    $recharge = M('User_Recharge')->select()
+                        ->where('voucher = ? AND payment_id = ?', array($voucher, $this->_pid))
+                        ->fetchRow();
 
+                    if ($recharge->exists()) {
+                        die('fail');
+                    }
+
+                    switch($type) {
+                        case 'hybrid': //会员混合支付抵用金
+                            if (!$code) {
+                                die('fail');
+                            }
+
+                            $order = M('Worthglod')->getByOrderNo($code);
+                            if ($order->exists() && $order->status == 1) {
+                                $order->buyer->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝支付抵佣金', $this->_pid
+                                )->commit();
+                                $order->payHybrid();
+
+                                die('success');
+                            }
+                            break;
+                        case 'cash': //会员现金支付抵用金
+                            if (!$code) {
+                                die('fail');
+                            }
+
+                            $order = M('Worthglod')->getByOrderNo($code);
+                            if ($order->exists() && $order->status == 1) {
+                                $order->buyer->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝现金支付抵佣金', $this->_pid
+                                )->commit();
+                                $order->payCash();
+                                die('success');
+                            }
+                            break;
+                        case 'single': //会员非混合支付抵用金
+                            if (!$code) {
+                                die('fail');
+                            }
+                            $order = M('Worthglod')->getByOrderNo($code);
+                            if ($order->exists() && $order->status == 1) {
+                                $order->buyer->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝非混合支付抵佣金', $this->_pid
+                                )->commit();
+                                $order->paySingle();
+                                die('success');
+                            }
+                            break;
+                        case 'TS': //支付订单
+                            if (!$code) {
+                                die('fail');
+                            }
+
+                            $order = M('Order')->getByCode($code);
+                            if ($order->exists() && $order->status == 1) {
+                                $order->buyer->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                $order->pay();
+                                $order->adduserarea();
+                                die('success');
+                            }
+                            break;
+                        case 'RC': //帐户充值
+                            $user = M('User')->getById($code);
+
+                            if ($user->exists()) {
+                                $user->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                die('success');
+                            }
+                            break;
+                        case 'RCA': //免费积分充值
+                            $user = M('User')->getById($code);
+
+                            if ($user->exists()) {
+                                $user->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                $user->expend(
+                                    'pay', $q['total_fee'], $voucher, '购买帮帮币#'.$voucher
+                                )->commit();
+
+                                //$point = ($user['role'] == 'seller') ? $setting['credit_rate_agent']*$q['total_fee'] : $setting['credit_rate']*$q['total_fee'];
+                                $type_id = ($user['role'] == 'seller') ? 8 : 7;
+                                $pay_type = 'credit';
+                                $coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+                                $data = M('Proportion')->select()->where('type='.(int)$type_id.' and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+                                $point = $data['r_digital']*$q['total_fee'];
+
+                                $user->credit($point, '购买帮帮币', 1);
+                                die('success');
+                            }
+                            break;
+                        case 'RCB': //快乐积分充值
+                            $user = M('User')->getById($code);
+
+                            if ($user->exists()) {
+                                $user->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                $user->expend(
+                                    'pay', $q['total_fee'], $voucher, '购买快乐积分#'.$voucher
+                                )->commit();
+
+                                //$point = $setting['credit_happy_rate']*$q['total_fee'];
+
+                                $pay_type = 'credit_happy';
+                                $coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+                                $data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+                                $point = $data['r_digital']*$q['total_fee'];
+                                $user->creditHappy($point, '购买快乐积分', 1);
+                                die('success');
+                            }
+                            break;
+                        case 'RCC': //积分币充值
+                            $user = M('User')->getById($code);
+
+                            if ($user->exists()) {
+                                $user->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                $user->expend(
+                                    'pay', $q['total_fee'], $voucher, '购买积分币#'.$voucher
+                                )->commit();
+
+                                //$point = $setting['credit_coin_rate']*$q['total_fee'];
+
+                                $pay_type = 'credit_coin';
+                                $coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+                                $data = M('Proportion')->select()->where('type=7 and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+                                $point = $data['r_digital']*$q['total_fee'];
+                                $user->creditCoin($point, '购买积分币', 1);
+                                die('success');
+                            }
+                            break;
+                        case 'RCD': //抵用券充值
+                            $user = M('User')->getById($code);
+
+                            if ($user->exists()) {
+                                $user->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                $user->expend(
+                                    'pay', $q['total_fee'], $voucher, '购买抵用券#'.$voucher
+                                )->commit();
+
+
+                                $type_id = ($user['role'] == 'seller') ? 8 : 7;
+                                $pay_type = 'vouchers';
+                                $coltype = M('Coltypes')->select('id,english')->where("english='".$pay_type."'")->fetchRow()->toArray();
+                                $data = M('Proportion')->select()->where('type='.(int)$type_id.' and right_id='.(int)$coltype['id'])->fetchRow()->toArray();
+                                $point = $data['r_digital']*$q['total_fee'];
+
+                                $user->vouchers($point, '购买抵用券', 1);
+                                die('success');
+                            }
+                            break;
+                        case 'VIP': //VIP激活
+                            $user = M('User')->getById($code);
+
+                            if ($user->exists()) {
+                                $user->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                $user->expend(
+                                    'pay', $q['total_fee'], $voucher, 'VIP激活'
+                                )->commit();
+                                $user->is_vip = 1;
+                                $user->save();
+                                M('User')->activateAddCredit((int)$code);
+                                die('success');
+                            }
+                            break;
+                        case 'VIP1': //VIP激活
+                            $user = M('User')->getById($code);
+
+                            if ($user->exists()) {
+                                $user->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                $user->expend(
+                                    'pay', $q['total_fee'], $voucher, '升级一星分销商'
+                                )->commit();
+                                $user->is_vip = 2;
+                                $user->save();
+
+                                //赠送500免费积分
+                                $user->credit(500, '升级一星分销商，赠送帮帮币', 3);
+                                die('success');
+                            }
+                            break;
+                        case 'VIP2': //VIP激活
+                            $user = M('User')->getById($code);
+
+                            if ($user->exists()) {
+                                $user->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                $user->expend(
+                                    'pay', $q['total_fee'], $voucher, '升级二星分销商'
+                                )->commit();
+                                $user->is_vip = 3;
+                                $user->save();
+
+                                //赠送500免费积分
+                                $user->credit(500, '升级二星分销商，赠送帮帮币', 3);
+                                die('success');
+                            }
+                            break;
+                        case 'VIP3': //VIP激活
+                            $user = M('User')->getById($code);
+
+                            if ($user->exists()) {
+                                $user->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                $user->expend(
+                                    'pay', $q['total_fee'], $voucher, '升级三星分销商'
+                                )->commit();
+                                $user->is_vip = 4;
+                                $user->save();
+
+                                //赠送500免费积分
+                                $user->credit(500, '升级三星分销商，赠送帮帮币', 3);
+                                die('success');
+                            }
+                            break;
+                        case 'VIP4': //VIP激活
+                            $user = M('User')->getById($code);
+
+                            if ($user->exists()) {
+                                $user->recharge(
+                                    $q['total_fee'], 0, $voucher, '支付宝充值', $this->_pid
+                                )->commit();
+                                $user->expend(
+                                    'pay', $q['total_fee'], $voucher, '升级四星分销商'
+                                )->commit();
+                                $user->is_vip = 5;
+                                $user->save();
+
+                                //赠送500免费积分
+                                $user->credit(500, '升级四星分销商，赠送帮帮币', 3);
+                                die('success');
+                            }
+                            break;
+                    }
+                } catch(Suco_Exception $e) {
+                    Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'error_msg:----------'.$e, 'a');
+                    die('fail');
+                }
+            } else {
+                die('fail');
             }
+
         }
     }
     /**

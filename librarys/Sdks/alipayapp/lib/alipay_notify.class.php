@@ -116,26 +116,19 @@ class AlipayNotify {
 	 */
 	function getSignVeryfy($para_temp, $sign) {
 		//除去待签名参数数组中的空值和签名参数
-		Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'para_temp:'.$para_temp, 'a');
-		Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'sign:'.$sign, 'a');
+
 		$para_filter = paraFilter($para_temp);
-		Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'para_filter:'.$para_filter, 'a');
+
 		//对待签名参数数组排序
 		$para_sort = argSort($para_filter);
-		Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'para_sort:'.$para_sort, 'a');
+
 		//把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
 		$prestr = createLinkstring($para_sort);
-		Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'prestr:'.$prestr, 'a');
-		//print_r('$prestr='.$prestr);
+
 	
 		$isSgin = false;
 		switch (strtoupper(trim($this->alipay_config['sign_type']))) {
 		case "RSA":
-			/*echo rsaSign($prestr, trim($this->alipay_config['private_key_path']));
-			echo '<br />';
-			echo $sign;
-			die;*/
-			
 			$isSgin = rsaVerify($prestr, trim($this->alipay_config['ali_public_key_path']), $sign);
 			break;
 		default:
