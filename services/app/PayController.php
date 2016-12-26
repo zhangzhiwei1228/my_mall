@@ -191,7 +191,9 @@ class App_PayController extends App_Controller_Action
                 $q = $data = array_merge($_POST, $_GET);
                 try {
                     list($type, $code) = explode('-', trim($q['out_trade_no']));
-
+                    Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'out_trade_no:----------'.$q['out_trade_no'], 'a');
+                    Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'type:----------'.$type, 'a');
+                    Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'code:----------'.$code, 'a');
                     $voucher = 'ALI-'.$q['trade_no'];
                     if(isset($_SESSION['awaiting_payment'])) {
                         unset($_SESSION['awaiting_payment']);
@@ -200,7 +202,7 @@ class App_PayController extends App_Controller_Action
                     $recharge = M('User_Recharge')->select()
                         ->where('voucher = ? AND payment_id = ?', array($voucher, $this->_pid))
                         ->fetchRow();
-
+                    Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'recharge-exists:----------'.$recharge->exists(), 'a');
                     if ($recharge->exists()) {
                         die('fail');
                     }
@@ -252,7 +254,7 @@ class App_PayController extends App_Controller_Action
                             if (!$code) {
                                 die('fail');
                             }
-
+                            Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'change_status:----------1', 'a');
                             $order = M('Order')->getByCode($code);
                             if ($order->exists() && $order->status == 1) {
                                 $order->buyer->recharge(
@@ -260,6 +262,7 @@ class App_PayController extends App_Controller_Action
                                 )->commit();
                                 $order->pay();
                                 $order->adduserarea();
+                                Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'change_status:----------success', 'a');
                                 die('success');
 
                             }
