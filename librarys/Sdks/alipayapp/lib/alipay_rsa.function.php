@@ -17,7 +17,7 @@
  */
 function rsaSign($data, $private_key_path) {
     $priKey = file_get_contents($private_key_path);
-    $res = openssl_get_privatekey(base64_decode($priKey));
+    $res = openssl_get_privatekey($priKey);
     openssl_sign($data, $sign, $res);
     openssl_free_key($res);
 	//base64编码
