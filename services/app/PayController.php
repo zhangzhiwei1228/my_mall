@@ -176,9 +176,11 @@ class App_PayController extends App_Controller_Action
 
 
         Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'start:', 'a');
+        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'post_data:'.var_export($_POST,true), 'a');
+        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'get_data:'.var_export($_GET,true), 'a');
         //Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'alipay_config: '.$alipay_config, 'a');
         $alipayNotify = new AlipayNotify($alipay_config);
-        //Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'alipayNotify: '.$alipayNotify, 'a');
+        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'alipayNotify: '.var_export($alipayNotify,true), 'a');
         $verify_result = $alipayNotify->verifyNotify();
 
         Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'verify_result: '.$verify_result, 'a');
