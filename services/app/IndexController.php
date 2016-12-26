@@ -127,10 +127,15 @@ class App_IndexController extends App_Controller_Action
      * 本月精选
      */
     public function doSelectGoods() {
+        $limit  = $this->_request->limit ? $this->_request->limit : 4;
+        $page  = $this->_request->page ? $this->_request->page : 1 ;
         $goods = M('Goods')->alias('g')
             ->columns('g.id,g.title,g.thumb,g.notes,g.sup')
             ->where('g.is_selling = 1 AND g.is_checked = 2 and ((g.quantity-g.quantity_warning) > 0) and is_select = 1 AND (g.expiry_time = 0 OR g.expiry_time > ?)', time())
-            ->limit(4)->order('g.create_time DESC')->fetchRows()->toArray();
+            ->paginator((int)$limit, (int)$page)
+            ->order('g.create_time DESC')
+            ->fetchRows()
+            ->toArray();
         $sup = array();
         $i = 0;
         foreach($goods as $key=>$row) {
