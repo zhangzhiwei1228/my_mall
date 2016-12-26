@@ -191,6 +191,7 @@ class App_PayController extends App_Controller_Action
                 $q = $data = array_merge($_POST, $_GET);
                 try {
                     list($type, $code) = explode('-', trim($q['out_trade_no']));
+                    Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'out_trade_no:----------'.$q['out_trade_no'], 'a');
                     Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'type:----------'.$type, 'a');
                     Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'code:----------'.$code, 'a');
                     $voucher = 'ALI-'.$q['trade_no'];
