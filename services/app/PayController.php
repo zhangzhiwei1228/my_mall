@@ -156,13 +156,16 @@ class App_PayController extends App_Controller_Action
         $orderInfo['return_url'] = 'm.alipay.com';
         // 调用银行卡支付，需配置此参数，参与签名， 固定值 （需要签约《无线银行卡快捷支付》才能使用）
         // orderInfo += "&paymethod=\"expressGateway\"";
+        $android = $orderInfo;
         $orderInfo = paraFilter($orderInfo);
         $orderInfo=argSort($orderInfo);
         $str=createLinkstring($orderInfo);
-        //$orderInfo['rsa_private_key'] = 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKiuKYtScBO6gTxVGDrSD0WYmUiE8INAS7fKEvzOVLOXtYc0uES+Y3dMiCMw62zLqyuOOiA3KO86iqO6u94A23da0jRZ3ikEXb15v5MyQOZ9LDZbK4Jwxx5rGCTXK2hpdqly4QlpmCkf9Fw+YcU1qLsnLq/9nsWilI/oHVKkSEqjAgMBAAECgYBnHWiaGcAX31hniGFye70IP3vcwB/DLIfdB3PKBVv0GZbH22uV4oktgaRrVtlkPbEaxCw2S2IDtFbSNjHoSb/e3S4ZiZPWNfVPHtvB+qfbKSk4tnB/Ju7kLo9iNgeufs/aU0SPplQrhz21emedtyuBvsTVuq7JrrvPtSS/adrVIQJBANxil4npduzCDnxDhPBTJnV3c+r5/pQsxDPXgl9JSY9El6XTs5ftZdaG+dTF+YhLgblJZbpPnFoHz5C2jV1O49MCQQDD8IZhG3O1ZdxRvjl59o5+xhIXSfWOG9MVwLjtIGMX++n4xDCucMMmZwwiiGA2bumHG00Qlsih3XxAI6DEh0vxAkBpkFBGHy53+fw2SaFD/JBPdAhyZY0sLMVOj8xDGDfECHcbV2yPOYeuWrkQ0kPUpVZeCmpP9BJQja0/BDJyn3dBAkEAtiXXBlb6zdsPYX4w+ExYU0nWb4f1mlILfOFYCDhfZmBtNTFNAB0bjYumIEQfDPs2ZL7geVdy0+aOJyH3xjrwQQJBAL1OcKWyvEvMr2KUevRQA0bO/H1sWDMh0XMLnZVz1wJ9cEfURhrurnSFhf1W0yAU+/7dk3yexfIsmni8fuysMdY=';
+        $android['rsa_private_key'] = 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKiuKYtScBO6gTxVGDrSD0WYmUiE8INAS7fKEvzOVLOXtYc0uES+Y3dMiCMw62zLqyuOOiA3KO86iqO6u94A23da0jRZ3ikEXb15v5MyQOZ9LDZbK4Jwxx5rGCTXK2hpdqly4QlpmCkf9Fw+YcU1qLsnLq/9nsWilI/oHVKkSEqjAgMBAAECgYBnHWiaGcAX31hniGFye70IP3vcwB/DLIfdB3PKBVv0GZbH22uV4oktgaRrVtlkPbEaxCw2S2IDtFbSNjHoSb/e3S4ZiZPWNfVPHtvB+qfbKSk4tnB/Ju7kLo9iNgeufs/aU0SPplQrhz21emedtyuBvsTVuq7JrrvPtSS/adrVIQJBANxil4npduzCDnxDhPBTJnV3c+r5/pQsxDPXgl9JSY9El6XTs5ftZdaG+dTF+YhLgblJZbpPnFoHz5C2jV1O49MCQQDD8IZhG3O1ZdxRvjl59o5+xhIXSfWOG9MVwLjtIGMX++n4xDCucMMmZwwiiGA2bumHG00Qlsih3XxAI6DEh0vxAkBpkFBGHy53+fw2SaFD/JBPdAhyZY0sLMVOj8xDGDfECHcbV2yPOYeuWrkQ0kPUpVZeCmpP9BJQja0/BDJyn3dBAkEAtiXXBlb6zdsPYX4w+ExYU0nWb4f1mlILfOFYCDhfZmBtNTFNAB0bjYumIEQfDPs2ZL7geVdy0+aOJyH3xjrwQQJBAL1OcKWyvEvMr2KUevRQA0bO/H1sWDMh0XMLnZVz1wJ9cEfURhrurnSFhf1W0yAU+/7dk3yexfIsmni8fuysMdY=';
         $orderInfo['sign']=rsaSign($str,trim($alipay_config['private_key_path']));
+
         $data = createLinkstring($orderInfo).'&sign_type='.'"'."RSA".'"';
-        echo $this->_encrypt_data($data);
+        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'data:'.$data, 'a');
+        echo $this->_encrypt_data($android);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
