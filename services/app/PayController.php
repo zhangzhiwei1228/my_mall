@@ -183,7 +183,7 @@ class App_PayController extends App_Controller_Action
         Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'alipayNotify: '.var_export($alipayNotify,true), 'a');
         $verify_result = $alipayNotify->verifyNotify();
 
-        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'verify_result: '.$verify_result, 'a');
+        Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', 'verify_result: '.var_export($verify_result,true), 'a');
 
         if ($verify_result) {
             //验证成功
