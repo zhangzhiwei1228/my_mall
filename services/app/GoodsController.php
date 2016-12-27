@@ -501,7 +501,7 @@ class App_GoodsController extends App_Controller_Action
         }
         $order->is_receive = 1;
         $order->save();
-        $data = array('status'=>'ok');
+        $data = array('point'=>$order['total_earn_points']);
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
