@@ -153,4 +153,64 @@ class App_VipController extends App_Controller_Action
         $view = $this->_initView();
         $view->render('views/app/member_two.php');
     }
+    /**
+     * 充值
+     * type ：
+     * credit_coin 积分币 credit 帮帮币 vouchers抵用券
+     * hybrid购买抵佣金混合支付   cash购买抵佣金只用现金 single购买抵佣金除了现金的通用货币
+     * vouchers 购买抵用券
+     * vip0_active 用户激活
+     * vip1_active 升级一星分销商
+     * vip2_active 升级二星分销商
+     * vip3_active 升级三星分销商
+     * vip4_active 升级四星分销商
+     */
+    public function doRecharge() {
+        $type = $this->_request->type;
+        switch ($type) {
+            case 'credit':
+                $prefix = 'RCA-';
+                break;
+            case 'credit_happy':
+                $prefix = 'RCB-';
+                break;
+            case 'credit_coin':
+                $prefix = 'RCC-';
+                break;
+            case 'vip0_active':
+                $prefix = 'VIP-';
+                break;
+            case 'vip1_active':
+                $prefix = 'VIP1-';
+                break;
+            case 'vip2_active':
+                $prefix = 'VIP2-';
+                break;
+            case 'vip3_active':
+                $prefix = 'VIP3-';
+                break;
+            case 'vip4_active':
+                $prefix = 'VIP4-';
+                break;
+            case 'hybrid':
+                $prefix = 'hybrid-';
+                break;
+            case 'cash':
+                $prefix = 'cash-';
+                break;
+            case 'single':
+                $prefix = 'single-';
+                break;
+            case 'vouchers'://抵佣券
+                $prefix = 'RCD-';
+                break;
+        }
+        $data = array(
+            'trade_no' => $prefix.$this->user->id.'-'.time(),
+            'subject' => '帐户充值',
+        );
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
 }
