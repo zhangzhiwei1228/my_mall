@@ -871,19 +871,16 @@ class App_GoodsController extends App_Controller_Action
             echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
             die();
         }
-        $order = M('Order')->select('status')->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow()->toArray();
+        $order = M('Order')->select()->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow();
         if(!$order ) {
             echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
             die();
         }
-
-        if($order['is_return'] || ( (!$order['status'] || $order['status'] == 1 || $order['status'] == 5) )) {
+        if($order['is_return'] || ( (!$order['status'] || ($order['status'] && $order['status'] != 2)) )) {
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
             die();
         }
-
-        M('Order')->update(array('is_return'=>10), 'id = '.(int)$oid);
-
+        $order->refund(date(DATETIME_FORMAT)." - 买家申请退款\r\n",$this->user->id);
         $data = array('status'=>'ok');
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));

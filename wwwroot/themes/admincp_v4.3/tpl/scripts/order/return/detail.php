@@ -28,8 +28,8 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 			<label class="control-label col-sm-2">商品图片:</label>
 			<div class="col-sm-9">
 				<div class="form-control-static" style="width:80px; height:80px;">
-					<a href="<?=$this->url('module=default&controller=goods&action=detail&id='.$this->data->goods['goods_id'])?>" target="_blank">
-						<img src="<?=$this->baseUrl($this->data->goods['thumb'])?>" class="img-thumbnail" /></a>
+					<a href="<?=$this->url('module=default&controller=goods&action=detail&id='.$this->good['id'])?>" target="_blank">
+						<img src="<?=$this->baseUrl($this->good['thumb'])?>" class="img-thumbnail" /></a>
 				</div>
 			</div>
 		</div>
@@ -37,31 +37,33 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : $this
 			<label class="control-label col-sm-2">商品标题:</label>
 			<div class="col-sm-9">
 				<div class="form-control-static">
-				<a href="<?=$this->url('module=default&controller=goods&action=detail&id='.$this->data->goods['goods_id'])?>" target="_blank"><?=$this->data->goods['title']?></a></div>
+				<a href="<?=$this->url('module=default&controller=goods&action=detail&id='.$this->good['id'])?>" target="_blank"><?=$this->good['title']?></a></div>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2">商品规格:</label>
 			<div class="col-sm-9">
-				<div class="form-control-static"><?=$this->data->goods['buychoose'] ? $this->data->goods['buychoose'] : 'N/A'?></div>
+				<div class="form-control-static"><?=$this->sku['spec'] ? $this->sku['spec'] : 'N/A'?></div>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2">购买数量:</label>
 			<div class="col-sm-9">
-				<div class="form-control-static"><?=$this->data->goods['purchase_quantity']?> 件</div>
+				<div class="form-control-static"><?=$this->good['qty']?> 件</div>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2">买入价格:</label>
 			<div class="col-sm-9">
-				<div class="form-control-static"><?=$this->currency($this->data->goods['subtotal_amount'] - $this->data->goods['subtotal_save'])?></div>
+				<!--<div class="form-control-static"><?/*=$this->currency($this->data->goods['subtotal_amount'] - $this->data->goods['subtotal_save'])*/?></div>-->
+				<div class="form-control-static"><?=$this->good['price_text']?></div>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">支付运费:</label>
+			<label class="control-label col-sm-2">订单支付运费:</label>
 			<div class="col-sm-9">
-				<div class="form-control-static"><?=$this->currency($this->data->goods['freight'])?></div>
+				<!--<div class="form-control-static"><?/*=$this->currency($this->data->goods['freight'])*/?></div>-->
+				<div class="form-control-static"><?=$this->order['total_freight']?></div>
 			</div>
 		</div>
 		<div class="form-group">

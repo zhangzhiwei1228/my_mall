@@ -32,6 +32,7 @@ $this->head()->setTitle($this->title);
 			<thead>
 				<tr>
 					<th width="20"><input type="checkbox" role="chk-all" /></th>
+					<th width="70">购买订单号</th>
 					<th width="70">产品图片</th>
 					<th width="200">产品信息</th>
 					<th>退款原因</th>
@@ -45,13 +46,19 @@ $this->head()->setTitle($this->title);
 			<tbody>
 				<?php if (!count($this->datalist)) { ?>
 				<tr><td colspan="8" class="notfound">没有找到符合条件的信息。</td></tr>
-				<?php } else { foreach ($this->datalist as $row) { ?>
+				<?php } else { foreach ($this->datalist as $row) {?>
 				<tr>
 					<td><input type="checkbox" name="ids[]" role="chk-item" value="<?=$row['id']?>" /></td>
+					<td valign="top">
+						<a href="<?=$this->url('controller=order&action=detail&id='.$row['order_id'])?>" target="_blank">
+							<?php echo $row['oCode']?>
+						</a>
+					</td>
 					<td valign="top">
 						<a href="<?=$this->url('module=default&controller=goods&action=detail&id='.$row['goods_id'])?>" target="_blank">
 							<img src="<?=$this->img($row['thumb'], '100x100')?>" class="img-thumbnail" /></a>
 					</td>
+
 					<td>
 						<div style="overflow:hidden">
 							<a href="<?=$this->url('module=default&controller=goods&action=detail&id='.$row['goods_id'])?>" target="_blank"><?=$row['title']?></a>

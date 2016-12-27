@@ -12,11 +12,15 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 	{
 		$select = M('Order_Return')->alias('`or`')
 			->leftJoin(M('User')->getTableName().' AS u', 'or.buyer_id = u.id')
-			->leftJoin(M('Order_Goods')->getTableName().' AS `og`', 'or.order_goods_id = og.id')
-			->columns('or.*, og.thumb, og.title, og.goods_id, og.spec, u.username')
+			->leftJoin(M('Goods_Sku')->getTableName().' AS `gs`', 'or.sku_id = gs.id')
+			->leftJoin(M('Goods')->getTableName().' AS `g`', 'or.order_goods_id = g.id')
+			->leftJoin(M('Order')->getTableName().' AS `o`', 'or.order_id = o.id')
+			->columns('or.*, g.thumb, g.title, gs.goods_id, gs.spec, u.username,o.code as oCode')
 			->order('or.id DESC')
 			->paginator(20, $this->_request->page);
-
+		if($this->_request->q) {
+			$select->where('o.code ='.$this->_request->q);
+		}
 		$view = $this->_initView();
 		$view->datalist = $select->fetchRows();
 		$view->render('order/return/list.php');
@@ -25,18 +29,35 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 	public function doDetail()
 	{
 		if ($this->_request->opid) {
+			$goods = M('Order_Goods')->getById((int)$this->_request->opid)->toArray();
 			$data = M('Order_Return')->select()
-				->where('order_goods_id = ?', $this->_request->opid)
+				->where('order_goods_id = ? and order_id = ?', array($goods['goods_id'],$goods['order_id']))
 				->fetchRow();
 		} else {
 			$data = M('Order_Return')->getById((int)$this->_request->id);
+			$goods = M('Order_Goods')->select()->where('order_id = ? and goods_id = ?',array($data['order_id'],$data['order_goods_id']))->fetchRow()->toArray();
 		}
 		if (!$data->exists()) {
 			throw new Suco_Controller_Dispatcher_Exception('Not found.');
 		}
-
+		$good = M('Goods')->select('id,title,thumb')->where('id ='.$data['order_goods_id'])->fetchRow()->toArray();
+		$sku = M('Goods_Sku')->getById((int)$goods['sku_id'])->toArray();
+		$order = M('Order')->select('order_json,total_freight')->where('id = '.$data['order_id'])->fetchRow()->toArray();
+		$orderJson = json_decode($order['order_json']);
+		foreach($orderJson as $row){
+			$row = get_object_vars($row);
+			if($row['skus_id'] == $goods['sku_id']) {
+				$good['qty'] = $row['qty'];
+				$good['price_text'] = $row['price_text'];
+			} else {
+				continue;
+			}
+		}
 		$view = $this->_initView();
 		$view->data = $data;
+		$view->good = $good;
+		$view->sku = $sku;
+		$view->order = $order;
 		$view->render('order/return/detail.php');
 	}
 

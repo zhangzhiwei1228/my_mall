@@ -249,6 +249,75 @@ class Order extends Abstract_Model
 
 	/**
 	 * @param $order
+	 * @param string $log
+	 * @param $uid
+	 * 申请退款
+	 */
+	public function refund($order,$log='',$uid) {
+
+		if ($order->status == 1 || $order->status == 2) {
+			$this->getAdapter()->beginTrans();
+			try {
+				//退款给买家
+				if ($order->status == 2 && $order->buyer->exists()) {
+					$order->buyer->income('refund', $order->total_pay_amount, 'TS-'.$order->code, '订单取消，自动退款')
+						->commit();
+				}
+
+				//关闭订单
+				//$order->status = 0;
+				$order->is_return = 1;
+				//释放库存
+				foreach($order->goods as $row) {
+					$goods = M('Goods')->getById($row['goods_id']);
+					$goods->quantity += $row['purchase_quantity'];
+					$goods->save();
+
+					$sku = M('Goods_Sku')->getById($row['sku_id']);
+					$sku->quantity += $row['purchase_quantity'];
+					$sku->save();
+				}
+				if ($log) {
+					$order->logs .= $log;
+				}
+				$order->save();
+				$order_return = M('Order_Return')->select('id')->where('order_id='.(int)$order->id)->fetchRow()->toArray();
+				if(!$order_return) {
+					$this->OrderReturn($order->id, $uid);
+				}
+				$this->getAdapter()->commit();
+			} catch (Suco_Exception $e) {
+				$this->getAdapter()->rollback();
+			}
+		}
+	}
+
+	/**
+	 * @param $order_id
+	 * @param $uid
+	 * 退款加入 Order_Return 表
+	 */
+	public function OrderReturn($order_id,$uid) {
+		$goods = M('Order_Goods')->select()->where('order_id ='.(int)$order_id)->fetchRows()->toArray();
+		foreach($goods as $row) {
+			M('Order_Return')->insert( array(
+				'code' => M('Order_Return')->getUniqueCode(),
+				'buyer_id' => $uid,
+				'order_id' => $order_id,
+				'sku_id' => $row['sku_id'],
+				'order_goods_id' => $row['goods_id'],
+				'is_buyer_accepted' => 1,
+				'consult_count' => 1,
+				'refund_amount' => $row['subtotal_amount']-$row['subtotal_save'],
+				'expiry_time' => time() + M('Setting')->get('timeout_refund')
+			));
+		}
+		M('Order_Goods')->update('is_return = 1', 'order_id = '.$order_id); //变更订单商品状态
+		M('Order')->updateById('retention_time = expiry_time-'.time().', expiry_time = 0', (int)$order_id); //冻结订单
+
+	}
+	/**
+	 * @param $order
 	 * @param $log
 	 * 确认收货
 	 */
