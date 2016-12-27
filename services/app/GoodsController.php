@@ -607,7 +607,7 @@ class App_GoodsController extends App_Controller_Action
             ->leftJoin(M('User')->getTableName().' AS s', 'o.seller_id = s.id')
             ->leftJoin(M('Payment')->getTableName().' AS p', 'o.payment_id = p.id')
             ->leftJoin(M('Shipping')->getTableName().' AS d', 'o.shipping_id = d.id')
-            ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json,o.total_amount ')
+            ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json,o.total_amount,o.total_earn_points,o.is_receive ')
             ->where('o.buyer_id = '. $this->user->id.' and o.expiry_time != 0 AND o.expiry_time >= '.time())
             ->order('id DESC')
             ->paginator($limit, $page);
@@ -896,7 +896,7 @@ class App_GoodsController extends App_Controller_Action
             echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
             die();
         }
-        $order = M('Order')->select('id,area_id,shipping_id,total_credit,total_credit_happy,total_credit_coin,total_vouchers,total_weight,total_quantity,order_json,total_amount,status,code,create_time,expiry_time,pay_time,delivery_time,confirm_time,consignee,area_text,address,phone ')->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow()->toArray();
+        $order = M('Order')->select('id,area_id,shipping_id,total_credit,total_credit_happy,total_credit_coin,total_vouchers,total_weight,total_quantity,order_json,total_amount,status,code,create_time,expiry_time,pay_time,delivery_time,confirm_time,consignee,area_text,address,phone,total_earn_points,is_receive ')->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow()->toArray();
         if(!$order ) {
             echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
             die();
