@@ -39,6 +39,7 @@ $this->head()->setTitle($this->title);
 					<th width="80" class="text-center">退款金额</th>
 					<th width="100" class="text-center">申请人</th>
 					<th width="130">申请时间</th>
+					<th width="130">订单总邮费</th>
 					<th width="80">状态</th>
 					<th width="80">操作</th>
 				</tr>
@@ -77,6 +78,7 @@ $this->head()->setTitle($this->title);
 					<td valign="top" class="text-center"><?=$this->currency($row['refund_amount'])?></td>
 					<td valign="top" class="text-center"><?=$row['username']?></td>
 					<td valign="top"><?=date(DATETIME_FORMAT, $row['create_time'])?></td>
+					<td valign="top"><?=$row['total_freight']?></td>
 					<td valign="top">
 						<?php switch ($row['status']) {
 							case 0: echo '<span class="label label-default">待处理</span>'; break;	

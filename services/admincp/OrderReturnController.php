@@ -15,7 +15,7 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 			->leftJoin(M('Goods_Sku')->getTableName().' AS `gs`', 'or.sku_id = gs.id')
 			->leftJoin(M('Goods')->getTableName().' AS `g`', 'or.order_goods_id = g.id')
 			->leftJoin(M('Order')->getTableName().' AS `o`', 'or.order_id = o.id')
-			->columns('or.*, g.thumb, g.title, gs.goods_id, gs.spec, u.username,o.code as oCode')
+			->columns('or.*, g.thumb, g.title, gs.goods_id, gs.spec, u.username,o.code as oCode,o.total_freight')
 			->order('or.id DESC')
 			->paginator(20, $this->_request->page);
 		if($this->_request->q) {
