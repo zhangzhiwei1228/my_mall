@@ -287,6 +287,7 @@ class App_CreditController extends App_Controller_Action
         $pay_data['money'] = $money;
         $pay_data['return_url'] = '/usercp/money/success/?id='.$glod_id;
         $pay_data['glod_id'] = $glod_id;
+        $pay_data['order_no'] = $extra['order_no'];
         $pay_data['pay_name'] = $pay_name['name'];
         $pay_data['privilege'] = $privilege;
 
@@ -370,11 +371,27 @@ class App_CreditController extends App_Controller_Action
         return $str.$order_no;
     }
     function doHybrid($data) {
-        print_r($data);
+        $glod = array(
+            'trade_no' => $data['type'].'-'.$data['order_no'],
+            'amount' => $data['amount'],
+            'pay_amount' => $data['pay_amount'],
+            'service' => $data['pay_amount'] - $data['amount'],
+            'desc' => $data['desc']
+        );
+        //echo $this->_encrypt_data($glod);
+        echo $this->show_data($this->_encrypt_data($glod));
         die();
     }
     function doPaySingle($data) {
-        print_r($data);
+        $glod = array(
+            'trade_no' => $data['type'].'-'.$data['order_no'],
+            'amount' => $data['amount'],
+            'pay_amount' => $data['pay_amount'],
+            'service' => $data['pay_amount'] - $data['amount'],
+            'desc' => $data['desc']
+        );
+        //echo $this->_encrypt_data($glod);
+        echo $this->show_data($this->_encrypt_data($glod));
         die();
     }
 }
