@@ -226,7 +226,7 @@ class App_CreditController extends App_Controller_Action
         $privilege = $privilege ? $privilege : round(($consume - $consume*$discount),2);//优惠
         $service = $service ? $service : round(($privilege * $service_charge['price']),2);//服务费
         $pro18 = M('Proportion')->getById(18)->toArray();
-        if($price_type == 100 || $price_type == 101 || $price_type == 102 || $price_type == 152) {
+        if($price_type == 100 || $price_type == 101 || $price_type == 102 || $price_type == 152 || $price_type == 24) {
             $money = ceil(($consume - $consume*$discount)*($pro18['l_digital']/$pro18['r_digital'])*0.5);//支付的货币金额
             $cash = $money + $service;
         }
@@ -248,10 +248,10 @@ class App_CreditController extends App_Controller_Action
         if($flag){
             $payment = ceil($payment/2);
         }
-        if(!$flag && $price_type !=18) {
+        if(!$flag && $price_type !=18 && $price_type != 24) {
             $cash = $service;
         }
-        if($price_type == 18 || $price_type == 152) {
+        if($price_type == 18 || $price_type == 152 || $price_type == 24) {
             $cash = $service + $payment;
         }
 
