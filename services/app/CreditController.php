@@ -230,7 +230,8 @@ class App_CreditController extends App_Controller_Action
             $money = ceil(($consume - $consume*$discount)*($pro18['l_digital']/$pro18['r_digital'])*0.5);//支付的货币金额
             $cash = $money + $service;
         }
-
+        var_dump($pro18);
+        die();
         if($price_type == 100) {
             $price_type = 15;$flag=true;
         } elseif($price_type == 101) {
