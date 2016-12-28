@@ -945,7 +945,7 @@ class App_GoodsController extends App_Controller_Action
                 $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val['skus_id'])->fetchRow()->toArray();
                 $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                 $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
-                $sku['price_type'] = $val['price_type']->$val['skus_id'];;
+                $sku['price_type'] = $val['price_type'];
                 $sku['exts'] = json_encode($sku['exts']);
                 $price_type = M('User_Cart')->price_type($sku);
                 $good['price_type'] = $price_type['price_text'];
