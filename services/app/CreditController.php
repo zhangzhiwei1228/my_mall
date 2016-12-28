@@ -379,8 +379,8 @@ class App_CreditController extends App_Controller_Action
             'service' => $data['price_type'] == 24 ? $data['pay_amount'] - $data['amount'] : $data['pay_amount'],
             'desc' => $data['desc']
         );
-        //echo $this->_encrypt_data($glod);
-        echo $this->show_data($this->_encrypt_data($glod));
+        echo $this->_encrypt_data($glod);
+        //echo $this->show_data($this->_encrypt_data($glod));
         die();
     }
     function doPaySingle($data) {
@@ -391,8 +391,8 @@ class App_CreditController extends App_Controller_Action
             'service' => $data['price_type'] == 24 ? $data['pay_amount'] - $data['amount'] : $data['pay_amount'],
             'desc' => $data['desc']
         );
-        //echo $this->_encrypt_data($glod);
-        echo $this->show_data($this->_encrypt_data($glod));
+        echo $this->_encrypt_data($glod);
+        //echo $this->show_data($this->_encrypt_data($glod));
         die();
     }
 }
