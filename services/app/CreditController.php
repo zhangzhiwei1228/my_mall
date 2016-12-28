@@ -287,6 +287,7 @@ class App_CreditController extends App_Controller_Action
         $pay_data['money'] = $money;
         $pay_data['return_url'] = '/usercp/money/success/?id='.$glod_id;
         $pay_data['glod_id'] = $glod_id;
+        $pay_data['code'] = $extra['code'];
         $pay_data['order_no'] = $extra['order_no'];
         $pay_data['pay_name'] = $pay_name['name'];
         $pay_data['privilege'] = $privilege;
@@ -375,6 +376,7 @@ class App_CreditController extends App_Controller_Action
         $glod = array(
             'order_no' => $data['type'].'-'.$data['order_no'],
             'amount' => $data['amount'],
+            'code' => $data['code'],
             'pay_amount' => $data['pay_amount'],
             'service' => $data['price_type'] == 24 ? $data['pay_amount'] - $data['amount'] : $data['pay_amount'],
             'desc' => $data['desc']
@@ -387,6 +389,7 @@ class App_CreditController extends App_Controller_Action
         $glod = array(
             'order_no' => $data['type'].'-'.$data['order_no'],
             'amount' => $data['amount'],
+            'code' => $data['code'],
             'pay_amount' => $data['pay_amount'],
             'service' => $data['price_type'] == 24 ? $data['pay_amount'] - $data['amount'] : $data['pay_amount'],
             'desc' => $data['desc']
