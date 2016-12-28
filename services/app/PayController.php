@@ -486,7 +486,7 @@ class App_PayController extends App_Controller_Action
             'appid'=>WxPayConf_pub::APPID,
             'mch_id'=>WxPayConf_pub::MCHID,
             'nonce_str'=>$notify->createNoncestr(),
-            'body'=>$subject ? $subject : '123帮帮网支付订单',
+            'body'=>$subject ? $subject : '支付订单',
             'out_trade_no'=>$trade_no,
             'total_fee'=>$amount * 100,
             'spbill_create_ip'=>get_ip(),
