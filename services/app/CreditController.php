@@ -290,6 +290,7 @@ class App_CreditController extends App_Controller_Action
         $pay_data['order_no'] = $extra['order_no'];
         $pay_data['pay_name'] = $pay_name['name'];
         $pay_data['privilege'] = $privilege;
+        $pay_data['price_type'] = $price_type;
 
         $this->doPayPurchase($pay_data);
     }
@@ -375,7 +376,7 @@ class App_CreditController extends App_Controller_Action
             'trade_no' => $data['type'].'-'.$data['order_no'],
             'amount' => $data['amount'],
             'pay_amount' => $data['pay_amount'],
-            'service' => $data['pay_amount'] - $data['amount'],
+            'service' => $data['price_type'] == 24 ? $data['pay_amount'] - $data['amount'] : $data['pay_amount'],
             'desc' => $data['desc']
         );
         //echo $this->_encrypt_data($glod);
@@ -387,7 +388,7 @@ class App_CreditController extends App_Controller_Action
             'trade_no' => $data['type'].'-'.$data['order_no'],
             'amount' => $data['amount'],
             'pay_amount' => $data['pay_amount'],
-            'service' => $data['pay_amount'] - $data['amount'],
+            'service' => $data['price_type'] == 24 ? $data['pay_amount'] - $data['amount'] : $data['pay_amount'],
             'desc' => $data['desc']
         );
         //echo $this->_encrypt_data($glod);
