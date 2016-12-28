@@ -373,7 +373,7 @@ class App_CreditController extends App_Controller_Action
     }
     function doHybrid($data) {
         $glod = array(
-            'trade_no' => $data['type'].'-'.$data['order_no'],
+            'order_no' => $data['type'].'-'.$data['order_no'],
             'amount' => $data['amount'],
             'pay_amount' => $data['pay_amount'],
             'service' => $data['price_type'] == 24 ? $data['pay_amount'] - $data['amount'] : $data['pay_amount'],
@@ -385,7 +385,7 @@ class App_CreditController extends App_Controller_Action
     }
     function doPaySingle($data) {
         $glod = array(
-            'trade_no' => $data['type'].'-'.$data['order_no'],
+            'order_no' => $data['type'].'-'.$data['order_no'],
             'amount' => $data['amount'],
             'pay_amount' => $data['pay_amount'],
             'service' => $data['price_type'] == 24 ? $data['pay_amount'] - $data['amount'] : $data['pay_amount'],
