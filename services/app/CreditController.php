@@ -230,8 +230,7 @@ class App_CreditController extends App_Controller_Action
             $money = ceil(($consume - $consume*$discount)*($pro18['l_digital']/$pro18['r_digital'])*0.5);//支付的货币金额
             $cash = $money + $service;
         }
-        var_dump($pro18);
-        die();
+
         if($price_type == 100) {
             $price_type = 15;$flag=true;
         } elseif($price_type == 101) {
@@ -299,6 +298,8 @@ class App_CreditController extends App_Controller_Action
         $pay_data['glod_id'] = $glod_id;
         $pay_data['pay_name'] = $pay_name['name'];
         $pay_data['privilege'] = $privilege;
+        var_dump($pay_data);
+        die();
         $this->doPayPurchase($pay_data);
     }
     public function doPayPurchase($data) {
