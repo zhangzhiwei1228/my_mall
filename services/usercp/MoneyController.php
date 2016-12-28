@@ -206,6 +206,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 		$pro16 = M('Proportion')->getById(16)->toArray();
 		$pro17 = M('Proportion')->getById(17)->toArray();
 		$pro18 = M('Proportion')->getById(18)->toArray();
+		$pro24 = M('Proportion')->getById(24)->toArray();
 		$cash = 0;$money = 0;//支付现金
 		$flag = false;
 		if ($this->_request->isPost()) {
@@ -226,7 +227,7 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			$service = round(($privilege * $service_charge['price']),2);//服务费
 
 			if($price_type == 100 || $price_type == 101 || $price_type == 102 || $price_type == 152 || $price_type == 24) {
-				$money = ceil(($consume - $consume*$discount)*($pro18['l_digital']/$pro18['r_digital'])*0.5);//支付的货币金额
+				$money = ceil(($consume - $consume*$discount)*($pro24['l_digital']/$pro24['r_digital'])*0.5);//支付的货币金额
 				$cash = $money + $service;
 			}
 			if($price_type == 100) {
