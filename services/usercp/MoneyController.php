@@ -202,11 +202,10 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 				$data['exts'] = json_decode($data['exts']);
 			}
 		}
-		$pro15 = M('Proportion')->getById(15)->toArray();
+		/*$pro15 = M('Proportion')->getById(15)->toArray();
 		$pro16 = M('Proportion')->getById(16)->toArray();
 		$pro17 = M('Proportion')->getById(17)->toArray();
-		$pro18 = M('Proportion')->getById(18)->toArray();
-		$pro24 = M('Proportion')->getById(24)->toArray();
+		$pro18 = M('Proportion')->getById(18)->toArray();*/
 		$cash = 0;$money = 0;//支付现金
 		$flag = false;
 		if ($this->_request->isPost()) {
@@ -225,18 +224,10 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			}
 			$privilege = round(($consume - $consume*$discount),2);//优惠
 			$service = round(($privilege * $service_charge['price']),2);//服务费
+			//$pro24 = M('Proportion')->getById($price_type)->toArray();
+			//$money = ceil(($consume - $consume*$discount)*($pro24['l_digital']/$pro24['r_digital'])*0.5);//支付的货币金额
+			//$cash = $money + $service;
 
-			if($price_type == 100 || $price_type == 101 || $price_type == 102 || $price_type == 152 || $price_type == 24) {
-				$money = ceil(($consume - $consume*$discount)*($pro24['l_digital']/$pro24['r_digital'])*0.5);//支付的货币金额
-				$cash = $money + $service;
-			}
-			if($price_type == 100) {
-				$price_type = 15;$flag=true;
-			} elseif($price_type == 101) {
-				$price_type = 16;$flag=true;
-			} elseif($price_type == 102) {
-				$price_type = 17;$flag=true;
-			}
 			$proportion = M('Proportion')->select()->where('id='.(int)$price_type)->fetchRow()->toArray();
 			$payment = ceil(($consume - $consume*$discount)*($proportion['l_digital']/$proportion['r_digital']));//支付的货币金额
 			$pay_name = M('Coltypes')->select('name,english')->where('id='.$proportion['left_id'])->fetchRow()->toArray();
@@ -244,15 +235,12 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			if(!$privilege || !$payment) {
 				throw new App_Exception('计算错误，请重新计算提交');
 			}
-			if($flag){
-				$payment = ceil($payment/2);
-			}
-			if(!$flag && $price_type !=18 && $price_type == 24) {
+			if($price_type == 24) {
+				$cash = $service + $payment;
+			} else {
 				$cash = $service;
 			}
-			if($price_type == 18 || $price_type == 152 || $price_type == 24) {
-				$cash = $service + $payment;
-			}
+
 			try {
 				if ($pay_name['english'] == 'credit' && $this->user['credit'] < $payment) {
 					throw new App_Exception("支付失败，您的帮帮币不足", 101);
@@ -297,15 +285,16 @@ class Usercp_MoneyController extends Usercp_Controller_Action
 			$pay_data['glod_id'] = $glod_id;
 			$pay_data['pay_name'] = $pay_name['name'];
 			$pay_data['privilege'] = $privilege;
+
 			$this->doPayPurchase($pay_data);
 		}
 
 		$view = $this->_initView();
 		$view->data = $proportions;
-		$view->pro15 = $pro15;
+		/*$view->pro15 = $pro15;
 		$view->pro16 = $pro16;
 		$view->pro17 = $pro17;
-		$view->pro18 = $pro18;
+		$view->pro18 = $pro18;*/
 		$view->service_charge = $service_charge;
 		$view->render('views/new_text/purchase.php');
 	}

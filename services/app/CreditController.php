@@ -215,6 +215,7 @@ class App_CreditController extends App_Controller_Action
      */
     public function doPayWorthGold() {
         $flag = false;
+        $money = 0;
         $service_charge = M('Coltypes')->getById(15)->toArray();
         $price_type = $this->_request->price_type;//选择的支付方式
         $consume = $this->_request->consume; //消费金额
@@ -225,19 +226,13 @@ class App_CreditController extends App_Controller_Action
         $discount = $discount/100;//折扣换成百分比
         $privilege = $privilege ? $privilege : round(($consume - $consume*$discount),2);//优惠
         $service = $service ? $service : round(($privilege * $service_charge['price']),2);//服务费
-        $pro18 = M('Proportion')->getById($price_type)->toArray();
-        if($price_type == 100 || $price_type == 101 || $price_type == 102 || $price_type == 152 || $price_type == 24) {
-            $money = ceil(($consume - $consume*$discount)*($pro18['l_digital']/$pro18['r_digital'])*0.5);//支付的货币金额
-            $cash = $money + $service;
-        }
+        //$pro18 = M('Proportion')->getById($price_type)->toArray();
+        //if($price_type == 100 || $price_type == 101 || $price_type == 102 || $price_type == 152 || $price_type == 24) {
+            //$money = ceil(($consume - $consume*$discount)*($pro18['l_digital']/$pro18['r_digital'])*0.5);//支付的货币金额
+            //$cash = $money + $service;
+        //}
 
-        if($price_type == 100) {
-            $price_type = 15;$flag=true;
-        } elseif($price_type == 101) {
-            $price_type = 16;$flag=true;
-        } elseif($price_type == 102) {
-            $price_type = 17;$flag=true;
-        }
+
         $proportion = M('Proportion')->select()->where('id='.(int)$price_type)->fetchRow()->toArray();
         $payment = ceil(($consume - $consume*$discount)*($proportion['l_digital']/$proportion['r_digital']));//支付的货币金额
         $pay_name = M('Coltypes')->select('name,english')->where('id='.$proportion['left_id'])->fetchRow()->toArray();
@@ -245,14 +240,10 @@ class App_CreditController extends App_Controller_Action
         if(!$privilege || !$payment) {
             throw new App_Exception('计算错误，请重新计算提交');
         }
-        if($flag){
-            $payment = ceil($payment/2);
-        }
-        if(!$flag && $price_type !=18 && $price_type != 24) {
-            $cash = $service;
-        }
-        if($price_type == 18 || $price_type == 152 || $price_type == 24) {
+        if($price_type == 24) {
             $cash = $service + $payment;
+        } else {
+            $cash = $service;
         }
 
         if ($pay_name['english'] == 'credit' && $this->user['credit'] < $payment) {
