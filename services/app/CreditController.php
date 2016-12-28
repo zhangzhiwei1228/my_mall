@@ -298,8 +298,7 @@ class App_CreditController extends App_Controller_Action
         $pay_data['glod_id'] = $glod_id;
         $pay_data['pay_name'] = $pay_name['name'];
         $pay_data['privilege'] = $privilege;
-        var_dump($pay_data);
-        die();
+
         $this->doPayPurchase($pay_data);
     }
     public function doPayPurchase($data) {
@@ -378,6 +377,14 @@ class App_CreditController extends App_Controller_Action
     function doOrderNo($str=''){
         $order_no=date('Ymdhis',time()).str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
         return $str.$order_no;
+    }
+    function doHybrid($data) {
+        var_dump($data);
+        die();
+    }
+    function doPaySingle($data) {
+        var_dump($data);
+        die();
     }
 }
 
