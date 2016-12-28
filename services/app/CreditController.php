@@ -379,11 +379,11 @@ class App_CreditController extends App_Controller_Action
         return $str.$order_no;
     }
     function doHybrid($data) {
-        var_dump($data);
+        print_r($data);
         die();
     }
     function doPaySingle($data) {
-        var_dump($data);
+        print_r($data);
         die();
     }
 }
