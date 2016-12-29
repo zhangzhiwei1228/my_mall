@@ -158,14 +158,18 @@ class App_ShopController extends App_Controller_Action
             $row['avatar'] = 'http://'.$_SERVER['HTTP_HOST'].$user['avatar'];
             $row['nickname'] = $user['nickname'];
             $src = json_decode($row['photos']);
-            foreach($src as $key =>$val) {
-                $d = get_object_vars($val);
-                $row['src'][] =  $d['src'];
+            if($src) {
+                foreach($src as $key =>$val) {
+                    $d = get_object_vars($val);
+                    $row['src'][] =  $d['src'];
+                }
+            } else {
+                $row['src'] = '';
             }
             unset($row['photos']);
         }
-        echo $this->_encrypt_data($data);
-        //echo $this->show_data($this->_encrypt_data($data));
+        //echo $this->_encrypt_data($data);
+        echo $this->show_data($this->_encrypt_data($data));
         die();
     }
 
