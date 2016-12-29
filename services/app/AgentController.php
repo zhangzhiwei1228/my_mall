@@ -85,4 +85,25 @@ class App_AgentController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($bonus));
         die();
     }
+    /**
+     * 员工管理
+     */
+    public function doStaff() {
+        $page = $this->_request->page ? $this->_request->page : 1;
+        $limit = $this->_request->limit ? $this->_request->limit : 10;
+        $data = M('User')->select('id,username')
+            ->where('parent_id = ?', (int)$this->user->id)
+            ->order('id DESC')
+            ->paginator($limit, $page)
+            ->fetchRows();
+        foreach($data as $key =>$row) {
+            $amount = $row->getBonus();
+            $row->__set('amount',$amount['amount']);
+            $data->set($key,$row->toArray());
+        }
+        $data = $data->toArray();
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
 }
