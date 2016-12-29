@@ -292,7 +292,7 @@ function getDistance($lat1, $lng1, $lat2, $lng2)
 	$distance = round($calculatedDistance);
 	if($distance < 1000)
 		return $distance.'米';
-	return number_format($distance/pow(10,3),4) . '千米';
+	return number_format($distance/pow(10,3),1) . '千米';
 	//return round($calculatedDistance);
 }
 /**
