@@ -56,6 +56,7 @@ class App_UserController extends App_Controller_Action
         $user_data = $user->toArray();
         $data['id'] = $user_data['id'];
         $data['role'] = $user_data['role'];
+        $data['resale_grade'] = $user_data['resale_grade'];
         $data['parent_id'] = $user_data['parent_id'];
         $data['username'] = $user_data['username'];
         $data['nickname'] = $user_data['nickname'];
@@ -81,6 +82,12 @@ class App_UserController extends App_Controller_Action
                 $data['birthday'] = $row['field_value'];
             }
         }
+        //查询父类
+        if($user_data['parent_id'] && $user_data['role'] == 'staff') {
+            $parent = M('User')->select('id,role,resale_grade')->where('id = '.(int)$user_data['parent_id'])->fetchRow()->toArray();
+            $data['resale_grade'] = $parent['role'];
+        }
+
         $data['count_cart'] = $count;
         //$data['exts'] = $extends;
         echo $this->_encrypt_data($data);
