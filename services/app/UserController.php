@@ -87,7 +87,7 @@ class App_UserController extends App_Controller_Action
             $parent = M('User')->select('id,role,resale_grade')->where('id = '.(int)$user_data['parent_id'])->fetchRow()->toArray();
             $data['resale_grade'] = $parent['role'];
         }
-
+        $data['resale_grade'] = $data['resale_grade'] ? $data['resale_grade'] : 0;
         $data['count_cart'] = $count;
         //$data['exts'] = $extends;
         echo $this->_encrypt_data($data);
