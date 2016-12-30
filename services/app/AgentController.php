@@ -174,4 +174,58 @@ class App_AgentController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    /**
+     * 商家赠送（credit 帮帮币 vouchers 抵用券）
+     */
+    public function doEmploy() {
+        $type = $this->_request->type;//credit 帮帮币 vouchers 抵用券
+        $uid = $this->_request->uid;//赠送用户id
+        $num = $this->_request->num;//赠送的数量
+        $account = M('User')->getById((int)$uid);
+        if (!$account->exists()) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此账户不存在');
+            die();
+        }
+        if (!$account['is_enabled']) {
+            echo  self::_error_data(API_USER_DISABLE,'此账户已被禁用');
+            die();
+        }
+        if (!$this->_checkCredit($num, $this->user[$type])) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'您所拥有的不够赠送，请先充值');
+            die();
+        }
+        $shop_id = $this->user->shop_id;
+        $shop = M('Shop')->select('name')->where('id = '.$shop_id)->fetchRow()->toArray();
+
+        $this->user->$type($num * -1, '赠送会员【'.$account['nickname'].'】', 3, $shop['name'], $account['id']);
+        $account->$type($num, '商家赠送【'.$this->user['nickname'].'】', 3 , $shop['name'], $this->user->id);
+        $data = array('status'=>'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 查询赠送的用户
+     */
+    public function doQueryUser()
+    {
+        $limit = $this->_request->limit ? $this->_request->limit : 20;
+        $page = $this->_request->page ? $this->_request->page : 1;
+        $data =  M('User')->select('id, username, nickname, credit, vouchers,credit_happy, credit_coin, balance')
+            ->where('username = ? OR email = ? OR mobile = ?', $this->_request->q)
+            ->paginator($limit,$page)
+            ->fetchRows()
+            ->toArray();
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    protected function _checkCredit($c1, $c2)
+    {
+        if ($c1 > $c2) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
