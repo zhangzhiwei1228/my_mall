@@ -119,6 +119,14 @@ class User extends Abstract_User
 			->fetchRows();
 
 		$month = strtotime(date('Y-m-1'));
+		$ct['last2']['num'] = 0;
+		$ct['last2']['vip'] = 0;
+		$ct['history2']['num'] = 0;
+		$ct['history2']['vip'] = 0;
+		$ct['last1']['num'] = 0;
+		$ct['last1']['vip'] = 0;
+		$ct['history1']['num'] = 0;
+		$ct['history1']['vip'] = 0;
 		foreach($user1 as $row) {
 			$ids1[] = $row['id'];
 			if ($row['create_time'] > $month) {

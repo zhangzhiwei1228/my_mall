@@ -35,7 +35,7 @@ class IndexController extends Controller_Action
 			->fetchRows();
 
 		$recGoodsCates = M('Goods_Category')->select()
-			->where('parent_id = 0 and is_enabled<>0')
+			->where('parent_id = 0 and is_enabled <> 0')
 			->order('rank ASC, id ASC')
 			->fetchRows();
 

@@ -106,4 +106,44 @@ class App_AgentController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    /**
+     * 我的员工详细信息
+     */
+    public function doStaffInfo() {
+        $id = $this->_request->id;//员工id
+        if(!$id) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $uinfo = M('User')->getById((int)$id);
+        if(!$uinfo) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+            die();
+        }
+
+        $bonus = $uinfo->getBonus();
+        $data['id'] = $uinfo->id;
+        $data['username'] = $uinfo->username;
+        $data['last_1_num'] = $bonus['last1']['num'];//本月发展的一级会员总数
+        $data['last_2_num'] = $bonus['last2']['num'];//本月发展的二级会员总数
+        $data['history_1_num'] = $bonus['history1']['num'];//历史发展的一级会员总数
+        $data['history_2_num'] = $bonus['history2']['num'];//历史发展的二级会员总数
+        $data['last_1_vip'] = $bonus['last1']['vip'];//本月激活的一级会员总数
+        $data['last_2_vip'] = $bonus['last2']['vip'];//本月激活的二级会员总数
+        $data['history_1_vip'] = $bonus['history1']['vip'];//历史激活的一级会员总数
+        $data['history_2_vip'] = $bonus['history2']['vip'];//历史激活的二级会员总数
+        $data['coin1'] = $bonus['coin1']['credit_coin']['total'] ? $bonus['coin1']['credit_coin']['total'] : 0;//我员工发展的一级会员消费积分币
+        $data['coin2'] = $bonus['coin2']['credit_coin']['total'] ? $bonus['coin2']['credit_coin']['total'] : 0;//我员工发展的二级会员消费积分币
+        $parent = M('User')->getById((int)$uinfo['parent_id']);
+        if($parent['role'] != 'seller' ) {
+            $data['coin3'] = $bonus['coin3']['credit_coin']['total'] ? $bonus['coin3']['credit_coin']['total'] : 0;//发展的商家的一级会员本月消费积分币
+            $data['coin4'] = $bonus['coin4']['credit_coin']['total'] ? $bonus['coin4']['credit_coin']['total'] : 0;//发展的商家的二级会员本月消费积分币
+            $data['seller'] = $bonus['seller']['credit']['total'] ? $bonus['seller']['credit']['total'] : 0;//发展的商家本月使用帮帮币
+        }
+        $data['amount'] = $bonus['amount'];
+        //echo $this->_encrypt_data($data);
+        echo $this->show_data($this->_encrypt_data($data));
+        die();
+
+    }
 }
