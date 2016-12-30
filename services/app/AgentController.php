@@ -153,12 +153,31 @@ class App_AgentController extends App_Controller_Action
         $type = $this->_request->type; //employ 赠送 recharge 充值
         $limit = $this->_request->limit ? $this->_request->limit : 20;
         $page = $this->_request->page ? $this->_request->page : 1;
-
+        $time_type = $this->_request->time_type ? $this->_request->time_type : 1;//1今天2一个星期3一个月
+        if( !$currency || !$type ) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
         $year = date("Y");
         $month = date("m");
         $day = date("d");
-        $dayBegin = $this->_request->start_time ? strtotime($this->_request->start_time) : mktime(0,0,0,$month,$day,$year);//当天开始时间戳
-        $dayEnd = $this->_request->end_time ? strtotime($this->_request->end_time) : mktime(23,59,59,$month,$day,$year);//当天结束时间戳
+        switch($time_type) {
+            case 1:
+                $dayBegin = mktime(0,0,0,$month,$day,$year);//当天开始时间戳
+                $dayEnd = mktime(23,59,59,$month,$day,$year);//当天结束时间戳
+                break;
+            case 2:
+                //近七天的数据
+                $dayEnd = mktime(0,0,0,$month,$day,$year);
+                $dayBegin = strtotime("-1 week");
+                break;
+            case 3:
+                //近一个月的数据
+                $dayEnd = mktime(0,0,0,$month,$day,$year);
+                $dayBegin = strtotime("-1 month");
+                break;
+        }
+
         $where = 'user_id = '.(int)$this->user->id." and type='".$currency."'".' and create_time >'.$dayBegin.' and create_time <'.$dayEnd;
         if($type == 'recharge') {
             $where .= ' and credit > 0 ';
@@ -181,6 +200,10 @@ class App_AgentController extends App_Controller_Action
         $type = $this->_request->type;//credit 帮帮币 vouchers 抵用券
         $uid = $this->_request->uid;//赠送用户id
         $num = $this->_request->num;//赠送的数量
+        if( !$type || !$uid  || !$num) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
         $account = M('User')->getById((int)$uid);
         if (!$account->exists()) {
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此账户不存在');
@@ -209,10 +232,15 @@ class App_AgentController extends App_Controller_Action
      */
     public function doQueryUser()
     {
+        $q = $this->_request->q;
+        if( !$q) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
         $limit = $this->_request->limit ? $this->_request->limit : 20;
         $page = $this->_request->page ? $this->_request->page : 1;
         $data =  M('User')->select('id, username, nickname, credit, vouchers,credit_happy, credit_coin, balance')
-            ->where('username = ? OR email = ? OR mobile = ?', $this->_request->q)
+            ->where('username = ? OR email = ? OR mobile = ?', $q)
             ->paginator($limit,$page)
             ->fetchRows()
             ->toArray();
@@ -227,5 +255,56 @@ class App_AgentController extends App_Controller_Action
         } else {
             return true;
         }
+    }
+    /**
+     * 查找要核销兑换码
+     */
+    public function doQueryGold()
+    {
+        $code = $this->_request->code;
+        if( !$code) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $data =  M('Worthglod')->alias('wg')
+            ->leftJoin(M('User')->getTableName().' AS u', 'wg.uid = u.id')
+            ->columns('wg.*,u.username,u.mobile')
+            ->where('wg.code = ?', $code)
+            ->fetchRow()
+            ->toArray();
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+    }
+    /**
+     * 核销
+     */
+    public function doCheckout() {
+        $glod = M('Worthglod')->getById((int)$this->_request->gid);
+        if (!$glod->exists()) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此兑换码不存在');
+            die();
+        }
+        $account = M('User')->getById((int)$glod['uid']);
+        if (!$account->exists()) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'所属账户不存在');
+            die();
+        }
+        $worthglod = M('User_Credit')->select()->where('user_id='.$account['id'].' and code='."'".$glod['code']."'")->fetchRow()->toArray();
+        if($worthglod) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此账户已经核销过，请不要重复核销');
+            die();
+        }
+
+        if($account['worth_gold'] < $glod['privilege']) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'该帐户抵用金不足');
+            die();
+        }
+        $glod->write = 2;
+        $glod->write_uid = $this->user->id;
+        $glod->write_time = time();
+        $glod->save();
+        $this->user->worthGold($glod['privilege'],'核销用户【'.$account['username'].'-'.$account['id'].'】【'.$glod['privilege'].'抵用金】', $glod['code']);
+        $account->worthGold($glod['privilege'] * -1,'被用户【'.$this->user['username'].'-'.$this->user['id'].'】核销【'.$glod['privilege'].'抵用金】', $glod['code']);
     }
 }
