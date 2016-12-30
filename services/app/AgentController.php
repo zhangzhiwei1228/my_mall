@@ -141,9 +141,37 @@ class App_AgentController extends App_Controller_Action
             $data['seller'] = $bonus['seller']['credit']['total'] ? $bonus['seller']['credit']['total'] : 0;//发展的商家本月使用帮帮币
         }
         $data['amount'] = $bonus['amount'];
-        //echo $this->_encrypt_data($data);
-        echo $this->show_data($this->_encrypt_data($data));
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
         die();
+    }
+    /**
+     * 商家帮帮币，抵用券充值和赠送列表
+     */
+    public function doCurrencyLogs() {
+        $currency = $this->_request->currency;//credit 帮帮币 vouchers 抵用券
+        $type = $this->_request->type; //employ 赠送 recharge 充值
+        $limit = $this->_request->limit ? $this->_request->limit : 20;
+        $page = $this->_request->page ? $this->_request->page : 1;
 
+        $year = date("Y");
+        $month = date("m");
+        $day = date("d");
+        $dayBegin = $this->_request->start_time ? strtotime($this->_request->start_time) : mktime(0,0,0,$month,$day,$year);//当天开始时间戳
+        $dayEnd = $this->_request->end_time ? strtotime($this->_request->end_time) : mktime(23,59,59,$month,$day,$year);//当天结束时间戳
+        $where = 'user_id = '.(int)$this->user->id." and type='".$currency."'".' and create_time >'.$dayBegin.' and create_time <'.$dayEnd;
+        if($type == 'recharge') {
+            $where .= ' and credit > 0 ';
+        } else {
+            $where .= ' and credit < 0 ';
+        }
+        $data = M('User_Credit')->select('id,create_time,credit,note,rid')
+            ->where($where)
+            ->order('id DESC')
+            ->paginator($limit,$page)
+            ->fetchRows()->toArray();
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
     }
 }
