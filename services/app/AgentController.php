@@ -268,10 +268,14 @@ class App_AgentController extends App_Controller_Action
         }
         $data =  M('Worthglod')->alias('wg')
             ->leftJoin(M('User')->getTableName().' AS u', 'wg.uid = u.id')
-            ->columns('wg.*,u.username,u.mobile')
-            ->where('wg.code = ?', $code)
+            ->columns('wg.id,wg.privilege,wg.code,wg.uid,wg.write,u.username,u.mobile')
+            ->where('wg.code = ? and wg.status = 2', $code)
             ->fetchRow()
             ->toArray();
+        if (!$data) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'查询数据不存在，或此兑换码未支付');
+            die();
+        }
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
@@ -280,7 +284,12 @@ class App_AgentController extends App_Controller_Action
      * 核销
      */
     public function doCheckout() {
-        $glod = M('Worthglod')->getById((int)$this->_request->gid);
+        $gid = $this->_request->gid;
+        if( !$gid) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $glod = M('Worthglod')->getById((int)$gid);
         if (!$glod->exists()) {
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此兑换码不存在');
             die();
@@ -306,5 +315,9 @@ class App_AgentController extends App_Controller_Action
         $glod->save();
         $this->user->worthGold($glod['privilege'],'核销用户【'.$account['username'].'-'.$account['id'].'】【'.$glod['privilege'].'抵用金】', $glod['code']);
         $account->worthGold($glod['privilege'] * -1,'被用户【'.$this->user['username'].'-'.$this->user['id'].'】核销【'.$glod['privilege'].'抵用金】', $glod['code']);
+        $data = array('status'=>'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
     }
 }
