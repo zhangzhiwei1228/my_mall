@@ -316,9 +316,34 @@ class App_AgentController extends App_Controller_Action
         $glod->save();
         $this->user->worthGold($glod['privilege'],'核销用户【'.$account['username'].'-'.$account['id'].'】【'.$glod['privilege'].'抵用金】', $glod['code']);
         $account->worthGold($glod['privilege'] * -1,'被用户【'.$this->user['username'].'-'.$this->user['id'].'】核销【'.$glod['privilege'].'抵用金】', $glod['code']);
-        $data = array('status'=>'ok');
+        //$data = array('status'=>'ok');
+        $data = M('User')->select('credit,credit_happy,credit_coin,worth_gold,vouchers')->where('id ='.(int)$this->user->id)->fetchRow()->toArray();
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
+    }
+    /**
+     * 核销记录
+     */
+    public function doCheckLogs() {
+        $limit = $this->_request->limit ? $this->_request->limit : 20;
+        $page = $this->_request->page ? $this->_request->page : 1;
+        $datas = M('User_Credit')->alias('uc')
+            ->where('uc.user_id = '.(int)$this->user->id.' and uc.type='."'".'worth_gold'."'".' and uc.code !='."''")
+            ->leftJoin(M('Worthglod')->getTableName().' AS wg', 'wg.code = uc.code')
+            ->leftJoin(M('User')->getTableName().' AS u', 'u.id = wg.uid')
+            ->columns('wg.privilege,u.username,uc.create_time')
+            ->order('uc.create_time DESC')
+            ->paginator($limit, $page)
+            ->fetchRows();
+        //$data = $datas->toArray();
+        $earnings = $this->user->countGold();
+        $data['data'] = $datas->toArray();
+        $data['total'] = $earnings['total'] ? $earnings['total'] : 0;//本月核销
+        $data['earnings'] = $earnings['earnings'];//可得收益
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+
     }
 }
