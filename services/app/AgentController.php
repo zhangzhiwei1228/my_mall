@@ -239,7 +239,7 @@ class App_AgentController extends App_Controller_Action
         }
         $limit = $this->_request->limit ? $this->_request->limit : 20;
         $page = $this->_request->page ? $this->_request->page : 1;
-        $data =  M('User')->select('id, username, nickname, credit, vouchers,credit_happy, credit_coin, balance')
+        $data =  M('User')->select('id, username, nickname, credit, vouchers,credit_happy, credit_coin, balance, mobile')
             ->where('username = ? OR email = ? OR mobile = ?', $q)
             ->paginator($limit,$page)
             ->fetchRows()
