@@ -222,7 +222,8 @@ class App_AgentController extends App_Controller_Action
 
         $this->user->$type($num * -1, '赠送会员【'.$account['nickname'].'】', 3, $shop['name'], $account['id']);
         $account->$type($num, '商家赠送【'.$this->user['nickname'].'】', 3 , $shop['name'], $this->user->id);
-        $data = array('status'=>'ok');
+        $data = M('User')->select('credit,credit_happy,credit_coin,worth_gold,vouchers')->where('id ='.(int)$this->user->id)->fetchRow()->toArray();
+        //$data = array('status'=>'ok');
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
