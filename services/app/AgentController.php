@@ -106,6 +106,11 @@ class App_AgentController extends App_Controller_Action
                 break;
             case 'agent':
                 $bonus = $this->user->agentearnings();
+                $bonus['seller'] = $bonus['seller']['credit']['total'] ? $bonus['seller']['credit']['total'] : 0;//我代理地区商家本月使用帮帮币
+                $bonus['userarea'] = $bonus['userarea']['credit_coin']['total'] ? $bonus['userarea']['credit_coin']['total'] : 0;//我代理地区会员本月消费积分币
+                $bonus['seller_v'] = $bonus['seller_v']['vouchers']['total'] ? $bonus['seller_v']['vouchers']['total'] : 0;//我代理地区商家本月使用抵用券
+                $bonus['seller_w'] = $bonus['seller_w']['worth_gold']['total'] ? $bonus['seller_w']['worth_gold']['total'] : 0;//我代理地区商家本月核销抵用金
+                $bonus['userarea_v'] = $bonus['userarea_v']['vouchers']['total'] ? $bonus['userarea_v']['vouchers']['total'] : 0;//我代理地区会员本月商城消费使用抵用券
                 break;
         }
         echo $this->_encrypt_data($bonus);
