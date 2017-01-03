@@ -242,7 +242,7 @@ class App_AgentController extends App_Controller_Action
         $data =  M('User')->select('id, username, nickname, credit, vouchers,credit_happy, credit_coin, balance, mobile')
             ->where('username = ? OR email = ? OR mobile = ?', $q)
             ->paginator($limit,$page)
-            ->fetchRows()
+            ->fetchRow()
             ->toArray();
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
