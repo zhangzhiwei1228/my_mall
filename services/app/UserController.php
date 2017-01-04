@@ -1133,8 +1133,8 @@ class App_UserController extends App_Controller_Action
         $user['resale_grade'] = $user['resale_grade'] ? $user['resale_grade'] : 0;
         $data['count_cart'] = $count;
         $user['count_cart'] = $count;
-        //echo $this->_encrypt_data($user);
-        echo $this->show_data($this->_encrypt_data($user));
+        echo $this->_encrypt_data($user);
+        //echo $this->show_data($this->_encrypt_data($user));
         die();
     }
 
