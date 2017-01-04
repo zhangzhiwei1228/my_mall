@@ -1110,7 +1110,7 @@ class App_UserController extends App_Controller_Action
         $this->user = $this->_auth();
         $token = $this->_request->token ;
         $user = M('User')
-            ->select('id, token,is_vip,credit,credit_coin,worth_gold,vouchers,shop_id,nickname,avatar,mobile,username,role,resale_grade')
+            ->select('id, token,parent_id,is_vip,credit,credit_coin,worth_gold,vouchers,shop_id,nickname,avatar,mobile,username,role,resale_grade')
             ->where('token='."'".$token."'")
             ->fetchRow()->toArray();
         $count = M('User_Cart')->count('user_id = '.$user['id']);
