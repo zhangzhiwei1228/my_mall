@@ -44,6 +44,9 @@ class App_AgentController extends App_Controller_Action
                     $data['conversion4'] = $bonus['conversion4']['credit']['total'] ? $bonus['conversion4']['credit']['total'] : 0;//我的商家的二级会员抵用券转换成帮帮币
                     $data['vouchers3'] = $bonus['vouchers3']['vouchers']['total'] ? $bonus['vouchers3']['vouchers']['total'] : 0;//我的商家的一级会员商城消费使用抵用券
                     $data['vouchers4'] = $bonus['vouchers4']['vouchers']['total'] ? $bonus['vouchers4']['vouchers']['total'] : 0;//我的商家的二级会员商城消费使用抵用券
+                    $data['seller'] = $bonus['seller']['credit']['total'] ? $bonus['seller']['credit']['total'] : 0;//发展的商家本月使用帮帮币
+                    $data['seller_v'] = $bonus['seller_v']['vouchers']['total'] ? $bonus['seller_v']['vouchers']['total'] : 0;//我的商家本月赠送抵用券
+                    $data['seller_w'] = $bonus['seller_w']['worth_gold']['total'] ? $bonus['seller_w']['worth_gold']['total'] : 0;//我的商家本月核销抵用金
                 }
                 $bonus = $data;
                 break;
