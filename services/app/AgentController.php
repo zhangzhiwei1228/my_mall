@@ -48,6 +48,7 @@ class App_AgentController extends App_Controller_Action
                     $data['seller_v'] = $bonus['seller_v']['vouchers']['total'] ? $bonus['seller_v']['vouchers']['total'] : 0;//我的商家本月赠送抵用券
                     $data['seller_w'] = $bonus['seller_w']['worth_gold']['total'] ? $bonus['seller_w']['worth_gold']['total'] : 0;//我的商家本月核销抵用金
                 }
+                $data['amount'] = $bonus['amount'];//我的二级会员抵用券转换成帮帮币
                 $bonus = $data;
                 break;
             case 'resale':
