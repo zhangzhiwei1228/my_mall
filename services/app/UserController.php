@@ -1110,7 +1110,7 @@ class App_UserController extends App_Controller_Action
         $this->user = $this->_auth();
         $token = $this->_request->token ;
         $user = M('User')
-            ->select('id, token,is_vip,credit,credit_coin,worth_gold,vouchers,shop_id,nickname,avatar,mobile,username,role')
+            ->select('id, token,is_vip,credit,credit_coin,worth_gold,vouchers,shop_id,nickname,avatar,mobile,username,role,resale_grade')
             ->where('token='."'".$token."'")
             ->fetchRow()->toArray();
         $count = M('User_Cart')->count('user_id = '.$user['id']);
@@ -1124,6 +1124,13 @@ class App_UserController extends App_Controller_Action
             }
         }
         $user['avatar'] = 'http://'.$_SERVER['HTTP_HOST'].$user['avatar'];
+        //查询父类
+        if($user['parent_id'] && $user['role'] == 'staff') {
+            $parent = M('User')->select('id,role,resale_grade')->where('id = '.(int)$user['parent_id'])->fetchRow()->toArray();
+            $data['resale_grade'] = $parent['role'];
+        }
+        $data['resale_grade'] = $data['resale_grade'] ? $data['resale_grade'] : 0;
+        $data['count_cart'] = $count;
         $user['count_cart'] = $count;
         echo $this->_encrypt_data($user);
         //echo $this->show_data($this->_encrypt_data($user));
