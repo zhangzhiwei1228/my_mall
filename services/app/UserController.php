@@ -27,11 +27,11 @@ class App_UserController extends App_Controller_Action
         $phone = $this->_request->phone;
         $pass = $this->_request->pwd;
         $app_id = $this->_request->app_id;//1wap2android3ios4pc
-        if (!$phone || !is_mobile($phone)) {
+        /*if (!$phone || !is_mobile($phone)) {
             echo  self::_error_data(ERR_LOGIN_FAIL_PHONE,'无效手机号');
             die();
 
-        }
+        }*/
         $user = M('User')->select()->where('username = ? OR email = ? OR mobile = ?', $phone)->fetchRow();
         if (!$user->exists() || ($user['password'] != $this->encrypt($pass, $user['salt']))) {
             echo  self::_error_data(ERR_LOGIN_FAIL_PWD_OR_ACCOUNT,'不存在此手机号或密码错误');
