@@ -366,7 +366,7 @@ class App_AgentController extends App_Controller_Action
             ->leftJoin(M('User')->getTableName().' AS u', 'u.id = wg.uid')
             ->columns('wg.privilege,u.username,uc.create_time')
             ->order('uc.create_time DESC')
-            ->paginator($limit, $page)
+            //->paginator($limit, $page)
             ->fetchRows();
         //$data = $datas->toArray();
         $earnings = $this->user->countGold();
