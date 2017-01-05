@@ -88,6 +88,13 @@ class App_UserController extends App_Controller_Action
             $data['resale_grade'] = $parent['role'];
         }
         $data['resale_grade'] = $data['resale_grade'] ? $data['resale_grade'] : 0;
+        if($user_data['role'] == 'resale' && $user_data['resale_grade'] < 4 && $user_data['resale_grade'] > 1) {
+            $resale_apply = M('Resale_Apply')->select('id')->where('phone ='.$user_data['mobile'].' and grade >'.$user_data['resale_grade'])->fetchRows()->toArray();
+            foreach($resale_apply as $k=>$v) {
+                $key = $k+$user_data['resale_grade']+1;
+                $data['is_apply'.$key] = $resale_apply ? 1 : 0;
+            }
+        }
         $data['count_cart'] = $count;
         //$data['exts'] = $extends;
         echo $this->_encrypt_data($data);
