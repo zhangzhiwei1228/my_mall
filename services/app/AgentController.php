@@ -54,6 +54,13 @@ class App_AgentController extends App_Controller_Action
             case 'resale':
                 if ($this->user['resale_grade'] == 4) {
                     $bonus = $this->user->getStaffBonus();
+                    $data['seller'] = $bonus['area']['seller']['t_credit'] ? $bonus['area']['seller']['t_credit'] : 0;//我代理地区我下线的商家本月使用帮帮币
+                    $data['member'] = $bonus['area']['member']['t_coin'] ? $bonus['area']['member']['t_coin'] : 0;//我代理地区我下线的会员本月消费积分币
+                    $data['seller_v'] = $bonus['area']['seller_v']['t_credit'] ? $bonus['area']['seller_v']['t_credit'] : 0;//我代理地区我下线的商家本月使用抵用券
+                    $data['seller_w'] = $bonus['area']['seller_w']['t_credit'] ? $bonus['area']['seller_w']['t_credit'] : 0;//我代理地区我下线的商家本月核销抵用金
+                    $data['member_v'] = $bonus['area']['member_v']['t_coin'] ? $bonus['area']['member_v']['t_coin'] : 0;//我代理地区我下线的会员本月商城消费使用抵用券
+                    $data['amount'] = $bonus['amount'];//我的本月收益
+                    $bonus = $data;
                 } else {
                     $bonus = $this->user->getBonus('resale-1');
                 }
