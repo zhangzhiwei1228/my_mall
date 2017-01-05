@@ -63,6 +63,34 @@ class App_AgentController extends App_Controller_Action
                     $bonus = $data;
                 } else {
                     $bonus = $this->user->getBonus('resale-1');
+                    $data['last_1_num'] = $bonus['last1']['num'];//本月发展的一级会员总数
+                    $data['last_1_vip'] = $bonus['last1']['vip'];//本月激活的一级会员总数
+                    $data['history_1_num'] = $bonus['history1']['num'];//历史发展的一级会员总数
+                    $data['history_1_vip'] = $bonus['history1']['vip'];//历史激活的一级会员总数
+                    $data['last_2_num'] = $bonus['last2']['num'];//本月发展的二级会员总数
+                    $data['last_2_vip'] = $bonus['last2']['vip'];//本月激活的二级会员总数
+                    $data['history_2_num'] = $bonus['history2']['num'];//历史发展的二级会员总数
+                    $data['history_2_vip'] = $bonus['history2']['vip'];//历史激活的二级会员总数
+                    $data['vouchers1'] = $bonus['vouchers1']['vouchers']['total'] ? $bonus['vouchers1']['vouchers']['total'] : 0;//我的一级会员商城消费使用抵用券
+                    $data['vouchers2'] = $bonus['vouchers2']['vouchers']['total'] ? $bonus['vouchers2']['vouchers']['total'] : 0;//我的二级会员商城消费使用抵用券
+                    $data['buy1'] = $bonus['buy1']['worth_gold']['total'] ? $bonus['buy1']['worth_gold']['total'] : 0;//我的一级会员抵用券购买抵用金
+                    $data['buy2'] = $bonus['buy2']['worth_gold']['total'] ? $bonus['buy2']['worth_gold']['total'] : 0;//我的二级会员抵用券购买抵用金
+                    $data['conversion1'] = $bonus['conversion1']['credit']['total'] ? $bonus['conversion1']['credit']['total'] : 0;//我的一级会员抵用券转换成帮帮币
+                    $data['conversion2'] = $bonus['conversion2']['credit']['total'] ? $bonus['conversion2']['credit']['total'] : 0;//我的二级会员抵用券转换成帮帮币
+                    $data['coin1'] = $bonus['coin1']['credit_coin']['total'] ? $bonus['coin1']['credit_coin']['total'] : 0;//我的一级会员本月消费积分币
+                    $data['coin2'] = $bonus['coin2']['credit_coin']['total'] ? $bonus['coin2']['credit_coin']['total'] : 0;//我的二级会员本月消费积分币
+                    $data['coin3'] = $bonus['coin3']['credit_coin']['total'] ? $bonus['coin3']['credit_coin']['total'] : 0;//发展的商家的一级会员本月消费积分币
+                    $data['coin4'] = $bonus['coin4']['credit_coin']['total'] ? $bonus['coin4']['credit_coin']['total'] : 0;//发展的商家的二级会员本月消费积分币
+                    $data['vouchers3'] = $bonus['vouchers3']['vouchers']['total'] ? $bonus['vouchers3']['vouchers']['total'] : 0;//我的商家的一级会员商城消费使用抵用券
+                    $data['vouchers4'] = $bonus['vouchers4']['vouchers']['total'] ? $bonus['vouchers4']['vouchers']['total'] : 0;//我的商家的二级会员商城消费使用抵用券
+                    $data['buy3'] = $bonus['buy3']['worth_gold']['total'] ? $bonus['buy3']['worth_gold']['total'] : 0;//我的商家的一级会员抵用券购买抵用金
+                    $data['buy4'] = $bonus['buy4']['worth_gold']['total'] ? $bonus['buy4']['worth_gold']['total'] : 0;//我的商家的二级会员抵用券购买抵用金
+                    $data['conversion3'] = $bonus['conversion3']['credit']['total'] ? $bonus['conversion3']['credit']['total'] : 0;//我的商家的一级会员抵用券转换成帮帮币
+                    $data['conversion4'] = $bonus['conversion4']['credit']['total'] ? $bonus['conversion4']['credit']['total'] : 0;//我的商家的二级会员抵用券转换成帮帮币
+                    $data['seller'] = $bonus['seller']['credit']['total'] ? $bonus['seller']['credit']['total'] : 0;//发展的商家本月使用帮帮币
+                    $data['seller_v'] = $bonus['seller_v']['vouchers']['total'] ? $bonus['seller_v']['vouchers']['total'] : 0;//我的商家本月赠送抵用券
+                    $data['seller_w'] = $bonus['seller_w']['worth_gold']['total'] ? $bonus['seller_w']['worth_gold']['total'] : 0;//我的商家本月核销抵用金
+                    $bonus = $data;
                 }
                 break;
             case 'seller':
