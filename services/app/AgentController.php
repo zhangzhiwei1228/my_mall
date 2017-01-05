@@ -62,7 +62,7 @@ class App_AgentController extends App_Controller_Action
                     $data['amount'] = $bonus['amount'];//我的本月收益
                     $bonus = $data;
                 } else {
-                    $resale_apply = M('Resale_Apply')->select('id')->where('phone ='.$this->user['mobile'].' and grade >='.$this->user['resale_grade'].' and grade < 4')->fetchRows()->toArray();
+                    $resale_apply = M('Resale_Apply')->select('id')->where('phone ='.$this->user['mobile'])->fetchRows()->toArray();
                     $data['is_apply2'] = 0;
                     $data['is_apply3'] = 0;
                     $data['is_apply4'] = 0;
