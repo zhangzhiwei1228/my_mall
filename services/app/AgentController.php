@@ -64,9 +64,12 @@ class App_AgentController extends App_Controller_Action
                 } else {
                     if($this->user['role'] == 'resale') {
                         $resale_apply = M('Resale_Apply')->select('id')->where('phone ='.$this->user['mobile'].' and grade >'.$this->user['resale_grade'])->fetchRows()->toArray();
+                        $data['is_apply2'] = 0;
+                        $data['is_apply3'] = 0;
+                        $data['is_apply4'] = 0;
                         foreach($resale_apply as $k=>$v) {
                             $key = $k+$this->user['resale_grade']+1;
-                            $data['is_apply'.$key] = $resale_apply ? 1 : 0;
+                            $data['is_apply'.$key] =  1 ;
                         }
                     }
                     $bonus = $this->user->getBonus('resale-1');
