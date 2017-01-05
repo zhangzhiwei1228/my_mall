@@ -62,21 +62,16 @@ class App_AgentController extends App_Controller_Action
                     $data['amount'] = $bonus['amount'];//我的本月收益
                     $bonus = $data;
                 } else {
-
-                    try{
-                        $resale_apply = M('Resale_Apply')->select('id')->where('phone ='.$this->user['mobile'].' and grade >'.$this->user['resale_grade'])->fetchRows()->toArray();
-                        $data['is_apply2'] = 0;
-                        $data['is_apply3'] = 0;
-                        $data['is_apply4'] = 0;
+                    $resale_apply = M('Resale_Apply')->select('id')->where('phone ='.$this->user['mobile'].' and grade >='.$this->user['resale_grade'].' and grade < 4')->fetchRows()->toArray();
+                    $data['is_apply2'] = 0;
+                    $data['is_apply3'] = 0;
+                    $data['is_apply4'] = 0;
+                    if($resale_apply) {
                         foreach($resale_apply as $k=>$v) {
                             $key = $k+$this->user['resale_grade']+1;
                             $data['is_apply'.$key] =  1 ;
                         }
-                    }catch (Exception $e) {
-                        var_dump($e);
-                        die();
                     }
-
 
                     $bonus = $this->user->getBonus('resale-1');
                     $data['last_1_num'] = $bonus['last1']['num'];//本月发展的一级会员总数
