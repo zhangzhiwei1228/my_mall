@@ -230,7 +230,12 @@ class App_UserController extends App_Controller_Action
 
 
         $check = M('Limit')->select()->where('tel='.$phone)->order('timeline desc')->fetchRow()->toArray();
-        $count = M('Limit')->count('tel='.$phone);
+        $year = date("Y");
+        $month = date("m");
+        $day = date("d");
+        $dayBegin = mktime(0,0,0,$month,$day,$year);//当天开始时间戳
+        $dayEnd = mktime(23,59,59,$month,$day,$year);//当天结束时间戳
+        $count = M('Limit')->count('tel='.$phone.' and timeline > '.$dayBegin.' and timeline < '.$dayEnd);
         if ($check && $check['timeline'] >= time()) {
             echo  self::_error_data(API_SEND_CODE_QUICK,'发送频率过快，请稍后再试');
             die();
