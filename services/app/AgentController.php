@@ -456,4 +456,47 @@ class App_AgentController extends App_Controller_Action
         die();
 
     }
+    /**
+     * 我的商家记录
+     *
+     */
+    public function doShopLists() {
+        $limit  = $this->_request->limit ? $this->_request->limit : 20;
+        $page  = $this->_request->page ? $this->_request->page : 1;
+        $type = $this->_request->type;//credit vouchers worth_gold
+        $data = array();
+        $ids = array();
+        $usernames = array();
+        $shopNames = array();
+        $merchants1 = M('User')->alias('u')
+            ->where('parent_id = '.$this->user['id'].' and role="seller"')
+            ->leftJoin(M('Shop')->getTableName().' AS sp', 'u.shop_id = sp.id')
+            ->columns('u.id,u.username,sp.name')
+            ->fetchRows()->toArray();
+
+        foreach($merchants1 as $row) {
+            $ids[] = $row['id'];
+            $usernames[$row['id']] = $row['username'];
+            $shopNames[$row['id']] = $row['name'];
+        }
+        $ids = $ids ? implode(',', $ids) : 0;
+        $status = 0;
+        if($type == 'credit' || $type == 'vouchers') {
+            $status = 3;
+        }
+
+        //赠送帮帮币 credit  赠送抵用券 vouchers  核销抵佣金 worth_gold
+        $datas = M('User_Credit')->select('credit,user_id')
+            ->where('user_id IN ('.$ids.') and type='."'".$type."'".' and status ='.$status)
+            ->order('create_time DESC')
+            ->paginator($limit, $page)
+            ->fetchRows()->toArray();
+        foreach($datas as $k=>&$v) {
+            $v['username'] = $usernames[$v['user_id']];
+            $v['shopname'] = $shopNames[$v['user_id']];
+        }
+        echo $this->_encrypt_data($datas);
+        //echo $this->show_data($this->_encrypt_data($datas));
+        die();
+    }
 }
