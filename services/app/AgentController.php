@@ -429,4 +429,31 @@ class App_AgentController extends App_Controller_Action
         die();
 
     }
+    /**
+     * 我的商家记录
+     */
+    public function doShopList() {
+        $start_time = strtotime(date('Y-m-01 00:00:00', time()));
+        $end_time = strtotime(date('Y-m-d 23:59:59',strtotime(date('Y-m-01 23:59:59', time()).' +1 month -1 day')));
+        $type = $this->_request->type;//credit vouchers worth_gold
+        if( !$type) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $merchants1 = M('User')->alias('u')->where('u.parent_id = '.$this->user['id'].' and u.role="seller"')->fetchRows();
+        $data = array();
+        foreach($merchants1 as $key=>$merchant) {
+            $credits = M('User_Credit')->alias('ct')->group('ct.user_id')
+                ->columns('SUM(ct.credit) AS remain, SUM(IF(ct.credit > 0, ct.credit, 0)) AS recharge, SUM(IF(ct.credit < 0, ct.credit, 0)) AS consume, ct.id as ct_id')
+                ->where('ct.user_id = '.$merchant['id'].' and ct.create_time <= '.$end_time.' and ct.create_time >= '.$start_time.' and type='."'".$type."'")->fetchRows();
+            $data[$key]['remain'] = $credits[0]['ct_id'] ? $credits[0]['remain'] : 0;//余额
+            $data[$key]['recharge'] = $credits[0]['ct_id'] ? $credits[0]['recharge'] : 0;//本月充值
+            $data[$key]['consume'] = $credits[0]['ct_id'] ? $credits[0]['consume'] : 0;//本月使用
+            $data[$key]['name'] = $merchant['nickname'] ? $merchant['nickname'] : $merchant['username'];
+        }
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+
+    }
 }
