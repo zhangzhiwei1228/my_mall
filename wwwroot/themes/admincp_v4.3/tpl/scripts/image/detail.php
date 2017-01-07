@@ -43,6 +43,7 @@ $this->head()->setTitle($this->title);
 						<?php } ?>
 						<li class="list-group-item"><a href="<?=$this->url('&action=delete&ref='.$this->_request->ref)?>" onclick="return confirm('确定要删除这条记录吗?')">删除图片</a></li>
 						<li class="list-group-item"><a href="<?=$ref?>">返回上一页</a></li>
+						<li class="list-group-item"><?php echo $this->data['src']?></li>
 					</ul>
 			</div>
 		</div>
