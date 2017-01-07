@@ -689,7 +689,8 @@ class App_UserController extends App_Controller_Action
                         ->forUpdate(1)
                         ->fetchRow();
                     if ($sku['quantity'] < $item['qty'] || $item['qty'] == 0) {
-                        throw new Suco_Exception('很抱歉，商品 “'.$item['goods']['title'].'” 已经缺货。');
+                        echo  self::_error_data(API_RESOURCES_NOT_FOUND,'很抱歉，商品 “'.$item['goods']['title'].'” 已经缺货。');
+                        die();
                     }
                     $sku->quantity -= $item['qty'];
                     $sku->sales_num += $item['qty'];
