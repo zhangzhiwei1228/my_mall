@@ -38,6 +38,14 @@ $this->head()->setTitle($this->title);
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="control-label col-sm-2">是否强制更新:</label>
+			<div class="col-sm-9">
+				<div class="input-group">
+					<label><input type="checkbox" name="force" <?php echo $this->data['force'] == 1 ? 'checked' : ''?>  id="force" value="<?=$this->data['force']?>" /></label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
 			<label class="control-label col-sm-2">文件:</label>
 			<div class="col-sm-9">
 				<div class="input-group">
@@ -54,3 +62,16 @@ $this->head()->setTitle($this->title);
 		</div>
 	</form>
 </div>
+<script>
+	$(document).ready(function() {
+
+		$('#force').change(function() {
+			var force = $('#force').val();
+			if(force && force != 0) {
+				$(this).val(0);
+			} else {
+				$(this).val(1);
+			}
+		});
+	});
+</script>
