@@ -250,7 +250,7 @@ class App_IndexController extends App_Controller_Action
                 'type' => 1//1是消息2是新品3是新品发货
             )
         );
-        $data = M('Jpush')->push($this->user->id,$exts,1);
+        $data = M('Jpush')->push($this->user->id,1,$exts);
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
