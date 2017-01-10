@@ -712,8 +712,8 @@ class App_GoodsController extends App_Controller_Action
             ->leftJoin(M('User')->getTableName().' AS s', 'o.seller_id = s.id')
             ->leftJoin(M('Payment')->getTableName().' AS p', 'o.payment_id = p.id')
             ->leftJoin(M('Shipping')->getTableName().' AS d', 'o.shipping_id = d.id')
-            ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json,o.total_amount,o.status,o.code,o.create_time,o.expiry_time,o.pay_time,o.delivery_time,o.confirm_time,o.total_earn_points,o.is_receive ')
-            ->where('o.buyer_id = '. $this->user->id.' and o.expiry_time != 0 AND o.expiry_time >= '.time(). ' and o.is_return = 0')
+            ->columns('o.area_id,o.id,o.shipping_id,o.total_credit,o.total_credit_happy,o.total_credit_coin,o.total_vouchers,o.total_weight,o.total_quantity,o.order_json,o.total_amount,o.status,o.code,o.create_time,o.expiry_time,o.pay_time,o.delivery_time,o.confirm_time,o.total_earn_points,o.is_receive,o.is_return ')
+            ->where('o.buyer_id = '. $this->user->id.' and o.expiry_time != 0 AND o.expiry_time >= '.time())//. ' and o.is_return = 0'
             ->order('id DESC')
             ->paginator($limit, $page);
         if($status && $status != 6) {
