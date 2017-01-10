@@ -83,7 +83,7 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 		if ($this->_request->isPost()) {
 			$data = $this->_request->getPosts();
 
-			if($data['area_id'] && ($data['category_id'] == 15 || $data['category_id'] == 22) ) {
+			if($data['area_id'] && $data['category_id'] == 15 ) {
 
 				$ids = M('Region')->getChildIds((int)$data['area_id']);
 				$user_areas = M('User_Area')->select('user_id')->where('area_id IN (' . ($ids ? $ids : (int)$data['area_id']) . ')')->fetchRows()->toArray();
@@ -130,6 +130,22 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 
 				//M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
 			} else {
+				$artice_id = M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
+				$exts = array (
+					'title' => $data['title'],
+					'content' => strip_tags($data['content']),
+					'extras' => array(
+						'id' => $artice_id,
+						'type' => 1//1是消息2是新品3是新品发货
+					)
+				);
+				$ids = M('User')->select('id')->fetchRows()->toArray();
+				if($ids) {
+					foreach($ids as $id) {
+						$push = M('Jpush')->push($id,2,$exts);
+						if(!$push) continue;
+					}
+				}
 				M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
 			}
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list&cid=' . $_POST['cid']);
