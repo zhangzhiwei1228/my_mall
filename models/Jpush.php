@@ -44,7 +44,7 @@ class Jpush {
                 // ->addRegistrationId($registration_id)
 
                 ->setNotificationAlert($title)
-                ->iosNotification($title, array(
+                ->iosNotification($data['title'], array(
                     'sound' => 'sound.caf',
                     // 'badge' => '+1',
                     // 'content-available' => true,
@@ -52,8 +52,8 @@ class Jpush {
                     'category' => 'jiguang',
                     'extras' => $data['extras'],
                 ))
-                ->androidNotification($title, array(
-                    'title' => $data['title'],
+                ->androidNotification($data['title'], array(
+                    'title' => $title,
                     // 'build_id' => 2,
                     'extras' => $data['extras'],
                 ))
