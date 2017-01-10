@@ -88,7 +88,13 @@ class App_UserController extends App_Controller_Action
             $data['resale_grade'] = $parent['role'];
         }
         $data['resale_grade'] = $data['resale_grade'] ? $data['resale_grade'] : 0;
+        $messages = M('Message')->alias('m')
+            ->leftJoin(M('User')->getTableName().' AS u', 'u.id = m.sender_uid')
+            ->columns('count(*) as total')
+            ->where('m.recipient_uid = '.$user_data['id'].' and m.is_read =0')
+            ->fetchRow()->toArray();
 
+        $data['count_message'] = $messages['total'];
         $data['count_cart'] = $count;
         //$data['exts'] = $extends;
         echo $this->_encrypt_data($data);
@@ -1138,6 +1144,12 @@ class App_UserController extends App_Controller_Action
         }
         $user['resale_grade'] = $user['resale_grade'] ? $user['resale_grade'] : 0;
         $data['count_cart'] = $count;
+        $messages = M('Message')->alias('m')
+            ->leftJoin(M('User')->getTableName().' AS u', 'u.id = m.sender_uid')
+            ->columns('count(*) as total')
+            ->where('m.recipient_uid = '.$user['id'].' and m.is_read =0')
+            ->fetchRow()->toArray();
+        $user['count_message'] = $messages['total'];
         $user['count_cart'] = $count;
         echo $this->_encrypt_data($user);
         //echo $this->show_data($this->_encrypt_data($user));
