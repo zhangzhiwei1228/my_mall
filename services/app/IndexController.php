@@ -246,7 +246,7 @@ class App_IndexController extends App_Controller_Action
             'title' => $artice['title'],
             'content' => strip_tags($artice['content']),
             'extras' => array(
-                'mid' => 94,
+                'id' => 94,
                 'type' => 1//1是消息2是新品3是新品发货
             )
         );
