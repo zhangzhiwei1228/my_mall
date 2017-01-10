@@ -1202,4 +1202,45 @@ class App_UserController extends App_Controller_Action
             ));
         }
     }
+    /**
+     * 判断商品的库存量
+     */
+    public function doCheckQty() {
+        $this->user = $this->_auth();
+        $oid = $this->_request->oid;//订单号
+        if(!$oid) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $order = M('Order')->select('id,order_json,status')->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow()->toArray();
+        if(!$order ) {
+            echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
+            die();
+        }
+        if((!$order['status'] || $order['status'] != 1) ) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+            die();
+        }
+        $order_json = json_decode($order['order_json']);
+        $data = array();
+        foreach($order_json as $key =>$val) {
+            $val = get_object_vars($val);
+            if(strpos($val['skus_id'],',')) {
+                $sku_ids = explode(',', $val['skus_id']);
+                foreach ($sku_ids as $k => $sku_id) {
+                    $sku = M('Goods_Sku')->select('spec,goods_id,quantity')->where('id = ?', (int)$sku_id)->fetchRow()->toArray();
+                    if($sku['quantity'] < $val['qty']->$sku_id) {
+                        $good = M('Goods')->select('id,title')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                        $data['title'] = $good['title'];
+                        $data['spec'] = $sku['spec'];
+                        break;
+                    }
+                }
+            }
+        }
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
+
+    }
 }
