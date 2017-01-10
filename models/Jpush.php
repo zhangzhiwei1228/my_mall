@@ -52,7 +52,7 @@ class Jpush {
                     'category' => 'jiguang',
                     'extras' => $data['extras'],
                 ))
-                ->androidNotification('Hello Android123', array(
+                ->androidNotification($data['title'], array(
                     'title' => $data['title'],
                     // 'build_id' => 2,
                     'extras' => $data['extras'],
