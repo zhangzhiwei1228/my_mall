@@ -22,12 +22,15 @@ class Jpush {
             switch($type){
                 case 1:
                     $title = '消息';
+                    $data['title'] = '“'.$data['title'].'”，赶快来看看吧！';
                     break;
                 case 2:
-                    $title = '新品来了！！！';
+                    $title = '新品推荐';
+                    $data['title'] = '新品推荐“'.$data['title'].'”，抢到就是赚到，赶快来看看吧';
                     break;
                 case 3:
                     $title = '订单发货了！！！';
+                    $data['title'] = '您的订单“'.$data['title'].'”，已经发货了，点击查看详情 》》';
                     break;
                 default:
                     $title = '其他';
