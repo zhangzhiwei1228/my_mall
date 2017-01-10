@@ -16,8 +16,23 @@ class Jpush {
     public function __construct(){
         $this->client   = new JClient($this->app_key, $this->master_secret,LOG_DIR.'jpush.log');
     }
-    public function push($alias) {
+
+    public function push($alias, $type = false, $data = false) {
         try {
+            switch($type){
+                case 1:
+                    $title = '消息';
+                    break;
+                case 2:
+                    $title = '新品来了！！！';
+                    break;
+                case 3:
+                    $title = '订单发货了！！！';
+                    break;
+                default:
+                    $title = '其他';
+                    break;
+            }
             $response = $this->client->push()
                 ->setPlatform(array('ios', 'android'))
                 // 一般情况下，关于 audience 的设置只需要调用 addAlias、addTag、addTagAnd  或 addRegistrationId
@@ -28,33 +43,24 @@ class Jpush {
                 //->addTag(array('tag1', 'tag2'))
                 // ->addRegistrationId($registration_id)
 
-                ->setNotificationAlert('Hi, JPush')
-                ->iosNotification('Hello IOS345', array(
+                ->setNotificationAlert($title)
+                ->iosNotification($data['title'], array(
                     'sound' => 'sound.caf',
                     // 'badge' => '+1',
                     // 'content-available' => true,
                     // 'mutable-content' => true,
                     'category' => 'jiguang',
-                    'extras' => array(
-                        'key' => 'value',
-                        'jiguang'
-                    ),
+                    'extras' => $data['extras'],
                 ))
                 ->androidNotification('Hello Android123', array(
-                    'title' => 'hello jpush',
+                    'title' => $data['title'],
                     // 'build_id' => 2,
-                    'extras' => array(
-                        'key' => 'value',
-                        'jiguang'
-                    ),
+                    'extras' => $data['extras'],
                 ))
-                ->message('message content', array(
-                    'title' => 'hello jpush',
+                ->message($data['content'], array(
+                    'title' => $data['title'],
                     // 'content_type' => 'text',
-                    'extras' => array(
-                        'key' => 'value',
-                        'jiguang'
-                    ),
+                    'extras' => $data['extras'],
                 ))
                 ->options(array(
                     // sendno: 表示推送序号，纯粹用来作为 API 调用标识，

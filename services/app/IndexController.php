@@ -241,7 +241,16 @@ class App_IndexController extends App_Controller_Action
      */
     public function doPush() {
         $this->user = $this->_auth();
-        $data = M('Jpush')->push($this->user->id);
+        $artice = M('Article')->getById(94);
+        $exts = array (
+            'title' => $artice['title'],
+            'content' => $artice['content'],
+            'extras' => array(
+                'mid' => 94,
+                'type' => 1//1是消息2是新品3是新品发货
+            )
+        );
+        $data = M('Jpush')->push($this->user->id,$exts,1);
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();

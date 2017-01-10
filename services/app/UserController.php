@@ -820,8 +820,7 @@ class App_UserController extends App_Controller_Action
                 if ($order['total_vouchers']) {
                     $this->user->vouchers($order['total_vouchers']*-1, '支付订单【TS-'.$order['id'].'】');
                 }
-                $order->status = 2;
-                $order->save();
+                $order->pay();
                 $user_id = $order->buyer_id;
                 $area_id = $order->area_id;
                 $user_area = M('User_Area')->select('id')->where('user_id='.(int)$user_id)->fetchRow()->toArray();
