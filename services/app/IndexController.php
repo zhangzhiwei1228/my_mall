@@ -244,7 +244,7 @@ class App_IndexController extends App_Controller_Action
         $artice = M('Article')->getById(94);
         $exts = array (
             'title' => $artice['title'],
-            'content' => $artice['content'],
+            'content' => strip_tags($artice['content']),
             'extras' => array(
                 'mid' => 94,
                 'type' => 1//1是消息2是新品3是新品发货
