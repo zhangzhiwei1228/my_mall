@@ -94,9 +94,11 @@ class Jpush {
 
         } catch (\JPush\Exceptions\APIConnectionException $e) {
             // try something here
+            return false;
             Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', $e, 'a');
         } catch (\JPush\Exceptions\APIRequestException $e) {
             // try something here
+            return false;
             Suco_File::write(LOG_DIR.'error_'.date('Ymd').'.log', $e, 'a');
         }
 

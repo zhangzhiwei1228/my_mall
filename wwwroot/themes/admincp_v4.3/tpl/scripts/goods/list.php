@@ -61,6 +61,7 @@ $this->head()->setTitle($this->title);
 					<th width="80" class="text-center">审核</th>
 					<th width="80" class="text-center">状态</th>
 					<th width="80" class="text-center">精选</th>
+					<th width="80" class="text-center">推送</th>
 					<th width="140">创建时间</th>
 					<th width="80">操作</th>
 				</tr>
@@ -143,6 +144,10 @@ $this->head()->setTitle($this->title);
 					<td class="text-center">
 						<a href="<?=$this->url('action=toggle_status&t=is_select&id='.$row['id'].'&v='.$row['is_select'].'&ref='.$this->_request->url)?>">
 							<?=$row['is_select'] ? '<span class="label label-success">是</span>' : '<span class="label label-default">否</span>'?>
+						</a></td>
+					<td class="text-center">
+						<a href="<?=$this->url('action=toggle_status&t=is_push&id='.$row['id'].'&v='.$row['is_push'].'&ref='.$this->_request->url)?>">
+							<?=$row['is_push'] ? '<span class="label label-success">是</span>' : '<span class="label label-default">否</span>'?>
 						</a></td>
 					<td valign="top"><?=$row['create_time'] ? date(DATETIME_FORMAT, $row['create_time']) : 'N/A'?>
 						<?php if ($row['expiry_time']) { echo '<p>剩余:'.$this->countdown($row['expiry_time']).'</p>'; } ?></td>

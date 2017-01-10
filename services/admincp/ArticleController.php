@@ -100,15 +100,6 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 						'title' => $data['title'],
 						'create_time' => time()
 					));
-					$exts = array (
-						'title' => $data['title'],
-						'content' => strip_tags($data['content']),
-						'extras' => array(
-							'id' => $artice_id,
-							'type' => 1//1是消息2是新品3是新品发货
-						)
-					);
-					M('Jpush')->push($user1['id'],1,$exts);
 				}
 				foreach ($user_areas as $user2) {
 					M('Message')->insert(array(
@@ -119,15 +110,22 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 						'title' => $data['title'],
 						'create_time' => time()
 					));
-					$exts = array (
-						'title' => $data['title'],
-						'content' => strip_tags($data['content']),
-						'extras' => array(
-							'id' => $artice_id,
-							'type' => 1//1是消息2是新品3是新品发货
-						)
-					);
-					M('Jpush')->push($user1['id'],1,$exts);
+				}
+				$exts = array (
+					'title' => $data['title'],
+					'content' => strip_tags($data['content']),
+					'extras' => array(
+						'id' => $artice_id,
+						'type' => 1//1是消息2是新品3是新品发货
+					)
+				);
+				foreach ($users as $user1) {
+					$push = M('Jpush')->push($user1['id'],1,$exts);
+					if(!$push) continue;
+				}
+				foreach ($user_areas as $user2) {
+					$push = M('Jpush')->push($user1['id'],1,$exts);
+					if(!$push) continue;
 				}
 
 				//M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));

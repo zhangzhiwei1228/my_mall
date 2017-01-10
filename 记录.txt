@@ -1,0 +1,69 @@
+创建数据库   scn_limit
+
+models/Limit.php文件
+
+scn_goods 中添加 is_select 本月精选 is_push 是否推送
+
+models/Goods.php 有修改
+
+wwwroot/func.php 有修改
+
+scn_goods_comment 商品评论表
+
+ scn_shop_comment 对商家的评论表
+
+models/user/address.php
+
+ models/User/Cart.php
+
+ models/Cart.php
+
+models/Cart/Observer/Goods.php
+
+scn_user 表添加字段shop_id
+
+scn_user_credit 添加 rid（关联用户）
+
+services/admincp/UserController.php
+
+ wwwroot/themes/admincp_v4.3/tpl/scripts/user/input.php
+
+services/agent/CreditController.php
+
+/models/Payment/Alipay.php
+
+/models/User.php
+
+/models/Cart/Observer/Goods.php
+
+scn_app
+
+123mf/services/admincp/AppController.php
+
+/123mf/services/admincp/ArticleController.php
+
+scn_advert_element 添加 jump_id exts_id
+
+/123mf/models/Advert.php
+
+/123mf/wwwroot/themes/admincp_v4.3/tpl/scripts/advert/element/input.php
+app.conf.php
+/123mf/services/admincp/AdvertElementController.php
+
+123mf/wwwroot/themes/admincp_v4.3/tpl/scripts/shop/list.php
+
+/123mf/wwwroot/themes/admincp_v4.3/tpl/scripts/article/list.php
+
+
+scn_goods_comment 添加 photos
+scn_order 添加 transaction_id
+scn_order_return 添加 sku_id
+models/Order.php
+services/admincp/OrderReturnController.php
+wwwroot/themes/admincp_v4.3/tpl/scripts/order/return/detail.php
+wwwroot/themes/admincp_v4.3/tpl/scripts/order/return/list.php
+
+
+
+
+

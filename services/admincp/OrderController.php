@@ -168,6 +168,15 @@ class Admincp_OrderController extends Admincp_Controller_Action
 			$_POST['com'] = $_POST['com1'] ? $_POST['com1'] : $_POST['com'];
 			$order->logs .= "\n".M('Admin')->getCurUser()->username." : {发货} -- ".date('y/m/d H:i:s');
 			$order->delivery($_POST['code'], $_POST['remark'],$_POST['com']);
+			$exts = array (
+				'title' => 'TS-'.$order['code'],
+				'content' => M('Admin')->getCurUser()->username." : {发货} -- ".date('y/m/d H:i:s'),
+				'extras' => array(
+					'id' => $this->_request->id,
+					'type' => 3//1是消息2是新品3是发货
+				)
+			);
+			M('Jpush')->push($order->buyer_id,3,$exts);
 			$this->redirect('&success=1&pst=order');
 		}
 

@@ -130,7 +130,26 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 					$exts['exts'] = $skus['skus'][0]['exts'];
 				}
 			}
-			M($this->_formatModelName())->insert(array_merge($skus, $this->_request->getFiles()));
+
+			$good_id = M($this->_formatModelName())->insert(array_merge($skus, $this->_request->getFiles()));
+			if($skus['is_push']) {
+				$exts = array (
+					'title' => $skus['title'],
+					'content' => $skus['description'],
+					'extras' => array(
+						'id' => $good_id,
+						'type' => 2//1是消息2是新品3是发货
+					)
+				);
+
+				$ids = M('User')->select('id')->fetchRows()->toArray();
+				if($ids) {
+					foreach($ids as $id) {
+						$push = M('Jpush')->push($id,2,$exts);
+						if(!$push) continue;
+					}
+				}
+			}
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
 		}
 
@@ -162,7 +181,23 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 					$exts['exts'] = $skus['skus'][0]['exts'];
 				}
 			}
-
+			if($skus['is_push']) {
+				$exts = array (
+					'title' => $skus['title'],
+					'content' => $skus['description'],
+					'extras' => array(
+						'id' => $this->_request->id,
+						'type' => 2//1是消息2是新品3是发货
+					)
+				);
+				$ids = M('User')->select('id')->fetchRows()->toArray();
+				if($ids) {
+					foreach($ids as $id) {
+						$push = M('Jpush')->push($id,2,$exts);
+						if(!$push) continue;
+					}
+				}
+			}
 			M($this->_formatModelName())->updateById(array_merge($skus, $this->_request->getFiles()), (int)$this->_request->id);
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
 		}
@@ -271,11 +306,29 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 
 	public function doToggleStatus()
 	{
-		$fields = array('is_new', 'is_hot', 'is_rec', 'is_selling','is_select');
+		$fields = array('is_new', 'is_hot', 'is_rec', 'is_selling','is_select','is_push');
 		if (in_array($this->_request->t, $fields)) {
 			$field = $this->_request->t;
 			$data[$field] = abs($this->_request->v - 1);
 			M('Goods')->updateById($data, (int)$this->_request->id);
+			$good = M('Goods')->select('title,description')->where('id ='.(int)$this->_request->id)->fetchRow()->toArray();
+			if($this->_request->t == 'is_push' && !$this->_request->v){
+				$exts = array (
+					'title' => $good['title'],
+					'content' => $good['description'],
+					'extras' => array(
+						'id' => $this->_request->id,
+						'type' => 2//1是消息2是新品3是发货
+					)
+				);
+				$ids = M('User')->select('id')->fetchRows()->toArray();
+				if($ids) {
+					foreach($ids as $id) {
+						$push = M('Jpush')->push($id,2,$exts);
+						if(!$push) continue;
+					}
+				}
+			}
 		} elseif ($this->_request->t == 'is_checked') {
 			$data['is_checked'] = $this->_request->v;
 			M('Goods')->updateById($data, (int)$this->_request->id);
