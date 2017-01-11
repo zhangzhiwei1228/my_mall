@@ -717,7 +717,7 @@ class App_GoodsController extends App_Controller_Action
             ->order('id DESC')
             ->paginator($limit, $page);
         if($status && $status != 6) {
-            $select->where('o.status = '.(int)$status);
+            $select->where('o.status = '.(int)$status.' and is_return <> 1');
         }
         if($status && $status == 6) {
             $select->where('o.status > 0 and o.status <= 4');
