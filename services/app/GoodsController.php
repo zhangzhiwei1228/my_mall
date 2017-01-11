@@ -923,6 +923,8 @@ class App_GoodsController extends App_Controller_Action
                     $sku['exts'] = json_encode($sku['exts']);
                     $price_type = M('User_Cart')->price_type($sku);
                     $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                    $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id)->fetchRow()->toArray();
+                    $good['is_comments'] = $comments ? 1 : 0;
                     $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
                     $good['price_text'] = $val['price_text']->$sku_id;
                     $good['qty'] = $val['qty']->$sku_id;
@@ -945,6 +947,8 @@ class App_GoodsController extends App_Controller_Action
             } else {
                 $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val['skus_id'])->fetchRow()->toArray();
                 $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id)->fetchRow()->toArray();
+                $good['is_comments'] = $comments ? 1 : 0;
                 $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
                 $sku['price_type'] = $val['price_type'];
                 $sku['exts'] = json_encode($sku['exts']);
