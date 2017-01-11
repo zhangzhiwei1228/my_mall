@@ -818,8 +818,8 @@ class App_GoodsController extends App_Controller_Action
 
         }
 
-        echo $this->_encrypt_data($datas);
-        //echo $this->show_data($this->_encrypt_data($datas));
+        //echo $this->_encrypt_data($datas);
+        echo $this->show_data($this->_encrypt_data($datas));
         die();
     }
     /**
