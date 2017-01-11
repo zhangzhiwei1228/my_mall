@@ -261,9 +261,6 @@ class Order extends Abstract_Model
 				//退款给买家
 				if ($order->status == 2 && $order->buyer->exists()) {
 					if((int)$order->total_pay_amount) {
-						var_dump("123123");
-						var_dump((int)$order->total_pay_amount);
-						die();
 						$order->buyer->income('refund', $order->total_pay_amount, 'TS-'.$order->code, '订单取消，自动退款')->commit();
 					}
 				}
@@ -290,7 +287,6 @@ class Order extends Abstract_Model
 				}
 				$this->getAdapter()->commit();
 			} catch (Suco_Exception $e) {
-				var_dump($e);
 				$this->getAdapter()->rollback();
 			}
 		}
