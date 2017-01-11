@@ -89,8 +89,8 @@ class App_IndexController extends App_Controller_Action
     public function doAdvertise() {
         $data = array('AppHomeHeard','AppCenterTop','AppCenterLeft','AppCenterRight','AppHotMarket');
         $home_heard = M('Advert')->getAppRowsByCode($data);
-        //echo $this->_encrypt_data($home_heard);
-        echo $this->show_data($this->_encrypt_data($home_heard));
+        echo $this->_encrypt_data($home_heard);
+        //echo $this->show_data($this->_encrypt_data($home_heard));
         die();
     }
     /**
