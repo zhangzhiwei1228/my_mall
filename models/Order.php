@@ -287,7 +287,6 @@ class Order extends Abstract_Model
 				}
 				$this->getAdapter()->commit();
 			} catch (Suco_Exception $e) {
-				var_dump($e);
 				$this->getAdapter()->rollback();
 			}
 		}
