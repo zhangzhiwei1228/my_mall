@@ -60,17 +60,17 @@ class App_GoodsController extends App_Controller_Action
         if($sku['exts']) {
             if($sku['exts']['ext1']['cash'] && $sku['exts']['ext1']['point']) {
                 $k_v[$i+5]['name'] = '现金+帮帮币';
-                $k_v[$i+5]['value'] = $sku['exts']['ext1']['cash'].'+'.$sku['exts']['ext1']['point'];
+                $k_v[$i+5]['value'] ='￥'.number_format($sku['exts']['ext1']['cash'],2).'+'.$sku['exts']['ext1']['point'];
                 $k_v[$i+5]['price_type'] = 4;
             }
             if($sku['exts']['ext2']['cash'] && $sku['exts']['ext2']['point']) {
                 $k_v[$i+6]['name'] = '现金+积分币';
-                $k_v[$i+6]['value'] = $sku['exts']['ext2']['cash'].'+'.$sku['exts']['ext2']['point'];
+                $k_v[$i+6]['value'] = '￥'.number_format($sku['exts']['ext2']['cash'],2).'+'.$sku['exts']['ext2']['point'];
                 $k_v[$i+6]['price_type'] = 5;
             }
             if($sku['exts']['ext3']['cash'] && $sku['exts']['ext3']['point']) {
                 $k_v[$i+7]['name'] = '现金+抵用券';
-                $k_v[$i+7]['value'] = $sku['exts']['ext3']['cash'].'+'.$sku['exts']['ext3']['point'];
+                $k_v[$i+7]['value'] = '￥'.number_format($sku['exts']['ext3']['cash'],2).'+'.$sku['exts']['ext3']['point'];
                 $k_v[$i+7]['price_type'] = 8;
             }
         }

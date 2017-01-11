@@ -167,15 +167,15 @@ class App_IndexController extends App_Controller_Action
             if($arrs['exts']) {
                 if($arrs['exts']['ext1']['cash'] && $arrs['exts']['ext1']['point']) {
                     $k_v[$key+5]['name'] = '现金+帮帮币';
-                    $k_v[$key+5]['value'] = $arrs['exts']['ext1']['cash'].'+'.$arrs['exts']['ext1']['point'];
+                    $k_v[$key+5]['value'] = '￥'.number_format($arrs['exts']['ext1']['cash'],2).'+'.$arrs['exts']['ext1']['point'];
                 }
                 if($arrs['exts']['ext2']['cash'] && $arrs['exts']['ext2']['point']) {
                     $k_v[$key+6]['name'] = '现金+积分币';
-                    $k_v[$key+6]['value'] = $arrs['exts']['ext2']['cash'].'+'.$arrs['exts']['ext2']['point'];
+                    $k_v[$key+6]['value'] = '￥'.number_format($arrs['exts']['ext2']['cash'],2).'+'.$arrs['exts']['ext2']['point'];
                 }
                 if($arrs['exts']['ext3']['cash'] && $arrs['exts']['ext3']['point']) {
                     $k_v[$key+7]['name'] = '现金+抵用券';
-                    $k_v[$key+7]['value'] = $arrs['exts']['ext3']['cash'].'+'.$arrs['exts']['ext3']['point'];
+                    $k_v[$key+7]['value'] = '￥'.number_format($arrs['exts']['ext3']['cash'],2).'+'.$arrs['exts']['ext3']['point'];
                 }
             }
             $goods[$key]['market_price'] = $arrs['market_price'];
