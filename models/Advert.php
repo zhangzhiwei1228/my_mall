@@ -100,7 +100,9 @@ class Advert extends Abstract_Model
 					->fetchRows()->toArray();
 				$rows[$po['code']]['limit'] = $po['limit'];
 				foreach($images as $key=>$row) {
-					$row['source'] = 'http://'.$_SERVER['HTTP_HOST'].$row['source'];
+					if (!filter_var($row['source'], FILTER_VALIDATE_URL, FILTER_FLAG_QUERY_REQUIRED) === false) {
+						$row['source'] = 'http://'.$_SERVER['HTTP_HOST'].$row['source'];
+					}
 					$row['jump_name'] = $jump[$row['jump_id']]['name'];
 					$rows[$po['code']]['images'][$key] = $row;
 
