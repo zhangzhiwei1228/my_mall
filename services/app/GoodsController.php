@@ -294,7 +294,7 @@ class App_GoodsController extends App_Controller_Action
         $good_id = (int)$this->_request->good_id;
         $quantity = $sku_id = 0;
         $arrs = M('Goods_Sku')->select()
-            ->where('goods_id = '.$good_id.' and (reverse(spec) LIKE '. 'reverse("%'.$param.'%") or reverse(spec) LIKE '.'reverse("%'.$param1.'%")'.' )')
+            ->where('goods_id = '.$good_id.' and (reverse(spec) LIKE '. 'reverse("%'.$param.'%") ')
             ->fetchRows()->toArray();
         if(count($arrs)) {
             foreach ($arrs as $arr) {
