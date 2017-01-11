@@ -30,7 +30,7 @@ class Jpush {
                     break;
                 case 3:
                     $title = '订单发货了！！！';
-                    $data['title'] = '您的订单“'.$data['title'].'”，已经发货了，点击查看详情 》》';
+                    $data['title'] = '您的订单“'.$data['title'].'”，已经发货了，点击查看详情 >>';
                     break;
                 default:
                     $title = '其他';
