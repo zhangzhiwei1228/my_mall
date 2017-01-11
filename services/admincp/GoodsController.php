@@ -181,6 +181,7 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 					$exts['exts'] = $skus['skus'][0]['exts'];
 				}
 			}
+			M($this->_formatModelName())->updateById(array_merge($skus, $this->_request->getFiles()), (int)$this->_request->id);
 			if($skus['is_push']) {
 				$exts = array (
 					'title' => $skus['title'],
@@ -198,7 +199,6 @@ class Admincp_GoodsController extends Admincp_Controller_Action
 					}
 				}
 			}
-			M($this->_formatModelName())->updateById(array_merge($skus, $this->_request->getFiles()), (int)$this->_request->id);
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
 		}
 
