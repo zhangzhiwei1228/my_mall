@@ -305,8 +305,8 @@ class App_GoodsController extends App_Controller_Action
             $quantity = 'error';
         }
         $data = array('quantity'=>$quantity,'sku_id'=>$sku_id);
-        echo $this->_encrypt_data($data);
-        //echo $this->show_data($this->_encrypt_data($data));
+        //echo $this->_encrypt_data($data);
+        echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
