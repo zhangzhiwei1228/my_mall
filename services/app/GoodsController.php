@@ -881,7 +881,7 @@ class App_GoodsController extends App_Controller_Action
             echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
             die();
         }
-        if($order['is_return'] || ( (!$order['status'] || ($order['status'] && $order['status'] != 2)) )) {
+        if($order['is_return'] || ( (!$order['status'] || ($order['status'] && $order['status'] != 2 && $order['status'] != 3)) )) {
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
             die();
         }
