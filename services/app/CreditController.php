@@ -39,10 +39,17 @@ class App_CreditController extends App_Controller_Action
                     $account = M('User')->getById((int)$row['rid']);
                     $data[$key]['create_time'] = $row['create_time'];
                     $data[$key]['type'] = $row['type'];
+
                     $data[$key]['shop_name'] = $row['conversion'];
                     $data[$key]['amount'] = $row['credit'];
                     $data[$key]['source'] = $row['status'] == 3 ? '商家赠送' : ($row['status'] == 1 ? '购买' : '');
                     $data[$key]['shop_id'] = $row['status'] == 3 ? $account->shop_id : '';
+                    $data[$key]['is_comment'] = 0;
+                    if($row['status'] == 3) {
+                        $comment = M('Shop_Comment')->select('id')->where('user_id ='.$this->user['id'].' and shop_id='.(int)$account->shop_id.' and is_show <> 0')->fetchRows()->toArray();
+                        $data[$key]['is_comment'] =  $comment ? 1 : 0 ;
+                    }
+
                     break;
                 case 'credit_coin' :
                     $data[$key]['create_time'] = $row['create_time'];
@@ -58,9 +65,15 @@ class App_CreditController extends App_Controller_Action
                     $data[$key]['amount'] = $row['credit'];
                     $data[$key]['source'] = $row['status'] == 3 ? '商家赠送' : ($row['status'] == 2 ? '转换' : '购买');
                     $data[$key]['shop_id'] = $row['status'] == 3 ? $account->shop_id : '';
+                    $data[$key]['is_comment'] = 0;
+                    if($row['status'] == 3) {
+                        $comment = M('Shop_Comment')->select('id')->where('user_id ='.$this->user['id'].' and shop_id='.(int)$account->shop_id.' and is_show <> 0')->fetchRows()->toArray();
+                        $data[$key]['is_comment'] =  $comment ? 1 : 0 ;
+                    }
                     break;
                 case 'worth_gold' :
                     $account = M('User')->getById((int)$row['write_uid']);
+                    $comment = M('Shop_Comment')->select('id')->where('user_id ='.$this->user['id'].' and shop_id='.(int)$account->shop_id.' and is_show <> 0')->fetchRows()->toArray();
                     $shop = $account->shop_id ? M('Shop')->select('name')->where('id = '.$account->shop_id)->fetchRow()->toArray() : '';
                     $data[$key]['create_time'] = $row['create_time'];
                     $data[$key]['amount'] = $row['privilege'];
@@ -69,6 +82,7 @@ class App_CreditController extends App_Controller_Action
                     $data[$key]['status'] = $row['write'] == 1 ? '未核销' : '已核销';
                     $data[$key]['shop_name'] = $shop ? $shop['name'] : '';
                     $data[$key]['shop_id'] =  $account->shop_id ;
+                    $data[$key]['is_comment'] =  $comment ? 1 : 0 ;
                     break;
             }
         }
