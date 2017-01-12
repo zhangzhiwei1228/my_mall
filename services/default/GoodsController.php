@@ -535,15 +535,18 @@ class GoodsController extends Controller_Action
 		$param1 = '';
 		if(strpos($param,',')) {
 			$param1 = explode(',',$param);
-			//$param1 = $param1[1].','.$param1[0];
-			$param = $param1[1].','.$param1[0];
+			$param1 = $param1[1].','.$param1[0];
 		}
 		$good_id = (int)$this->_request->good_id;
 		$quantity = $sku_id = 0;
-		$arrs = M('Goods_Sku')->select()
-			//->where('goods_id = '.$good_id.' and (reverse(spec) LIKE '. 'reverse("%'.$param.'%") or reverse(spec) LIKE '.'reverse("%'.$param1.'%")'.' )')
-			->where('goods_id = '.$good_id.' and (reverse(spec) LIKE '. 'reverse("%'.$param.'%"))')
-			->fetchRows()->toArray();
+		$select = M('Goods_Sku')->select()
+			->where('goods_id = '.$good_id);
+		if($param1){
+			$select->Where('(reverse(spec) LIKE '. 'reverse("%'.$param.'%") or reverse(spec) LIKE '.'reverse("%'.$param1.'%")'.' )');
+		} else {
+			$select->where('reverse(spec) LIKE '. 'reverse("%'.$param.'%")');
+		}
+		$arrs = $select->fetchRows()->toArray();
 		if(count($arrs)) {
 			foreach ($arrs as $arr) {
 				$quantity += $arr['quantity'];
