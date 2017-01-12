@@ -767,7 +767,22 @@ class App_UserController extends App_Controller_Action
             //$cart->destroy();
             M('Order')->getAdapter()->commit();
             $order = M('Order')->getById((int)$oid);
-
+            if ($order['total_credit'] > 0 && $this->user['credit'] < $order['total_credit']) {
+                echo self::_error_data(API_USER_CREDIT_NO_ENOUGH,'支付失败，您的帮帮币不足');
+                die();
+            }
+            if ($order['total_credit_happy'] > 0 && $this->user['credit_happy'] < $order['total_credit_happy']) {
+                echo self::_error_data(API_USER_CREDIT_HAPPY_NO_ENOUGH,'支付失败，您的快乐积分不足');
+                die();
+            }
+            if ($order['total_credit_coin'] > 0 && $this->user['credit_coin'] < $order['total_credit_coin']) {
+                echo self::_error_data(API_USER_CREDIT_COIN_NO_ENOUGH,'支付失败，您的积分币不足');
+                die();
+            }
+            if ($order['total_vouchers'] > 0 && $this->user['vouchers'] < $order['total_vouchers']) {
+                echo self::_error_data(API_USER_VOUCHERS_NO_ENOUGH,'支付失败，您的抵用券不足');
+                die();
+            }
             $order_json = json_decode($order['order_json']);
             $order_postage = 0;
             //将分好的商品的邮费计算出来
@@ -797,23 +812,6 @@ class App_UserController extends App_Controller_Action
             $order->total_amount = $total_amount;
             $pay = 0;
             if(!$total_amount) {
-                if ($order['total_credit'] > 0 && $this->user['credit'] < $order['total_credit']) {
-                    echo self::_error_data(API_USER_CREDIT_NO_ENOUGH,'支付失败，您的帮帮币不足');
-                    die();
-                }
-                if ($order['total_credit_happy'] > 0 && $this->user['credit_happy'] < $order['total_credit_happy']) {
-                    echo self::_error_data(API_USER_CREDIT_HAPPY_NO_ENOUGH,'支付失败，您的快乐积分不足');
-                    die();
-                }
-                if ($order['total_credit_coin'] > 0 && $this->user['credit_coin'] < $order['total_credit_coin']) {
-                    echo self::_error_data(API_USER_CREDIT_COIN_NO_ENOUGH,'支付失败，您的积分币不足');
-                    die();
-                }
-                if ($order['total_vouchers'] > 0 && $this->user['vouchers'] < $order['total_vouchers']) {
-                    echo self::_error_data(API_USER_VOUCHERS_NO_ENOUGH,'支付失败，您的抵用券不足');
-                    die();
-                }
-
                 if ($order['total_credit']) {
                     $this->user->credit($order['total_credit']*-1, '支付订单【TS-'.$order['id'].'】');
                 }
