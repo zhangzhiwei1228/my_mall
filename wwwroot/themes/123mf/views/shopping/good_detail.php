@@ -149,7 +149,7 @@ $ref = isset($this->_request->ref) ? base64_decode($this->_request->ref) : base6
 			<span class="title fl">购买数量：</span>
 			<div class="click-nums fl">
 				<a href="javascript:void(0);" class="jian">-</a>
-				<input type="text" name="quantity" value="1">
+				<input type="text" name="quantity" value="1" id="select_qty">
 				<a href="javascript:void(0);" class="add">+</a>
 			</div>
 			<span>&nbsp;&nbsp;当前库存 <label class="sku_boline" style="color: red"><?php echo $this->sku['spec'] ? '0' : $this->sku['quantity']?></label>件</span>
@@ -257,6 +257,7 @@ echo static_file('m/js/main.js');
 		var is_vip = $('#is_vip').val();
 		var is_login = $('#is_login').val();
 		var quantity = $('.sku_boline').text();
+		var qty = $('.select_qty').text();
 		if(!is_login) {
 			flag = 0;
 			$(".end163").show().text('您还没有登录，请先登录');
@@ -304,6 +305,14 @@ echo static_file('m/js/main.js');
 		if(quantity == 0 && flag) {
 			flag = 0;
 			$(".end163").show().text('当前规格已售空');
+			setTimeout(function(){
+				$(".end163").hide();
+			},3000);
+			return false;
+		}
+		if(quantity < qty) {
+			flag = 0;
+			$(".end163").show().text('所选数量大于库存量');
 			setTimeout(function(){
 				$(".end163").hide();
 			},3000);
@@ -364,6 +373,7 @@ echo static_file('m/js/main.js');
 		var is_vip = $('#is_vip').val();
 		var is_login = $('#is_login').val();
 		var quantity = $('.sku_boline').text();
+		var qty = $('.select_qty').text();
 		if(!is_login) {
 			flag = 0;
 			$(".end163").show().text('您还没有登录，请先登录');
@@ -409,6 +419,14 @@ echo static_file('m/js/main.js');
 		if(quantity == 0 && flag) {
 			flag = 0;
 			$(".end163").show().text('当前规格已售空');
+			setTimeout(function(){
+				$(".end163").hide();
+			},3000);
+			return false;
+		}
+		if(quantity < qty) {
+			flag = 0;
+			$(".end163").show().text('所选数量大于库存量');
 			setTimeout(function(){
 				$(".end163").hide();
 			},3000);

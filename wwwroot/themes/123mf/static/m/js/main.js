@@ -4,9 +4,12 @@ $(function(){
             $input = $this.parent().find('input'),
 
             num = parseInt($input.val());
-            var sku = $('#sku_id').val();
-        if(num > sku) {
+            var sku = $('.sku_boline').text();
+        if(num >= sku) {
             $(".end163").show().text('库存量已不足').css('font-size','12px');
+            setTimeout(function(){
+                $('.end163').hide();
+            },1000);
             return false;
         }
         $input.val(num+1);
@@ -29,9 +32,12 @@ $(function(){
     $('.click-nums input').keyup(function() {
         var n = parseInt($(this).parent().find("input").val());
         if(n > 1){
-            var sku = $('#sku_id').val();
+            var sku = $('.sku_boline').text();
             if(n > sku) {
                 $(".end163").show().text('库存量已不足').css('font-size','12px');
+                setTimeout(function(){
+                    $('.end163').hide();
+                },1000);
                 return false;
             }
             $(this).parent().find("input").val(n);
