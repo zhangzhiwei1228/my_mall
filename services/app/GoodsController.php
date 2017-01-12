@@ -897,7 +897,7 @@ class App_GoodsController extends App_Controller_Action
             echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
             die();
         }
-        $order = M('Order')->select('id,area_id,shipping_id,total_credit,total_credit_happy,total_credit_coin,total_vouchers,total_weight,total_quantity,order_json,total_amount,status,code,create_time,expiry_time,pay_time,delivery_time,confirm_time,consignee,area_text,address,phone,total_earn_points,is_receive ')->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow()->toArray();
+        $order = M('Order')->select('id,area_id,shipping_id,total_credit,total_credit_happy,total_credit_coin,total_vouchers,total_weight,total_quantity,order_json,total_amount,status,code,create_time,expiry_time,pay_time,delivery_time,confirm_time,consignee,area_text,address,phone,total_earn_points,is_receive,is_return ')->where('id = '.$oid.' and buyer_id = '.$this->user->id)->fetchRow()->toArray();
         if(!$order ) {
             echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
             die();
