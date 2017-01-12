@@ -255,7 +255,7 @@ class Order extends Abstract_Model
 	 */
 	public function refund($order,$log='',$uid) {
 
-		if ($order->status == 1 || $order->status == 2) {
+		if ($order->status == 1 || $order->status == 2 || $order->status == 3) {
 			$this->getAdapter()->beginTrans();
 			try {
 				//退款给买家
