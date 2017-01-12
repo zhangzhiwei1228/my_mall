@@ -968,9 +968,14 @@ class App_UserController extends App_Controller_Action
             echo self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
             die();
         }
-        $cart = M('User_Cart')->select('id')->where('id='.(int)$id)->fetchRow()->toArray();
+        $cart = M('User_Cart')->select('id,sku_id')->where('id='.(int)$id)->fetchRow()->toArray();
         if(!$cart) {
             echo self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+            die();
+        }
+        $sku = M('Goods_Sku')->select('quantity')->where('id = ?', (int)$cart['sku_id'])->fetchRow()->toArray();
+        if($sku['quantity'] < $qty) {
+            echo self::_error_data(API_RESOURCES_NOT_FOUND,'库存已不足，不能再添加');
             die();
         }
         $data = M('User_Cart')->updateById(array('qty' => (int)$qty), (int)$id);
