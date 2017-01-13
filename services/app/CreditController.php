@@ -418,7 +418,7 @@ class App_CreditController extends App_Controller_Action
      */
     public function doPayIos() {
         $type = $this->_request->type;//credit credit_coin vouchers
-        $amount = $this->_request->aomunt;//购买的数量
+        $amount = $this->_request->amount;//购买的数量
         $money = $this->_request->money;//支付的金钱
         $uniquely = $this->_request->uniquely;//唯一标识
         if( !$type || !$amount || !$money || !$uniquely ) {
