@@ -326,8 +326,8 @@ class App_IndexController extends App_Controller_Action
         } else {
             $data['url'] = 'https://sandbox.itunes.apple.com/verifyReceipt';
         }
-        echo $this->_encrypt_data($data);
-        //echo $this->show_data($this->_encrypt_data($data->toArray()));
+        //echo $this->_encrypt_data($data);
+        echo $this->show_data($this->_encrypt_data($data));
         die();
     }
 

@@ -413,5 +413,11 @@ class App_CreditController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($glod));
         die();
     }
+    /**
+     * ios 内购
+     */
+    public function doPayIos() {
+        $type = $this->_request->type;//credit credit_coin
+    }
 }
 
