@@ -937,7 +937,9 @@ class App_UserController extends App_Controller_Action
             ->where('m.recipient_uid = ?', $this->user['id'])
             ->order('m.is_read ASC, m.id DESC')
             ->paginator((int)$limit, (int)$page);
+        $count = M('Message')->count('recipient_uid ='.$this->user['id'].' and is_read =0');
         $data = $messages->fetchRows()->toArray();
+        $data['count'] = $count;
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
