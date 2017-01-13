@@ -86,8 +86,8 @@ class App_CreditController extends App_Controller_Action
                     break;
             }
         }
-        echo $this->_encrypt_data($data);
-        //echo $this->show_data($this->_encrypt_data($data));
+        //echo $this->_encrypt_data($data);
+        echo $this->show_data($this->_encrypt_data($data));
         die();
     }
     /**
