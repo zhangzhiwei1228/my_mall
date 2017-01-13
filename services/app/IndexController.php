@@ -317,5 +317,15 @@ class App_IndexController extends App_Controller_Action
         $view = $this->_initView();
         $view->render('views/app/download.php');
     }
+    /**
+     * neigou
+     */
+    public function doUrl() {
+        if(kVerifyReceipt) {
+            $data['url'] = 'https://buy.itunes.apple.com/verifyReceipt';
+        } else {
+            $data['url'] = 'https://sandbox.itunes.apple.com/verifyReceipt';
+        }
+    }
 
 }

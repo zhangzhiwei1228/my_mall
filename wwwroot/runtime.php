@@ -20,6 +20,7 @@ define('SCWS_DIR',			BASE.'appdata'.DS.'scws'.DS);
 define('APP_KEY',			'4eb45084daa1c80f51f1f3d4bad74633');
 define('APP_VER',			'3.2.1 Beta');
 define('DEBUG',				0);
+define('kVerifyReceipt',				1);//ios内购 0是开发1是正式上线
 
 define('LOGIN_TIMEOUT',		3600);	#登陆超时时间
 define('ONLINE_TIMEOUT',	180);	#在线超时时间	此时间内检测不到操作。系统认为用户离线
