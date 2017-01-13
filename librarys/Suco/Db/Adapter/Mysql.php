@@ -128,7 +128,7 @@ class Suco_Db_Adapter_Mysql extends Suco_Db_Adapter_Abstract
 	 */
 	public function getAffectedRows()
 	{
-		return mysqli_affected_rows($this->_linkId);
+		return mysql_affected_rows($this->_linkId);
 	}
 
 	/**
@@ -167,9 +167,9 @@ class Suco_Db_Adapter_Mysql extends Suco_Db_Adapter_Abstract
 		}
 
 		if ($persistent) {
-			$this->_linkId = mysqli_connect($host, $user, $pass);
+			$this->_linkId = @mysql_pconnect($host, $user, $pass);
 		} else {
-			$this->_linkId = mysqli_connect($host, $user, $pass, 'sdb_123mf');
+			$this->_linkId = @mysql_connect($host, $user, $pass, true);
 		}
 
 		if (!$this->_linkId) {
@@ -199,9 +199,9 @@ class Suco_Db_Adapter_Mysql extends Suco_Db_Adapter_Abstract
 	public function execute($sql)
 	{
 		//$sqls = explode(';', $sql);
-		if (!$sql) return false;
+		if (!$sql) continue;
 		$beginTime = $this->_getMicrotime();
-		$result = mysqli_query($this->_linkId,$sql);
+		$result = mysql_query($sql, $this->_linkId);
 		$executeTime = $this->_getMicrotime() - $beginTime;
 		$this->_querys[] = array(
 			'runtime'	=> $executeTime,
@@ -211,7 +211,7 @@ class Suco_Db_Adapter_Mysql extends Suco_Db_Adapter_Abstract
 		$this->_totalExecuteTime+= $executeTime;
 		$this->_totalExecuteQuantity++;
 		
-		if (mysqli_errno($this->_linkId)) {
+		if (mysql_errno($this->_linkId)) {
 			require_once 'Suco/Db/Exception.php';
 			throw new Suco_Db_Exception("{$sql} 执行失败. [".mysql_error()."]", 1002);
 		}
@@ -225,7 +225,7 @@ class Suco_Db_Adapter_Mysql extends Suco_Db_Adapter_Abstract
 	 */
 	public function close()
 	{
-		mysqli_close($this->_linkId);
+		mysql_close($this->_linkId);
 	}
 
 	/**
