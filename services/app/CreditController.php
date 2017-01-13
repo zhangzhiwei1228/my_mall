@@ -417,7 +417,53 @@ class App_CreditController extends App_Controller_Action
      * ios 内购
      */
     public function doPayIos() {
-        $type = $this->_request->type;//credit credit_coin
+        $type = $this->_request->type;//credit credit_coin vouchers
+        $amount = $this->_request->aomunt;//购买的数量
+        $money = $this->_request->money;//支付的金钱
+        $uniquely = $this->_request->uniquely;//唯一标识
+        if( !$type || !$amount || !$money || !$uniquely ) {
+            echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
+            die();
+        }
+        $voucher = 'itunes-'.$uniquely;
+        $pid = 4;
+        switch($type) {
+            case 'credit':
+                $this->user->recharge(
+                    $money, 0, $voucher, 'IOS内购充值', $pid
+                )->commit();
+                $this->user->expend(
+                    'pay', $money, $voucher, '购买帮帮币#'.$voucher
+                )->commit();
+                $this->user->credit($amount, '购买帮帮币', 1);
+                break;
+            case 'credit_coin':
+                $this->user->recharge(
+                    $money, 0, $voucher, 'IOS内购充值', $pid
+                )->commit();
+                $this->user->expend(
+                    'pay', $money, $voucher, '购买积分币#'.$voucher
+                )->commit();
+                $this->user->creditCoin($amount, '购买积分币', 1);
+                break;
+            case 'vouchers':
+                $this->user->recharge(
+                    $money, 0, $voucher, 'IOS内购充值', $pid
+                )->commit();
+                $this->user->expend(
+                    'pay', $money, $voucher, '购买抵用券#'.$voucher
+                )->commit();
+                $this->user->vouchers($amount, '购买抵用券', 1);
+                break;
+            default:
+                echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
+                die();
+                break;
+        }
+        $data = array('status'=>'ok');
+        echo $this->_encrypt_data($data);
+        //echo $this->show_data($this->_encrypt_data($data));
+        die();
     }
 }
 
