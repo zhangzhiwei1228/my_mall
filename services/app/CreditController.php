@@ -37,6 +37,8 @@ class App_CreditController extends App_Controller_Action
             switch($type) {
                 case 'credit' :
                     $account = M('User')->getById((int)$row['rid']);
+                    var_dump($account->shop_id);
+                    
                     $data[$key]['create_time'] = $row['create_time'];
                     $data[$key]['type'] = $row['type'];
 
