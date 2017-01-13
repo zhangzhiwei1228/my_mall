@@ -69,7 +69,7 @@ class App_UserController extends App_Controller_Action
         $data['is_vip'] = $user_data['is_vip'];
         $data['shop_id'] = $user_data['shop_id'];
         $data['avatar'] = $user_data['avatar'] ? 'http://'.$_SERVER['HTTP_HOST'].$user_data['avatar'] : '';
-        $count = M('User_Cart')->count('user_id = '.$user->id);
+        $count = M('User_Cart')->count('user_id = '.$user->id.' and checkout = 0');
         $extends = M('User_Extend')->select('field_key,field_name,field_value')->where('user_id ='.$user->id)->fetchRows()->toArray();
         if(!$extends) {
             $this->UserExtend($user_data['id']);//初始化额外信息
