@@ -20,7 +20,7 @@ class App_Controller_Action extends Suco_Controller_Action
 			}
 			$user = M('User')->select()->where('token='."'".$token."'")->fetchRow();
 		}
-		if (!$user) {
+		if (!$user || !$user->toArray()) {
 			echo  self::_error_data(API_TOKEN_NOT_FOUND,'此token不存在');
 			die();
 		}
