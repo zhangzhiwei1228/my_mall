@@ -52,7 +52,7 @@ class App_GoodsController extends App_Controller_Action
             $k_v[$i+3]['value'] = $sku['point4'];
             $k_v[$i+3]['price_type'] = 6;
         }
-        if($sku['point5']) {
+        if($sku['point5'] > 0) {
             $k_v[$i+4]['name'] = '现金';
             $k_v[$i+4]['value'] = $sku['point5'];
             $k_v[$i+4]['price_type'] = 7;
@@ -797,7 +797,7 @@ class App_GoodsController extends App_Controller_Action
                 $sku = M('Goods_Sku')->select()->where('id = ?', (int)$value)->fetchRow()->toArray();
 
                 $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
-                $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id)->fetchRow()->toArray();
+                $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id.' and order_id ='.$row['id'])->fetchRow()->toArray();
                 $good['is_comments'] = $comments ? 1 : 0;
                 $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
                 $good['price_text'] = $val['price_text'];
@@ -927,7 +927,7 @@ class App_GoodsController extends App_Controller_Action
                     $sku['exts'] = json_encode($sku['exts']);
                     $price_type = M('User_Cart')->price_type($sku);
                     $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
-                    $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id)->fetchRow()->toArray();
+                    $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id.' and order_id ='.$oid)->fetchRow()->toArray();
                     $good['is_comments'] = $comments ? 1 : 0;
                     $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
                     $good['price_text'] = $val['price_text']->$sku_id;
