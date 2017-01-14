@@ -33,8 +33,12 @@ class App_UserController extends App_Controller_Action
 
         }*/
         $user = M('User')->select()->where('username = ? OR email = ? OR mobile = ?', $phone)->fetchRow();
-        if (!$user->exists() || ($user['password'] != $this->encrypt($pass, $user['salt']))) {
-            echo  self::_error_data(ERR_LOGIN_FAIL_PWD_OR_ACCOUNT,'不存在此手机号或密码错误');
+        if (!$user->exists()) {
+            echo  self::_error_data(ERR_LOGIN_FAIL_PWD_OR_ACCOUNT,'不存在此手机号');
+            die();
+        }
+        if($user['password'] != $this->encrypt($pass, $user['salt'])) {
+            echo  self::_error_data(ERR_LOGIN_FAIL_PWD_OR_ACCOUNT,'密码错误');
             die();
         }
         if (!$user['is_enabled']) {
