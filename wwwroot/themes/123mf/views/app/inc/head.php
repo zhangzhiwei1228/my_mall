@@ -37,3 +37,8 @@
     window['adaptive'].desinWidth = 750;
     window['adaptive'].init();
 </script>
+<script>
+	$(function(){
+		$(".conserve-photo").remove();
+	})
+</script>
