@@ -241,7 +241,7 @@ class App_IndexController extends App_Controller_Action
      */
     public function doPush() {
         $this->user = $this->_auth();
-        $artice = M('Article')->getById(94);
+        $artice = M('Article')->getById(309);
         $exts = array (
             'title' => $artice['title'],
             'content' => strip_tags($artice['content']),
