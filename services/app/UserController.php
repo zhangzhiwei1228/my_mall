@@ -940,8 +940,9 @@ class App_UserController extends App_Controller_Action
         $count = M('Message')->count('recipient_uid ='.$this->user['id'].' and is_read =0');
         $data = $messages->fetchRows()->toArray();
         $data1['count'] = $count;
-        echo $this->_encrypt_data(array_merge($data,$data1));
-        //echo $this->show_data($this->_encrypt_data($data));
+        $datas = array('data'=>$data,'count'=>$count);
+        echo $this->_encrypt_data($datas);
+        //echo $this->show_data($this->_encrypt_data($datas));
         die();
     }
     /**
