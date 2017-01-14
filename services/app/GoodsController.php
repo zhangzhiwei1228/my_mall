@@ -209,10 +209,10 @@ class App_GoodsController extends App_Controller_Action
             ->order('rank ASC, id ASC')
             ->fetchRows();
         $brand = M('Brand')->select('id,category_id,title,thumb,ref_img')->where('category_id='.(int)$cid)->fetchRow();
-        if (!$brand->exists()) {
+        /*if (!$brand->exists()) {
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求资源不存在');
             die();
-        }
+        }*/
         $data = array(
             'cates' => $cates->toArray(),
             'brand' => $brand->toArray()
