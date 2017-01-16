@@ -70,5 +70,5 @@ services/admincp/OrderController.php
 wwwroot/themes/admincp_v4.3/tpl/scripts/goods/input.php
 wwwroot/themes/admincp_v4.3/tpl/scripts/goods/list.php
 
-
+scn_order_goods 添加字段price_type
 

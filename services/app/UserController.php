@@ -547,7 +547,7 @@ class App_UserController extends App_Controller_Action
             die();
         }
         if($addr_id) {
-            $addr = M('User_Address')->select('area_id,area_text,consignee,address,zipcode,phone')->where('id ='.(int)$addr_id.' and user_id ='.(int)$this->user->id)->fetchRow()->toArray();
+            $addr = M('User_Address')->select('id,area_id,area_text,consignee,address,zipcode,phone')->where('id ='.(int)$addr_id.' and user_id ='.(int)$this->user->id)->fetchRow()->toArray();
             if(!$addr) {
                 echo self::_error_data(API_USER_ADDR_NOT_FOUND,'用户地址不正确');
                 die();
