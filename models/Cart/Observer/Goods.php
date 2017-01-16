@@ -287,10 +287,10 @@ class Cart_Observer_Goods implements Cart_Observer_Interface
 
 						}
 						$key1 = explode('.',$key);
-						$shipping[$key1[1]] = $val;
-						$price_text[$key1[1]] = $g['price_text'];
-						$price_type[$key1[1]] = $item['priceType'];
-						$good_qty[$key1[1]] = $qty;
+						$shipping[$key1[1].'.'.$key1[2]] = $val;
+						$price_text[$key1[1].'.'.$key1[2]] = $g['price_text'];
+						$price_type[$key1[1].'.'.$key1[2]] = $item['priceType'];
+						$good_qty[$key1[1].'.'.$key1[2]] = $qty;
 						unset($shipping[$key]);
 					}
 					$ids[$keys]['skus_id'] = implode(',',array_keys($shipping));

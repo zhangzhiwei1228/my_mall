@@ -591,10 +591,13 @@ class App_UserController extends App_Controller_Action
             if(strpos($val['skus_id'],',')) {
                 $sku_ids = explode(',',$val['skus_id']);
                 foreach($sku_ids as $k => $sku_id) {
+                    $skuId = explode('.',$sku_id);
+                    $priceType = $skuId[1];
+                    $sku_id = $skuId[0];
                     $sku = M('Goods_Sku')->select()->where('id = ?', (int)$sku_id)->fetchRow()->toArray();
                     $sku['price_type'] = $pricetype[$sku['goods_id'].'.'.$sku_id];
                     $sku['exts'] = json_encode($sku['exts']);
-                    $price_type = M('User_Cart')->price_type($sku);
+                    $price_type = M('User_Cart')->price_type($sku,$priceType);
                     $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                     $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
                     $good['qty'] = $qty[$sku['goods_id'].'.'.$sku_id];
@@ -759,6 +762,7 @@ class App_UserController extends App_Controller_Action
                     'purchase_quantity' => $row['qty'],
                     'promotion' => $row['goods']['price_label'],
                     'subtotal_vouchers' => $row['subtotal_vouchers'],
+                    'price_type' => $row['priceType'],
                     //'unit' => $row['unit'],
                     'sku_id' => $row['skuId']
                 )));
