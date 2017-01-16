@@ -124,14 +124,14 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 					if(!$push) continue;
 				}
 				foreach ($user_areas as $user2) {
-					$push = M('Jpush')->push($user1['id'],1,$exts);
+					$push = M('Jpush')->push($user2['id'],1,$exts);
 					if(!$push) continue;
 				}
 
 				//M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
 			} else {
 				$artice_id = M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
-				$exts = array (
+				/*$exts = array (
 					'title' => $data['title'],
 					'content' => strip_tags($data['content']),
 					'extras' => array(
@@ -145,7 +145,7 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 						$push = M('Jpush')->push($id,2,$exts);
 						if(!$push) continue;
 					}
-				}
+				}*/
 				M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
 			}
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list&cid=' . $_POST['cid']);
