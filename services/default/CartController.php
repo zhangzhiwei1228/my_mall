@@ -152,7 +152,6 @@ class CartController extends Controller_Action
 			}
 			foreach($items as $k => $row) {
 				if (!$row['checkout']) continue;
-				var_dump($row);
 				unset($row['goods']['id']);
 				unset($row['goods']['key']);
 				unset($row['goods']['cost_price']);
@@ -180,6 +179,7 @@ class CartController extends Controller_Action
 					'purchase_quantity' => $row['qty'],
 					'promotion' => $row['goods']['price_label'],
 					'subtotal_vouchers' => $row['subtotal_vouchers'],
+					'price_type' => $row['priceType'],
 					//'unit' => $row['unit'],
 					'sku_id' => $row['skuId']
 				)));

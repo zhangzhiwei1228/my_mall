@@ -326,3 +326,23 @@ function get_ip()
 
 	return $IP;
 }
+
+/**
+ * @param $data
+ * @return string
+ * 拼接sql
+ */
+function get_sql($data) {
+	$query = '';
+	$count = count($data);
+	$i = 0;
+	foreach($data as $k => $v){
+		if($i < $count -1) {
+			$query .= $k.' = '.$v.' and ';
+		} else {
+			$query .= $k.' = '.$v;
+		}
+		$i++;
+	}
+	return $query;
+}
