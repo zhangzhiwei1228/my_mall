@@ -291,6 +291,58 @@ class Order extends Abstract_Model
 			}
 		}
 	}
+	public function refundGoods($order,$log='',$uid,$order_good,$exts) {
+
+		if ($order->status == 1 || $order->status == 2 || $order->status == 3) {
+			$this->getAdapter()->beginTrans();
+			try {
+				//退款给买家
+				if ($order->status == 2 && $order->status == 3 && $order->buyer->exists()) {
+
+					if($order_good['subtotal_amount'] > 0) {
+						$desc = 'TS-'.$order->code.'-'.$exts['good_id'].'-'.$exts['sku_id'].'-'.$exts['price_type'];
+						$order->buyer->income('refund', $order_good['subtotal_amount'], $desc , '订单取消，自动退款')->commit();
+					}
+				}
+				//关闭订单
+				//$order->status = 0;
+				$order->is_return = 1;
+				//释放库存
+				foreach($order->goods as $row) {
+					$goods = M('Goods')->getById($row['goods_id']);
+					$goods->quantity += $row['purchase_quantity'];
+					$goods->save();
+
+					$sku = M('Goods_Sku')->getById($row['sku_id']);
+					$sku->quantity += $row['purchase_quantity'];
+					$sku->save();
+				}
+				if ($log) {
+					$order->logs .= $log;
+				}
+				$order->save();
+				M('Order_Return')->insert( array(
+					'code' => M('Order_Return')->getUniqueCode(),
+					'buyer_id' => $uid,
+					'order_id' => $order->id,
+					'sku_id' => $exts['sku_id'],
+					'order_goods_id' => $exts['goods_id'],
+					'price_type' => $exts['price_type'],
+					'is_buyer_accepted' => 1,
+					'consult_count' => 1,
+					'refund_amount' => $order_good['subtotal_amount']-$order_good['subtotal_save'],
+					'expiry_time' => time() + M('Setting')->get('timeout_refund')
+				));
+
+				$query = get_sql($exts);
+				M('Order_Goods')->update('is_return = 1', $query); //变更订单商品状态
+				M('Order')->updateById('retention_time = expiry_time-'.time().', expiry_time = 0', (int)$order->id); //冻结订单
+				$this->getAdapter()->commit();
+			} catch (Suco_Exception $e) {
+				$this->getAdapter()->rollback();
+			}
+		}
+	}
 
 	/**
 	 * @param $order_id

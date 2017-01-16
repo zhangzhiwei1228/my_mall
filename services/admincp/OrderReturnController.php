@@ -76,13 +76,22 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 			$return->save();
 		}
 
+		$exts = array(
+			'buyer_id' => $return['buyer_id'],
+			'order_id' => $return['order_id'],
+			'sku_id' => $return['sku_id'],
+			'goods_id' => $return['order_goods_id'],
+			'price_type' => $return['price_type'],
+		);
+		$query = get_sql($exts);
+		M('Order_Goods')->update(array('is_return' => 3), $query);
 		$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
 	}
 
 	public function doAccept()
 	{
 		$return = M('Order_Return')->getById((int)$this->_request->id);
-		$order = M('Order')->getById((int)$return->order_id);
+		/*$order = M('Order')->getById((int)$return->order_id);
 
 		$s = 0; $n = 0;
 		foreach ($order->goods as $row) {
@@ -96,15 +105,24 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 			M('Order')->updateById('expiry_time = retention_time + '.time(),(int)$return->order_id);
 		}
 		M('Order_Return')->updateById(array('status' => 2), (int)$return->id);
-		M('Order_Goods')->updateById(array('is_return' => 2), (int)$return->order_goods_id);
-
+		M('Order_Goods')->updateById(array('is_return' => 2), (int)$return->order_goods_id);*/
+		$exts = array(
+			'buyer_id' => $return['buyer_id'],
+			'order_id' => $return['order_id'],
+			'sku_id' => $return['sku_id'],
+			'goods_id' => $return['order_goods_id'],
+			'price_type' => $return['price_type'],
+		);
+		$query = get_sql($exts);
+		M('Order_Return')->updateById(array('status' => 2), (int)$return->id);
+		M('Order_Goods')->update(array('is_return' => 2), $query);
 		$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
 	}
 
 	public function doRefuse()
 	{
 		$return = M('Order_Return')->getById((int)$this->_request->id);
-		$order = M('Order')->getById((int)$return->order_id);
+		/*$order = M('Order')->getById((int)$return->order_id);
 		$s = 0; $n = 0;
 		foreach ($order->goods as $row) {
 			if ($row['is_return'] == 1) { $s++; } //只要还有退款未处理，继续冻结
@@ -116,7 +134,17 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 		}
 
 		M('Order_Return')->updateById(array('status' => 1), (int)$return->id);
-		M('Order_Goods')->updateById(array('is_return' => 3), (int)$return->order_goods_id);
+		M('Order_Goods')->updateById(array('is_return' => 3), (int)$return->order_goods_id);*/
+		$exts = array(
+			'buyer_id' => $return['buyer_id'],
+			'order_id' => $return['order_id'],
+			'sku_id' => $return['sku_id'],
+			'goods_id' => $return['order_goods_id'],
+			'price_type' => $return['price_type'],
+		);
+		$query = get_sql($exts);
+		M('Order_Return')->updateById(array('status' => 1), (int)$return->id);
+		M('Order_Goods')->update(array('is_return' => 3), $query);
 
 		$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
 	}

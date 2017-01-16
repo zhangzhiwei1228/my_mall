@@ -796,6 +796,9 @@ class App_GoodsController extends App_Controller_Action
             //$row['sku_ids'] = $sku_ids;
             unset($row['order_json']);
             foreach($sku_ids as $value) {
+                $v = $value;
+                $values = explode('.',$value);
+                $value = $values[0];
                 //print_r($value);
                 $sku = M('Goods_Sku')->select()->where('id = ?', (int)$value)->fetchRow()->toArray();
 
@@ -817,9 +820,21 @@ class App_GoodsController extends App_Controller_Action
                 unset($good['price']);
                 unset($good['unit']);
                 $good['sku_id'] = $val['skus_id'];
-                $good['price_text'] = $price_text[$value];
-                $good['price_type'] = $type[$value];
-                $good['priceType'] = $priceType[$value];
+                $good['price_text'] = $price_text[$v];
+                $good['price_type'] = $type[$v];
+
+                $good['priceType'] = $priceType[$v];
+                $exts = array(
+                    'buyer_id' => $this->user->id,
+                    'order_id' => $row['id'],
+                    'sku_id' => $value,
+                    'goods_id' => $good['id'],
+                    'price_type' => $priceType[$v]
+                );
+                $query = get_sql($exts);
+                $return = M('Order_Goods')->select('is_return')->where($query)->fetchRow()->toArray();
+
+                $good['is_return'] = $return['is_return'];
                 $row['goods'][] = $good;
             }
             unset($sku_ids);
@@ -876,6 +891,10 @@ class App_GoodsController extends App_Controller_Action
     public function doRefund() {
         $this->user = $this->_auth();
         $oid = $this->_request->oid;
+        $price_type = $this->_request->price_type;
+        $good_id = $this->_request->good_id;
+        $sku_id = $this->_request->sku_id;
+        $type = $this->_request->type ? $this->_request->type : 1 ;//1退单个商品，2退整个订单
         if(!$oid) {
             echo  self::_error_data(API_MISSING_PARAMETER,'缺少必要参数');
             die();
@@ -885,11 +904,36 @@ class App_GoodsController extends App_Controller_Action
             echo  self::_error_data(API_ORDER_NOT_FOUND,'此订单不存在');
             die();
         }
-        if($order['is_return'] || ( (!$order['status'] || ($order['status'] && $order['status'] != 2 && $order['status'] != 3)) )) {
+        if( (!$order['status'] || ($order['status'] && $order['status'] != 2 && $order['status'] != 3)) ) {
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'请求数据错误');
             die();
         }
-        $order->refund(date(DATETIME_FORMAT)." - 买家申请退款\r\n",$this->user->id);
+        $exts = array(
+            'buyer_id' => $this->user->id,
+            'sku_id' => $sku_id,
+            'order_id' => $oid,
+            'price_type' => $price_type,
+            'goods_id' => $good_id,
+        );
+        $query = get_sql($exts);
+        $order_good = M('Order_Goods')->select()->where($query)->fetchRow()->toArray();
+
+        if(!$order_good) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'退款的商品不存在');
+            die();
+        }
+        $order_return = M('Order_Return')->select('id')->where('buyer_id ='.(int)$this->user->id.' and order_id='.(int)$oid.' and order_goods_id ='.$good_id.' and sku_id ='.$sku_id.' and price_type ='.$price_type)->fetchRow()->toArray();
+        if($order_return) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此商品您已经退过');
+            die();
+        }
+
+        if($type == 2) {
+            $order->refund(date(DATETIME_FORMAT)." - 买家申请退款\r\n",$this->user->id);
+        } else {
+            $order->refundGoods(date(DATETIME_FORMAT)." - 买家申请退款\r\n",$this->user->id,$order_good,$exts);
+        }
+
         $data = array('status'=>'ok');
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
@@ -923,24 +967,34 @@ class App_GoodsController extends App_Controller_Action
             unset($val['thumb']);
             unset($val['points']);
             if(strpos($val['skus_id'],',')) {
-
                 $sku_ids = explode(',',$val['skus_id']);
                 foreach($sku_ids as $k => $sku_id) {
+                    $v = $sku_id;
                     $skuId = explode('.',$sku_id);
                     $priceType = $skuId[1];
                     $sku_id = $skuId[0];
                     $sku = M('Goods_Sku')->select()->where('id = ?', (int)$sku_id)->fetchRow()->toArray();
-                    $sku['price_type'] = $val['price_type']->$sku_id;
+                    $sku['price_type'] = $val['price_type']->$v;
                     $sku['exts'] = json_encode($sku['exts']);
                     $price_type = M('User_Cart')->price_type($sku);
                     $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
+                    $exts = array(
+                        'buyer_id' => $this->user->id,
+                        'order_id' => $oid,
+                        'sku_id' => $sku_id,
+                        'goods_id' => $good['id'],
+                        'price_type' => $priceType,
+                    );
+                    $query = get_sql($exts);
+                    $return = M('Order_Goods')->select('is_return')->where($query)->fetchRow()->toArray();
+                    $good['is_return'] = $return['is_return'];
                     $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id.' and order_id ='.$oid)->fetchRow()->toArray();
                     $good['is_comments'] = $comments ? 1 : 0;
                     $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
-                    $good['price_text'] = $val['price_text']->$sku_id;
-                    $good['qty'] = $val['qty']->$sku_id;
+                    $good['price_text'] = $val['price_text']->$v;
+                    $good['qty'] = $val['qty']->$v;
                     $good['price_type'] = $price_type['price_text'];
-                    $good['priceType'] = $val['price_type']->$sku_id;
+                    $good['priceType'] = $val['price_type']->$v;
                     $spec = explode(',',$sku['spec']);
                     $arr = array();
                     foreach($spec as $key1=>$val1) {
@@ -960,6 +1014,16 @@ class App_GoodsController extends App_Controller_Action
                 $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val['skus_id'])->fetchRow()->toArray();
                 $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
                 $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id)->fetchRow()->toArray();
+                $exts = array(
+                    'buyer_id' => $this->user->id,
+                    'order_id' => $oid,
+                    'sku_id' => $val['skus_id'],
+                    'goods_id' => $good['id'],
+                    'price_type' => $val['price_type'],
+                );
+                $query = get_sql($exts);
+                $return = M('Order_Goods')->select('is_return')->where($query)->fetchRow()->toArray();
+                $good['is_return'] = $return['is_return'];
                 $good['is_comments'] = $comments ? 1 : 0;
                 $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
                 $sku['price_type'] = $val['price_type'];
