@@ -7,10 +7,10 @@ class User_Cart extends Abstract_Model
 	/**
 	 * 根据选择的支付返回
 	 */
-	public function price_type($cart) {
+	public function price_type($cart,$price_type=0) {
 		$cart['exts'] = is_array($cart['exts']) ? $cart['exts'] : json_decode($cart['exts']);
-
-		switch($cart['price_type']) {
+		$price_type = $price_type ? $price_type : $cart['price_type'];
+		switch($price_type) {
 			case 1 :
 				$cart['price_text'][0]['name'] =  '快乐积分';
 				$cart['price_text'][0]['value'] = $cart['point1'];

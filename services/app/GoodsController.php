@@ -750,6 +750,7 @@ class App_GoodsController extends App_Controller_Action
         $sku_ids = array();
         $pageage = 0;
         $price_text = array();
+        $priceType = array();
         $type = array();
         foreach($datas as $key2=> &$row) {
             $area_id = $row['area_id'];
@@ -770,6 +771,7 @@ class App_GoodsController extends App_Controller_Action
                         $sku['exts'] = json_encode($sku['exts']);
                         $price_type = M('User_Cart')->price_type($sku);
                         $type[$id] = $price_type['price_text'];
+                        $priceType[$id] = $val['price_type']->$id;
                         $sku_ids[] = $id;
                         $price_text[$id] = $val['price_text']->$id;
                     }
@@ -778,6 +780,7 @@ class App_GoodsController extends App_Controller_Action
 
                     $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val['skus_id'])->fetchRow()->toArray();
                     $sku['price_type'] = $val['price_type'];
+                    $priceType[$val['skus_id']] = $val['price_type'];
                     $sku['exts'] = json_encode($sku['exts']);
                     $price_type = M('User_Cart')->price_type($sku);
                     $type[$val['skus_id']] = $price_type['price_text'];
@@ -816,6 +819,7 @@ class App_GoodsController extends App_Controller_Action
                 $good['sku_id'] = $val['skus_id'];
                 $good['price_text'] = $price_text[$value];
                 $good['price_type'] = $type[$value];
+                $good['priceType'] = $priceType[$value];
                 $row['goods'][] = $good;
             }
             unset($sku_ids);
@@ -922,6 +926,9 @@ class App_GoodsController extends App_Controller_Action
 
                 $sku_ids = explode(',',$val['skus_id']);
                 foreach($sku_ids as $k => $sku_id) {
+                    $skuId = explode('.',$sku_id);
+                    $priceType = $skuId[1];
+                    $sku_id = $skuId[0];
                     $sku = M('Goods_Sku')->select()->where('id = ?', (int)$sku_id)->fetchRow()->toArray();
                     $sku['price_type'] = $val['price_type']->$sku_id;
                     $sku['exts'] = json_encode($sku['exts']);
@@ -933,6 +940,7 @@ class App_GoodsController extends App_Controller_Action
                     $good['price_text'] = $val['price_text']->$sku_id;
                     $good['qty'] = $val['qty']->$sku_id;
                     $good['price_type'] = $price_type['price_text'];
+                    $good['priceType'] = $val['price_type']->$sku_id;
                     $spec = explode(',',$sku['spec']);
                     $arr = array();
                     foreach($spec as $key1=>$val1) {
@@ -959,6 +967,7 @@ class App_GoodsController extends App_Controller_Action
                 $price_type = M('User_Cart')->price_type($sku);
                 $good['price_type'] = $price_type['price_text'];
                 $good['price_text'] = $val['price_text'];
+                $good['priceType'] = $val['price_type'];
                 $good['qty'] = $val['qty'];
                 $spec = explode(',',$sku['spec']);
                 $arr = array();
