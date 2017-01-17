@@ -819,7 +819,7 @@ class App_GoodsController extends App_Controller_Action
                 $good['spec'] = $arr;
                 unset($good['price']);
                 unset($good['unit']);
-                $good['sku_id'] = $val['skus_id'];
+                $good['sku_id'] = $value;
                 $good['price_text'] = $price_text[$v];
                 $good['price_type'] = $type[$v];
 
