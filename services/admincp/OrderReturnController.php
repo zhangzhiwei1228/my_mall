@@ -91,7 +91,7 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 	public function doAccept()
 	{
 		$return = M('Order_Return')->getById((int)$this->_request->id);
-		/*$order = M('Order')->getById((int)$return->order_id);
+		$order = M('Order')->getById((int)$return->order_id);
 
 		$s = 0; $n = 0;
 		foreach ($order->goods as $row) {
@@ -104,8 +104,8 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 		} elseif ($s - 1 == 0) { //已经没有退款，恢复订单
 			M('Order')->updateById('expiry_time = retention_time + '.time(),(int)$return->order_id);
 		}
-		M('Order_Return')->updateById(array('status' => 2), (int)$return->id);
-		M('Order_Goods')->updateById(array('is_return' => 2), (int)$return->order_goods_id);*/
+		//M('Order_Return')->updateById(array('status' => 2), (int)$return->id);
+		//M('Order_Goods')->updateById(array('is_return' => 2), (int)$return->order_goods_id);
 		$exts = array(
 			'buyer_id' => $return['buyer_id'],
 			'order_id' => $return['order_id'],
@@ -122,7 +122,7 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 	public function doRefuse()
 	{
 		$return = M('Order_Return')->getById((int)$this->_request->id);
-		/*$order = M('Order')->getById((int)$return->order_id);
+		$order = M('Order')->getById((int)$return->order_id);
 		$s = 0; $n = 0;
 		foreach ($order->goods as $row) {
 			if ($row['is_return'] == 1) { $s++; } //只要还有退款未处理，继续冻结
@@ -133,8 +133,8 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 			M('Order')->updateById('expiry_time = retention_time + '.time(),(int)$return->order_id);
 		}
 
-		M('Order_Return')->updateById(array('status' => 1), (int)$return->id);
-		M('Order_Goods')->updateById(array('is_return' => 3), (int)$return->order_goods_id);*/
+		//M('Order_Return')->updateById(array('status' => 1), (int)$return->id);
+		//M('Order_Goods')->updateById(array('is_return' => 3), (int)$return->order_goods_id);
 		$exts = array(
 			'buyer_id' => $return['buyer_id'],
 			'order_id' => $return['order_id'],
