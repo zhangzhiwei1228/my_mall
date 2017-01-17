@@ -100,7 +100,7 @@ class Admincp_OrderReturnController extends Admincp_Controller_Action
 		}
 
 		if ($order->goods->total() == $n + 1) { //整单退，关闭交易
-			M('Order')->updateById(array('status' => 0),(int)$return->order_id);
+			//M('Order')->updateById(array('status' => 0),(int)$return->order_id);
 		} elseif ($s - 1 == 0) { //已经没有退款，恢复订单
 			M('Order')->updateById('expiry_time = retention_time + '.time(),(int)$return->order_id);
 		}
