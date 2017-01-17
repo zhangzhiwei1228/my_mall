@@ -336,7 +336,10 @@ class Order extends Abstract_Model
 
 				$query = get_sql($exts);
 				M('Order_Goods')->update('is_return = 1', $query); //变更订单商品状态
-				M('Order')->updateById('retention_time = expiry_time-'.time().', expiry_time = 0', (int)$order->id); //冻结订单
+				if(!$order->retention_time){
+					M('Order')->updateById('retention_time = expiry_time-'.time().', expiry_time = 0', (int)$order->id); //冻结订单
+				}
+
 				$this->getAdapter()->commit();
 			} catch (Suco_Exception $e) {
 				$this->getAdapter()->rollback();
