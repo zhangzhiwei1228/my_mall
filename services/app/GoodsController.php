@@ -722,7 +722,12 @@ class App_GoodsController extends App_Controller_Action
             ->order('id DESC')
             ->paginator($limit, $page);
         if($status && $status != 6) {
-            $select->where('o.status = '.(int)$status.' and o.expiry_time != 0 AND o.expiry_time >= '.time());
+            if($status == 3) {
+                $select->where('o.status = '.(int)$status);
+            } else {
+                $select->where('o.status = '.(int)$status.' and o.expiry_time != 0 AND o.expiry_time >= '.time());
+            }
+
         }
         if($status && $status == 6) {
             $select->where('o.status > 0 and o.status <= 4');
