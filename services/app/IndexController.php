@@ -336,7 +336,16 @@ class App_IndexController extends App_Controller_Action
     public function doServer() {
         $view = $this->_initView();
         $view->description =M('Page')->getById(55)->toArray();
-        $view->title = '服务协议';
+        //$view->title = '服务协议';
+        $view->render('views/app/shopping_mall.php');
+    }
+    /**
+     * 邀请码说明
+     */
+    public function doInviteDesc() {
+        $view = $this->_initView();
+        $view->description =M('Page')->getById(98)->toArray();
+        //$view->title = '邀请码说明';
         $view->render('views/app/shopping_mall.php');
     }
 
