@@ -330,5 +330,14 @@ class App_IndexController extends App_Controller_Action
         //echo $this->show_data($this->_encrypt_data($data));
         die();
     }
+    /**
+     * 服务协议
+     */
+    public function doServer() {
+        $view = $this->_initView();
+        $view->description =M('Page')->getById(55)->toArray();
+        $view->title = '服务协议';
+        $view->render('views/app/shopping_mall.php');
+    }
 
 }
