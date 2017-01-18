@@ -988,7 +988,7 @@ class App_GoodsController extends App_Controller_Action
                     $query = get_sql($exts);
                     $return = M('Order_Goods')->select('is_return')->where($query)->fetchRow()->toArray();
                     $good['is_return'] = $return['is_return'];
-                    $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id.' and order_id ='.$oid)->fetchRow()->toArray();
+                    $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id.' and order_id ='.$oid.' and sku_id ='.(int)$sku_id)->fetchRow()->toArray();
                     $good['is_comments'] = $comments ? 1 : 0;
                     $good['thumb'] = 'http://'.$_SERVER['HTTP_HOST'].$good['thumb'];
                     $good['price_text'] = $val['price_text']->$v;
