@@ -1018,7 +1018,7 @@ class App_GoodsController extends App_Controller_Action
             } else {
                 $sku = M('Goods_Sku')->select()->where('id = ?', (int)$val['skus_id'])->fetchRow()->toArray();
                 $good = M('Goods')->select('id,title,thumb,package_weight')->where('id = ?', (int)$sku['goods_id'])->fetchRow()->toArray();
-                $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id)->fetchRow()->toArray();
+                $comments = M('Goods_Comment')->select('id')->where('goods_id = '.(int)$good['id'].' and buyer_id = '.(int)$this->user->id.' and order_id ='.$oid.' and sku_id ='.(int)$val['skus_id'])->fetchRow()->toArray();
                 $exts = array(
                     'buyer_id' => $this->user->id,
                     'order_id' => $oid,
