@@ -159,7 +159,7 @@ class App_GoodsController extends App_Controller_Action
                 $k_v[$key+3]['name'] = '抵用券';
                 $k_v[$key+3]['value'] = $arrs['point4'];
             }
-            if($arrs['point5']) {
+            if($arrs['point5'] > 0) {
                 $k_v[$key+4]['name'] = '现金';
                 $k_v[$key+4]['value'] = $arrs['point5'];
             }
