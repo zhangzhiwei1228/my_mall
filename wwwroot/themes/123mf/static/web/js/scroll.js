@@ -14,7 +14,7 @@ function Scroll(obj,prev,next,width,auto){
 		},
 		slideLeft: function () {
 			slideX.btnLeft.unbind('click', slideX.slideLeft);
-			slideX.thisLi.eq(slideX.thisLi.length - 1).prependTo(slideX.thisUl);
+			slideX.thisLi.parent().children().eq(slideX.thisLi.length - 1).prependTo(slideX.thisUl);
 			slideX.thisUl.css('marginLeft', 0-width);
 			slideX.thisUl.animate({ 'marginLeft': 0 }, 500, function () {
 				slideX.btnLeft.bind('click', slideX.slideLeft);
@@ -25,7 +25,7 @@ function Scroll(obj,prev,next,width,auto){
 			slideX.btnRight.unbind('click', slideX.slideRight);
 			slideX.thisUl.animate({ 'marginLeft': 0-width}, 500, function () {
 				slideX.thisUl.css('marginLeft', '0');
-				slideX.thisLi.eq(0).appendTo(slideX.thisUl);
+				slideX.thisLi.parent().children().eq(0).appendTo(slideX.thisUl);
 				slideX.btnRight.bind('click', slideX.slideRight);
 			});
 			return false;

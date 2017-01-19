@@ -29,41 +29,21 @@ function banner(){
 	$(".banner > ul > li").eq(0).fadeIn(1000);
 
 	for(i=0;i<listN;i++){
-		$(".btn").append('<span class="span'+i+' png"></span>');
+		$(".banner .btn").append('<span class="span'+i+' fl"></span>');
 	}
-	$(".btn").css("margin-left",-$(".btn").width()/2);
+	$(".banner .btn").css("margin-left",-$(".btn").width()/2);
 	$(".banner .btn span").eq(0).addClass("on");
 
 	//执行效果
 	var sw = 1;
 	$(".banner .btn span").mouseover(function(){
-		sw = $(".btn span").index(this);
+		sw = $(".banner .btn span").index(this);
 		myShow(sw);
 	});
 	function myShow(i){
 		$(".banner .btn span").eq(i).addClass("on").siblings("span").removeClass("on");
 		$(".banner > ul > li").eq(i).stop(true,true).fadeIn(1000).siblings().stop(true,true).fadeOut(1000);
 	}
-
-	$(".banner-btn .up").click(function(){
-        var n=$(".btn span.on").index();
-        if ( n == 0){
-            n = $(".btn span").length-1
-        }else{
-            n--
-        }
-        myShow(n)
-    });
-
-    $(".banner-btn .down").click(function(){
-        var n=$(".btn span.on").index();
-        if (n == $(".btn span").length-1) {
-            n =0
-        }else{
-            n++
-        };
-        myShow(n)
-    });
 	//滑入停止动画，滑出开始动画
 	$(".banner").hover(function(){
 		if(myTime){

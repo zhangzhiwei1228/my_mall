@@ -45,8 +45,11 @@ function imgShow(imgList,imgShow,number,width,direction){
 		objImg.fadeTo(300,0,function(){
 			objImg.attr("src","");
 			objImg.fadeTo(300,1,function(){
-				objImg.attr("src",objLi.eq(n).children("img").attr("data-img"));
+				
 				objImg.siblings("p").html(objLi.eq(n).children("img").attr("data-title"));
+				objImg.attr("src",objLi.eq(n).children("img").attr("data-img")).attr("jqimg",objLi.eq(n).children("img").attr("data-big")); 
+
+				
 			});
 		})
 	};

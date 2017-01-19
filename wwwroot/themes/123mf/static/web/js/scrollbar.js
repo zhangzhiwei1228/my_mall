@@ -85,11 +85,11 @@ ImitateScroll.prototype = {
 		var scale = this.scale();////被滚动对象与被滚动对象外框的高度比例
 
 		if (scale <= 1) {//判断是否达到产生滚动条的条件
-			this.scrollObj.style.width   = "100%";
+			// this.scrollObj.style.width   = "100%";
 			this.scrollBar.style.display = "none";
 			return;
 		} else {
-			this.scrollObj.style.width   = "95%";
+			// this.scrollObj.style.width   = "95%";
 			this.scrollBar.style.display = "block";
 		}
 

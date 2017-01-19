@@ -234,7 +234,7 @@
             <a href="<?=$this->url($row['redirect'])?>" <?=$row['is_blank']?'target="_blank"':''?>>
 
                 <div style="color:red"><?=$cn[$i]?></div>
-        		<img src="<?=$this->baseUrl($row['icon'])?><?php /*echo static_file($row['icon']); */?> " alt="">
+        		<img src="<?=STATIC_URL.$row['icon']?><?php /*echo static_file($row['icon']); */?> " alt="">
         		<p class="n-lise-666"><?=$row['name']?></p>
                 <?php if ($row['description']) { ?>
         		<p class="n-lise-96">(<?=$row['description']?>)</p>
