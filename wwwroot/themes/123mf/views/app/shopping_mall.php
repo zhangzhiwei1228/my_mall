@@ -7,7 +7,7 @@
     <?php include_once VIEWS.'app/inc/header.php'; ?>
     <div class="n-shopping">
     	<div class="text">
-    		<h2><?php echo isset($this->title) && $this->title ? $this->title : $this->description['title']?></h2>
+    		<!--<h2><?php /*echo isset($this->title) && $this->title ? $this->title : $this->description['title']*/?></h2>-->
     		<?php echo $this->description['content']?>
     	</div>
     </div>
