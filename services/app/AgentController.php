@@ -267,11 +267,19 @@ class App_AgentController extends App_Controller_Action
         } else {
             $where .= ' and credit < 0 ';
         }
-        $data = M('User_Credit')->select('id,create_time,credit,note,rid')
+        $data =  M('User_Credit')->alias('uc')
+            ->leftJoin(M('User')->getTableName().' AS u', 'uc.user_id = u.id')
+            ->columns('uc.id,uc.create_time,uc.credit,uc.note,uc.rid,u.username')
             ->where($where)
             ->order('id DESC')
             ->paginator($limit,$page)
-            ->fetchRows()->toArray();
+            ->fetchRows()
+            ->toArray();
+        /*$data = M('User_Credit')->select('id,create_time,credit,note,rid')
+            ->where($where)
+            ->order('id DESC')
+            ->paginator($limit,$page)
+            ->fetchRows()->toArray();*/
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();

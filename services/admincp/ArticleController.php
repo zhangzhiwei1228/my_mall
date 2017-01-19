@@ -119,18 +119,22 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 						'type' => 1//1是消息2是新品3是新品发货
 					)
 				);
-				foreach ($users as $user1) {
-					$push = M('Jpush')->push($user1['id'],1,$exts);
-					if(!$push) continue;
+				if($users) {
+					foreach ($users as $user1) {
+						$push = M('Jpush')->push($user1['id'],1,$exts);
+						if(!$push) continue;
+					}
 				}
-				foreach ($user_areas as $user2) {
-					$push = M('Jpush')->push($user2['id'],1,$exts);
-					if(!$push) continue;
+				if($user_areas) {
+					foreach ($user_areas as $user2) {
+						$push = M('Jpush')->push($user2['id'],1,$exts);
+						if(!$push) continue;
+					}
 				}
-
+				
 				//M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
 			} else {
-				$artice_id = M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
+				//$artice_id = M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
 				/*$exts = array (
 					'title' => $data['title'],
 					'content' => strip_tags($data['content']),
