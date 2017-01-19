@@ -49,7 +49,12 @@ class IndexController extends Controller_Action
 		$view->recShop = $clotypes;
 		$view->specialShop = $specialShop;
 		$view->recGoodsCates = $recGoodsCates->hasmanyGoods();
-		$view->render('views/welcome.php');
+		if($view->isMobile()) {
+			$view->render('views/welcome.php');
+		} else {
+			$view->render('views/web/welcome.php');
+		}
+
 	}
 	public function doWxtokencheck() {
 		$view = $this->_initView();
@@ -76,6 +81,10 @@ class IndexController extends Controller_Action
 	public function doRecordsVolume() {
 		$view = $this->_initView();
 		$view->render('views/new_text/records_volume.php');
+	}
+	public function doWelInc() {
+		$view = $this->_initView();
+		$view->render('views/web/ajax/wel_inc.php');
 	}
 
 

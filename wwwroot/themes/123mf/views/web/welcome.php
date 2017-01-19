@@ -1,11 +1,11 @@
 
 <!DOCTYPE html>
 <head>
-<?php include_once VIEWS.'inc/head.php'; ?>
+<?php include_once VIEWS.'web/inc/head.php'; ?>
 </head>
 
 <body>
-    <?php include_once VIEWS.'inc/header_n.php'; ?>
+    <?php include_once VIEWS.'web/inc/header_n.php'; ?>
     <div class="banner">
     	<div class="banner-tit">一个每天必上的网站，获取。。。免费！免费！免费！</div>
     	<ul class="clear">
@@ -868,7 +868,7 @@
 
 
       
-        var url = <?php echo "'".site_url('ajax/wel_inc')."'"; ?> ;
+        var url = <?php echo "'".site_url('index/WelInc')."'"; ?> ;
         $(".load-inc").load(url)
 
 
