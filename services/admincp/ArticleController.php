@@ -131,7 +131,7 @@ class Admincp_ArticleController extends Admincp_Controller_Action
 						if(!$push) continue;
 					}
 				}
-				
+
 				//M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
 			} else {
 				//$artice_id = M('Article')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));

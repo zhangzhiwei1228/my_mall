@@ -271,7 +271,7 @@ class App_AgentController extends App_Controller_Action
             ->leftJoin(M('User')->getTableName().' AS u', 'uc.user_id = u.id')
             ->columns('uc.id,uc.create_time,uc.credit,uc.note,uc.rid,u.username')
             ->where($where)
-            ->order('id DESC')
+            ->order('uc.id DESC')
             ->paginator($limit,$page)
             ->fetchRows()
             ->toArray();
@@ -336,6 +336,10 @@ class App_AgentController extends App_Controller_Action
             ->paginator($limit,$page)
             ->fetchRow()
             ->toArray();
+        if(!$data) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此账户不存在');
+            die();
+        }
         echo $this->_encrypt_data($data);
         //echo $this->show_data($this->_encrypt_data($data));
         die();
