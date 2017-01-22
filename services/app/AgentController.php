@@ -390,16 +390,20 @@ class App_AgentController extends App_Controller_Action
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此兑换码不存在');
             die();
         }
+        if($glod['status'] == 1) {
+            echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此兑换码没有支付，请先去支付');
+            die();
+        }
         $account = M('User')->getById((int)$glod['uid']);
         if (!$account->exists()) {
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'所属账户不存在');
             die();
         }
-        $worthglod = M('User_Credit')->select()->where('user_id='.$account['id'].' and code='."'".$glod['code']."'")->fetchRow()->toArray();
+        /*$worthglod = M('User_Credit')->select()->where('user_id='.$account['id'].' and code='."'".$glod['code']."'")->fetchRow()->toArray();
         if($worthglod) {
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'此账户已经核销过，请不要重复核销');
             die();
-        }
+        }*/
 
         if($account['worth_gold'] < $glod['privilege']) {
             echo  self::_error_data(API_RESOURCES_NOT_FOUND,'该帐户抵用金不足');
