@@ -287,14 +287,14 @@ class App_CreditController extends App_Controller_Action
         $extra['order_no'] = $this->doOrderNo();
         $extra['code'] = $this->doRandStr();
         $pay_json['payment'] = $payment;
-        $pay_json['exts_type'] = $flag ? $pay_name['english'] : $pay_name['english'];
-        $pay_json['exts_amount'] = $flag ? $money : '';
-        $pay_json['pay_name'] = $flag ? $pay_name['name'].'+元' :$pay_name['name'];
-        $pay_json['pay_desc'] = $flag ? $payment.$pay_name['name'].'+'.$money.'元'.'='.$privilege.$right['name'] :$proportion['l_digital'].$pay_name['name'].'='.$proportion['r_digital'].$right['name'];
+        $pay_json['exts_type'] = $cash > 0 ? $pay_name['english'] : $pay_name['english'];
+        $pay_json['exts_amount'] = $cash > 0 ? $money : '';
+        $pay_json['pay_name'] = $cash > 0 ? $pay_name['name'].'+元' :$pay_name['name'];
+        $pay_json['pay_desc'] = $cash > 0 ? $payment.$pay_name['name'].'+'.$money.'元'.'='.$privilege.$right['name'] :$proportion['l_digital'].$pay_name['name'].'='.$proportion['r_digital'].$right['name'];
         $extra['pay_json'] = json_encode($pay_json);
 
         $glod_id = M('Worthglod')->insert($extra);
-        $pay_data['type'] = $flag ? 'hybrid' : $pay_name['english'];
+        $pay_data['type'] = $cash > 0 ? 'hybrid' : $pay_name['english'];
         $pay_data['exts_type'] = $pay_name['english'];
         $pay_data['amount'] = $payment;
         $pay_data['pay_amount'] = $cash;
