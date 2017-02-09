@@ -128,7 +128,10 @@ class Goods extends Abstract_Model
 						}
 					}
 					$attr_value = substr($attr_value,0,strlen($attr_value)-1);
-					M('Goods_Attribute')->delete('goods_id = '.(int)$id." and attr_value not in (".$attr_value.")");
+					if($attr_value) {
+						M('Goods_Attribute')->delete('goods_id = '.(int)$id." and attr_value not in (".$attr_value.")");
+					}
+					//M('Goods_Attribute')->delete('goods_id = '.(int)$id." and attr_value not in (".$attr_value.")");
 				}
 				
 			} elseif(isset($data['sku_change']) && $data['sku_change'] == 3) {
