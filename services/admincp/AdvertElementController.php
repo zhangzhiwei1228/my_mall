@@ -25,8 +25,10 @@ class Admincp_AdvertElementController extends Admincp_Controller_Action
 			M('Advert_Element')->insert(array_merge($this->_request->getPosts(), $this->_request->getFiles()));
 			$this->redirect(isset($this->_request->ref) ? base64_decode($this->_request->ref) : 'action=list');
 		}
-
+		$config = new Suco_Config_Php();
+		$app_redirt = $config->load(CONF_DIR.'app.conf.php')->toArray();
 		$view = $this->_initView();
+		$view->jump = $app_redirt['advertise'];
 		$view->advert = M('Advert')->fetchRows();
 		$view->render('advert/element/input.php');
 	}

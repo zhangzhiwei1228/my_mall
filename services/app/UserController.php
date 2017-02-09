@@ -330,6 +330,7 @@ class App_UserController extends App_Controller_Action
             echo  self::_error_data(API_SHIPPING_NOT_FOUND,'发货地不存在');
             die();
         }
+        M('Cart')->setAppCart($this->user->id);
         $cart = M('Cart')->doAppAddItem(
             (int)$this->user->id,
             (int)$good_id,
