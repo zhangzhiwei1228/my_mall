@@ -26,7 +26,7 @@ class Agent_IndexController extends Agent_Controller_Action
 					$view->render('views/proxyfour.php');
 				} else {
 					$view = $this->_initView();
-					$view->bonus = $this->user->getBonus('resale-1');
+					$view->bonus = $this->user->getBonus('resale-'.$this->user['resale_grade']);
 					$view->render('views/onestar.php');
 				}
 				break;

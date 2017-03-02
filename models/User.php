@@ -321,6 +321,12 @@ class User extends Abstract_User
 			case 'resale-1' :
 				$type_id = 32;
 				break;
+			case 'resale-2' :
+				$type_id = 31;
+				break;
+			case 'resale-3' :
+				$type_id = 30;
+				break;
 		}
 		if($type_id) {
 			$pro = M('Proportion')->select('price,english')->where('type='.$type_id)->fetchRows()->toArray();
