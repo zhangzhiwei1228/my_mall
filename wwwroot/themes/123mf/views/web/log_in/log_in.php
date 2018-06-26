@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <head>
-<?php include_once VIEWS.'inc/head.php'; ?>
+<?php include_once VIEWS.'web/inc/head.php'; ?>
 </head>
 
 <body>
-    <?php include_once VIEWS.'inc/header_login.php'; ?>
+    <?php include_once VIEWS.'web/inc/header_login.php'; ?>
     <div style="background:url(<?php echo static_file('web/img/img-43.jpg'); ?> ) no-repeat center" class="log-in">
 	    <div class="w1190">
 	    	<div class="log-in-box">
@@ -23,5 +23,5 @@
 	    	</div>
 	    </div>
     </div>
-    <?php include_once VIEWS.'inc/footer_login.php'; ?>
+    <?php include_once VIEWS.'web/inc/footer_login.php'; ?>
 </body>

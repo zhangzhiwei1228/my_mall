@@ -846,7 +846,7 @@
     		</div>
     	</div>
     </div>
-    <?php include_once VIEWS.'inc/footer.php'; ?>
+    <?php include_once VIEWS.'web/inc/footer.php'; ?>
 	<?php echo static_file('web/js/jquery.SuperSlide.2.1.1.js'); ?> 
 	<?php echo static_file('web/js/banner.js'); ?> 
     <?php echo static_file('web/js/jquery.masonry.min.js'); ?> 

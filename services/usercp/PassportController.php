@@ -156,7 +156,11 @@ class Usercp_PassportController extends Usercp_Controller_Action
 			$this->redirect('controller=index');
 		}
 		$view = $this->_initView();
-		$view->render('views/shopping01.php');
+        if($view->isMobile()) {
+            $view->render('views/shopping01.php');
+        } else {
+            $view->render('views/web/log_in/log_in.php');
+        }
 	}
 
 	public function doForgetPassword()

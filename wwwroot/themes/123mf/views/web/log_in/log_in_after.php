@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <head>
-<?php include_once VIEWS.'inc/head.php'; ?>
+<?php include_once VIEWS.'web/inc/head.php'; ?>
 </head>
 
 <body>
-    <?php include_once VIEWS.'inc/header.php'; ?>
+    <?php include_once VIEWS.'web/inc/header.php'; ?>
     <div class="bg">
     	<div class="log-in-after">
     		<h2>温馨提示</h2>
@@ -84,6 +84,6 @@
     		</div>
     	</div>
     </div>
-    <?php include_once VIEWS.'inc/footer.php'; ?>
+    <?php include_once VIEWS.'web/inc/footer.php'; ?>
 </body>
 </html>

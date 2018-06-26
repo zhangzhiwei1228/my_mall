@@ -1,0 +1,16 @@
+.buildpath
+.project
+.svn
+.settings
+*.lock
+tmp
+log/*
+.idea
+*.iml
+node_modules
+**/html/*
+!**/html/assets
+!**/html/src
+!**/html/dist
+**/html/dist/*
+**/html/src/page/*
