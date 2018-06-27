@@ -5,6 +5,7 @@
 *.lock
 tmp
 log/*
+app/*
 .idea
 *.iml
 node_modules

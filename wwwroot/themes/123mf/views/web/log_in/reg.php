@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <head>
-<?php include_once VIEWS.'inc/head.php'; ?>
+<?php include_once VIEWS.'web/inc/head.php'; ?>
 </head>
 
 <body>
-    <?php include_once VIEWS.'inc/header_login.php'; ?>
+    <?php include_once VIEWS.'web/inc/header_login.php'; ?>
     <div class="bg">
     	<div class="reg">
     		<h2 class="h2">会员注册</h2>
@@ -54,6 +54,6 @@
     		</div>
     	</div>
     </div>
-    <?php include_once VIEWS.'inc/footer_login.php'; ?>
+    <?php include_once VIEWS.'web/inc/footer_login.php'; ?>
 </body>
 </html>    

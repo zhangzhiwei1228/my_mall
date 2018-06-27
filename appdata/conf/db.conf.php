@@ -8,8 +8,8 @@ return array(
 		'host' => '127.0.0.1',
 		'port' => '3306',
 		'user' => 'root',
-		'pass' => 'boc2009!@#',
-		'name' => 'sdb_123mf',
+        'pass' => '123456',
+        'name' => 'mymall',
 		'charset' => 'utf8'
 	)
 );
