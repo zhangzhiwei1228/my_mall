@@ -13,7 +13,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -34,7 +34,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -55,7 +55,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -76,7 +76,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -97,7 +97,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -118,7 +118,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -139,7 +139,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -160,7 +160,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -181,7 +181,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -202,7 +202,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -223,7 +223,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>
@@ -244,7 +244,7 @@
     				<div class="fr">
 	    				<div class="top">
 	    					<a href="<?php echo site_url('product_list/info'); ?> "><span class="tit">Ninebot/纳恩博</span></a>
-							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p></p>
+							<a href="<?php echo site_url('product_list/info'); ?> "><p>全免费积分：<font style="color:#b40000;">1500</font> 免费积分</p>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+免费积分：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>免费积分</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>现金+积分币：￥<font style="color:#b40000;">100</font>+<font style="color:#b40000;">100</font>积分币</p></a>
 							<a href="<?php echo site_url('product_list/info'); ?> "><p>原价：￥<font style="text-decoration:line-through;">100</font></p></a>

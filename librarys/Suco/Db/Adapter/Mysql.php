@@ -199,7 +199,7 @@ class Suco_Db_Adapter_Mysql extends Suco_Db_Adapter_Abstract
 	public function execute($sql)
 	{
 		//$sqls = explode(';', $sql);
-		if (!$sql) continue;
+		if (!$sql) return false;
 		$beginTime = $this->_getMicrotime();
 		$result = mysql_query($sql, $this->_linkId);
 		$executeTime = $this->_getMicrotime() - $beginTime;

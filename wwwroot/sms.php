@@ -253,7 +253,7 @@ function sendTemplateSMS($to,$datas,$tempId)
      $result = $rest->sendTemplateSMS($to,$datas,$tempId);
      if($result == NULL ) {
          echo "result error!";
-         break;
+         exit(0);
      }
      if($result->statusCode!=0) {
          echo "error code :" . $result->statusCode . "<br>";
